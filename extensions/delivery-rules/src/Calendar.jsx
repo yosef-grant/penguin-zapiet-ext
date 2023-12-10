@@ -1,4 +1,5 @@
 import {
+  BlockSpacer,
   DatePicker,
   Heading,
   Tooltip,
@@ -190,8 +191,9 @@ const Calendar = ({
   };
 
   return (
-    <View>
+    <View padding={["loose","none","loose","none"]}>
       <Heading>Select Delivery Date</Heading>
+      <BlockSpacer spacing="loose"/>
       <DatePicker
         selected={
           !selectedDate ? format(new Date(minDate), dateFormat) : selectedDate

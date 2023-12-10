@@ -19124,6 +19124,9 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/extension.mjs
   var extension = createExtensionRegistrationFunction();
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/BlockSpacer/BlockSpacer.mjs
+  var BlockSpacer = createRemoteComponent("BlockSpacer");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Button/Button.mjs
   var Button = createRemoteComponent("Button");
 
@@ -19146,17 +19149,20 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Grid/Grid.mjs
   var Grid = createRemoteComponent("Grid");
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/GridItem/GridItem.mjs
+  var GridItem = createRemoteComponent("GridItem");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Heading/Heading.mjs
   var Heading = createRemoteComponent("Heading");
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/List/List.mjs
-  var List = createRemoteComponent("List");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ListItem/ListItem.mjs
-  var ListItem = createRemoteComponent("ListItem");
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Image/Image.mjs
+  var Image = createRemoteComponent("Image");
 
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Modal/Modal.mjs
   var Modal = createRemoteComponent("Modal");
+
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Pressable/Pressable.mjs
+  var Pressable = createRemoteComponent("Pressable");
 
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Select/Select.mjs
   var Select = createRemoteComponent("Select");
@@ -21693,8 +21699,9 @@ ${errorInfo.componentStack}`);
       console.log("___---```---___ AFTER RESERVING PENGUIN LOCKER ", attrList);
       ui.overlay.close("reservation-confirm");
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(View, { children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Heading, { children: "Select Delivery Date" }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BlockSpacer, { spacing: "loose" }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
         DatePicker,
         {
@@ -21743,6 +21750,27 @@ ${errorInfo.componentStack}`);
     collectLocation,
     setCollectLocation
   }) => {
+    const icons = {
+      delivery: {
+        disabled: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034881/assets/postal_unavailable_q6eak9.svg",
+        default: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034880/assets/postal_default_kviznc.svg",
+        hover: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034880/assets/postal_hover_eh3a2p.svg",
+        selected: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034881/assets/postal_selected_nnd6aa.svg"
+      },
+      pickup: {
+        disabled: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034782/assets/collection_unavailable_ihpffl.svg",
+        default: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034782/assets/collection_default_p4e2yp.svg",
+        hover: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034782/assets/collection_hover_azgylr.svg",
+        selected: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034783/assets/collection_selected_jmkqyn.svg"
+      },
+      shipping: {
+        disabled: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034372/assets/delivery_unavailable_qc4wou.svg",
+        default: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034661/assets/delivery_default_f2olig.svg",
+        hover: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034660/assets/delivery_hover_w2chpc.svg",
+        selected: "https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034661/assets/delivery_selected_gd957e.svg"
+      }
+    };
+    const [hover, setHover] = (0, import_react17.useState)(null);
     (0, import_react17.useEffect)(() => {
       console.log("@@@@@@@@@ ", availableMethods);
     }, [availableMethods]);
@@ -21846,14 +21874,21 @@ ${errorInfo.componentStack}`);
             columns: ["fill", "fill", "fill"],
             rows: ["auto"],
             spacing: "loose",
-            children: Object.keys(availableMethods).map((key) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-              Button,
+            children: Object.keys(availableMethods).map((key) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+              Pressable,
               {
                 disabled: checkNullDelivery(key),
                 onPress: () => handleMethodSelect(key),
-                children: getKeyname(key)
+                onPointerEnter: () => setHover(key),
+                onPointerLeave: () => setHover(null),
+                children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                  Image,
+                  {
+                    source: checkNullDelivery(key) ? icons[key].disabled : selectedMethod === key ? icons[key].selected : hover === key ? icons[key].hover : icons[key].default
+                  }
+                )
               }
-            ) }))
+            ))
           }
         )
       ] }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Button, { onPress: () => checkPostcode(), children: "Choose Delivery Method" }) }),
@@ -21903,12 +21938,30 @@ ${errorInfo.componentStack}`);
         location.company_name,
         " Opening & Pickup Times"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(List, { marker: "none", children: weekdays.map((weekday) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(ListItem, { children: [
-        weekday,
-        ":",
-        " ",
-        checkoutData.location_hours[`${weekday.toLowerCase()}_opening_hours`]
-      ] })) }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+        Grid,
+        {
+          rows: ["fill", "fill", "fill", "fill"],
+          columns: [`${1}fr`, `${1}fr`],
+          children: weekdays.map((weekday, i2) => {
+            if (i2 % 2 === 0) {
+              return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(GridItem, { rowSpan: 1, children: [
+                weekday,
+                ":",
+                " ",
+                checkoutData.location_hours[`${weekday.toLowerCase()}_opening_hours`]
+              ] });
+            } else {
+              return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(GridItem, { rowSpan: 1, children: [
+                weekday,
+                ":",
+                " ",
+                checkoutData.location_hours[`${weekday.toLowerCase()}_opening_hours`]
+              ] });
+            }
+          })
+        }
+      ),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(TextBlock, { children: [
         "If you\u2019re ordering for the next day please note your order will be available to collect from ",
         getLocationTime("pm"),
@@ -21954,7 +22007,7 @@ ${errorInfo.componentStack}`);
     (0, import_react19.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://0eec-212-140-232-13.ngrok-free.app";
+    const app_url = "https://d4f8-81-103-75-43.ngrok-free.app";
     const test = useAttributeValues([
       "Checkout-Method",
       "Pickup-Location-Company",
@@ -22042,3 +22095,4 @@ ${errorInfo.componentStack}`);
     ] });
   }
 })();
+//# sourceMappingURL=delivery-rules.js.map
