@@ -26,7 +26,7 @@ const PickupInfoCard = ({ location, checkoutData }) => {
 
   const getLocationTime = (meridiem) => {
     let day = checkoutData.checkout_date.day;
-    return checkoutData.location_hours[`${day}_${meridiem}_pickup_hours`];
+    return checkoutData.pickup.selectedLocation.location_hours[`${day}_${meridiem}_pickup_hours`];
   };
 
   console.log('>>>>>>>>>>>>>>>>', checkoutData);
@@ -43,7 +43,7 @@ const PickupInfoCard = ({ location, checkoutData }) => {
               <GridItem rowSpan={1}>
                 {weekday}:{' '}
                 {
-                  checkoutData.location_hours[
+                  checkoutData.pickup.selectedLocation.location_hours[
                     `${weekday.toLowerCase()}_opening_hours`
                   ]
                 }
@@ -54,7 +54,7 @@ const PickupInfoCard = ({ location, checkoutData }) => {
               <GridItem rowSpan={1}>
                 {weekday}:{' '}
                 {
-                  checkoutData.location_hours[
+                  checkoutData.pickup.selectedLocation.location_hours[
                     `${weekday.toLowerCase()}_opening_hours`
                   ]
                 }
@@ -89,7 +89,7 @@ const PickupInfoCard = ({ location, checkoutData }) => {
           {toggled ? 'Less info' : 'More info'}
         </Button>
         <View id="location-info">
-          <TextBlock>{checkoutData.location_description}</TextBlock>
+          <TextBlock>{checkoutData.pickup.selectedLocation.location_description}</TextBlock>
         </View>
       </Disclosure>
     </View>

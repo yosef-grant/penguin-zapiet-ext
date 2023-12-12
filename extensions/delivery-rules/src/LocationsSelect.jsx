@@ -5,21 +5,23 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import { Select, Heading } from "@shopify/ui-extensions/checkout";
 import { format, getDay } from "date-fns";
+import { useEffect } from "react";
 
 const LocationsSelect = ({
   locations,
-  qCollectLocation,
-  isQCollect,
-  setQCollectLocation,
+  checkoutData,
   setCheckoutData,
   setMinDate,
   nextDay,
   cart,
   setPenguinCart,
   url,
-  collectLocation,
-  setCollectLocation,
+  setSelectedMethod,
+  setDisplayCalendar,
 }) => {
+  useEffect(() => {
+    console.log("£££££££££££££££ ", checkoutData);
+  }, [checkoutData]);
   let changeAttributes = useApplyAttributeChange();
 
   let changeShippingAddress = useApplyShippingAddressChange();
@@ -27,6 +29,7 @@ const LocationsSelect = ({
   const { query } = useApi();
 
   const handleLocationSelect = async (val) => {
+    console.log("llllllllllllllllllllll ", checkoutData);
     await changeAttributes({
       type: "updateAttribute",
       key: "Checkout-Method",
@@ -104,7 +107,7 @@ const LocationsSelect = ({
       },
     } = metaobject;
 
-    let x = times.reduce(
+    let locHours = times.reduce(
       (obj, item) => ({
         ...obj,
         [item.key]: item.value,
@@ -112,7 +115,12 @@ const LocationsSelect = ({
       {}
     );
 
-    console.log(">>>>>>>>>>>> TIMES ", times, "<<<<<<<<<<<<<<<<< X: ", x);
+    console.log(
+      ">>>>>>>>>>>> TIMES ",
+      times,
+      "<<<<<<<<<<<<<<<<< HOURS: ",
+      locHours
+    );
     await changeAttributes({
       type: "updateAttribute",
       key: "Pickup-Location-Company",
@@ -127,17 +135,27 @@ const LocationsSelect = ({
       type: "updateShippingAddress",
       address: targetLocationAddr[0],
     });
-    setCheckoutData((checkoutData) => {
-      return {
-        ...checkoutData,
-        location_hours: x,
+
+    let locData = await getLocationDates(targetLocation[0]);
+
+    console.log("loc __--^^^--__ data ", locData);
+    let x = checkoutData;
+    x?.delivery ? null : (x.qCollect = true);
+    x.pickup = {
+      ...x.pickup,
+      selectedLocation: {
+        location_hours: locHours,
         location_description: metaobject.description.value,
-      };
-    });
+        dates: locData.dates,
+        info: locData.location,
+      },
+    };
+
+    console.log("#~~::: X", x);
+    setCheckoutData(JSON.parse(JSON.stringify(x)));
     getLocationDates(targetLocation[0]);
-    isQCollect
-      ? setQCollectLocation(targetLocation[0])
-      : setCollectLocation(targetLocation[0]);
+    setSelectedMethod("pickup");
+    setDisplayCalendar(true);
   };
 
   const getLocationDates = async (location) => {
@@ -167,31 +185,30 @@ const LocationsSelect = ({
         setPenguinCart(data.cartInfo))
       : null;
     setMinDate(new Date(data.minDate));
-    setCheckoutData((checkoutData) => {
-      return {
-        ...checkoutData,
-        checkout_date: {
-          date: new Date(data.minDate),
-          day: getDay(new Date(data.minDate)),
-        },
-      };
-    });
+
+    return {
+      dates: {
+        date: new Date(data.minDate),
+        day: getDay(new Date(data.minDate)),
+        blackout_dates: data.blackout_dates,
+        blackout_days: data.blackout_days,
+      },
+      location: location,
+    };
   };
   return (
     <>
       <Select
         label="Choose store or locker"
         value={
-          isQCollect && qCollectLocation
-            ? qCollectLocation.id
-            : !isQCollect && collectLocation
-            ? collectLocation.id
+          !!checkoutData?.pickup?.selectedLocation
+            ? checkoutData.pickup.selectedLocation.info.id
             : ""
         }
         options={locations.map((location) => ({
           value: location.id,
           label: `${location.company_name}${
-            !isQCollect ? ` - ${location.distance} miles`  : ""
+            !checkoutData.qCollect ? ` - ${location.distance} miles` : ""
           }`,
         }))}
         onChange={(value) => handleLocationSelect(value)}

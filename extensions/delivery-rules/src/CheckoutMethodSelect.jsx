@@ -6,15 +6,15 @@ import {
   Heading,
   Pressable,
   Image,
-} from '@shopify/ui-extensions/checkout';
-import { useEffect, useState } from 'react';
+} from "@shopify/ui-extensions/checkout";
+import { useEffect, useState } from "react";
 
 import {
   useApplyAttributeChange,
   useAttributes,
   useShippingAddress,
-} from '@shopify/ui-extensions-react/checkout';
-import LocationsSelect from './LocationsSelect.jsx';
+} from "@shopify/ui-extensions-react/checkout";
+import LocationsSelect from "./LocationsSelect.jsx";
 
 const CheckoutMethodSelect = ({
   availableMethods,
@@ -24,8 +24,7 @@ const CheckoutMethodSelect = ({
   nextDay,
   url,
   setAddress,
-  methodData,
-  setMethodData,
+  checkoutData,
   selectedMethod,
   setSelectedMethod,
   setCheckoutData,
@@ -33,44 +32,46 @@ const CheckoutMethodSelect = ({
   setPenguinCart,
   collectLocation,
   setCollectLocation,
+  setDisplayCalendar,
+  setCS,
 }) => {
   const icons = {
     delivery: {
       disabled:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034881/assets/postal_unavailable_q6eak9.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_disabled.svg?v=1702292364",
       default:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034880/assets/postal_default_kviznc.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_default.svg?v=1702292364",
       hover:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034880/assets/postal_hover_eh3a2p.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_hover.svg?v=1702292364",
       selected:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034881/assets/postal_selected_nnd6aa.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_selected.svg?v=1702292364",
     },
     pickup: {
       disabled:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034782/assets/collection_unavailable_ihpffl.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_disabled.svg?v=1702292364",
       default:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034782/assets/collection_default_p4e2yp.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_default.svg?v=1702292364",
       hover:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034782/assets/collection_hover_azgylr.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_hover.svg?v=1702292364",
       selected:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034783/assets/collection_selected_jmkqyn.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_selected.svg?v=1702292364",
     },
     shipping: {
       disabled:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034372/assets/delivery_unavailable_qc4wou.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_unavailable.svg?v=1702292364",
       default:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034661/assets/delivery_default_f2olig.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_default.svg?v=1702292364",
       hover:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034660/assets/delivery_hover_w2chpc.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_hover.svg?v=1702292364",
       selected:
-        'https://res.cloudinary.com/lola-s-cupcakes/image/upload/v1702034661/assets/delivery_selected_gd957e.svg',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_selected.svg?v=1702292364",
     },
   };
 
   const [hover, setHover] = useState(null);
 
   useEffect(() => {
-    console.log('@@@@@@@@@ ', availableMethods);
+    console.log("@@@@@@@@@ ", availableMethods);
   }, [availableMethods]);
 
   const shippingAddress = useShippingAddress();
@@ -85,63 +86,105 @@ const CheckoutMethodSelect = ({
     {}
   );
 
-  useEffect(() => {
-    console.log('current postcode: ', postcode, shippingAddress);
-    postcode && shippingAddress.zip === postcode ? null : setPostcode(null);
-  }, [shippingAddress]);
+  // useEffect(() => {
+  //   console.log("current postcode: ", postcode, shippingAddress);
+  //   postcode && shippingAddress.zip === postcode ? null : setPostcode(null);
+  // }, [shippingAddress]);
+
+  const checkCS = async (value) => {
+    const res = await fetch(`${url}/pza/check-pw`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        pw: value,
+      }),
+    });
+    let z = await res.json();
+
+    console.log(";;;;;;;;;;;;;;;;;;;;;", z);
+    return z.status;
+  };
 
   const checkPostcode = async () => {
     console.log(shippingAddress.zip);
-    let postcodeRes = await fetch(
-      `https://api.postcodes.io/postcodes/${shippingAddress.zip}`,
-      {
-        method: 'GET',
+
+    if (shippingAddress.zip.length === 12) {
+      let status = await checkCS(shippingAddress.zip);
+      if (status === true) {
+        setCS((cs) => {
+          return { ...cs, status: true };
+        });
+        await setAddress({
+          type: "updateShippingAddress",
+          address: { zip: "" },
+        });
       }
-    );
-
-    let postcodeData = await postcodeRes.json();
-
-    console.log(postcodeData.result);
-
-    if (postcodeData?.result) {
-      console.log('valid postcode!');
-
-      let checkBody = {
-        methods: availableMethods,
-        postcode: postcodeData.result.postcode,
-        cart: cart,
-        twoDayDelivery: nextDay,
-      };
-
-      let checkRes = await fetch(`${url}/pza/check-postcode-test`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify(checkBody),
-      });
-      let pcCheckData = await checkRes.json();
-
-      console.log(
-        'postcode results: ',
-        postcodeData,
-        '\n Postcode availability data: ',
-        pcCheckData
+    } else {
+      let postcodeRes = await fetch(
+        `https://api.postcodes.io/postcodes/${shippingAddress.zip}`,
+        {
+          method: "GET",
+        }
       );
 
-      await setAddress({
-        type: 'updateShippingAddress',
-        address: { zip: postcodeData.result.postcode },
-      });
-      setMethodData(pcCheckData);
-      setPostcode(shippingAddress.zip);
+      let postcodeData = await postcodeRes.json();
+
+      console.log(postcodeData.result);
+
+      if (postcodeData?.result) {
+        console.log("valid postcode!");
+
+        let checkBody = {
+          methods: availableMethods,
+          postcode: postcodeData.result.postcode,
+          cart: cart,
+          twoDayDelivery: nextDay,
+        };
+
+        let checkRes = await fetch(`${url}/pza/check-postcode-test`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "POST",
+          body: JSON.stringify(checkBody),
+        });
+        let pcCheckData = await checkRes.json();
+
+        console.log(
+          "postcode results: ",
+          postcodeData,
+          "\n Postcode availability data: ",
+          pcCheckData
+        );
+
+        await setAddress({
+          type: "updateShippingAddress",
+          address: { zip: postcodeData.result.postcode },
+        });
+
+        x = checkoutData;
+        x.qCollect = false;
+        x.delivery = pcCheckData.delivery;
+        x.shipping = pcCheckData.shipping;
+        x.pickup = {
+          qCollectLocations: x.pickup.qCollectLocations
+            ? x.pickup.qCollectLocations
+            : null,
+          collectLocations: pcCheckData.pickup.locations,
+        };
+
+        setCheckoutData(JSON.parse(JSON.stringify(x)));
+        setPostcode(shippingAddress.zip);
+      }
     }
   };
 
   const checkNullDelivery = (data) => {
-    return (data === 'delivery' &&
-      methodData.delivery.delivery_zone.trim().toLowerCase() ===
-        'unavailable') ||
+    return (data === "delivery" &&
+      checkoutData.delivery.delivery_zone.trim().toLowerCase() ===
+        "unavailable") ||
       !availableMethods[data]
       ? true
       : false;
@@ -150,38 +193,52 @@ const CheckoutMethodSelect = ({
   const getKeyname = (raw) => {
     let x;
     switch (raw) {
-      case 'delivery':
-        x = 'Postal';
+      case "delivery":
+        x = "Postal";
         break;
-      case 'pickup':
-        x = 'Collection';
+      case "pickup":
+        x = "Collection";
         break;
-      case 'shipping':
-        x = 'Delivery';
+      case "shipping":
+        x = "Delivery";
         break;
     }
     return x;
   };
 
   const handleMethodSelect = (method) => {
+    console.log("heres data from method select: ", checkoutData);
     setSelectedMethod(method);
-    method !== 'pickup' ? setMinDate(methodData[method].min_date) : null;
+    method === "pickup" ? setDisplayCalendar(false) : setDisplayCalendar(true);
+    method !== "pickup" ? setSelectedMethod(method) : null;
+    method !== "pickup" ? setMinDate(checkoutData[method].min_date) : null;
     Object.keys(attrList).forEach(async (key) => {
       console.log(key);
-      if (key === 'Checkout-Method') {
+      if (key === "Checkout-Method") {
         await changeAttributes({
-          type: 'updateAttribute',
+          type: "updateAttribute",
           key: key,
           value: method,
         });
-      } else {
+      } else if (key !== "Lolas-CS-Member" && key !== "Customer-Service-Note") {
         await changeAttributes({
-          type: 'updateAttribute',
+          type: "updateAttribute",
           key: key,
-          value: '',
+          value: "",
         });
       }
     });
+  };
+
+  const handleReset = () => {
+    setPostcode(null);
+    const x = checkoutData;
+    x.delivery = null;
+    x.pickup.selectedLocation = null;
+    x.qCollect = null;
+    console.log('x from methods reset ::::::::::::: ', x)
+    setCheckoutData(JSON.parse(JSON.stringify(x)));
+    setSelectedMethod(null);
   };
 
   return (
@@ -191,9 +248,12 @@ const CheckoutMethodSelect = ({
           <Heading>
             Choose Hand Delivery, Collection or Nationwide Postal
           </Heading>
+          <Button kind="link" onPress={() => handleReset()}>
+            Cancel
+          </Button>
           <Grid
-            columns={['fill', 'fill', 'fill']}
-            rows={['auto']}
+            columns={["fill", "fill", "fill"]}
+            rows={["auto"]}
             spacing="loose"
           >
             {Object.keys(availableMethods).map((key) => (
@@ -226,16 +286,16 @@ const CheckoutMethodSelect = ({
         </View>
       )}
       {!!selectedMethod &&
-        !!methodData &&
-        (selectedMethod === 'delivery' || selectedMethod === 'shipping' ? (
+        (selectedMethod === "delivery" || selectedMethod === "shipping" ? (
           <Heading>{selectedMethod}</Heading>
         ) : (
           <>
             <Heading>Choose a store or locker for pickup</Heading>
+
             <LocationsSelect
-              locations={methodData.pickup.locations}
-              isQCollect={false}
+              locations={checkoutData.pickup.collectLocations}
               setCheckoutData={setCheckoutData}
+              checkoutData={checkoutData}
               setMinDate={setMinDate}
               nextDay={nextDay}
               cart={cart}
@@ -243,6 +303,8 @@ const CheckoutMethodSelect = ({
               url={url}
               collectLocation={collectLocation}
               setCollectLocation={setCollectLocation}
+              setSelectedMethod={setSelectedMethod}
+              setDisplayCalendar={setDisplayCalendar}
             />
           </>
         ))}

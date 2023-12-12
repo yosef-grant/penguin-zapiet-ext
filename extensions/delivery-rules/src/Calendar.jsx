@@ -39,6 +39,8 @@ const Calendar = ({
   url,
   selectedMethod,
 }) => {
+
+  console.log('::::: from calendar: ', minDate, format(new Date(minDate), dateFormat))
   const attr = useAttributes();
   const attrList = attr.reduce(
     (obj, item) => ({
@@ -114,7 +116,7 @@ const Calendar = ({
         type: "updateAttribute",
         key: "Pickup-AM-Hours",
         value:
-          checkoutData.location_hours[
+          checkoutData.pickup.selectedLocation.location_hours[
             `${getWeekday(selected)}_am_pickup_hours`
           ],
       });
@@ -122,9 +124,21 @@ const Calendar = ({
         type: "updateAttribute",
         key: "Pickup-PM-Hours",
         value:
-          checkoutData.location_hours[
+          checkoutData.pickup.selectedLocation.location_hours[
             `${getWeekday(selected)}_pm_pickup_hours`
           ],
+      });
+    } else if (attrList["Checkout-Method"] === "shipping") {
+      await changeAttributes({
+        type: "updateAttribute",
+        key: "Shipping-Date",
+        value: selected,
+      });
+    } else {
+      await changeAttributes({
+        type: "updateAttribute",
+        key: "Delivery-Date",
+        value: selected,
       });
     }
   };
@@ -191,9 +205,9 @@ const Calendar = ({
   };
 
   return (
-    <View padding={["loose","none","loose","none"]}>
+    <View padding={["loose", "none", "loose", "none"]}>
       <Heading>Select Delivery Date</Heading>
-      <BlockSpacer spacing="loose"/>
+      <BlockSpacer spacing="loose" />
       <DatePicker
         selected={
           !selectedDate ? format(new Date(minDate), dateFormat) : selectedDate

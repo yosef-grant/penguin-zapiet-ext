@@ -1,22 +1,14 @@
 import React, { useEffect, useState, useLayoutEffect } from "react";
 
 import {
-  Banner,
-  useApi,
-  useTranslate,
   reactExtension,
-  BlockSpacer,
-  Grid,
-  View,
-  Image,
-  Button,
   useApplyShippingAddressChange,
   useCartLines,
   useShippingAddress,
-  useAppMetafields,
-  useMetafield,
   useAttributeValues,
   useAttributes,
+  useBuyerJourneyIntercept,
+  useApi,
 } from "@shopify/ui-extensions-react/checkout";
 
 import QuickCollect from "./QuickCollect.jsx";
@@ -24,12 +16,15 @@ import Calendar from "./Calendar.jsx";
 import CheckoutMethodSelect from "./CheckoutMethodSelect.jsx";
 import { Heading } from "@shopify/ui-extensions/checkout";
 import PickupInfoCard from "./PickupInfoCard.jsx";
+import CSPortal from "./CSPortal.jsx";
 
 export default reactExtension("purchase.checkout.block.render", () => (
   <Extension />
 ));
 
 function Extension() {
+  // checkoutData & methodData are the same?
+
   const [qCollectLocation, setQCollectLocation] = useState(null);
   const [checkoutData, setCheckoutData] = useState({});
   const [minDate, setMinDate] = useState(null);
@@ -38,20 +33,19 @@ function Extension() {
   const [penguinCart, setPenguinCart] = useState(null);
   const [lockerReserved, setLockerReserved] = useState(false);
   const [collectLocation, setCollectLocation] = useState(null);
-  const [attrList, setAttrList] = useState([]);
+  const [displayCalendar, setDisplayCalendar] = useState(false);
   const [postcode, setPostcode] = useState(null);
-  const [methodData, setMethodData] = useState(null);
   const [selectedMethod, setSelectedMethod] = useState(null);
+  const [cs, setCS] = useState({ status: false });
+  const [allLocations, setAllLocations] = useState(null);
 
-  const { extension } = useApi();
-  const translate = useTranslate();
   const lineItems = useCartLines();
 
   useEffect(() => {
     console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   }, [penguinCart]);
 
-  const app_url = "https://d4f8-81-103-75-43.ngrok-free.app";
+  const app_url = "https://540b-212-140-232-13.ngrok-free.app";
 
   const test = useAttributeValues([
     "Checkout-Method",
@@ -63,8 +57,20 @@ function Extension() {
     "Pickup-Location-Id",
   ]);
 
+  const { extension } = useApi();
+
+  // console.log("@@@@@@@@@@@@ capabilities ", extension);
   const attr = useAttributes();
-  console.log("::::::::::::::::: attributes: ", attr, "\nVals: ", test);
+
+  const attributes = attr.reduce(
+    (obj, item) => ({
+      ...obj,
+      [item.key]: item.value,
+    }),
+    {}
+  );
+
+  console.table(attributes);
 
   const cart = lineItems.map((item) => {
     return {
@@ -77,9 +83,38 @@ function Extension() {
 
   const shippingAddress = useShippingAddress();
 
+  useEffect(() => {
+    console.log("##################checkout data ", checkoutData);
+  }, [checkoutData]);
+
+  useEffect(() => {
+    console.log("++++++++++++++ cs updated: ", cs);
+  }, [cs]);
+
+  // use to intercept rogue behaviour that will screw up rates
+  useBuyerJourneyIntercept(({ canBlockProgress }) => {
+    return canBlockProgress && attributes["Checkout-Method"]
+      ? {
+          behavior: "block",
+          reason: "Invalid shipping country",
+          errors: [
+            {
+              // An error without a `target` property is shown at page level
+              message: "Sorry, we can only ship to Canada",
+            },
+          ],
+        }
+      : {
+          behavior: "allow",
+        };
+  });
+
   return (
     <>
-      {!methodData && (
+      {!!cs.status && (
+        <CSPortal setCS={setCS} cs={cs} allLocations={allLocations} />
+      )}
+      {!checkoutData?.delivery && (
         <QuickCollect
           lineItems={lineItems}
           changeShippingAddress={changeShippingAddress}
@@ -87,18 +122,20 @@ function Extension() {
           qCollectLocation={qCollectLocation}
           cart={cart}
           setCheckoutData={setCheckoutData}
+          checkoutData={checkoutData}
           setMinDate={setMinDate}
           nextDay={nextDay}
           url={app_url}
           setNextDay={setNextDay}
-          setAttrList={setAttrList}
           penguinCart={penguinCart}
           setPenguinCart={setPenguinCart}
           setAvailableMethods={setAvailableMethods}
           setSelectedMethod={setSelectedMethod}
+          setDisplayCalendar={setDisplayCalendar}
         />
       )}
-      {!qCollectLocation && (
+
+      {!checkoutData?.qCollect  && (
         <CheckoutMethodSelect
           availableMethods={availableMethods}
           postcode={postcode}
@@ -107,8 +144,6 @@ function Extension() {
           nextDay={nextDay}
           url={app_url}
           setAddress={changeShippingAddress}
-          setMethodData={setMethodData}
-          methodData={methodData}
           setSelectedMethod={setSelectedMethod}
           selectedMethod={selectedMethod}
           setCheckoutData={setCheckoutData}
@@ -116,9 +151,13 @@ function Extension() {
           setPenguinCart={setPenguinCart}
           setCollectLocation={setCollectLocation}
           collectLocation={collectLocation}
+          setCS={setCS}
+          allLocations={allLocations}
+          setDisplayCalendar={setDisplayCalendar}
+          checkoutData={checkoutData}
         />
       )}
-      {!!minDate && (
+      {!!displayCalendar && minDate && selectedMethod && (
         <>
           <Calendar
             minDate={minDate}
@@ -130,11 +169,10 @@ function Extension() {
             url={app_url}
             selectedMethod={selectedMethod}
           />
-          {!!checkoutData?.location_hours &&
-            !!checkoutData?.checkout_date &&
-            (qCollectLocation || collectLocation) && (
+          {!!checkoutData?.pickup?.selectedLocation &&
+            !!checkoutData?.checkout_date && (
               <PickupInfoCard
-                location={qCollectLocation ? qCollectLocation : collectLocation}
+                location={checkoutData.pickup.selectedLocation}
                 checkoutData={checkoutData}
               />
             )}

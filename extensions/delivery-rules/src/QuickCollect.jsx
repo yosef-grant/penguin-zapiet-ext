@@ -21,39 +21,42 @@ import LocationsSelect from "./LocationsSelect.jsx";
 const QuickCollect = ({
   lineItems,
   changeShippingAddress,
-  setQCollectLocation,
-  qCollectLocation,
   cart,
   setMinDate,
   url,
   nextDay,
   setNextDay,
-  setAttrList,
+  setDisplayCalendar,
+  checkoutData,
   setCheckoutData,
   setPenguinCart,
   setAvailableMethods,
+  setSelectedMethod,
 }) => {
-  useEffect(() => {
-    console.log(";;;;; quick location ", qCollectLocation);
-  }, [qCollectLocation]);
-
   const nextDayMeta = useAppMetafields();
+  const [loading, setLoading] = useState(
+    checkoutData?.pickup?.qCollectLocations ? false : true
+  );
 
-  console.log("}}}}}}}}}}}}}}}}}", nextDayMeta);
-
-  let meta = nextDayMeta.map((meta) => {
-    return JSON.parse(meta.metafield.value).next_day_delivery.value;
-  });
-  console.log("meta: ", meta);
-  meta.includes(1) || meta.includes(null)
-    ? setNextDay(true)
-    : setNextDay(false);
-
-  const [locations, setLocations] = useState([]);
-  const [loading, setLoading] = useState(true);
+  console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
 
   useEffect(() => {
-    console.log("quick collect rendered: ", lineItems, locations);
+    updateNextDayMeta = () => {
+      let meta = nextDayMeta.map((meta) => {
+        return JSON.parse(meta.metafield.value).next_day_delivery.value;
+      });
+      console.log("meta: ", meta);
+      meta.includes(1) || meta.includes(null)
+        ? setNextDay(true)
+        : setNextDay(false);
+    };
+
+    updateNextDayMeta();
+  }, []);
+
+  useEffect(() => {
+    console.log("quick collect rendered: ", lineItems);
+
     const validateCart = async () => {
       let res = await fetch(`${url}/pza/validate-cart-test`, {
         headers: {
@@ -70,41 +73,50 @@ const QuickCollect = ({
         resBody
       );
       setAvailableMethods(resBody.methods);
-      setLocations(resBody.locations);
+      let x = checkoutData;
+      x.pickup = { qCollectLocations: resBody.locations };
+
+      setCheckoutData(JSON.parse(JSON.stringify(x)));
       setLoading(false);
     };
-    validateCart();
+    checkoutData.pickup?.qCollectLocations.length ? null : validateCart();
   }, []);
 
   const handleReset = () => {
-    setQCollectLocation(null);
     setMinDate(null);
-    setCheckoutData({});
+    let x = checkoutData;
+    x.qCollect = false;
+    x.pickup.selectedLocation = null;
+ 
+    setCheckoutData(JSON.parse(JSON.stringify(x)));
+    setDisplayCalendar(false);
   };
 
   return (
     <View>
       <Heading>Quick Collection</Heading>
 
-      {!loading && locations.length ? (
+      {!loading ? (
         <>
-          {!!qCollectLocation && (
+          {checkoutData.pickup?.selectedLocation && (
             <Button kind="plain" onPress={() => handleReset()}>
               Cancel
             </Button>
           )}
-          <LocationsSelect
-            locations={locations}
-            setQCollectLocation={setQCollectLocation}
-            qCollectLocation={qCollectLocation}
-            isQCollect={true}
-            setCheckoutData={setCheckoutData}
-            setMinDate={setMinDate}
-            nextDay={nextDay}
-            cart={cart}
-            setPenguinCart={setPenguinCart}
-            url={url}
-          />
+          {!!checkoutData?.pickup && (
+            <LocationsSelect
+              locations={checkoutData.pickup.qCollectLocations}
+              checkoutData={checkoutData}
+              setCheckoutData={setCheckoutData}
+              setMinDate={setMinDate}
+              nextDay={nextDay}
+              cart={cart}
+              setPenguinCart={setPenguinCart}
+              url={url}
+              setSelectedMethod={setSelectedMethod}
+              setDisplayCalendar={setDisplayCalendar}
+            />
+          )}
         </>
       ) : (
         <Heading>Waiting...</Heading>

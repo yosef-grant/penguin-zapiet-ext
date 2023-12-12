@@ -17,6 +17,9 @@ handle = "delivery-rules"
 [[extensions.targeting]]
 module = "./src/Checkout.jsx"
 target = "purchase.checkout.block.render"
+[[extensions.targeting]]
+module = "./src/Shipping.jsx"
+target = "purchase.checkout.shipping-option-list.render-after"
 
 
 
@@ -24,6 +27,7 @@ target = "purchase.checkout.block.render"
 # Gives your extension access to directly query Shopify’s storefront API.
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#api-access
 api_access = true
+block_progress = true
 
 # Gives your extension access to make external network calls, using the
 # JavaScript `fetch()` API. Learn more:
