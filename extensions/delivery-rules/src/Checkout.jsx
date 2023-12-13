@@ -45,7 +45,7 @@ function Extension() {
     console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   }, [penguinCart]);
 
-  const app_url = "https://540b-212-140-232-13.ngrok-free.app";
+  const app_url = "https://8381-212-140-232-13.ngrok-free.app";
 
   const test = useAttributeValues([
     "Checkout-Method",
@@ -135,7 +135,7 @@ function Extension() {
         />
       )}
 
-      {!checkoutData?.qCollect  && (
+      {!checkoutData?.qCollect && (
         <CheckoutMethodSelect
           availableMethods={availableMethods}
           postcode={postcode}

@@ -1145,7 +1145,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect8(create, deps) {
+          function useEffect9(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1927,7 +1927,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect8;
+          exports.useEffect = useEffect9;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -2495,7 +2495,7 @@
           var HostPortal = 4;
           var HostComponent = 5;
           var HostText = 6;
-          var Fragment6 = 7;
+          var Fragment7 = 7;
           var Mode = 8;
           var ContextConsumer = 9;
           var ContextProvider = 10;
@@ -2635,7 +2635,7 @@
                 return "DehydratedFragment";
               case ForwardRef:
                 return getWrappedName$1(type, type.render, "ForwardRef");
-              case Fragment6:
+              case Fragment7:
                 return "Fragment";
               case HostComponent:
                 return type;
@@ -7053,7 +7053,7 @@
               }
             }
             function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-              if (current2 === null || current2.tag !== Fragment6) {
+              if (current2 === null || current2.tag !== Fragment7) {
                 var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
                 created.return = returnFiber;
                 return created;
@@ -7456,7 +7456,7 @@
                 if (child.key === key) {
                   var elementType = element.type;
                   if (elementType === REACT_FRAGMENT_TYPE) {
-                    if (child.tag === Fragment6) {
+                    if (child.tag === Fragment7) {
                       deleteRemainingChildren(returnFiber, child.sibling);
                       var existing = useFiber(child, element.props.children);
                       existing.return = returnFiber;
@@ -11633,7 +11633,7 @@
                 var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
                 return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
               }
-              case Fragment6:
+              case Fragment7:
                 return updateFragment(current2, workInProgress2, renderLanes2);
               case Mode:
                 return updateMode(current2, workInProgress2, renderLanes2);
@@ -12074,7 +12074,7 @@
               case SimpleMemoComponent:
               case FunctionComponent:
               case ForwardRef:
-              case Fragment6:
+              case Fragment7:
               case Mode:
               case Profiler:
               case ContextConsumer:
@@ -16840,7 +16840,7 @@
             return fiber;
           }
           function createFiberFromFragment(elements, mode, lanes, key) {
-            var fiber = createFiber(Fragment6, elements, key, mode);
+            var fiber = createFiber(Fragment7, elements, key, mode);
             fiber.lanes = lanes;
             return fiber;
           }
@@ -18402,10 +18402,10 @@
             }
           }
           var jsx12 = jsxWithValidationDynamic;
-          var jsxs7 = jsxWithValidationStatic;
+          var jsxs8 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
           exports.jsx = jsx12;
-          exports.jsxs = jsxs7;
+          exports.jsxs = jsxs8;
         })();
       }
     }
@@ -18424,7 +18424,7 @@
   });
 
   // extensions/delivery-rules/src/Checkout.jsx
-  var import_react23 = __toESM(require_react());
+  var import_react24 = __toESM(require_react());
 
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
@@ -19527,8 +19527,11 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Text/Text.mjs
   var Text2 = createRemoteReactComponent(Text);
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/View/View.mjs
+  var View2 = createRemoteReactComponent(View);
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react13 = __toESM(require_react(), 1);
+  var import_react14 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
@@ -19552,7 +19555,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react13.useContext)(ExtensionApiContext);
+    const api = (0, import_react14.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19560,10 +19563,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react14 = __toESM(require_react(), 1);
+  var import_react15 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react14.useState)(subscription.current);
-    (0, import_react14.useEffect)(() => {
+    const [, setValue] = (0, import_react15.useState)(subscription.current);
+    (0, import_react15.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19582,15 +19585,15 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
-  var import_react15 = __toESM(require_react(), 1);
+  var import_react16 = __toESM(require_react(), 1);
   function useBuyerJourneyIntercept(interceptor) {
     const api = useApi();
     if (!("buyerJourney" in api)) {
       throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
     }
-    const interceptorRef = (0, import_react15.useRef)(interceptor);
+    const interceptorRef = (0, import_react16.useRef)(interceptor);
     interceptorRef.current = interceptor;
-    return (0, import_react15.useEffect)(() => {
+    return (0, import_react16.useEffect)(() => {
       const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
       return () => {
         teardownPromise.then((teardown) => teardown()).catch(() => {
@@ -19646,10 +19649,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react16 = __toESM(require_react(), 1);
+  var import_react17 = __toESM(require_react(), 1);
   function useAppMetafields(filters = {}) {
     const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react16.useMemo)(() => {
+    return (0, import_react17.useMemo)(() => {
       if (filters.key && !filters.namespace) {
         throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
       }
@@ -19678,7 +19681,7 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/QuickCollect.jsx
-  var import_react18 = __toESM(require_react());
+  var import_react19 = __toESM(require_react());
 
   // node_modules/@babel/runtime/helpers/esm/typeof.js
   function _typeof(o) {
@@ -21331,6 +21334,12 @@ ${errorInfo.componentStack}`);
     return month;
   }
 
+  // node_modules/date-fns/esm/getYear/index.js
+  function getYear(dirtyDate) {
+    requiredArgs(1, arguments);
+    return toDate(dirtyDate).getFullYear();
+  }
+
   // node_modules/date-fns/esm/subDays/index.js
   function subDays(dirtyDate, dirtyAmount) {
     requiredArgs(2, arguments);
@@ -21339,7 +21348,7 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/LocationsSelect.jsx
-  var import_react17 = __toESM(require_react());
+  var import_react18 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
   var LocationsSelect = ({
     locations,
@@ -21354,7 +21363,7 @@ ${errorInfo.componentStack}`);
     setDisplayCalendar
   }) => {
     var _a;
-    (0, import_react17.useEffect)(() => {
+    (0, import_react18.useEffect)(() => {
       console.log("\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3 ", checkoutData);
     }, [checkoutData]);
     let changeAttributes = useApplyAttributeChange();
@@ -21540,11 +21549,11 @@ ${errorInfo.componentStack}`);
   }) => {
     var _a, _b;
     const nextDayMeta = useAppMetafields();
-    const [loading, setLoading] = (0, import_react18.useState)(
+    const [loading, setLoading] = (0, import_react19.useState)(
       ((_a = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _a.qCollectLocations) ? false : true
     );
     console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
-    (0, import_react18.useEffect)(() => {
+    (0, import_react19.useEffect)(() => {
       updateNextDayMeta = () => {
         let meta = nextDayMeta.map((meta2) => {
           return JSON.parse(meta2.metafield.value).next_day_delivery.value;
@@ -21554,7 +21563,7 @@ ${errorInfo.componentStack}`);
       };
       updateNextDayMeta();
     }, []);
-    (0, import_react18.useEffect)(() => {
+    (0, import_react19.useEffect)(() => {
       var _a2;
       console.log("quick collect rendered: ", lineItems);
       const validateCart = () => __async(void 0, null, function* () {
@@ -21612,7 +21621,7 @@ ${errorInfo.componentStack}`);
   var QuickCollect_default = QuickCollect;
 
   // extensions/delivery-rules/src/Calendar.jsx
-  var import_react19 = __toESM(require_react());
+  var import_react20 = __toESM(require_react());
   var import_jsx_runtime6 = __toESM(require_jsx_runtime());
   var dateFormat = "yyyy-MM-dd";
   var Calendar = ({
@@ -21625,7 +21634,11 @@ ${errorInfo.componentStack}`);
     url,
     selectedMethod
   }) => {
-    console.log("::::: from calendar: ", minDate, format(new Date(minDate), dateFormat));
+    console.log(
+      "::::: from calendar: ",
+      minDate,
+      format(new Date(minDate), dateFormat)
+    );
     const attr = useAttributes();
     const attrList = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -21635,7 +21648,7 @@ ${errorInfo.componentStack}`);
     );
     let changeAttributes = useApplyAttributeChange();
     const { ui } = useApi();
-    const [selectedDate, setSelectedDate] = (0, import_react19.useState)(null);
+    const [selectedDate, setSelectedDate] = (0, import_react20.useState)(null);
     const handleYearMonthChange = (e2, yearMonth) => {
       let currentMonth = getMonth(/* @__PURE__ */ new Date()) - 1;
       if (yearMonth.month < currentMonth) {
@@ -21668,6 +21681,33 @@ ${errorInfo.componentStack}`);
           break;
         case 6:
           x3 = "saturday";
+          break;
+      }
+      return x3;
+    };
+    const getBlackoutDay = (day) => {
+      let x3;
+      switch (day - 1) {
+        case 0:
+          x3 = "Sunday";
+          break;
+        case 1:
+          x3 = "Monday";
+          break;
+        case 2:
+          x3 = "Tuesday";
+          break;
+        case 3:
+          x3 = "Wednesday";
+          break;
+        case 4:
+          x3 = "Thursday";
+          break;
+        case 5:
+          x3 = "Friday";
+          break;
+        case 6:
+          x3 = "Saturday";
           break;
       }
       return x3;
@@ -21757,6 +21797,33 @@ ${errorInfo.componentStack}`);
       console.log("___---```---___ AFTER RESERVING PENGUIN LOCKER ", attrList);
       ui.overlay.close("reservation-confirm");
     });
+    const getDisabledDates = () => {
+      x = [
+        { end: format(subDays(new Date(minDate), 1), dateFormat) },
+        { start: format(addYears(/* @__PURE__ */ new Date(), 1), dateFormat) }
+      ];
+      x.push(`${getYear(/* @__PURE__ */ new Date())}-12-25`);
+      if (selectedMethod === "pickup") {
+        let locationDates = checkoutData.pickup.selectedLocation.dates;
+        locationDates.blackout_dates.forEach(
+          (date) => x.push(format(new Date(date), dateFormat))
+        );
+        locationDates.blackout_days.forEach((day) => x.push(getBlackoutDay(day)));
+      } else {
+        let method = checkoutData[selectedMethod];
+        (method == null ? void 0 : method.blackouts) && method.blackouts.forEach(
+          (date) => typeof date === "string" ? x.push(format(new Date(date), dateFormat)) : x.push(getBlackoutDay(date))
+        );
+        (method == null ? void 0 : method.disabled) && method.disabled.forEach(
+          (date) => typeof date === "string" ? x.push(format(new Date(date), dateFormat)) : x.push(getBlackoutDay(date))
+        );
+      }
+      console.log("HERE IS X FROM THE CALENDAR DISABLED DATES: ", x);
+      return x;
+    };
+    (0, import_react20.useEffect)(() => {
+      handleDateSelect(format(new Date(minDate), dateFormat));
+    }, []);
     return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Heading, { children: "Select Delivery Date" }),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BlockSpacer, { spacing: "loose" }),
@@ -21764,10 +21831,7 @@ ${errorInfo.componentStack}`);
         DatePicker,
         {
           selected: !selectedDate ? format(new Date(minDate), dateFormat) : selectedDate,
-          disabled: [
-            { end: format(subDays(new Date(minDate), 1), dateFormat) },
-            { start: format(addYears(/* @__PURE__ */ new Date(), 1), dateFormat) }
-          ],
+          disabled: getDisabledDates(),
           onChange: (selected) => handleDateSelect(selected)
         }
       ),
@@ -21788,7 +21852,7 @@ ${errorInfo.componentStack}`);
   var Calendar_default = Calendar;
 
   // extensions/delivery-rules/src/CheckoutMethodSelect.jsx
-  var import_react20 = __toESM(require_react());
+  var import_react21 = __toESM(require_react());
   var import_jsx_runtime7 = __toESM(require_jsx_runtime());
   var CheckoutMethodSelect = ({
     availableMethods,
@@ -21829,8 +21893,8 @@ ${errorInfo.componentStack}`);
         selected: "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_selected.svg?v=1702292364"
       }
     };
-    const [hover, setHover] = (0, import_react20.useState)(null);
-    (0, import_react20.useEffect)(() => {
+    const [hover, setHover] = (0, import_react21.useState)(null);
+    (0, import_react21.useEffect)(() => {
       console.log("@@@@@@@@@ ", availableMethods);
     }, [availableMethods]);
     const shippingAddress = useShippingAddress();
@@ -22021,10 +22085,10 @@ ${errorInfo.componentStack}`);
   var CheckoutMethodSelect_default = CheckoutMethodSelect;
 
   // extensions/delivery-rules/src/PickupInfoCard.jsx
-  var import_react21 = __toESM(require_react());
+  var import_react22 = __toESM(require_react());
   var import_jsx_runtime8 = __toESM(require_jsx_runtime());
   var PickupInfoCard = ({ location, checkoutData }) => {
-    const [toggled, setToggled] = (0, import_react21.useState)(false);
+    const [toggled, setToggled] = (0, import_react22.useState)(false);
     const weekdays = [
       "Sunday",
       "Monday",
@@ -22092,10 +22156,10 @@ ${errorInfo.componentStack}`);
   var PickupInfoCard_default = PickupInfoCard;
 
   // extensions/delivery-rules/src/CSPortal.jsx
-  var import_react22 = __toESM(require_react());
+  var import_react23 = __toESM(require_react());
   var import_jsx_runtime9 = __toESM(require_jsx_runtime());
   var CSPortal = ({ setCS, cs, allLocations }) => {
-    (0, import_react22.useEffect)(() => {
+    (0, import_react23.useEffect)(() => {
       console.log("allLocations", allLocations);
     }, []);
     const { ui } = useApi();
@@ -22180,24 +22244,24 @@ ${errorInfo.componentStack}`);
   var Checkout_default = reactExtension("purchase.checkout.block.render", () => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Extension, {}));
   function Extension() {
     var _a;
-    const [qCollectLocation, setQCollectLocation] = (0, import_react23.useState)(null);
-    const [checkoutData, setCheckoutData] = (0, import_react23.useState)({});
-    const [minDate, setMinDate] = (0, import_react23.useState)(null);
-    const [nextDay, setNextDay] = (0, import_react23.useState)(false);
-    const [availableMethods, setAvailableMethods] = (0, import_react23.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react23.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react23.useState)(false);
-    const [collectLocation, setCollectLocation] = (0, import_react23.useState)(null);
-    const [displayCalendar, setDisplayCalendar] = (0, import_react23.useState)(false);
-    const [postcode, setPostcode] = (0, import_react23.useState)(null);
-    const [selectedMethod, setSelectedMethod] = (0, import_react23.useState)(null);
-    const [cs, setCS] = (0, import_react23.useState)({ status: false });
-    const [allLocations, setAllLocations] = (0, import_react23.useState)(null);
+    const [qCollectLocation, setQCollectLocation] = (0, import_react24.useState)(null);
+    const [checkoutData, setCheckoutData] = (0, import_react24.useState)({});
+    const [minDate, setMinDate] = (0, import_react24.useState)(null);
+    const [nextDay, setNextDay] = (0, import_react24.useState)(false);
+    const [availableMethods, setAvailableMethods] = (0, import_react24.useState)(null);
+    const [penguinCart, setPenguinCart] = (0, import_react24.useState)(null);
+    const [lockerReserved, setLockerReserved] = (0, import_react24.useState)(false);
+    const [collectLocation, setCollectLocation] = (0, import_react24.useState)(null);
+    const [displayCalendar, setDisplayCalendar] = (0, import_react24.useState)(false);
+    const [postcode, setPostcode] = (0, import_react24.useState)(null);
+    const [selectedMethod, setSelectedMethod] = (0, import_react24.useState)(null);
+    const [cs, setCS] = (0, import_react24.useState)({ status: false });
+    const [allLocations, setAllLocations] = (0, import_react24.useState)(null);
     const lineItems = useCartLines();
-    (0, import_react23.useEffect)(() => {
+    (0, import_react24.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://540b-212-140-232-13.ngrok-free.app";
+    const app_url = "https://8381-212-140-232-13.ngrok-free.app";
     const test = useAttributeValues([
       "Checkout-Method",
       "Pickup-Location-Company",
@@ -22225,10 +22289,10 @@ ${errorInfo.componentStack}`);
     });
     const changeShippingAddress = useApplyShippingAddressChange();
     const shippingAddress = useShippingAddress();
-    (0, import_react23.useEffect)(() => {
+    (0, import_react24.useEffect)(() => {
       console.log("##################checkout data ", checkoutData);
     }, [checkoutData]);
-    (0, import_react23.useEffect)(() => {
+    (0, import_react24.useEffect)(() => {
       console.log("++++++++++++++ cs updated: ", cs);
     }, [cs]);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
@@ -22318,11 +22382,17 @@ ${errorInfo.componentStack}`);
 
   // extensions/delivery-rules/src/Shipping.jsx
   var import_jsx_runtime11 = __toESM(require_jsx_runtime());
-  var Shipping_default = reactExtension("purchase.checkout.shipping-option-list.render-after", () => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ShippingPanel, {}));
+  var Shipping_default = reactExtension(
+    "purchase.checkout.shipping-option-list.render-after",
+    () => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ShippingPanel, {})
+  );
   var ShippingPanel = () => {
     const deliveryGroups = useDeliveryGroups();
     console.log("______________ ", deliveryGroups);
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Heading2, { children: "Here's the shipping section" });
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Heading2, { children: "Here's the shipping section" }),
+      deliveryGroups[0].deliveryOptions.map((group) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Heading2, { children: group.title }) }))
+    ] });
   };
 })();
 //# sourceMappingURL=delivery-rules.js.map

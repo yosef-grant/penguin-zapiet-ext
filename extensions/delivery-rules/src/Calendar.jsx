@@ -13,8 +13,9 @@ import {
   startOfYesterday,
   subDays,
   getDay,
+  addDays,
 } from "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // req format = YYYY-MM-DD; potential for issues with IOS/SAFARI
 
@@ -39,8 +40,11 @@ const Calendar = ({
   url,
   selectedMethod,
 }) => {
-
-  console.log('::::: from calendar: ', minDate, format(new Date(minDate), dateFormat))
+  console.log(
+    "::::: from calendar: ",
+    minDate,
+    format(new Date(minDate), dateFormat)
+  );
   const attr = useAttributes();
   const attrList = attr.reduce(
     (obj, item) => ({
@@ -88,6 +92,35 @@ const Calendar = ({
         break;
       case 6:
         x = "saturday";
+        break;
+    }
+    return x;
+  };
+
+  const getBlackoutDay = (day) => {
+    let x;
+    // -1 day to account for date FNS none-0 indexing of days vs Zapiets 0 index
+    switch (day - 1) {
+      case 0:
+        x = "Sunday";
+        break;
+      case 1:
+        x = "Monday";
+        break;
+      case 2:
+        x = "Tuesday";
+        break;
+      case 3:
+        x = "Wednesday";
+        break;
+      case 4:
+        x = "Thursday";
+        break;
+      case 5:
+        x = "Friday";
+        break;
+      case 6:
+        x = "Saturday";
         break;
     }
     return x;
@@ -204,6 +237,46 @@ const Calendar = ({
     ui.overlay.close("reservation-confirm");
   };
 
+  const getDisabledDates = () => {
+    x = [
+      { end: format(subDays(new Date(minDate), 1), dateFormat) },
+      { start: format(addYears(new Date(), 1), dateFormat) },
+    ];
+
+    // hardcode Christmas
+    x.push(`${getYear(new Date())}-12-25`);
+
+    if (selectedMethod === "pickup") {
+      let locationDates = checkoutData.pickup.selectedLocation.dates;
+      locationDates.blackout_dates.forEach((date) =>
+        x.push(format(new Date(date), dateFormat))
+      );
+      locationDates.blackout_days.forEach((day) => x.push(getBlackoutDay(day)));
+    } else {
+      let method = checkoutData[selectedMethod];
+      method?.blackouts &&
+        method.blackouts.forEach((date) =>
+          typeof date === "string"
+            ? x.push(format(new Date(date), dateFormat))
+            : x.push(getBlackoutDay(date))
+        );
+      method?.disabled &&
+        method.disabled.forEach((date) =>
+          typeof date === "string"
+            ? x.push(format(new Date(date), dateFormat))
+            : x.push(getBlackoutDay(date))
+        );
+    }
+
+    console.log("HERE IS X FROM THE CALENDAR DISABLED DATES: ", x);
+    return x;
+  };
+
+  useEffect(() => {
+    handleDateSelect(format(new Date(minDate), dateFormat));
+  }, []);
+  
+
   return (
     <View padding={["loose", "none", "loose", "none"]}>
       <Heading>Select Delivery Date</Heading>
@@ -212,10 +285,7 @@ const Calendar = ({
         selected={
           !selectedDate ? format(new Date(minDate), dateFormat) : selectedDate
         }
-        disabled={[
-          { end: format(subDays(new Date(minDate), 1), dateFormat) },
-          { start: format(addYears(new Date(), 1), dateFormat) },
-        ]}
+        disabled={getDisabledDates()}
         onChange={(selected) => handleDateSelect(selected)}
       />
 
