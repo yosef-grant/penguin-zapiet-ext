@@ -45,6 +45,8 @@ const LocationsSelect = ({
 
   const handleLocationSelect = async (val) => {
     console.log("llllllllllllllllllllll ", checkoutData);
+
+    await storage.write("pathway", "quick-collect")
     await changeAttributes({
       type: "updateAttribute",
       key: "Checkout-Method",
@@ -174,7 +176,7 @@ const LocationsSelect = ({
   };
 
   const getLocationDates = async (location) => {
-    const storage = useStorage();
+
 
     console.log("heres the location: ", location);
     let resBody = {

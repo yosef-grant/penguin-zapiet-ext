@@ -83,7 +83,15 @@ const CheckoutMethodSelect = ({
 
   const storage = useStorage();
 
-  console.log('STORAGE ON CHANGE - CMS: ', storage)
+
+
+  useEffect(() => {
+    const checkStorage = async () => {
+      let s = await storage.read("pathway");
+      console.log("*************from method select: ", s);
+    };
+    checkStorage();
+  }, [storage]);
 
   const attr = useAttributes();
   const attrList = attr.reduce(
