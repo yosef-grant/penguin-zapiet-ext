@@ -2,6 +2,7 @@ import {
   useApi,
   useApplyAttributeChange,
   useApplyShippingAddressChange,
+  useStorage,
 } from "@shopify/ui-extensions-react/checkout";
 import { Select, Heading } from "@shopify/ui-extensions/checkout";
 import { format, getDay } from "date-fns";
@@ -27,6 +28,20 @@ const LocationsSelect = ({
   let changeShippingAddress = useApplyShippingAddressChange();
 
   const { query } = useApi();
+
+  const storage = useStorage();
+
+  console.log('&&&&&&&&& testing ', storage)
+
+
+  useEffect(() => {
+    const checkStorage = async () => {
+      let s = await storage.read("pathway");
+      console.log("!!!!!!!!!!!!!!!from quickCollect: ", s);
+    };
+    checkStorage();
+  }, [storage]);
+
 
   const handleLocationSelect = async (val) => {
     console.log("llllllllllllllllllllll ", checkoutData);
@@ -159,6 +174,8 @@ const LocationsSelect = ({
   };
 
   const getLocationDates = async (location) => {
+    const storage = useStorage();
+
     console.log("heres the location: ", location);
     let resBody = {
       cart: cart,
@@ -197,23 +214,21 @@ const LocationsSelect = ({
     };
   };
   return (
-    <>
-      <Select
-        label="Choose store or locker"
-        value={
-          !!checkoutData?.pickup?.selectedLocation
-            ? checkoutData.pickup.selectedLocation.info.id
-            : ""
-        }
-        options={locations.map((location) => ({
-          value: location.id,
-          label: `${location.company_name}${
-            !checkoutData.qCollect ? ` - ${location.distance} miles` : ""
-          }`,
-        }))}
-        onChange={(value) => handleLocationSelect(value)}
-      />
-    </>
+    <Select
+      label="Choose store or locker"
+      value={
+        !!checkoutData?.pickup?.selectedLocation
+          ? checkoutData.pickup.selectedLocation.info.id
+          : ""
+      }
+      options={locations.map((location) => ({
+        value: location.id,
+        label: `${location.company_name}${
+          !checkoutData.qCollect ? ` - ${location.distance} miles` : ""
+        }`,
+      }))}
+      onChange={(value) => handleLocationSelect(value)}
+    />
   );
 };
 

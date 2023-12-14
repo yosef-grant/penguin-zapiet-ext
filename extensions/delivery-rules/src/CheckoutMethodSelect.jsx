@@ -6,6 +6,7 @@ import {
   Heading,
   Pressable,
   Image,
+  Spinner,
 } from "@shopify/ui-extensions/checkout";
 import { useEffect, useState } from "react";
 
@@ -13,6 +14,7 @@ import {
   useApplyAttributeChange,
   useAttributes,
   useShippingAddress,
+  useStorage,
 } from "@shopify/ui-extensions-react/checkout";
 import LocationsSelect from "./LocationsSelect.jsx";
 
@@ -34,6 +36,7 @@ const CheckoutMethodSelect = ({
   setCollectLocation,
   setDisplayCalendar,
   setCS,
+  globalLoad,
 }) => {
   const icons = {
     delivery: {
@@ -69,6 +72,7 @@ const CheckoutMethodSelect = ({
   };
 
   const [hover, setHover] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     console.log("@@@@@@@@@ ", availableMethods);
@@ -76,6 +80,10 @@ const CheckoutMethodSelect = ({
 
   const shippingAddress = useShippingAddress();
   let changeAttributes = useApplyAttributeChange();
+
+  const storage = useStorage();
+
+  console.log('STORAGE ON CHANGE - CMS: ', storage)
 
   const attr = useAttributes();
   const attrList = attr.reduce(
@@ -108,6 +116,8 @@ const CheckoutMethodSelect = ({
   };
 
   const checkPostcode = async () => {
+    await storage.write("pathway","method-select");
+    setLoading(true);
     console.log(shippingAddress.zip);
 
     if (shippingAddress.zip.length === 12) {
@@ -169,7 +179,7 @@ const CheckoutMethodSelect = ({
         x.delivery = pcCheckData.delivery;
         x.shipping = pcCheckData.shipping;
         x.pickup = {
-          qCollectLocations: x.pickup.qCollectLocations
+          qCollectLocations: x?.pickup?.qCollectLocations
             ? x.pickup.qCollectLocations
             : null,
           collectLocations: pcCheckData.pickup.locations,
@@ -177,6 +187,7 @@ const CheckoutMethodSelect = ({
 
         setCheckoutData(JSON.parse(JSON.stringify(x)));
         setPostcode(shippingAddress.zip);
+        setLoading(false);
       }
     }
   };
@@ -236,12 +247,16 @@ const CheckoutMethodSelect = ({
     x.delivery = null;
     x.pickup.selectedLocation = null;
     x.qCollect = null;
-    console.log('x from methods reset ::::::::::::: ', x)
+    console.log("x from methods reset ::::::::::::: ", x);
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     setSelectedMethod(null);
   };
 
-  return (
+  return globalLoad ? (
+    <View blockAlignment="center" inlineAlignment={"center"}>
+      <Spinner size="large" accessibilityLabel="Getting pickup locations" />
+    </View>
+  ) : (
     <>
       {postcode ? (
         <>
@@ -279,8 +294,12 @@ const CheckoutMethodSelect = ({
           </Grid>
         </>
       ) : (
-        <View>
-          <Button onPress={() => checkPostcode()}>
+        <View
+          blockAlignment="center"
+          inlineAlignment="center"
+          minInlineSize="fill"
+        >
+          <Button onPress={() => checkPostcode()} loading={loading}>
             Choose Delivery Method
           </Button>
         </View>

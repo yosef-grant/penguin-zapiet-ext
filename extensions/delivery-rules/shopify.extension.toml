@@ -20,6 +20,9 @@ target = "purchase.checkout.block.render"
 [[extensions.targeting]]
 module = "./src/Shipping.jsx"
 target = "purchase.checkout.shipping-option-list.render-after"
+[[extensions.targeting]]
+module = "./src/Shipping.jsx"
+target = "purchase.checkout.delivery-address.render-before"
 
 
 

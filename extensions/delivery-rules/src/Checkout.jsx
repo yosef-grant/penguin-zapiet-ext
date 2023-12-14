@@ -9,18 +9,27 @@ import {
   useAttributes,
   useBuyerJourneyIntercept,
   useApi,
+  useStorage
 } from "@shopify/ui-extensions-react/checkout";
 
 import QuickCollect from "./QuickCollect.jsx";
 import Calendar from "./Calendar.jsx";
 import CheckoutMethodSelect from "./CheckoutMethodSelect.jsx";
-import { Heading } from "@shopify/ui-extensions/checkout";
+import { Heading, HeadingGroup } from "@shopify/ui-extensions/checkout";
 import PickupInfoCard from "./PickupInfoCard.jsx";
 import CSPortal from "./CSPortal.jsx";
 
-export default reactExtension("purchase.checkout.block.render", () => (
-  <Extension />
-));
+const QuickCollectRender = reactExtension(
+  "purchase.checkout.block.render",
+  () => <Extension />
+);
+
+const MethodSelectRender = reactExtension(
+  "purchase.checkout.delivery-address.render-before",
+  () => <Extension />
+);
+
+export { QuickCollectRender, MethodSelectRender };
 
 function Extension() {
   // checkoutData & methodData are the same?
@@ -39,7 +48,16 @@ function Extension() {
   const [cs, setCS] = useState({ status: false });
   const [allLocations, setAllLocations] = useState(null);
 
+  const [globalLoad, setGlobalLoad] = useState(true);
+  const [testnum, setTestnum] = useState(1);
+
+
   const lineItems = useCartLines();
+
+  const storage = useStorage();
+
+
+
 
   useEffect(() => {
     console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
@@ -59,7 +77,8 @@ function Extension() {
 
   const { extension } = useApi();
 
-  // console.log("@@@@@@@@@@@@ capabilities ", extension);
+  // console.log("@@@@@@@@@@@@ capabilities ", extension, extension.target);
+
   const attr = useAttributes();
 
   const attributes = attr.reduce(
@@ -69,6 +88,42 @@ function Extension() {
     }),
     {}
   );
+
+  useEffect(() => {
+    console.log('}}}}}}}}}}}}}}}}}}}}}}}{{{{{{{{{{{{{{{{ ', testnum)
+  }, [testnum])
+
+  // initial validation
+  useEffect(() => {
+    console.log("quick collect rendered: ", lineItems);
+
+    const validateCart = async () => {
+      let res = await fetch(`${app_url}/pza/validate-cart-test`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(cart),
+      });
+
+      let resBody = await res.json();
+      console.log(
+        "TEST CART (Won't be matched on test server!): ",
+        cart,
+        resBody
+      );
+      setAvailableMethods(resBody.methods);
+      let x = checkoutData;
+      x.pickup = { qCollectLocations: resBody.locations };
+
+      setCheckoutData(JSON.parse(JSON.stringify(x)));
+      setGlobalLoad(false);
+    };
+    checkoutData.pickup?.qCollectLocations.length ? null : validateCart();
+  }, []);
+
+
+
 
   console.table(attributes);
 
@@ -111,51 +166,60 @@ function Extension() {
 
   return (
     <>
+      {extension.target === "purchase.checkout.block.render" ? (
+        <>
+          <Heading level={1}>Quick Collect</Heading>
+          <QuickCollect
+            lineItems={lineItems}
+            changeShippingAddress={changeShippingAddress}
+            setQCollectLocation={setQCollectLocation}
+            qCollectLocation={qCollectLocation}
+            cart={cart}
+            setCheckoutData={setCheckoutData}
+            checkoutData={checkoutData}
+            setMinDate={setMinDate}
+            nextDay={nextDay}
+            url={app_url}
+            setNextDay={setNextDay}
+            penguinCart={penguinCart}
+            setPenguinCart={setPenguinCart}
+            setAvailableMethods={setAvailableMethods}
+            setSelectedMethod={setSelectedMethod}
+            setDisplayCalendar={setDisplayCalendar}
+            globalLoad={globalLoad}
+            setGlobalLoad={setGlobalLoad}
+          />
+        </>
+      ) : extension.target ===
+        "purchase.checkout.delivery-address.render-before" ? (
+        <>
+          <CheckoutMethodSelect
+            availableMethods={availableMethods}
+            postcode={postcode}
+            setPostcode={setPostcode}
+            cart={cart}
+            nextDay={nextDay}
+            url={app_url}
+            setAddress={changeShippingAddress}
+            setSelectedMethod={setSelectedMethod}
+            selectedMethod={selectedMethod}
+            setCheckoutData={setCheckoutData}
+            setMinDate={setMinDate}
+            setPenguinCart={setPenguinCart}
+            setCollectLocation={setCollectLocation}
+            collectLocation={collectLocation}
+            setCS={setCS}
+            allLocations={allLocations}
+            setDisplayCalendar={setDisplayCalendar}
+            checkoutData={checkoutData}
+            globalLoad={globalLoad}
+            setGlobalLoad={setGlobalLoad}
+            setTestnum={setTestnum}
+          />
+        </>
+      ) : null}
       {!!cs.status && (
         <CSPortal setCS={setCS} cs={cs} allLocations={allLocations} />
-      )}
-      {!checkoutData?.delivery && (
-        <QuickCollect
-          lineItems={lineItems}
-          changeShippingAddress={changeShippingAddress}
-          setQCollectLocation={setQCollectLocation}
-          qCollectLocation={qCollectLocation}
-          cart={cart}
-          setCheckoutData={setCheckoutData}
-          checkoutData={checkoutData}
-          setMinDate={setMinDate}
-          nextDay={nextDay}
-          url={app_url}
-          setNextDay={setNextDay}
-          penguinCart={penguinCart}
-          setPenguinCart={setPenguinCart}
-          setAvailableMethods={setAvailableMethods}
-          setSelectedMethod={setSelectedMethod}
-          setDisplayCalendar={setDisplayCalendar}
-        />
-      )}
-
-      {!checkoutData?.qCollect && (
-        <CheckoutMethodSelect
-          availableMethods={availableMethods}
-          postcode={postcode}
-          setPostcode={setPostcode}
-          cart={cart}
-          nextDay={nextDay}
-          url={app_url}
-          setAddress={changeShippingAddress}
-          setSelectedMethod={setSelectedMethod}
-          selectedMethod={selectedMethod}
-          setCheckoutData={setCheckoutData}
-          setMinDate={setMinDate}
-          setPenguinCart={setPenguinCart}
-          setCollectLocation={setCollectLocation}
-          collectLocation={collectLocation}
-          setCS={setCS}
-          allLocations={allLocations}
-          setDisplayCalendar={setDisplayCalendar}
-          checkoutData={checkoutData}
-        />
       )}
       {!!displayCalendar && minDate && selectedMethod && (
         <>

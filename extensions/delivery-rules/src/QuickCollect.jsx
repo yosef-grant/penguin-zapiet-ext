@@ -6,6 +6,7 @@ import {
   Select,
   TextField,
   Button,
+  Spinner,
 } from "@shopify/ui-extensions/checkout";
 
 import {
@@ -14,6 +15,7 @@ import {
   useApplyAttributeChange,
   useAttributeValues,
   useAttributes,
+  useStorage,
 } from "@shopify/ui-extensions-react/checkout";
 import { getDay } from "date-fns";
 import LocationsSelect from "./LocationsSelect.jsx";
@@ -32,13 +34,32 @@ const QuickCollect = ({
   setPenguinCart,
   setAvailableMethods,
   setSelectedMethod,
+  globalLoad,
+  setGlobalLoad,
 }) => {
   const nextDayMeta = useAppMetafields();
   const [loading, setLoading] = useState(
     checkoutData?.pickup?.qCollectLocations ? false : true
   );
 
+  
+  const storage = useStorage();
+
   console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
+
+  useEffect(() => {
+    const checkStorage = async () => {
+      let s = await storage.read("pathway");
+      console.log("!!!!!!!!!!!!!!!from quickCollect: ", s);
+    };
+    checkStorage();
+  }, [storage]);
+
+
+
+  useEffect(() => {
+    console.log("global load from qc: ", globalLoad);
+  }, [globalLoad]);
 
   useEffect(() => {
     updateNextDayMeta = () => {
@@ -54,50 +75,24 @@ const QuickCollect = ({
     updateNextDayMeta();
   }, []);
 
-  useEffect(() => {
-    console.log("quick collect rendered: ", lineItems);
-
-    const validateCart = async () => {
-      let res = await fetch(`${url}/pza/validate-cart-test`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(cart),
-      });
-
-      let resBody = await res.json();
-      console.log(
-        "TEST CART (Won't be matched on test server!): ",
-        cart,
-        resBody
-      );
-      setAvailableMethods(resBody.methods);
-      let x = checkoutData;
-      x.pickup = { qCollectLocations: resBody.locations };
-
-      setCheckoutData(JSON.parse(JSON.stringify(x)));
-      setLoading(false);
-    };
-    checkoutData.pickup?.qCollectLocations.length ? null : validateCart();
-  }, []);
-
   const handleReset = () => {
     setMinDate(null);
     let x = checkoutData;
     x.qCollect = false;
     x.pickup.selectedLocation = null;
- 
+
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     setDisplayCalendar(false);
   };
 
   return (
-    <View>
-      <Heading>Quick Collection</Heading>
-
-      {!loading ? (
-        <>
+    <View
+      padding={["base", "none", "base", "none"]}
+      blockAlignment="center"
+      inlineAlignment={"center"}
+    >
+      {!globalLoad ? (
+        <View minInlineSize="fill">
           {checkoutData.pickup?.selectedLocation && (
             <Button kind="plain" onPress={() => handleReset()}>
               Cancel
@@ -117,9 +112,9 @@ const QuickCollect = ({
               setDisplayCalendar={setDisplayCalendar}
             />
           )}
-        </>
+        </View>
       ) : (
-        <Heading>Waiting...</Heading>
+        <Spinner size="large" accessibilityLabel="Getting pickup locations" />
       )}
     </View>
   );
