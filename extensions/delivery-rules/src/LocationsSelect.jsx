@@ -23,9 +23,11 @@ const LocationsSelect = ({
   useEffect(() => {
     console.log("£££££££££££££££ ", checkoutData);
   }, [checkoutData]);
-  let changeAttributes = useApplyAttributeChange();
 
+  let changeAttributes = useApplyAttributeChange();
   let changeShippingAddress = useApplyShippingAddressChange();
+
+  
 
   const { query } = useApi();
 

@@ -53,7 +53,7 @@ const QuickCollect = ({
       console.log("!!!!!!!!!!!!!!!from quickCollect: ", s);
     };
     checkStorage();
-  }, [storage]);
+  }, []);
 
 
 

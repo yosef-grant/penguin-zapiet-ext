@@ -84,6 +84,7 @@ const CheckoutMethodSelect = ({
   const storage = useStorage();
 
 
+  
 
   useEffect(() => {
     const checkStorage = async () => {

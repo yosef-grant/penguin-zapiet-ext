@@ -1133,7 +1133,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState9(initialState) {
+          function useState10(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1145,7 +1145,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect10(create, deps) {
+          function useEffect11(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1927,7 +1927,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect10;
+          exports.useEffect = useEffect11;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -1935,7 +1935,7 @@
           exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef3;
-          exports.useState = useState9;
+          exports.useState = useState10;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -18424,7 +18424,7 @@
   });
 
   // extensions/delivery-rules/src/Checkout.jsx
-  var import_react25 = __toESM(require_react());
+  var import_react26 = __toESM(require_react());
 
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
@@ -21580,7 +21580,7 @@ ${errorInfo.componentStack}`);
         console.log("!!!!!!!!!!!!!!!from quickCollect: ", s3);
       });
       checkStorage();
-    }, [storage]);
+    }, []);
     (0, import_react19.useEffect)(() => {
       console.log("global load from qc: ", globalLoad);
     }, [globalLoad]);
@@ -22277,6 +22277,7 @@ ${errorInfo.componentStack}`);
   var import_jsx_runtime10 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/tst/TestQC.jsx
+  var import_react25 = __toESM(require_react());
   var import_jsx_runtime11 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/Checkout.jsx
@@ -22291,26 +22292,26 @@ ${errorInfo.componentStack}`);
   );
   function Extension() {
     var _a;
-    const [qCollectLocation, setQCollectLocation] = (0, import_react25.useState)(null);
-    const [checkoutData, setCheckoutData] = (0, import_react25.useState)({});
-    const [minDate, setMinDate] = (0, import_react25.useState)(null);
-    const [nextDay, setNextDay] = (0, import_react25.useState)(false);
-    const [availableMethods, setAvailableMethods] = (0, import_react25.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react25.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react25.useState)(false);
-    const [collectLocation, setCollectLocation] = (0, import_react25.useState)(null);
-    const [displayCalendar, setDisplayCalendar] = (0, import_react25.useState)(false);
-    const [postcode, setPostcode] = (0, import_react25.useState)(null);
-    const [selectedMethod, setSelectedMethod] = (0, import_react25.useState)(null);
-    const [cs, setCS] = (0, import_react25.useState)({ status: false });
-    const [allLocations, setAllLocations] = (0, import_react25.useState)(null);
-    const [globalLoad, setGlobalLoad] = (0, import_react25.useState)(true);
-    const [testnum, setTestnum] = (0, import_react25.useState)(1);
+    const [qCollectLocation, setQCollectLocation] = (0, import_react26.useState)(null);
+    const [checkoutData, setCheckoutData] = (0, import_react26.useState)({});
+    const [minDate, setMinDate] = (0, import_react26.useState)(null);
+    const [nextDay, setNextDay] = (0, import_react26.useState)(false);
+    const [availableMethods, setAvailableMethods] = (0, import_react26.useState)(null);
+    const [penguinCart, setPenguinCart] = (0, import_react26.useState)(null);
+    const [lockerReserved, setLockerReserved] = (0, import_react26.useState)(false);
+    const [collectLocation, setCollectLocation] = (0, import_react26.useState)(null);
+    const [displayCalendar, setDisplayCalendar] = (0, import_react26.useState)(false);
+    const [postcode, setPostcode] = (0, import_react26.useState)(null);
+    const [selectedMethod, setSelectedMethod] = (0, import_react26.useState)(null);
+    const [cs, setCS] = (0, import_react26.useState)({ status: false });
+    const [allLocations, setAllLocations] = (0, import_react26.useState)(null);
+    const [globalLoad, setGlobalLoad] = (0, import_react26.useState)(true);
+    const [testnum, setTestnum] = (0, import_react26.useState)(1);
     const lineItems = useCartLines();
-    (0, import_react25.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://e2f6-81-103-75-43.ngrok-free.app";
+    const app_url = "https://511c-212-140-232-13.ngrok-free.app";
     const test = useAttributeValues([
       "Checkout-Method",
       "Pickup-Location-Company",
@@ -22328,10 +22329,10 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
-    (0, import_react25.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       console.log("}}}}}}}}}}}}}}}}}}}}}}}{{{{{{{{{{{{{{{{ ", testnum);
     }, [testnum]);
-    (0, import_react25.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       var _a2;
       console.log("quick collect rendered: ", lineItems);
       const validateCart = () => __async(this, null, function* () {
@@ -22366,10 +22367,10 @@ ${errorInfo.componentStack}`);
     });
     const changeShippingAddress = useApplyShippingAddressChange();
     const shippingAddress = useShippingAddress();
-    (0, import_react25.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       console.log("##################checkout data ", checkoutData);
     }, [checkoutData]);
-    (0, import_react25.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       console.log("++++++++++++++ cs updated: ", cs);
     }, [cs]);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
