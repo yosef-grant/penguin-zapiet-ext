@@ -1,12 +1,20 @@
 import {
+  SkeletonTextBlock,
   useApi,
   useApplyAttributeChange,
   useApplyShippingAddressChange,
+  useAttributeValues,
   useStorage,
+  ScrollView,
+  View,
+  Pressable,
+  BlockStack,
+  ChoiceList,
+  Choice,
 } from "@shopify/ui-extensions-react/checkout";
 import { Select, Heading } from "@shopify/ui-extensions/checkout";
 import { format, getDay } from "date-fns";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const LocationsSelect = ({
   locations,
@@ -19,36 +27,34 @@ const LocationsSelect = ({
   url,
   setSelectedMethod,
   setDisplayCalendar,
+  pathway,
+  disabled,
 }) => {
   useEffect(() => {
     console.log("£££££££££££££££ ", checkoutData);
   }, [checkoutData]);
 
+  const [loading, setLoading] = useState(false);
+
   let changeAttributes = useApplyAttributeChange();
   let changeShippingAddress = useApplyShippingAddressChange();
 
-  
+  let savedPath = useAttributeValues(["buyer-pathway"]);
 
   const { query } = useApi();
 
-  const storage = useStorage();
-
-  console.log('&&&&&&&&& testing ', storage)
-
-
-  useEffect(() => {
-    const checkStorage = async () => {
-      let s = await storage.read("pathway");
-      console.log("!!!!!!!!!!!!!!!from quickCollect: ", s);
-    };
-    checkStorage();
-  }, [storage]);
-
-
   const handleLocationSelect = async (val) => {
     console.log("llllllllllllllllllllll ", checkoutData);
+    setLoading(true);
 
-    await storage.write("pathway", "quick-collect")
+    if (pathway === "quick-collect") {
+      await changeAttributes({
+        type: "updateAttribute",
+        key: "buyer-pathway",
+        value: "quick-collect",
+      });
+    }
+
     await changeAttributes({
       type: "updateAttribute",
       key: "Checkout-Method",
@@ -174,12 +180,11 @@ const LocationsSelect = ({
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     getLocationDates(targetLocation[0]);
     setSelectedMethod("pickup");
+    setLoading(false);
     setDisplayCalendar(true);
   };
 
   const getLocationDates = async (location) => {
-
-
     console.log("heres the location: ", location);
     let resBody = {
       cart: cart,
@@ -217,13 +222,18 @@ const LocationsSelect = ({
       location: location,
     };
   };
-  return (
-    <Select
+
+  const handleChange = () => {
+    console.log("new location chosen!")
+  }
+  return !loading ? (
+    <>
+      {/* <Select
       label="Choose store or locker"
       value={
         !!checkoutData?.pickup?.selectedLocation
-          ? checkoutData.pickup.selectedLocation.info.id
-          : ""
+        ? checkoutData.pickup.selectedLocation.info.id
+        : ""
       }
       options={locations.map((location) => ({
         value: location.id,
@@ -232,7 +242,35 @@ const LocationsSelect = ({
         }`,
       }))}
       onChange={(value) => handleLocationSelect(value)}
-    />
+      disabled={pathway === "quick-collect" && disabled ? true : false}
+      /> */}
+      <ScrollView
+        maxBlockSize={450}
+        hint={{ type: "pill", content: "Scroll for more options" }}
+        direction="block"
+      >
+        <ChoiceList 
+        name="select location"
+        value={""}
+        onChange={() => handleChange()}
+        >
+          <BlockStack>
+            {locations.map((location, i) => (
+              <Choice id={i}>{location.company_name}</Choice>
+            ))}
+          </BlockStack>
+        </ChoiceList>
+        {/* {locations.map((location) => (
+          <View border="base" >
+            <Pressable accessibilityRole="button" blockAlignment={"center"} minInlineSize={`${99}%`} minBlockSize={75}>
+              {location.company_name}
+            </Pressable>
+          </View>
+        ))} */}
+      </ScrollView>
+    </>
+  ) : (
+    <SkeletonTextBlock lines={1} textSize="large" />
   );
 };
 

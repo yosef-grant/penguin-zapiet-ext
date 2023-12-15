@@ -42,18 +42,26 @@ const QuickCollect = ({
     checkoutData?.pickup?.qCollectLocations ? false : true
   );
 
-  
+  const [disabled, setDisabled] = useState(false);
+
+  const changeAttributes = useApplyAttributeChange()
+
+  const attributes = useAttributes();
   const storage = useStorage();
 
   console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
 
+  let savedPath = useAttributeValues(["buyer-pathway"]);
+
+
   useEffect(() => {
-    const checkStorage = async () => {
-      let s = await storage.read("pathway");
-      console.log("!!!!!!!!!!!!!!!from quickCollect: ", s);
-    };
-    checkStorage();
-  }, []);
+    savedPath[0] === "method-select"
+      ? setDisabled(true)
+      : !savedPath[0] && disabled
+      ? setDisabled(false)
+      : null;
+  }, [attributes]);
+
 
 
 
@@ -75,14 +83,20 @@ const QuickCollect = ({
     updateNextDayMeta();
   }, []);
 
-  const handleReset = () => {
+  const handleReset = async() => {
+
     setMinDate(null);
     let x = checkoutData;
     x.qCollect = false;
     x.pickup.selectedLocation = null;
-
+    
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     setDisplayCalendar(false);
+    await changeAttributes({
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "",
+    })
   };
 
   return (
@@ -92,7 +106,7 @@ const QuickCollect = ({
       inlineAlignment={"center"}
     >
       {!globalLoad ? (
-        <View minInlineSize="fill">
+        <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
           {checkoutData.pickup?.selectedLocation && (
             <Button kind="plain" onPress={() => handleReset()}>
               Cancel
@@ -110,6 +124,8 @@ const QuickCollect = ({
               url={url}
               setSelectedMethod={setSelectedMethod}
               setDisplayCalendar={setDisplayCalendar}
+              pathway={"quick-collect"}
+              disabled={disabled}
             />
           )}
         </View>

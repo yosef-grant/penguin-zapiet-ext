@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 
 import {
   useApplyAttributeChange,
+  useAttributeValues,
   useAttributes,
   useShippingAddress,
   useStorage,
@@ -73,6 +74,8 @@ const CheckoutMethodSelect = ({
 
   const [hover, setHover] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const attributes = useAttributes();
 
   useEffect(() => {
     console.log("@@@@@@@@@ ", availableMethods);
@@ -83,8 +86,15 @@ const CheckoutMethodSelect = ({
 
   const storage = useStorage();
 
+  let savedPath = useAttributeValues(["buyer-pathway"]);
 
-  
+  useEffect(() => {
+    savedPath[0] === "quick-collect"
+      ? setDisabled(true)
+      : !savedPath[0] && disabled
+      ? setDisabled(false)
+      : null;
+  }, [attributes]);
 
   useEffect(() => {
     const checkStorage = async () => {
@@ -125,7 +135,12 @@ const CheckoutMethodSelect = ({
   };
 
   const checkPostcode = async () => {
-    await storage.write("pathway","method-select");
+    await changeAttributes({
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "method-select",
+    })
+    await storage.write("pathway", "method-select");
     setLoading(true);
     console.log(shippingAddress.zip);
 
@@ -250,7 +265,7 @@ const CheckoutMethodSelect = ({
     });
   };
 
-  const handleReset = () => {
+  const handleReset = async() => {
     setPostcode(null);
     const x = checkoutData;
     x.delivery = null;
@@ -259,6 +274,12 @@ const CheckoutMethodSelect = ({
     console.log("x from methods reset ::::::::::::: ", x);
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     setSelectedMethod(null);
+    await changeAttributes({
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "",
+
+    })
   };
 
   return globalLoad ? (
@@ -307,8 +328,13 @@ const CheckoutMethodSelect = ({
           blockAlignment="center"
           inlineAlignment="center"
           minInlineSize="fill"
+          opacity={disabled ? 50 : 100}
         >
-          <Button onPress={() => checkPostcode()} loading={loading}>
+          <Button
+            disabled={disabled ? true : false}
+            onPress={() => checkPostcode()}
+            loading={loading}
+          >
             Choose Delivery Method
           </Button>
         </View>
@@ -333,6 +359,7 @@ const CheckoutMethodSelect = ({
               setCollectLocation={setCollectLocation}
               setSelectedMethod={setSelectedMethod}
               setDisplayCalendar={setDisplayCalendar}
+              pathway={"method-select"}
             />
           </>
         ))}

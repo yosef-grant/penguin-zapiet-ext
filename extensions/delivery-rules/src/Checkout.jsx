@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from "react";
 
 import {
   reactExtension,
@@ -9,20 +9,20 @@ import {
   useAttributes,
   useBuyerJourneyIntercept,
   useApi,
+  useApplyAttributeChange,
+} from "@shopify/ui-extensions-react/checkout";
 
-} from '@shopify/ui-extensions-react/checkout';
+import QuickCollect from "./QuickCollect.jsx";
+import Calendar from "./Calendar.jsx";
+import CheckoutMethodSelect from "./CheckoutMethodSelect.jsx";
+import { Heading, HeadingGroup } from "@shopify/ui-extensions/checkout";
+import PickupInfoCard from "./PickupInfoCard.jsx";
+import CSPortal from "./CSPortal.jsx";
 
-import QuickCollect from './QuickCollect.jsx';
-import Calendar from './Calendar.jsx';
-import CheckoutMethodSelect from './CheckoutMethodSelect.jsx';
-import { Heading, HeadingGroup } from '@shopify/ui-extensions/checkout';
-import PickupInfoCard from './PickupInfoCard.jsx';
-import CSPortal from './CSPortal.jsx';
+import TestMS from "./tst/TestMS.jsx";
+import TestQC from "./tst/TestQC.jsx";
 
-import TestMS from './tst/TestMS.jsx';
-import TestQC from './tst/TestQC.jsx';
-
-let b = 'testing';
+let b = "testing";
 
 // const QuickCollectRender = reactExtension(
 //   'purchase.checkout.block.render',
@@ -33,7 +33,6 @@ let b = 'testing';
 //   'purchase.checkout.delivery-address.render-before',
 //   () => <TestMS />
 // );
-
 
 const QuickCollectRender = reactExtension(
   "purchase.checkout.block.render",
@@ -67,23 +66,23 @@ function Extension() {
 
   const lineItems = useCartLines();
 
-
-
   useEffect(() => {
-    console.log(':><: THIS IS THE CURRENT PENGUIN CART: ', penguinCart);
+    console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   }, [penguinCart]);
 
-  const app_url = 'https://511c-212-140-232-13.ngrok-free.app';
+  const app_url = "https://511c-212-140-232-13.ngrok-free.app";
 
   const test = useAttributeValues([
-    'Checkout-Method',
-    'Pickup-Location-Company',
-    'Pickup-Location-Type',
-    'Pickup-Date',
-    'Pickup-AM-Hours',
-    'Pickup-PM-Hours',
-    'Pickup-Location-Id',
+    "Checkout-Method",
+    "Pickup-Location-Company",
+    "Pickup-Location-Type",
+    "Pickup-Date",
+    "Pickup-AM-Hours",
+    "Pickup-PM-Hours",
+    "Pickup-Location-Id",
   ]);
+
+  let changeAttributes = useApplyAttributeChange();
 
   const { extension } = useApi();
 
@@ -100,19 +99,29 @@ function Extension() {
   );
 
   useEffect(() => {
-    console.log('}}}}}}}}}}}}}}}}}}}}}}}{{{{{{{{{{{{{{{{ ', testnum);
-  }, [testnum]);
+    // const t =  () => {
+    //   t();
+    // }
+
+    Object.keys(attributes).forEach(async (key) => {
+      await changeAttributes({
+        type: "updateAttribute",
+        key: key,
+        value: "",
+      });
+    });
+  }, []);
 
   // initial validation
   useEffect(() => {
-    console.log('quick collect rendered: ', lineItems);
+    console.log("quick collect rendered: ", lineItems);
 
     const validateCart = async () => {
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(cart),
       });
 
@@ -136,8 +145,8 @@ function Extension() {
 
   const cart = lineItems.map((item) => {
     return {
-      variant_id: item.merchandise.id.replace(/\D/g, ''),
-      product_id: item.merchandise.product.id.replace(/\D/g, ''),
+      variant_id: item.merchandise.id.replace(/\D/g, ""),
+      product_id: item.merchandise.product.id.replace(/\D/g, ""),
       quantity: item.quantity,
     };
   });
@@ -146,34 +155,34 @@ function Extension() {
   const shippingAddress = useShippingAddress();
 
   useEffect(() => {
-    console.log('##################checkout data ', checkoutData);
+    console.log("##################checkout data ", checkoutData);
   }, [checkoutData]);
 
   useEffect(() => {
-    console.log('++++++++++++++ cs updated: ', cs);
+    console.log("++++++++++++++ cs updated: ", cs);
   }, [cs]);
 
   // use to intercept rogue behaviour that will screw up rates
   useBuyerJourneyIntercept(({ canBlockProgress }) => {
-    return canBlockProgress && attributes['Checkout-Method']
+    return canBlockProgress && attributes["Checkout-Method"]
       ? {
-          behavior: 'block',
-          reason: 'Invalid shipping country',
+          behavior: "block",
+          reason: "Invalid shipping country",
           errors: [
             {
               // An error without a `target` property is shown at page level
-              message: 'Sorry, we can only ship to Canada',
+              message: "Sorry, we can only ship to Canada",
             },
           ],
         }
       : {
-          behavior: 'allow',
+          behavior: "allow",
         };
   });
 
   return (
     <>
-      {extension.target === 'purchase.checkout.block.render' ? (
+      {extension.target === "purchase.checkout.block.render" ? (
         <>
           <Heading level={1}>Quick Collect</Heading>
           <QuickCollect
@@ -198,7 +207,7 @@ function Extension() {
           />
         </>
       ) : extension.target ===
-        'purchase.checkout.delivery-address.render-before' ? (
+        "purchase.checkout.delivery-address.render-before" ? (
         <>
           <CheckoutMethodSelect
             availableMethods={availableMethods}
