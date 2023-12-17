@@ -18402,10 +18402,10 @@
             }
           }
           var jsx14 = jsxWithValidationDynamic;
-          var jsxs10 = jsxWithValidationStatic;
+          var jsxs11 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
           exports.jsx = jsx14;
-          exports.jsxs = jsxs10;
+          exports.jsxs = jsxs11;
         })();
       }
     }
@@ -19127,9 +19127,6 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/BlockSpacer/BlockSpacer.mjs
   var BlockSpacer = createRemoteComponent("BlockSpacer");
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/BlockStack/BlockStack.mjs
-  var BlockStack = createRemoteComponent("BlockStack");
-
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Button/Button.mjs
   var Button = createRemoteComponent("Button");
 
@@ -19182,8 +19179,8 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Select/Select.mjs
   var Select = createRemoteComponent("Select");
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/SkeletonTextBlock/SkeletonTextBlock.mjs
-  var SkeletonTextBlock = createRemoteComponent("SkeletonTextBlock");
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/SkeletonImage/SkeletonImage.mjs
+  var SkeletonImage = createRemoteComponent("SkeletonImage");
 
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
   var Spinner = createRemoteComponent("Spinner");
@@ -19528,9 +19525,6 @@ ${errorInfo.componentStack}`);
     }
   };
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/BlockStack/BlockStack.mjs
-  var BlockStack2 = createRemoteReactComponent(BlockStack);
-
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Button/Button.mjs
   var Button2 = createRemoteReactComponent(Button, {
     fragmentProps: ["overlay"]
@@ -19554,8 +19548,11 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ScrollView/ScrollView.mjs
   var ScrollView2 = createRemoteReactComponent(ScrollView);
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/SkeletonTextBlock/SkeletonTextBlock.mjs
-  var SkeletonTextBlock2 = createRemoteReactComponent(SkeletonTextBlock);
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/SkeletonImage/SkeletonImage.mjs
+  var SkeletonImage2 = createRemoteReactComponent(SkeletonImage);
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
+  var Spinner2 = createRemoteReactComponent(Spinner);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Text/Text.mjs
   var Text2 = createRemoteReactComponent(Text);
@@ -21402,16 +21399,27 @@ ${errorInfo.componentStack}`);
     pathway,
     disabled
   }) => {
+    var _a;
     (0, import_react23.useEffect)(() => {
       console.log("\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3 ", checkoutData);
     }, [checkoutData]);
     const [loading, setLoading] = (0, import_react23.useState)(false);
+    const [scrollPos, setScrollPos] = (0, import_react23.useState)(null);
     let changeAttributes = useApplyAttributeChange();
     let changeShippingAddress = useApplyShippingAddressChange();
     let savedPath = useAttributeValues(["buyer-pathway"]);
     const { query } = useApi();
     const handleLocationSelect = (val) => __async(void 0, null, function* () {
-      console.log("llllllllllllllllllllll ", checkoutData);
+      console.log(
+        "llllllllllllllllllllll ",
+        checkoutData,
+        "\n",
+        "choice val: ",
+        val
+      );
+      setDisplayCalendar((displayCalender) => {
+        return displayCalender ? false : null;
+      });
       setLoading(true);
       if (pathway === "quick-collect") {
         yield changeAttributes({
@@ -21568,23 +21576,46 @@ ${errorInfo.componentStack}`);
     const handleChange = () => {
       console.log("new location chosen!");
     };
+    const handleScroll = (posVal) => {
+      console.log("current scroll: ", posVal.position.block);
+      setScrollPos(posVal.position.block);
+    };
     return !loading ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
       ScrollView2,
       {
         maxBlockSize: 450,
         hint: { type: "pill", content: "Scroll for more options" },
         direction: "block",
+        scrollTo: scrollPos ? scrollPos : null,
+        onScroll: (pos) => handleScroll(pos),
         children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
           ChoiceList2,
           {
             name: "select location",
-            value: "",
-            onChange: () => handleChange(),
-            children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(BlockStack2, { children: locations.map((location, i2) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Choice2, { id: i2, children: location.company_name })) })
+            value: ((_a = checkoutData.pickup) == null ? void 0 : _a.selectedLocation) ? `${checkoutData.pickup.selectedLocation.info.id}` : "",
+            onChange: (id) => handleLocationSelect(id),
+            variant: "group",
+            children: locations.map((location) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Choice2, { id: `${location.id}`, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: location.company_name }) }))
           }
         )
       }
-    ) }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(SkeletonTextBlock2, { lines: 1, textSize: "large" });
+    ) }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { position: "relative", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(SkeletonImage2, { blockSize: 50, inlineSize: "fill", aspectRatio: 2 }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+        View2,
+        {
+          maxBlockSize: 75,
+          maxInlineSize: 75,
+          position: {
+            type: "absolute",
+            inlineStart: `${50}%`,
+            blockStart: `${50}%`
+          },
+          translate: { block: `${-50}%`, inline: `${-50}%` },
+          children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "fill", accessibilityLabel: "Getting pickup locations" })
+        }
+      )
+    ] });
   };
   var LocationsSelect_default = LocationsSelect;
 
@@ -22384,7 +22415,7 @@ ${errorInfo.componentStack}`);
     (0, import_react31.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://511c-212-140-232-13.ngrok-free.app";
+    const app_url = "https://10b4-81-103-75-43.ngrok-free.app";
     const test = useAttributeValues([
       "Checkout-Method",
       "Pickup-Location-Company",
