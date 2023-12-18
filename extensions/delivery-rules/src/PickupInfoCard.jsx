@@ -38,7 +38,7 @@ const PickupInfoCard = ({ location, checkoutData }) => {
         columns={[`${1}fr`, `${1}fr`]}
       >
         {weekdays.map((weekday, i) => {
-          if (i % 2 === 0) {
+          if (i <= 4 ) {
             return (
               <GridItem rowSpan={1}>
                 {weekday}:{' '}
@@ -62,18 +62,6 @@ const PickupInfoCard = ({ location, checkoutData }) => {
             );
           }
         })}
-        {/* <List marker="none">
-        {weekdays.map((weekday) => (
-          <ListItem>
-            {weekday}:{" "}
-            {
-              checkoutData.location_hours[
-                `${weekday.toLowerCase()}_opening_hours`
-              ]
-            }
-          </ListItem>
-        ))}
-      </List> */}
       </Grid>
       <TextBlock>
         If you’re ordering for the next day please note your order will be

@@ -36,6 +36,8 @@ const QuickCollect = ({
   setSelectedMethod,
   globalLoad,
   setGlobalLoad,
+  displayCalendar,
+  selectedMethod,
 }) => {
   const nextDayMeta = useAppMetafields();
   const [loading, setLoading] = useState(
@@ -44,7 +46,7 @@ const QuickCollect = ({
 
   const [disabled, setDisabled] = useState(false);
 
-  const changeAttributes = useApplyAttributeChange()
+  const changeAttributes = useApplyAttributeChange();
 
   const attributes = useAttributes();
   const storage = useStorage();
@@ -53,7 +55,6 @@ const QuickCollect = ({
 
   let savedPath = useAttributeValues(["buyer-pathway"]);
 
-
   useEffect(() => {
     savedPath[0] === "method-select"
       ? setDisabled(true)
@@ -61,9 +62,6 @@ const QuickCollect = ({
       ? setDisabled(false)
       : null;
   }, [attributes]);
-
-
-
 
   useEffect(() => {
     console.log("global load from qc: ", globalLoad);
@@ -83,20 +81,19 @@ const QuickCollect = ({
     updateNextDayMeta();
   }, []);
 
-  const handleReset = async() => {
-
+  const handleReset = async () => {
     setMinDate(null);
     let x = checkoutData;
     x.qCollect = false;
     x.pickup.selectedLocation = null;
-    
+
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     setDisplayCalendar(false);
     await changeAttributes({
       type: "updateAttribute",
       key: "buyer-pathway",
       value: "",
-    })
+    });
   };
 
   return (
@@ -127,6 +124,27 @@ const QuickCollect = ({
               pathway={"quick-collect"}
               disabled={disabled}
             />
+          )}
+          {!!displayCalendar && minDate && selectedMethod && (
+            <>
+              <Calendar
+                minDate={minDate}
+                setCheckoutData={setCheckoutData}
+                checkoutData={checkoutData}
+                penguinCart={penguinCart}
+                lockerReserved={lockerReserved}
+                setLockerReserved={setLockerReserved}
+                url={app_url}
+                selectedMethod={selectedMethod}
+              />
+              {!!checkoutData?.pickup?.selectedLocation &&
+                !!checkoutData?.checkout_date && (
+                  <PickupInfoCard
+                    location={checkoutData.pickup.selectedLocation}
+                    checkoutData={checkoutData}
+                  />
+                )}
+            </>
           )}
         </View>
       ) : (

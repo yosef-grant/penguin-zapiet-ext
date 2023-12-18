@@ -18,10 +18,12 @@ import {
   Image,
   Text,
   TextBlock,
-} from '@shopify/ui-extensions-react/checkout';
-import { Select, Heading } from '@shopify/ui-extensions/checkout';
-import { format, getDay } from 'date-fns';
-import { useState, useEffect } from 'react';
+  Button,
+} from "@shopify/ui-extensions-react/checkout";
+import LocationFilters from "./LocationFilters.jsx";
+import { Select, Heading } from "@shopify/ui-extensions/checkout";
+import { format, getDay } from "date-fns";
+import { useState, useEffect } from "react";
 
 const LocationsSelect = ({
   locations,
@@ -38,25 +40,27 @@ const LocationsSelect = ({
   disabled,
 }) => {
   useEffect(() => {
-    console.log('£££££££££££££££ ', checkoutData);
+    console.log("£££££££££££££££ ", checkoutData);
   }, [checkoutData]);
 
   const [loading, setLoading] = useState(false);
   const [scrollPos, setScrollPos] = useState(null);
 
+  const [filters, setFilters] = useState(["stores", "lockers"]);
+
   let changeAttributes = useApplyAttributeChange();
   let changeShippingAddress = useApplyShippingAddressChange();
 
-  let savedPath = useAttributeValues(['buyer-pathway']);
+  let savedPath = useAttributeValues(["buyer-pathway"]);
 
   const { query } = useApi();
 
   const handleLocationSelect = async (val) => {
     console.log(
-      'llllllllllllllllllllll ',
+      "llllllllllllllllllllll ",
       checkoutData,
-      '\n',
-      'choice val: ',
+      "\n",
+      "choice val: ",
       val
     );
 
@@ -65,26 +69,26 @@ const LocationsSelect = ({
     });
     setLoading(true);
 
-    if (pathway === 'quick-collect') {
+    if (pathway === "quick-collect") {
       await changeAttributes({
-        type: 'updateAttribute',
-        key: 'buyer-pathway',
-        value: 'quick-collect',
+        type: "updateAttribute",
+        key: "buyer-pathway",
+        value: "quick-collect",
       });
     }
 
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'Checkout-Method',
-      value: 'pickup',
+      type: "updateAttribute",
+      key: "Checkout-Method",
+      value: "pickup",
     });
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'Pickup-Location-Id',
+      type: "updateAttribute",
+      key: "Pickup-Location-Id",
       value: val,
     });
 
-    console.log('this is the id of the selected location! ', val);
+    console.log("this is the id of the selected location! ", val);
 
     let targetLocation = locations.filter(
       (location) => location.id === parseInt(val)
@@ -99,10 +103,10 @@ const LocationsSelect = ({
 
     let locationHandle = targetLocation[0].company_name
       .toLowerCase()
-      .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, '')
-      .replaceAll(/\s/gm, '-');
+      .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "")
+      .replaceAll(/\s/gm, "-");
 
-    console.log(';;;;;;;;;;;;;;;;;;; locationHandle ', locationHandle);
+    console.log(";;;;;;;;;;;;;;;;;;; locationHandle ", locationHandle);
 
     let {
       data: { metaobject },
@@ -140,7 +144,7 @@ const LocationsSelect = ({
           `
     );
 
-    console.log('|||||||||||||||||||| data: ', metaobject);
+    console.log("|||||||||||||||||||| data: ", metaobject);
 
     const {
       opening_hours: {
@@ -159,29 +163,29 @@ const LocationsSelect = ({
     );
 
     console.log(
-      '>>>>>>>>>>>> TIMES ',
+      ">>>>>>>>>>>> TIMES ",
       times,
-      '<<<<<<<<<<<<<<<<< HOURS: ',
+      "<<<<<<<<<<<<<<<<< HOURS: ",
       locHours
     );
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'Pickup-Location-Company',
+      type: "updateAttribute",
+      key: "Pickup-Location-Company",
       value: targetLocation[0].company_name,
     });
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'Pickup-Location-Type',
+      type: "updateAttribute",
+      key: "Pickup-Location-Type",
       value: targetLocation[0].custom_attribute_1,
     });
     await changeShippingAddress({
-      type: 'updateShippingAddress',
+      type: "updateShippingAddress",
       address: targetLocationAddr[0],
     });
 
     let locData = await getLocationDates(targetLocation[0]);
 
-    console.log('loc __--^^^--__ data ', locData);
+    console.log("loc __--^^^--__ data ", locData);
     let x = checkoutData;
     x?.delivery ? null : (x.qCollect = true);
     x.pickup = {
@@ -194,16 +198,16 @@ const LocationsSelect = ({
       },
     };
 
-    console.log('#~~::: X', x);
+    console.log("#~~::: X", x);
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     getLocationDates(targetLocation[0]);
-    setSelectedMethod('pickup');
+    setSelectedMethod("pickup");
     setLoading(false);
     setDisplayCalendar(true);
   };
 
   const getLocationDates = async (location) => {
-    console.log('heres the location: ', location);
+    console.log("heres the location: ", location);
     let resBody = {
       cart: cart,
       locationId: location.id,
@@ -212,20 +216,20 @@ const LocationsSelect = ({
     };
     let res = await fetch(`${url}/pza/pickup-dates-test`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(resBody),
     });
     let data = await res.json();
     console.log(
-      '================================= dates for pickup location!',
+      "================================= dates for pickup location!",
       data,
-      '\n',
+      "\n",
       resBody
     );
     data?.cartInfo
-      ? (console.log('penguin location was selected!'),
+      ? (console.log("penguin location was selected!"),
         setPenguinCart(data.cartInfo))
       : null;
     setMinDate(new Date(data.minDate));
@@ -242,18 +246,30 @@ const LocationsSelect = ({
   };
 
   const handleChange = () => {
-    console.log('new location chosen!');
+    console.log("new location chosen!");
   };
 
   const handleScroll = (posVal) => {
-    console.log('current scroll: ', posVal.position.block);
     setScrollPos(posVal.position.block);
+  };
+
+  const getFilteredLocations = () => {
+    let fLocations;
+    if (filters.length === 2) {
+      fLocations = locations;
+    } else {
+      fLocations = locations.filter((location) =>
+        filters.includes(location.custom_attribute_1)
+      );
+    }
+    return fLocations;
   };
   return !loading ? (
     <>
+      <LocationFilters filters={filters} setFilters={setFilters} />
       <ScrollView
-        maxBlockSize={450}
-        hint={{ type: 'pill', content: 'Scroll for more options' }}
+        maxBlockSize={ checkoutData.pickup?.selectedLocation ? 50 : 225}
+        hint={{ type: "pill", content: "Scroll for more options" }}
         direction="block"
         scrollTo={scrollPos ? scrollPos : null}
         onScroll={(pos) => handleScroll(pos)}
@@ -263,13 +279,15 @@ const LocationsSelect = ({
           value={
             checkoutData.pickup?.selectedLocation
               ? `${checkoutData.pickup.selectedLocation.info.id}`
-              : ''
+              : ""
           }
           onChange={(id) => handleLocationSelect(id)}
           variant="group"
         >
-          {locations.map((location) => (
-            <Choice id={`${location.id}`}>
+          {getFilteredLocations().map((location) => (
+            <Choice id={`${location.id}`}
+           
+            >
               <Text>{location.company_name}</Text>
             </Choice>
           ))}
@@ -277,13 +295,13 @@ const LocationsSelect = ({
       </ScrollView>
     </>
   ) : (
-    <View position={'relative'}>
-      <SkeletonImage blockSize={50} inlineSize={'fill'} aspectRatio={2} />
+    <View position={"relative"}>
+      <SkeletonImage blockSize={50} inlineSize={"fill"} aspectRatio={2} />
       <View
         maxBlockSize={75}
         maxInlineSize={75}
         position={{
-          type: 'absolute',
+          type: "absolute",
           inlineStart: `${50}%`,
           blockStart: `${50}%`,
         }}

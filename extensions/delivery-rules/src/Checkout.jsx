@@ -70,7 +70,7 @@ function Extension() {
     console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   }, [penguinCart]);
 
-  const app_url = "https://10b4-81-103-75-43.ngrok-free.app";
+  const app_url = "https://f6fd-212-140-232-13.ngrok-free.app";
 
   const test = useAttributeValues([
     "Checkout-Method",

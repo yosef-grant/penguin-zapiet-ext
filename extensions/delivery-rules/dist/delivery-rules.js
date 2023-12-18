@@ -2429,9 +2429,9 @@
         module.exports = function $$$reconciler($$$hostConfig) {
           var exports2 = {};
           "use strict";
-          var React4 = require_react();
+          var React5 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React4.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -2495,7 +2495,7 @@
           var HostPortal = 4;
           var HostComponent = 5;
           var HostText = 6;
-          var Fragment8 = 7;
+          var Fragment9 = 7;
           var Mode = 8;
           var ContextConsumer = 9;
           var ContextProvider = 10;
@@ -2635,7 +2635,7 @@
                 return "DehydratedFragment";
               case ForwardRef:
                 return getWrappedName$1(type, type.render, "ForwardRef");
-              case Fragment8:
+              case Fragment9:
                 return "Fragment";
               case HostComponent:
                 return type;
@@ -6229,7 +6229,7 @@
             }
           }
           var fakeInternalInstance = {};
-          var emptyRefsObject = new React4.Component().refs;
+          var emptyRefsObject = new React5.Component().refs;
           var didWarnAboutStateAssignmentForComponent;
           var didWarnAboutUninitializedState;
           var didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate;
@@ -7053,7 +7053,7 @@
               }
             }
             function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-              if (current2 === null || current2.tag !== Fragment8) {
+              if (current2 === null || current2.tag !== Fragment9) {
                 var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
                 created.return = returnFiber;
                 return created;
@@ -7456,7 +7456,7 @@
                 if (child.key === key) {
                   var elementType = element.type;
                   if (elementType === REACT_FRAGMENT_TYPE) {
-                    if (child.tag === Fragment8) {
+                    if (child.tag === Fragment9) {
                       deleteRemainingChildren(returnFiber, child.sibling);
                       var existing = useFiber(child, element.props.children);
                       existing.return = returnFiber;
@@ -11633,7 +11633,7 @@
                 var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
                 return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
               }
-              case Fragment8:
+              case Fragment9:
                 return updateFragment(current2, workInProgress2, renderLanes2);
               case Mode:
                 return updateMode(current2, workInProgress2, renderLanes2);
@@ -12074,7 +12074,7 @@
               case SimpleMemoComponent:
               case FunctionComponent:
               case ForwardRef:
-              case Fragment8:
+              case Fragment9:
               case Mode:
               case Profiler:
               case ContextConsumer:
@@ -16840,7 +16840,7 @@
             return fiber;
           }
           function createFiberFromFragment(elements, mode, lanes, key) {
-            var fiber = createFiber(Fragment8, elements, key, mode);
+            var fiber = createFiber(Fragment9, elements, key, mode);
             fiber.lanes = lanes;
             return fiber;
           }
@@ -17540,7 +17540,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React4 = require_react();
+          var React5 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -17566,7 +17566,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React4.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format2) {
             {
               {
@@ -18401,11 +18401,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx14 = jsxWithValidationDynamic;
-          var jsxs11 = jsxWithValidationStatic;
+          var jsx15 = jsxWithValidationDynamic;
+          var jsxs12 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx14;
-          exports.jsxs = jsxs11;
+          exports.jsx = jsx15;
+          exports.jsxs = jsxs12;
         })();
       }
     }
@@ -18424,7 +18424,7 @@
   });
 
   // extensions/delivery-rules/src/Checkout.jsx
-  var import_react31 = __toESM(require_react());
+  var import_react33 = __toESM(require_react());
 
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
@@ -19167,6 +19167,9 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Image/Image.mjs
   var Image = createRemoteComponent("Image");
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
+  var InlineStack = createRemoteComponent("InlineStack");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Modal/Modal.mjs
   var Modal = createRemoteComponent("Modal");
 
@@ -19542,6 +19545,9 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Heading/Heading.mjs
   var Heading2 = createRemoteReactComponent(Heading);
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
+  var InlineStack2 = createRemoteReactComponent(InlineStack);
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Modal/Modal.mjs
   var Modal2 = createRemoteReactComponent(Modal);
 
@@ -19561,7 +19567,7 @@ ${errorInfo.componentStack}`);
   var View2 = createRemoteReactComponent(View);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react19 = __toESM(require_react(), 1);
+  var import_react20 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
@@ -19585,7 +19591,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react19.useContext)(ExtensionApiContext);
+    const api = (0, import_react20.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19593,10 +19599,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react20 = __toESM(require_react(), 1);
+  var import_react21 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react20.useState)(subscription.current);
-    (0, import_react20.useEffect)(() => {
+    const [, setValue] = (0, import_react21.useState)(subscription.current);
+    (0, import_react21.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19615,15 +19621,15 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
-  var import_react21 = __toESM(require_react(), 1);
+  var import_react22 = __toESM(require_react(), 1);
   function useBuyerJourneyIntercept(interceptor) {
     const api = useApi();
     if (!("buyerJourney" in api)) {
       throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
     }
-    const interceptorRef = (0, import_react21.useRef)(interceptor);
+    const interceptorRef = (0, import_react22.useRef)(interceptor);
     interceptorRef.current = interceptor;
-    return (0, import_react21.useEffect)(() => {
+    return (0, import_react22.useEffect)(() => {
       const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
       return () => {
         teardownPromise.then((teardown) => teardown()).catch(() => {
@@ -19679,10 +19685,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react22 = __toESM(require_react(), 1);
+  var import_react23 = __toESM(require_react(), 1);
   function useAppMetafields(filters = {}) {
     const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react22.useMemo)(() => {
+    return (0, import_react23.useMemo)(() => {
       if (filters.key && !filters.namespace) {
         throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
       }
@@ -19716,7 +19722,7 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/QuickCollect.jsx
-  var import_react24 = __toESM(require_react());
+  var import_react26 = __toESM(require_react());
 
   // node_modules/@babel/runtime/helpers/esm/typeof.js
   function _typeof(o) {
@@ -21382,9 +21388,45 @@ ${errorInfo.componentStack}`);
     return addDays(dirtyDate, -amount);
   }
 
-  // extensions/delivery-rules/src/LocationsSelect.jsx
-  var import_react23 = __toESM(require_react());
+  // extensions/delivery-rules/src/LocationFilters.jsx
+  var import_react24 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
+  var LocationFilters = ({ filters, setFilters }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+      ChoiceList2,
+      {
+        name: "choiceMultiple",
+        value: filters,
+        onChange: (value) => {
+          setFilters(value);
+          console.log(`onChange event with value: ${value}`);
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            Choice2,
+            {
+              id: "stores",
+              disabled: filters.length > 1 && filters.includes("stores") || filters.length === 1 && !filters.includes("stores") ? false : true,
+              children: "Stores"
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            Choice2,
+            {
+              id: "lockers",
+              disabled: filters.length > 1 && filters.includes("lockers") || filters.length === 1 && !filters.includes("lockers") ? false : true,
+              children: "Lockers"
+            }
+          )
+        ] })
+      }
+    ) });
+  };
+  var LocationFilters_default = LocationFilters;
+
+  // extensions/delivery-rules/src/LocationsSelect.jsx
+  var import_react25 = __toESM(require_react());
+  var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var LocationsSelect = ({
     locations,
     checkoutData,
@@ -21399,12 +21441,13 @@ ${errorInfo.componentStack}`);
     pathway,
     disabled
   }) => {
-    var _a;
-    (0, import_react23.useEffect)(() => {
+    var _a, _b;
+    (0, import_react25.useEffect)(() => {
       console.log("\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3\xA3 ", checkoutData);
     }, [checkoutData]);
-    const [loading, setLoading] = (0, import_react23.useState)(false);
-    const [scrollPos, setScrollPos] = (0, import_react23.useState)(null);
+    const [loading, setLoading] = (0, import_react25.useState)(false);
+    const [scrollPos, setScrollPos] = (0, import_react25.useState)(null);
+    const [filters, setFilters] = (0, import_react25.useState)(["stores", "lockers"]);
     let changeAttributes = useApplyAttributeChange();
     let changeShippingAddress = useApplyShippingAddressChange();
     let savedPath = useAttributeValues(["buyer-pathway"]);
@@ -21577,31 +21620,50 @@ ${errorInfo.componentStack}`);
       console.log("new location chosen!");
     };
     const handleScroll = (posVal) => {
-      console.log("current scroll: ", posVal.position.block);
       setScrollPos(posVal.position.block);
     };
-    return !loading ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-      ScrollView2,
-      {
-        maxBlockSize: 450,
-        hint: { type: "pill", content: "Scroll for more options" },
-        direction: "block",
-        scrollTo: scrollPos ? scrollPos : null,
-        onScroll: (pos) => handleScroll(pos),
-        children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-          ChoiceList2,
-          {
-            name: "select location",
-            value: ((_a = checkoutData.pickup) == null ? void 0 : _a.selectedLocation) ? `${checkoutData.pickup.selectedLocation.info.id}` : "",
-            onChange: (id) => handleLocationSelect(id),
-            variant: "group",
-            children: locations.map((location) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Choice2, { id: `${location.id}`, children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: location.company_name }) }))
-          }
-        )
+    const getFilteredLocations = () => {
+      let fLocations;
+      if (filters.length === 2) {
+        fLocations = locations;
+      } else {
+        fLocations = locations.filter(
+          (location) => filters.includes(location.custom_attribute_1)
+        );
       }
-    ) }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { position: "relative", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(SkeletonImage2, { blockSize: 50, inlineSize: "fill", aspectRatio: 2 }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+      return fLocations;
+    };
+    return !loading ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(LocationFilters_default, { filters, setFilters }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+        ScrollView2,
+        {
+          maxBlockSize: ((_a = checkoutData.pickup) == null ? void 0 : _a.selectedLocation) ? 50 : 225,
+          hint: { type: "pill", content: "Scroll for more options" },
+          direction: "block",
+          scrollTo: scrollPos ? scrollPos : null,
+          onScroll: (pos) => handleScroll(pos),
+          children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+            ChoiceList2,
+            {
+              name: "select location",
+              value: ((_b = checkoutData.pickup) == null ? void 0 : _b.selectedLocation) ? `${checkoutData.pickup.selectedLocation.info.id}` : "",
+              onChange: (id) => handleLocationSelect(id),
+              variant: "group",
+              children: getFilteredLocations().map((location) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                Choice2,
+                {
+                  id: `${location.id}`,
+                  children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text2, { children: location.company_name })
+                }
+              ))
+            }
+          )
+        }
+      )
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View2, { position: "relative", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(SkeletonImage2, { blockSize: 50, inlineSize: "fill", aspectRatio: 2 }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
         View2,
         {
           maxBlockSize: 75,
@@ -21612,7 +21674,7 @@ ${errorInfo.componentStack}`);
             blockStart: `${50}%`
           },
           translate: { block: `${-50}%`, inline: `${-50}%` },
-          children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Spinner2, { size: "fill", accessibilityLabel: "Getting pickup locations" })
+          children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Spinner2, { size: "fill", accessibilityLabel: "Getting pickup locations" })
         }
       )
     ] });
@@ -21620,7 +21682,7 @@ ${errorInfo.componentStack}`);
   var LocationsSelect_default = LocationsSelect;
 
   // extensions/delivery-rules/src/QuickCollect.jsx
-  var import_jsx_runtime5 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
   var QuickCollect = ({
     lineItems,
     changeShippingAddress,
@@ -21636,26 +21698,28 @@ ${errorInfo.componentStack}`);
     setAvailableMethods,
     setSelectedMethod,
     globalLoad,
-    setGlobalLoad
+    setGlobalLoad,
+    displayCalendar,
+    selectedMethod
   }) => {
-    var _a, _b;
+    var _a, _b, _c;
     const nextDayMeta = useAppMetafields();
-    const [loading, setLoading] = (0, import_react24.useState)(
+    const [loading, setLoading] = (0, import_react26.useState)(
       ((_a = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _a.qCollectLocations) ? false : true
     );
-    const [disabled, setDisabled] = (0, import_react24.useState)(false);
+    const [disabled, setDisabled] = (0, import_react26.useState)(false);
     const changeAttributes = useApplyAttributeChange();
     const attributes = useAttributes();
     const storage = useStorage();
     console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
     let savedPath = useAttributeValues(["buyer-pathway"]);
-    (0, import_react24.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       savedPath[0] === "method-select" ? setDisabled(true) : !savedPath[0] && disabled ? setDisabled(false) : null;
     }, [attributes]);
-    (0, import_react24.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       console.log("global load from qc: ", globalLoad);
     }, [globalLoad]);
-    (0, import_react24.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       updateNextDayMeta = () => {
         let meta = nextDayMeta.map((meta2) => {
           return JSON.parse(meta2.metafield.value).next_day_delivery.value;
@@ -21678,15 +21742,15 @@ ${errorInfo.componentStack}`);
         value: ""
       });
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
       View,
       {
         padding: ["base", "none", "base", "none"],
         blockAlignment: "center",
         inlineAlignment: "center",
-        children: !globalLoad ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View, { minInlineSize: "fill", opacity: disabled ? 50 : 100, children: [
-          ((_b = checkoutData.pickup) == null ? void 0 : _b.selectedLocation) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Button, { kind: "plain", onPress: () => handleReset(), children: "Cancel" }),
-          !!(checkoutData == null ? void 0 : checkoutData.pickup) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+        children: !globalLoad ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(View, { minInlineSize: "fill", opacity: disabled ? 50 : 100, children: [
+          ((_b = checkoutData.pickup) == null ? void 0 : _b.selectedLocation) && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Button, { kind: "plain", onPress: () => handleReset(), children: "Cancel" }),
+          !!(checkoutData == null ? void 0 : checkoutData.pickup) && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
             LocationsSelect_default,
             {
               locations: checkoutData.pickup.qCollectLocations,
@@ -21702,31 +21766,53 @@ ${errorInfo.componentStack}`);
               pathway: "quick-collect",
               disabled
             }
-          )
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Spinner, { size: "large", accessibilityLabel: "Getting pickup locations" })
+          ),
+          !!displayCalendar && minDate && selectedMethod && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              Calendar,
+              {
+                minDate,
+                setCheckoutData,
+                checkoutData,
+                penguinCart,
+                lockerReserved,
+                setLockerReserved,
+                url: app_url,
+                selectedMethod
+              }
+            ),
+            !!((_c = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _c.selectedLocation) && !!(checkoutData == null ? void 0 : checkoutData.checkout_date) && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+              PickupInfoCard,
+              {
+                location: checkoutData.pickup.selectedLocation,
+                checkoutData
+              }
+            )
+          ] })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Spinner, { size: "large", accessibilityLabel: "Getting pickup locations" })
       }
     );
   };
   var QuickCollect_default = QuickCollect;
 
   // extensions/delivery-rules/src/Calendar.jsx
-  var import_react25 = __toESM(require_react());
-  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
+  var import_react27 = __toESM(require_react());
+  var import_jsx_runtime7 = __toESM(require_jsx_runtime());
   var dateFormat = "yyyy-MM-dd";
-  var Calendar = ({
-    minDate,
+  var Calendar2 = ({
+    minDate: minDate2,
     setCheckoutData,
     checkoutData,
-    penguinCart,
-    lockerReserved,
-    setLockerReserved,
+    penguinCart: penguinCart2,
+    lockerReserved: lockerReserved2,
+    setLockerReserved: setLockerReserved2,
     url,
     selectedMethod
   }) => {
     console.log(
       "::::: from calendar: ",
-      minDate,
-      format(new Date(minDate), dateFormat)
+      minDate2,
+      format(new Date(minDate2), dateFormat)
     );
     const attr = useAttributes();
     const attrList = attr.reduce(
@@ -21737,7 +21823,7 @@ ${errorInfo.componentStack}`);
     );
     let changeAttributes = useApplyAttributeChange();
     const { ui } = useApi();
-    const [selectedDate, setSelectedDate] = (0, import_react25.useState)(null);
+    const [selectedDate, setSelectedDate] = (0, import_react27.useState)(null);
     const handleYearMonthChange = (e2, yearMonth) => {
       let currentMonth = getMonth(/* @__PURE__ */ new Date()) - 1;
       if (yearMonth.month < currentMonth) {
@@ -21847,9 +21933,9 @@ ${errorInfo.componentStack}`);
         let orderBody = {
           station_id: attrList["Pickup-Location-Id"],
           date: attrList["Pickup-Date"],
-          reserve_status: lockerReserved,
+          reserve_status: lockerReserved2,
           order_id: attrList["Pickup-Penguin-Id"] ? attrList["Pickup-Penguin-Id"] : null,
-          cart: penguinCart
+          cart: penguinCart2
         };
         console.log("order body ************** ", orderBody);
         let lockerRes = yield fetch(`${url}/pza/confirm-delivery`, {
@@ -21881,14 +21967,14 @@ ${errorInfo.componentStack}`);
           key: "Pickup-Penguin-Locker(s)",
           value: data.lockers
         });
-        setLockerReserved(true);
+        setLockerReserved2(true);
       }
       console.log("___---```---___ AFTER RESERVING PENGUIN LOCKER ", attrList);
       ui.overlay.close("reservation-confirm");
     });
     const getDisabledDates = () => {
       x = [
-        { end: format(subDays(new Date(minDate), 1), dateFormat) },
+        { end: format(subDays(new Date(minDate2), 1), dateFormat) },
         { start: format(addYears(/* @__PURE__ */ new Date(), 1), dateFormat) }
       ];
       x.push(`${getYear(/* @__PURE__ */ new Date())}-12-25`);
@@ -21910,39 +21996,39 @@ ${errorInfo.componentStack}`);
       console.log("HERE IS X FROM THE CALENDAR DISABLED DATES: ", x);
       return x;
     };
-    (0, import_react25.useEffect)(() => {
-      handleDateSelect(format(new Date(minDate), dateFormat));
+    (0, import_react27.useEffect)(() => {
+      handleDateSelect(format(new Date(minDate2), dateFormat));
     }, []);
-    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Heading, { children: "Select Delivery Date" }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(BlockSpacer, { spacing: "loose" }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading, { children: "Select Delivery Date" }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(BlockSpacer, { spacing: "loose" }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
         DatePicker,
         {
-          selected: !selectedDate ? format(new Date(minDate), dateFormat) : selectedDate,
+          selected: !selectedDate ? format(new Date(minDate2), dateFormat) : selectedDate,
           disabled: getDisabledDates(),
           onChange: (selected) => handleDateSelect(selected)
         }
       ),
-      attrList["Pickup-Location-Type"] === "lockers" && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      attrList["Pickup-Location-Type"] === "lockers" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
         Button2,
         {
-          overlay: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Modal2, { id: "reservation-confirm", padding: true, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Heading, { children: "Confirm Reservation" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { children: "Do you wish to confirm your locker reservation?" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Button2, { onPress: () => ui.overlay.close("reservation-confirm"), children: "Cancel" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Button2, { onPress: () => handleLockerReserve(), children: "Confirm" })
+          overlay: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Modal2, { id: "reservation-confirm", padding: true, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading, { children: "Confirm Reservation" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Text2, { children: "Do you wish to confirm your locker reservation?" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Button2, { onPress: () => ui.overlay.close("reservation-confirm"), children: "Cancel" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Button2, { onPress: () => handleLockerReserve(), children: "Confirm" })
           ] }),
           children: "Reserve Locker"
         }
       )
     ] });
   };
-  var Calendar_default = Calendar;
+  var Calendar_default = Calendar2;
 
   // extensions/delivery-rules/src/CheckoutMethodSelect.jsx
-  var import_react26 = __toESM(require_react());
-  var import_jsx_runtime7 = __toESM(require_jsx_runtime());
+  var import_react28 = __toESM(require_react());
+  var import_jsx_runtime8 = __toESM(require_jsx_runtime());
   var CheckoutMethodSelect = ({
     availableMethods,
     postcode,
@@ -21983,21 +22069,21 @@ ${errorInfo.componentStack}`);
         selected: "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_selected.svg?v=1702292364"
       }
     };
-    const [hover, setHover] = (0, import_react26.useState)(null);
-    const [loading, setLoading] = (0, import_react26.useState)(false);
-    const [disabled, setDisabled] = (0, import_react26.useState)(false);
+    const [hover, setHover] = (0, import_react28.useState)(null);
+    const [loading, setLoading] = (0, import_react28.useState)(false);
+    const [disabled, setDisabled] = (0, import_react28.useState)(false);
     const attributes = useAttributes();
-    (0, import_react26.useEffect)(() => {
+    (0, import_react28.useEffect)(() => {
       console.log("@@@@@@@@@ ", availableMethods);
     }, [availableMethods]);
     const shippingAddress = useShippingAddress();
     let changeAttributes = useApplyAttributeChange();
     const storage = useStorage();
     let savedPath = useAttributeValues(["buyer-pathway"]);
-    (0, import_react26.useEffect)(() => {
+    (0, import_react28.useEffect)(() => {
       savedPath[0] === "quick-collect" ? setDisabled(true) : !savedPath[0] && disabled ? setDisabled(false) : null;
     }, [attributes]);
-    (0, import_react26.useEffect)(() => {
+    (0, import_react28.useEffect)(() => {
       const checkStorage = () => __async(void 0, null, function* () {
         let s3 = yield storage.read("pathway");
         console.log("*************from method select: ", s3);
@@ -22151,24 +22237,24 @@ ${errorInfo.componentStack}`);
         value: ""
       });
     });
-    return globalLoad ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View, { blockAlignment: "center", inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Spinner, { size: "large", accessibilityLabel: "Getting pickup locations" }) }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_jsx_runtime7.Fragment, { children: [
-      postcode ? /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_jsx_runtime7.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading, { children: "Choose Hand Delivery, Collection or Nationwide Postal" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Button, { kind: "link", onPress: () => handleReset(), children: "Cancel" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    return globalLoad ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(View, { blockAlignment: "center", inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Spinner, { size: "large", accessibilityLabel: "Getting pickup locations" }) }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
+      postcode ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Heading, { children: "Choose Hand Delivery, Collection or Nationwide Postal" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Button, { kind: "link", onPress: () => handleReset(), children: "Cancel" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           Grid,
           {
             columns: ["fill", "fill", "fill"],
             rows: ["auto"],
             spacing: "loose",
-            children: Object.keys(availableMethods).map((key) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            children: Object.keys(availableMethods).map((key) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
               Pressable,
               {
                 disabled: checkNullDelivery(key),
                 onPress: () => handleMethodSelect(key),
                 onPointerEnter: () => setHover(key),
                 onPointerLeave: () => setHover(null),
-                children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
                   Image,
                   {
                     source: checkNullDelivery(key) ? icons[key].disabled : selectedMethod === key ? icons[key].selected : hover === key ? icons[key].hover : icons[key].default
@@ -22178,14 +22264,14 @@ ${errorInfo.componentStack}`);
             ))
           }
         )
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         View,
         {
           blockAlignment: "center",
           inlineAlignment: "center",
           minInlineSize: "fill",
           opacity: disabled ? 50 : 100,
-          children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
             Button,
             {
               disabled: disabled ? true : false,
@@ -22196,9 +22282,9 @@ ${errorInfo.componentStack}`);
           )
         }
       ),
-      !!selectedMethod && (selectedMethod === "delivery" || selectedMethod === "shipping" ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading, { children: selectedMethod }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_jsx_runtime7.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading, { children: "Choose a store or locker for pickup" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      !!selectedMethod && (selectedMethod === "delivery" || selectedMethod === "shipping" ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Heading, { children: selectedMethod }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Heading, { children: "Choose a store or locker for pickup" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           LocationsSelect_default,
           {
             locations: checkoutData.pickup.collectLocations,
@@ -22222,10 +22308,10 @@ ${errorInfo.componentStack}`);
   var CheckoutMethodSelect_default = CheckoutMethodSelect;
 
   // extensions/delivery-rules/src/PickupInfoCard.jsx
-  var import_react27 = __toESM(require_react());
-  var import_jsx_runtime8 = __toESM(require_jsx_runtime());
-  var PickupInfoCard = ({ location, checkoutData }) => {
-    const [toggled, setToggled] = (0, import_react27.useState)(false);
+  var import_react29 = __toESM(require_react());
+  var import_jsx_runtime9 = __toESM(require_jsx_runtime());
+  var PickupInfoCard2 = ({ location, checkoutData }) => {
+    const [toggled, setToggled] = (0, import_react29.useState)(false);
     const weekdays = [
       "Sunday",
       "Monday",
@@ -22240,26 +22326,26 @@ ${errorInfo.componentStack}`);
       return checkoutData.pickup.selectedLocation.location_hours[`${day}_${meridiem}_pickup_hours`];
     };
     console.log(">>>>>>>>>>>>>>>>", checkoutData);
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(View, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Heading, { children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(View, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(Heading, { children: [
         location.company_name,
         " Opening & Pickup Times"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
         Grid,
         {
           rows: ["fill", "fill", "fill", "fill"],
           columns: [`${1}fr`, `${1}fr`],
           children: weekdays.map((weekday, i2) => {
-            if (i2 % 2 === 0) {
-              return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(GridItem, { rowSpan: 1, children: [
+            if (i2 <= 4) {
+              return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(GridItem, { rowSpan: 1, children: [
                 weekday,
                 ":",
                 " ",
                 checkoutData.pickup.selectedLocation.location_hours[`${weekday.toLowerCase()}_opening_hours`]
               ] });
             } else {
-              return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(GridItem, { rowSpan: 1, children: [
+              return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(GridItem, { rowSpan: 1, children: [
                 weekday,
                 ":",
                 " ",
@@ -22269,15 +22355,15 @@ ${errorInfo.componentStack}`);
           })
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(TextBlock, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(TextBlock, { children: [
         "If you\u2019re ordering for the next day please note your order will be available to collect from ",
         getLocationTime("pm"),
         ", otherwise your order will be available from ",
         getLocationTime("am"),
         "."
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(Disclosure, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(Disclosure, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
           Button,
           {
             kind: "plain",
@@ -22286,17 +22372,17 @@ ${errorInfo.componentStack}`);
             children: toggled ? "Less info" : "More info"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(View, { id: "location-info", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(TextBlock, { children: checkoutData.pickup.selectedLocation.location_description }) })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(View, { id: "location-info", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(TextBlock, { children: checkoutData.pickup.selectedLocation.location_description }) })
       ] })
     ] });
   };
-  var PickupInfoCard_default = PickupInfoCard;
+  var PickupInfoCard_default = PickupInfoCard2;
 
   // extensions/delivery-rules/src/CSPortal.jsx
-  var import_react28 = __toESM(require_react());
-  var import_jsx_runtime9 = __toESM(require_jsx_runtime());
+  var import_react30 = __toESM(require_react());
+  var import_jsx_runtime10 = __toESM(require_jsx_runtime());
   var CSPortal = ({ setCS, cs, allLocations }) => {
-    (0, import_react28.useEffect)(() => {
+    (0, import_react30.useEffect)(() => {
       console.log("allLocations", allLocations);
     }, []);
     const { ui } = useApi();
@@ -22315,12 +22401,12 @@ ${errorInfo.componentStack}`);
       });
       ui.overlay.close("cs-portal");
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_jsx_runtime9.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_jsx_runtime10.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
       Button2,
       {
-        overlay: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Modal2, { id: "cs-portal", padding: true, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Form2, { onSubmit: () => handleFormSubmit(), id: "cs-form", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Heading, { children: "Customer Service Portal" }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+        overlay: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Modal2, { id: "cs-portal", padding: true, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Form2, { onSubmit: () => handleFormSubmit(), id: "cs-form", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Heading, { children: "Customer Service Portal" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             Select,
             {
               label: "Customer Service Location",
@@ -22340,7 +22426,7 @@ ${errorInfo.componentStack}`);
               })
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             TextField,
             {
               label: "Customer Service Name",
@@ -22350,7 +22436,7 @@ ${errorInfo.componentStack}`);
               })
             }
           ),
-          (!!(cs == null ? void 0 : cs.name) || !!(cs == null ? void 0 : cs.location)) && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          (!!(cs == null ? void 0 : cs.name) || !!(cs == null ? void 0 : cs.location)) && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             TextField,
             {
               label: "Customer Service Notes",
@@ -22360,8 +22446,8 @@ ${errorInfo.componentStack}`);
               value: !!cs.note ? cs.note : ""
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Button2, { onPress: () => ui.overlay.close("cs-portal"), children: "Cancel" }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Button2, { onPress: () => ui.overlay.close("cs-portal"), children: "Cancel" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             Button2,
             {
               accessibilityRole: "submit",
@@ -22377,45 +22463,45 @@ ${errorInfo.componentStack}`);
   var CSPortal_default = CSPortal;
 
   // extensions/delivery-rules/src/tst/TestMS.jsx
-  var import_react29 = __toESM(require_react());
-  var import_jsx_runtime10 = __toESM(require_jsx_runtime());
-
-  // extensions/delivery-rules/src/tst/TestQC.jsx
-  var import_react30 = __toESM(require_react());
+  var import_react31 = __toESM(require_react());
   var import_jsx_runtime11 = __toESM(require_jsx_runtime());
 
-  // extensions/delivery-rules/src/Checkout.jsx
+  // extensions/delivery-rules/src/tst/TestQC.jsx
+  var import_react32 = __toESM(require_react());
   var import_jsx_runtime12 = __toESM(require_jsx_runtime());
+
+  // extensions/delivery-rules/src/Checkout.jsx
+  var import_jsx_runtime13 = __toESM(require_jsx_runtime());
   var QuickCollectRender = reactExtension(
     "purchase.checkout.block.render",
-    () => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Extension, {})
+    () => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Extension, {})
   );
   var MethodSelectRender = reactExtension(
     "purchase.checkout.delivery-address.render-before",
-    () => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Extension, {})
+    () => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Extension, {})
   );
   function Extension() {
     var _a;
-    const [qCollectLocation, setQCollectLocation] = (0, import_react31.useState)(null);
-    const [checkoutData, setCheckoutData] = (0, import_react31.useState)({});
-    const [minDate, setMinDate] = (0, import_react31.useState)(null);
-    const [nextDay, setNextDay] = (0, import_react31.useState)(false);
-    const [availableMethods, setAvailableMethods] = (0, import_react31.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react31.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react31.useState)(false);
-    const [collectLocation, setCollectLocation] = (0, import_react31.useState)(null);
-    const [displayCalendar, setDisplayCalendar] = (0, import_react31.useState)(false);
-    const [postcode, setPostcode] = (0, import_react31.useState)(null);
-    const [selectedMethod, setSelectedMethod] = (0, import_react31.useState)(null);
-    const [cs, setCS] = (0, import_react31.useState)({ status: false });
-    const [allLocations, setAllLocations] = (0, import_react31.useState)(null);
-    const [globalLoad, setGlobalLoad] = (0, import_react31.useState)(true);
-    const [testnum, setTestnum] = (0, import_react31.useState)(1);
+    const [qCollectLocation, setQCollectLocation] = (0, import_react33.useState)(null);
+    const [checkoutData, setCheckoutData] = (0, import_react33.useState)({});
+    const [minDate2, setMinDate] = (0, import_react33.useState)(null);
+    const [nextDay, setNextDay] = (0, import_react33.useState)(false);
+    const [availableMethods, setAvailableMethods] = (0, import_react33.useState)(null);
+    const [penguinCart2, setPenguinCart] = (0, import_react33.useState)(null);
+    const [lockerReserved2, setLockerReserved2] = (0, import_react33.useState)(false);
+    const [collectLocation, setCollectLocation] = (0, import_react33.useState)(null);
+    const [displayCalendar, setDisplayCalendar] = (0, import_react33.useState)(false);
+    const [postcode, setPostcode] = (0, import_react33.useState)(null);
+    const [selectedMethod, setSelectedMethod] = (0, import_react33.useState)(null);
+    const [cs, setCS] = (0, import_react33.useState)({ status: false });
+    const [allLocations, setAllLocations] = (0, import_react33.useState)(null);
+    const [globalLoad, setGlobalLoad] = (0, import_react33.useState)(true);
+    const [testnum, setTestnum] = (0, import_react33.useState)(1);
     const lineItems = useCartLines();
-    (0, import_react31.useEffect)(() => {
-      console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
-    }, [penguinCart]);
-    const app_url = "https://10b4-81-103-75-43.ngrok-free.app";
+    (0, import_react33.useEffect)(() => {
+      console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart2);
+    }, [penguinCart2]);
+    const app_url2 = "https://f6fd-212-140-232-13.ngrok-free.app";
     const test = useAttributeValues([
       "Checkout-Method",
       "Pickup-Location-Company",
@@ -22434,7 +22520,7 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
-    (0, import_react31.useEffect)(() => {
+    (0, import_react33.useEffect)(() => {
       Object.keys(attributes).forEach((key) => __async(this, null, function* () {
         yield changeAttributes({
           type: "updateAttribute",
@@ -22443,11 +22529,11 @@ ${errorInfo.componentStack}`);
         });
       }));
     }, []);
-    (0, import_react31.useEffect)(() => {
+    (0, import_react33.useEffect)(() => {
       var _a2;
       console.log("quick collect rendered: ", lineItems);
       const validateCart = () => __async(this, null, function* () {
-        let res = yield fetch(`${app_url}/pza/validate-cart-test`, {
+        let res = yield fetch(`${app_url2}/pza/validate-cart-test`, {
           headers: {
             "Content-Type": "application/json"
           },
@@ -22478,10 +22564,10 @@ ${errorInfo.componentStack}`);
     });
     const changeShippingAddress = useApplyShippingAddressChange();
     const shippingAddress = useShippingAddress();
-    (0, import_react31.useEffect)(() => {
+    (0, import_react33.useEffect)(() => {
       console.log("##################checkout data ", checkoutData);
     }, [checkoutData]);
-    (0, import_react31.useEffect)(() => {
+    (0, import_react33.useEffect)(() => {
       console.log("++++++++++++++ cs updated: ", cs);
     }, [cs]);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
@@ -22498,10 +22584,10 @@ ${errorInfo.componentStack}`);
         behavior: "allow"
       };
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-      extension2.target === "purchase.checkout.block.render" ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Heading, { level: 1, children: "Quick Collect" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+      extension2.target === "purchase.checkout.block.render" ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Heading, { level: 1, children: "Quick Collect" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           QuickCollect_default,
           {
             lineItems,
@@ -22513,9 +22599,9 @@ ${errorInfo.componentStack}`);
             checkoutData,
             setMinDate,
             nextDay,
-            url: app_url,
+            url: app_url2,
             setNextDay,
-            penguinCart,
+            penguinCart: penguinCart2,
             setPenguinCart,
             setAvailableMethods,
             setSelectedMethod,
@@ -22524,7 +22610,7 @@ ${errorInfo.componentStack}`);
             setGlobalLoad
           }
         )
-      ] }) : extension2.target === "purchase.checkout.delivery-address.render-before" ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_jsx_runtime12.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+      ] }) : extension2.target === "purchase.checkout.delivery-address.render-before" ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_jsx_runtime13.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
         CheckoutMethodSelect_default,
         {
           availableMethods,
@@ -22532,7 +22618,7 @@ ${errorInfo.componentStack}`);
           setPostcode,
           cart,
           nextDay,
-          url: app_url,
+          url: app_url2,
           setAddress: changeShippingAddress,
           setSelectedMethod,
           selectedMethod,
@@ -22550,22 +22636,22 @@ ${errorInfo.componentStack}`);
           setTestnum
         }
       ) }) : null,
-      !!cs.status && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(CSPortal_default, { setCS, cs, allLocations }),
-      !!displayCalendar && minDate && selectedMethod && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+      !!cs.status && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CSPortal_default, { setCS, cs, allLocations }),
+      !!displayCalendar && minDate2 && selectedMethod && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           Calendar_default,
           {
-            minDate,
+            minDate: minDate2,
             setCheckoutData,
             checkoutData,
-            penguinCart,
-            lockerReserved,
-            setLockerReserved,
-            url: app_url,
+            penguinCart: penguinCart2,
+            lockerReserved: lockerReserved2,
+            setLockerReserved: setLockerReserved2,
+            url: app_url2,
             selectedMethod
           }
         ),
-        !!((_a = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _a.selectedLocation) && !!(checkoutData == null ? void 0 : checkoutData.checkout_date) && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+        !!((_a = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _a.selectedLocation) && !!(checkoutData == null ? void 0 : checkoutData.checkout_date) && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           PickupInfoCard_default,
           {
             location: checkoutData.pickup.selectedLocation,
@@ -22577,17 +22663,17 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/Shipping.jsx
-  var import_jsx_runtime13 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime14 = __toESM(require_jsx_runtime());
   var Shipping_default = reactExtension(
     "purchase.checkout.shipping-option-list.render-after",
-    () => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ShippingPanel, {})
+    () => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ShippingPanel, {})
   );
   var ShippingPanel = () => {
     const deliveryGroups = useDeliveryGroups();
     console.log("______________ ", deliveryGroups);
-    return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Heading2, { children: "Here's the shipping section" }),
-      deliveryGroups[0].deliveryOptions.map((group) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Heading2, { children: group.title }) }))
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Heading2, { children: "Here's the shipping section" }),
+      deliveryGroups[0].deliveryOptions.map((group) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Heading2, { children: group.title }) }))
     ] });
   };
 })();
