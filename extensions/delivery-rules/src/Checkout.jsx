@@ -107,7 +107,7 @@ function Extension() {
     // const t =  () => {
     //   t();
     // }
-
+    // TODO remove penguin attribute values on first APP render 
     Object.keys(attributes).forEach(async (key) => {
       await changeAttributes({
         type: "updateAttribute",
@@ -233,6 +233,8 @@ function Extension() {
             setDisplayCalendar={setDisplayCalendar}
             globalLoad={globalLoad}
             setGlobalLoad={setGlobalLoad}
+            minDate={minDate}
+
           />
         </>
       ) : extension.target ===
@@ -266,7 +268,7 @@ function Extension() {
       {!!cs.status && (
         <CSPortal setCS={setCS} cs={cs} allLocations={allLocations} />
       )}
-      {!!displayCalendar && minDate && selectedMethod && (
+      {/* {!!displayCalendar && minDate && selectedMethod && (
         <>
           <Calendar
             minDate={minDate}
@@ -286,7 +288,7 @@ function Extension() {
               />
             )}
         </>
-      )}
+      )} */}
     </>
   );
 }

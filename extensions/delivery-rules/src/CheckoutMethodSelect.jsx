@@ -72,6 +72,11 @@ const CheckoutMethodSelect = ({
     },
   };
 
+  /*
+  TODO Implement reserve timer state for the method-select component (mirror quick collect)
+  */
+ 
+
   const [hover, setHover] = useState(null);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);

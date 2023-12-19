@@ -22,9 +22,13 @@ import {
   useAttributeValues,
   useAttributes,
   useStorage,
+  Banner,
+  Text,
+  TextBlock,
 } from "@shopify/ui-extensions-react/checkout";
 import { getDay } from "date-fns";
 import LocationsSelect from "./LocationsSelect.jsx";
+import LockerCountdown from "./LockerCountdown.jsx";
 
 const QuickCollect = ({
   lineItems,
@@ -41,11 +45,14 @@ const QuickCollect = ({
   setAvailableMethods,
   setSelectedMethod,
   globalLoad,
-
+  penguinCart,
   displayCalendar,
   selectedMethod,
+  minDate
 }) => {
   const nextDayMeta = useAppMetafields();
+  const [reserveTime, setReserveTime] = useState(0);
+  const [test, setTest] = useState('empty')
   const [loading, setLoading] = useState(
     checkoutData?.pickup?.qCollectLocations ? false : true
   );
@@ -109,10 +116,17 @@ const QuickCollect = ({
         inlineAlignment={"center"}
         blockSize="fill"
       >
+        {!!reserveTime && (
+          <Banner status="success">
+            <View blockAlignment={"center"} inlineAlignment={"center"}>
+              <TextBlock>Locker reserved successfully!</TextBlock>
+              <LockerCountdown reserveTime={reserveTime} />
+            </View>
+          </Banner>
+        )}
         {!globalLoad ? (
           <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
-       
-            {!!checkoutData?.pickup && (
+            {!!checkoutData?.pickup && displayCalendar && (
               <>
                 {!checkoutData?.checkout_date ? (
                   <LocationsSelect
@@ -155,6 +169,9 @@ const QuickCollect = ({
                   setLockerReserved={setLockerReserved}
                   url={app_url}
                   selectedMethod={selectedMethod}
+                  setReserveTime={setReserveTime}
+                  setTest={setTest}
+                  prop={"prop"}
                 />
                 {!!checkoutData?.pickup?.selectedLocation &&
                   !!checkoutData?.checkout_date && (

@@ -1,22 +1,73 @@
 {
     "workbench.colorCustomizations": {
-        "activityBar.activeBackground": "#fbed80",
-        "activityBar.background": "#fbed80",
-        "activityBar.foreground": "#15202b",
-        "activityBar.inactiveForeground": "#15202b99",
-        "activityBarBadge.background": "#06b9a5",
+        "activityBar.activeBackground": "#0080d9",
+        "activityBar.background": "#0080d9",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#ff9fd8",
         "activityBarBadge.foreground": "#15202b",
-        "commandCenter.border": "#15202b99",
-        "sash.hoverBorder": "#fbed80",
-        "statusBar.background": "#f9e64f",
-        "statusBar.foreground": "#15202b",
-        "statusBarItem.hoverBackground": "#f7df1e",
-        "statusBarItem.remoteBackground": "#f9e64f",
-        "statusBarItem.remoteForeground": "#15202b",
-        "titleBar.activeBackground": "#f9e64f",
-        "titleBar.activeForeground": "#15202b",
-        "titleBar.inactiveBackground": "#f9e64f99",
-        "titleBar.inactiveForeground": "#15202b99"
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#0080d9",
+        "statusBar.background": "#0062a6",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#0080d9",
+        "statusBarItem.remoteBackground": "#0062a6",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#0062a6",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#0062a699",
+        "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "peacock.color": "#f9e64f"
+    "peacock.color": "#0062A6",
+    "peacock.favoriteColors": [
+
+        {
+            "name": "Pacific",
+            "value": "#0062A6"
+        },
+        {
+            "name": "Lavender",
+            "value": "#BFB6D7"
+        },
+        {
+            "name": "Mown Grass",
+            "value": "#70AE46"
+        },
+        {
+            "name": "Ruby Red",
+            "value": "#D22823"
+        },
+        {
+            "name": "Terracotta",
+            "value": "#E46641"
+        },
+        {
+            "name": "Warm Sunlight",
+            "value": "#F7CC58"
+        },
+        {
+            "name": "Silver Fox",
+            "value": "#B2B2B2"
+        },
+        {
+            "name": "Clear Ocean",
+            "value": "#CCE9FF"
+        },
+        {
+            "name": "Tangerine",
+            "value": "#F29229"
+        },
+        {
+            "name": "Blackcurrant",
+            "value": "#5C2C94"
+        },
+        {
+            "name": "Parma Violet",
+            "value": "#BA8CBC"
+        },
+        {
+            "name": "Pink Lemonade",
+            "value": "#E04F85"
+        }
+    ]
 }

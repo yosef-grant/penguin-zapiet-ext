@@ -11,6 +11,8 @@ import { Grid, TextBlock, View } from "@shopify/ui-extensions/checkout";
 import React from "react";
 
 const LockerReserve = ({ handleLockerReserve, ui }) => {
+
+
   return (
     <View padding={["base", "none", "none", "none"]}>
       <Grid>

@@ -39,12 +39,26 @@ const Calendar = ({
   setLockerReserved,
   url,
   selectedMethod,
+  setReserveTime,
+  setTest,
+  prop
 }) => {
   console.log(
     "::::: from calendar: ",
     minDate,
-    format(new Date(minDate), dateFormat)
+    format(new Date(minDate), dateFormat),
+    setTest,
+    setReserveTime,
+    
+
   );
+
+
+  useEffect(() => {
+    console.log('!!!!!!!!!!!!!!',prop);
+  }, [])
+
+
   const attr = useAttributes();
   const attrList = attr.reduce(
     (obj, item) => ({
@@ -207,6 +221,7 @@ const Calendar = ({
       let { data } = await lockerRes.json();
 
       console.log("order-creation-res", data, data.lockerID);
+      setReserveTime(Date.now() + 1000 * 60 * 10);
 
       await changeAttributes({
         type: "updateAttribute",

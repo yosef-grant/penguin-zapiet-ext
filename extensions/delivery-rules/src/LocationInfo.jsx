@@ -50,9 +50,9 @@ const LocationInfo = ({
 
   const handleFinalLocationSelect = async () => {
     setLoading(true);
-    setDisplayCalendar((displayCalender) => {
-      return displayCalender ? false : null;
-    });
+    // setDisplayCalendar((displayCalender) => {
+    //   return displayCalender ? false : null;
+    // });
 
     let targetLocationAddr = {
       address1: location.info.address_line_1,
@@ -107,9 +107,9 @@ const LocationInfo = ({
         dates: locData.dates,
       },
     };
+    setDisplayCalendar(true);
     setCheckoutData(JSON.parse(JSON.stringify(x)));
     setLoading(false);
-    setDisplayCalendar(true);
   };
 
   const getLocationDates = async (location) => {
