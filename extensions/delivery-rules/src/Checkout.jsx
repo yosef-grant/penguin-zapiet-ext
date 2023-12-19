@@ -15,7 +15,12 @@ import {
 import QuickCollect from "./QuickCollect.jsx";
 import Calendar from "./Calendar.jsx";
 import CheckoutMethodSelect from "./CheckoutMethodSelect.jsx";
-import { Heading, HeadingGroup } from "@shopify/ui-extensions/checkout";
+import {
+  Heading,
+  Icon,
+  Pressable,
+  View,
+} from "@shopify/ui-extensions/checkout";
 import PickupInfoCard from "./PickupInfoCard.jsx";
 import CSPortal from "./CSPortal.jsx";
 
@@ -185,6 +190,30 @@ function Extension() {
       {extension.target === "purchase.checkout.block.render" ? (
         <>
           <Heading level={1}>Quick Collect</Heading>
+          {checkoutData.pickup?.selectedLocation &&
+            checkoutData?.pickup?.selectedLocation?.dates && (
+              <>
+                <View
+                  position={{
+                    type: "absolute",
+                    blockStart: `${0}%`,
+                    inlineEnd: 0,
+                  }}
+                >
+                  <Pressable
+                    onPress={() => handleReset()}
+                    border={"base"}
+                    cornerRadius={"fullyRounded"}
+                    backgroud={"subdued"}
+                    padding={"extraTight"}
+                    inlineAlignment={"center"}
+                    blockAlignment={"center"}
+                  >
+                    <Icon source="close" appearance={"critical"} />
+                  </Pressable>
+                </View>
+              </>
+            )}
           <QuickCollect
             lineItems={lineItems}
             changeShippingAddress={changeShippingAddress}

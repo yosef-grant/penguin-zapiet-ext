@@ -8,7 +8,7 @@ import React from "react";
 
 const LocationFilters = ({ filters, setFilters }) => {
   return (
-    <View>
+    <View blockAlignment="center" inlineAlignment="end" padding={["none", "none", "tight", "none"]}>
       <ChoiceList
         name="choiceMultiple"
         value={filters}

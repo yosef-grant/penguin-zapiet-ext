@@ -18,7 +18,7 @@ import {
 import React, { useEffect, useState } from "react";
 
 // req format = YYYY-MM-DD; potential for issues with IOS/SAFARI
-
+import LockerReserve from "./LockerReserve.jsx";
 import format from "date-fns/format";
 import {
   Button,
@@ -275,11 +275,29 @@ const Calendar = ({
   useEffect(() => {
     handleDateSelect(format(new Date(minDate), dateFormat));
   }, []);
-  
+
+  const getHeading = () => {
+    let y = attrList["Checkout-Method"];
+    let type;
+
+    switch (y) {
+      case "delivery":
+        type = "Postal";
+        break;
+      case "pickup":
+        type = "Collection";
+        break;
+      case "shipping":
+        type = "Delivery";
+        break;
+    }
+
+    return `Select ${type} Date`;
+  };
 
   return (
-    <View padding={["loose", "none", "loose", "none"]}>
-      <Heading>Select Delivery Date</Heading>
+    <View padding={["tight", "none", "loose", "none"]}>
+      <Heading>{getHeading()}</Heading>
       <BlockSpacer spacing="loose" />
       <DatePicker
         selected={
@@ -290,20 +308,7 @@ const Calendar = ({
       />
 
       {attrList["Pickup-Location-Type"] === "lockers" && (
-        <Button
-          overlay={
-            <Modal id="reservation-confirm" padding={true}>
-              <Heading>Confirm Reservation</Heading>
-              <Text>Do you wish to confirm your locker reservation?</Text>
-              <Button onPress={() => ui.overlay.close("reservation-confirm")}>
-                Cancel
-              </Button>
-              <Button onPress={() => handleLockerReserve()}>Confirm</Button>
-            </Modal>
-          }
-        >
-          Reserve Locker
-        </Button>
+        <LockerReserve handleLockerReserve={handleLockerReserve} ui={ui} />
       )}
     </View>
   );

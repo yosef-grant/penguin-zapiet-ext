@@ -7,9 +7,15 @@ import {
   TextField,
   Button,
   Spinner,
+  Grid,
 } from "@shopify/ui-extensions/checkout";
 
 import {
+  BlockSpacer,
+  Icon,
+  InlineSpacer,
+  InlineStack,
+  Pressable,
   useApi,
   useAppMetafields,
   useApplyAttributeChange,
@@ -35,7 +41,7 @@ const QuickCollect = ({
   setAvailableMethods,
   setSelectedMethod,
   globalLoad,
-  setGlobalLoad,
+
   displayCalendar,
   selectedMethod,
 }) => {
@@ -44,9 +50,8 @@ const QuickCollect = ({
     checkoutData?.pickup?.qCollectLocations ? false : true
   );
 
-  const [disabled, setDisabled] = useState(false);
-
   const changeAttributes = useApplyAttributeChange();
+  const [disabled, setDisabled] = useState(false);
 
   const attributes = useAttributes();
   const storage = useStorage();
@@ -97,60 +102,75 @@ const QuickCollect = ({
   };
 
   return (
-    <View
-      padding={["base", "none", "base", "none"]}
-      blockAlignment="center"
-      inlineAlignment={"center"}
-    >
-      {!globalLoad ? (
-        <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
-          {checkoutData.pickup?.selectedLocation && (
-            <Button kind="plain" onPress={() => handleReset()}>
-              Cancel
-            </Button>
-          )}
-          {!!checkoutData?.pickup && (
-            <LocationsSelect
-              locations={checkoutData.pickup.qCollectLocations}
-              checkoutData={checkoutData}
-              setCheckoutData={setCheckoutData}
-              setMinDate={setMinDate}
-              nextDay={nextDay}
-              cart={cart}
-              setPenguinCart={setPenguinCart}
-              url={url}
-              setSelectedMethod={setSelectedMethod}
-              setDisplayCalendar={setDisplayCalendar}
-              pathway={"quick-collect"}
-              disabled={disabled}
-            />
-          )}
-          {!!displayCalendar && minDate && selectedMethod && (
-            <>
-              <Calendar
-                minDate={minDate}
-                setCheckoutData={setCheckoutData}
-                checkoutData={checkoutData}
-                penguinCart={penguinCart}
-                lockerReserved={lockerReserved}
-                setLockerReserved={setLockerReserved}
-                url={app_url}
-                selectedMethod={selectedMethod}
-              />
-              {!!checkoutData?.pickup?.selectedLocation &&
-                !!checkoutData?.checkout_date && (
-                  <PickupInfoCard
-                    location={checkoutData.pickup.selectedLocation}
+    <>
+      <View
+        padding={["loose", "none", "base", "none"]}
+        blockAlignment="center"
+        inlineAlignment={"center"}
+        blockSize="fill"
+      >
+        {!globalLoad ? (
+          <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
+       
+            {!!checkoutData?.pickup && (
+              <>
+                {!checkoutData?.checkout_date ? (
+                  <LocationsSelect
+                    locations={checkoutData.pickup.qCollectLocations}
                     checkoutData={checkoutData}
+                    setCheckoutData={setCheckoutData}
+                    setMinDate={setMinDate}
+                    nextDay={nextDay}
+                    cart={cart}
+                    setPenguinCart={setPenguinCart}
+                    url={url}
+                    setSelectedMethod={setSelectedMethod}
+                    setDisplayCalendar={setDisplayCalendar}
+                    pathway={"quick-collect"}
+                    disabled={disabled}
                   />
+                ) : (
+                  <View
+                    inlineAlignment="start"
+                    blockAlignment="start"
+                    blockSize="fill"
+                    display="inline"
+                  >
+                    <Heading>
+                      Collecting from:{" "}
+                      {checkoutData.pickup.selectedLocation.info.company_name}
+                    </Heading>
+                  </View>
                 )}
-            </>
-          )}
-        </View>
-      ) : (
-        <Spinner size="large" accessibilityLabel="Getting pickup locations" />
-      )}
-    </View>
+              </>
+            )}
+            {!!displayCalendar && minDate && selectedMethod && (
+              <>
+                <Calendar
+                  minDate={minDate}
+                  setCheckoutData={setCheckoutData}
+                  checkoutData={checkoutData}
+                  penguinCart={penguinCart}
+                  lockerReserved={lockerReserved}
+                  setLockerReserved={setLockerReserved}
+                  url={app_url}
+                  selectedMethod={selectedMethod}
+                />
+                {!!checkoutData?.pickup?.selectedLocation &&
+                  !!checkoutData?.checkout_date && (
+                    <PickupInfoCard
+                      location={checkoutData.pickup.selectedLocation}
+                      checkoutData={checkoutData}
+                    />
+                  )}
+              </>
+            )}
+          </View>
+        ) : (
+          <Spinner size="large" accessibilityLabel="Getting pickup locations" />
+        )}
+      </View>
+    </>
   );
 };
 
