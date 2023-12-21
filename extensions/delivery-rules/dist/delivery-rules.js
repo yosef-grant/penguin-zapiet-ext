@@ -20268,7 +20268,7 @@ ${errorInfo.componentStack}`);
             /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(LockerCountdown_default, { reserveTime })
           ] }) }),
           !globalLoad ? /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(View, { minInlineSize: "fill", opacity: disabled ? 50 : 100, children: [
-            !!(checkoutData == null ? void 0 : checkoutData.pickup) && !displayCalendar && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_jsx_runtime9.Fragment, { children: !(checkoutData == null ? void 0 : checkoutData.checkout_date) ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            !!(checkoutData == null ? void 0 : checkoutData.pickup) && displayCalendar && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_jsx_runtime9.Fragment, { children: !(checkoutData == null ? void 0 : checkoutData.checkout_date) ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
               LocationsSelect_default,
               {
                 locations: checkoutData.pickup.qCollectLocations,
