@@ -5,6 +5,7 @@ import {
   useDeliveryGroups,
 } from "@shopify/ui-extensions-react/checkout";
 
+
 export default reactExtension(
   "purchase.checkout.shipping-option-list.render-after",
   () => <ShippingPanel />
@@ -15,13 +16,16 @@ const ShippingPanel = () => {
 
   console.log("______________ ", deliveryGroups);
   return (
-    <>
-      <Heading>Here's the shipping section</Heading>
-      {deliveryGroups[0].deliveryOptions.map((group) => (
-        <View>
-          <Heading>{group.title}</Heading>
-        </View>
-      ))}
-    </>
+    deliveryGroups &&
+    deliveryGroups[0]?.deliveryOptions && (
+      <>
+        <Heading>Here's the shipping section</Heading>
+        {deliveryGroups[0].deliveryOptions.map((group) => (
+          <View key={group.handle}>
+            <Heading>{group.title}</Heading>
+          </View>
+        ))}
+      </>
+    )
   );
 };

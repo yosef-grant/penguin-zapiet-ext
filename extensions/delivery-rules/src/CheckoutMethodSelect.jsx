@@ -11,13 +11,18 @@ import {
 import { useEffect, useState } from "react";
 
 import {
+  InlineStack,
   useApplyAttributeChange,
   useAttributeValues,
   useAttributes,
   useShippingAddress,
   useStorage,
 } from "@shopify/ui-extensions-react/checkout";
+
 import LocationsSelect from "./LocationsSelect.jsx";
+import CancelBtn from "./CancelBtn.jsx";
+import CSPortal from "./CSPortal.jsx";
+import Calendar from "./Calendar.jsx";
 
 const CheckoutMethodSelect = ({
   availableMethods,
@@ -30,14 +35,23 @@ const CheckoutMethodSelect = ({
   checkoutData,
   selectedMethod,
   setSelectedMethod,
-  setCheckoutData,
+  resetMS,
+  setCollectLocations,
   setMinDate,
   setPenguinCart,
   collectLocation,
   setCollectLocation,
   setDisplayCalendar,
+  penguinCart,
+  lockerReserved,
+  setLockerReserved,
+  cs,
   setCS,
   globalLoad,
+  displayCalendar,
+  selectLocation,
+  confirmLocation,
+  selectDates,
 }) => {
   const icons = {
     delivery: {
@@ -75,11 +89,11 @@ const CheckoutMethodSelect = ({
   /*
   TODO Implement reserve timer state for the method-select component (mirror quick collect)
   */
- 
 
   const [hover, setHover] = useState(null);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [reserveTime, setReserveTime] = useState({});
   const attributes = useAttributes();
 
   useEffect(() => {
@@ -140,13 +154,13 @@ const CheckoutMethodSelect = ({
   };
 
   const checkPostcode = async () => {
+    setLoading(true);
     await changeAttributes({
       type: "updateAttribute",
       key: "buyer-pathway",
       value: "method-select",
-    })
+    });
     await storage.write("pathway", "method-select");
-    setLoading(true);
     console.log(shippingAddress.zip);
 
     if (shippingAddress.zip.length === 12) {
@@ -160,6 +174,7 @@ const CheckoutMethodSelect = ({
           address: { zip: "" },
         });
       }
+      setLoading(false);
     } else {
       let postcodeRes = await fetch(
         `https://api.postcodes.io/postcodes/${shippingAddress.zip}`,
@@ -203,18 +218,11 @@ const CheckoutMethodSelect = ({
           address: { zip: postcodeData.result.postcode },
         });
 
-        x = checkoutData;
-        x.qCollect = false;
-        x.delivery = pcCheckData.delivery;
-        x.shipping = pcCheckData.shipping;
-        x.pickup = {
-          qCollectLocations: x?.pickup?.qCollectLocations
-            ? x.pickup.qCollectLocations
-            : null,
-          collectLocations: pcCheckData.pickup.locations,
-        };
-
-        setCheckoutData(JSON.parse(JSON.stringify(x)));
+        setCollectLocations({
+          delivery: pcCheckData.delivery,
+          shipping: pcCheckData.shipping,
+          pickup_locations: pcCheckData.pickup.locations,
+        });
         setPostcode(shippingAddress.zip);
         setLoading(false);
       }
@@ -246,45 +254,64 @@ const CheckoutMethodSelect = ({
     return x;
   };
 
-  const handleMethodSelect = (method) => {
-    console.log("heres data from method select: ", checkoutData);
-    setSelectedMethod(method);
-    method === "pickup" ? setDisplayCalendar(false) : setDisplayCalendar(true);
-    method !== "pickup" ? setSelectedMethod(method) : null;
-    method !== "pickup" ? setMinDate(checkoutData[method].min_date) : null;
-    Object.keys(attrList).forEach(async (key) => {
-      console.log(key);
-      if (key === "Checkout-Method") {
-        await changeAttributes({
-          type: "updateAttribute",
-          key: key,
-          value: method,
-        });
-      } else if (key !== "Lolas-CS-Member" && key !== "Customer-Service-Note") {
-        await changeAttributes({
-          type: "updateAttribute",
-          key: key,
-          value: "",
-        });
-      }
-    });
+  const capitalise = (str) => {
+    const first = str.charAt(0).toUpperCase();
+    const r = str.slice(1, str.length);
+    return `${first}${r}`;
   };
 
-  const handleReset = async() => {
+  const handleMethodSelect = (method) => {
+    if (method !== selectedMethod) {
+      console.log("heres data from method select: ", checkoutData);
+      reserveTime?.expiry ? setReserveTime({}) : null;
+      setSelectedMethod(method);
+      setDisplayCalendar(false);
+      method !== "pickup" ? setSelectedMethod(method) : null;
+      method !== "pickup" ? setMinDate(checkoutData[method].min_date) : null;
+      Object.keys(attrList).forEach(async (key) => {
+        console.log("UUU ", key);
+
+        await changeAttributes({
+          type: "updateAttribute",
+          key: "Checkout-Method",
+          value: method,
+        });
+        if (
+          key !== "Lolas-CS-Member" &&
+          key !== "Customer-Service-Note" &&
+          key !== "buyer-pathway" &&
+          key !== "Checkout-Method"
+        ) {
+          // TODO strange behaviour when coming from pickup --> delivery; PM time remains in attr
+
+          await changeAttributes({
+            type: "updateAttribute",
+            key: key,
+            value: "",
+          });
+        }
+        if (method !== "pickup") {
+          await changeAttributes({
+            type: "updateAttribute",
+            key: `${capitalise(method)}-Date`,
+            value: checkoutData[method].min_date,
+          });
+        }
+      });
+    }
+  };
+
+  const handleReset = async () => {
     setPostcode(null);
-    const x = checkoutData;
-    x.delivery = null;
-    x.pickup.selectedLocation = null;
-    x.qCollect = null;
-    console.log("x from methods reset ::::::::::::: ", x);
-    setCheckoutData(JSON.parse(JSON.stringify(x)));
     setSelectedMethod(null);
+    setReserveTime({});
+    resetMS();
+    displayCalendar ? setDisplayCalendar(false) : null;
     await changeAttributes({
       type: "updateAttribute",
       key: "buyer-pathway",
       value: "",
-
-    })
+    });
   };
 
   return globalLoad ? (
@@ -293,21 +320,29 @@ const CheckoutMethodSelect = ({
     </View>
   ) : (
     <>
+      {!!cs.status && (
+        <CSPortal
+          setCS={setCS}
+          cs={cs}
+          allLocations={checkoutData.pickup.qCollectLocations}
+        />
+      )}
       {postcode ? (
-        <>
-          <Heading>
+        <View position={"relative"}>
+          <Heading level={2}>
             Choose Hand Delivery, Collection or Nationwide Postal
           </Heading>
-          <Button kind="link" onPress={() => handleReset()}>
-            Cancel
-          </Button>
+          <CancelBtn handler={handleReset} />
+
           <Grid
             columns={["fill", "fill", "fill"]}
             rows={["auto"]}
             spacing="loose"
+            padding={["base", "none", "base", "none"]}
           >
-            {Object.keys(availableMethods).map((key) => (
+            {Object.keys(availableMethods).map((key, i) => (
               <Pressable
+                key={`${key}${i}`}
                 disabled={checkNullDelivery(key)}
                 onPress={() => handleMethodSelect(key)}
                 onPointerEnter={() => setHover(key)}
@@ -327,47 +362,59 @@ const CheckoutMethodSelect = ({
               </Pressable>
             ))}
           </Grid>
-        </>
+        </View>
       ) : (
-        <View
-          blockAlignment="center"
-          inlineAlignment="center"
-          minInlineSize="fill"
-          opacity={disabled ? 50 : 100}
-        >
-          <Button
-            disabled={disabled ? true : false}
-            onPress={() => checkPostcode()}
-            loading={loading}
-          >
-            Choose Delivery Method
-          </Button>
+        <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
+          <Grid>
+            <Button
+              disabled={disabled ? true : false}
+              onPress={() => checkPostcode()}
+              loading={loading}
+            >
+              Choose Delivery Method
+            </Button>
+          </Grid>
         </View>
       )}
-      {!!selectedMethod &&
-        (selectedMethod === "delivery" || selectedMethod === "shipping" ? (
-          <Heading>{selectedMethod}</Heading>
-        ) : (
-          <>
-            <Heading>Choose a store or locker for pickup</Heading>
-
-            <LocationsSelect
-              locations={checkoutData.pickup.collectLocations}
-              setCheckoutData={setCheckoutData}
-              checkoutData={checkoutData}
-              setMinDate={setMinDate}
-              nextDay={nextDay}
-              cart={cart}
-              setPenguinCart={setPenguinCart}
-              url={url}
-              collectLocation={collectLocation}
-              setCollectLocation={setCollectLocation}
-              setSelectedMethod={setSelectedMethod}
-              setDisplayCalendar={setDisplayCalendar}
-              pathway={"method-select"}
-            />
-          </>
-        ))}
+      {!!selectedMethod && selectedMethod === "pickup" && !displayCalendar && (
+        <LocationsSelect
+          locations={checkoutData.pickup.collectLocations}
+          checkoutData={checkoutData}
+          setMinDate={setMinDate}
+          nextDay={nextDay}
+          cart={cart}
+          setPenguinCart={setPenguinCart}
+          url={url}
+          collectLocation={collectLocation}
+          setCollectLocation={setCollectLocation}
+          setSelectedMethod={setSelectedMethod}
+          setDisplayCalendar={setDisplayCalendar}
+          pathway={"method-select"}
+          selectLocation={selectLocation}
+          confirmLocation={confirmLocation}
+        />
+      )}
+      {((!!selectedMethod && selectedMethod !== "pickup") ||
+        (!!selectedMethod &&
+          selectedMethod === "pickup" &&
+          !!displayCalendar)) && (
+        <Calendar
+          minDate={
+            selectedMethod !== "pickup"
+              ? checkoutData[selectedMethod].min_date
+              : checkoutData.pickup.selectedLocation.dates.date
+          }
+          checkoutData={checkoutData}
+          penguinCart={penguinCart}
+          lockerReserved={lockerReserved}
+          setLockerReserved={setLockerReserved}
+          url={url}
+          selectedMethod={selectedMethod}
+          reserveTime={reserveTime}
+          setReserveTime={setReserveTime}
+          selectDates={selectDates}
+        />
+      )}
     </>
   );
 };

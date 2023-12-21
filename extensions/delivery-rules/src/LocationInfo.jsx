@@ -27,8 +27,6 @@ const weekdays = [
 
 const LocationInfo = ({
   location,
-  setCheckoutData,
-  checkoutData,
   setLoading,
   setDisplayCalendar,
   setPenguinCart,
@@ -37,16 +35,11 @@ const LocationInfo = ({
   cart,
   nextDay,
   url,
+  confirmLocation,
+  removeLocation,
 }) => {
-  console.log("PPPPPPPPPPPPPPPPPP location: ", location);
   const changeAttributes = useApplyAttributeChange();
   const changeShippingAddress = useApplyShippingAddressChange();
-
-  const reset = () => {
-    let x = checkoutData;
-    x.pickup.selectedLocation = null;
-    setCheckoutData(JSON.parse(JSON.stringify(x)));
-  };
 
   const handleFinalLocationSelect = async () => {
     setLoading(true);
@@ -60,13 +53,11 @@ const LocationInfo = ({
       zip: location.info.postal_code,
     };
 
-    if (pathway === "quick-collect") {
-      await changeAttributes({
-        type: "updateAttribute",
-        key: "buyer-pathway",
-        value: "quick-collect",
-      });
-    }
+    await changeAttributes({
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: pathway,
+    });
 
     await changeAttributes({
       type: "updateAttribute",
@@ -90,7 +81,6 @@ const LocationInfo = ({
       value: location.info.custom_attribute_1,
     });
 
-
     await changeShippingAddress({
       type: "updateShippingAddress",
       address: targetLocationAddr,
@@ -98,17 +88,8 @@ const LocationInfo = ({
 
     let locData = await getLocationDates(location);
 
-    let x = checkoutData;
-    x?.delivery ? null : (x.qCollect = true);
-    x.pickup = {
-      ...x.pickup,
-      selectedLocation: {
-        ...x.pickup.selectedLocation,
-        dates: locData.dates,
-      },
-    };
+    confirmLocation(locData.dates);
     setDisplayCalendar(true);
-    setCheckoutData(JSON.parse(JSON.stringify(x)));
     setLoading(false);
   };
 
@@ -168,20 +149,18 @@ const LocationInfo = ({
         <GridItem columnSpan={1} rowSpan={1}>
           <List marker={"none"} spacing="tight">
             {weekdays.map((weekday, i) => (
-              <>
-                <ListItem>
-                  <Text size={"medium"} emphasis="bold">
-                    {weekday.slice(0, 3)}:{" "}
-                  </Text>
-                  <Text size="large">
-                    {
-                      location.location_hours[
-                        `${weekday.toLowerCase()}_opening_hours`
-                      ]
-                    }
-                  </Text>
-                </ListItem>
-              </>
+              <ListItem key={`${weekday}${i}`}>
+                <Text size={"medium"} emphasis="bold">
+                  {weekday.slice(0, 3)}:{" "}
+                </Text>
+                <Text size="large">
+                  {
+                    location.location_hours[
+                      `${weekday.toLowerCase()}_opening_hours`
+                    ]
+                  }
+                </Text>
+              </ListItem>
             ))}
           </List>
         </GridItem>
@@ -194,7 +173,7 @@ const LocationInfo = ({
         blockAlignment={"center"}
         padding={["base", "none", "none", "none"]}
       >
-        <Button kind="secondary" onPress={() => reset()}>
+        <Button kind="secondary" onPress={() => removeLocation()}>
           Back
         </Button>
         <Button onPress={() => handleFinalLocationSelect()}>Select</Button>

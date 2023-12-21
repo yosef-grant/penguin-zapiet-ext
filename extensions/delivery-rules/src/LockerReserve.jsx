@@ -8,20 +8,23 @@ import {
   Pressable,
 } from "@shopify/ui-extensions-react/checkout";
 import { Grid, TextBlock, View } from "@shopify/ui-extensions/checkout";
-import React from "react";
+import React, {useState} from "react";
 
-const LockerReserve = ({ handleLockerReserve, ui }) => {
-
+const LockerReserve = ({ handleLockerReserve, ui, reserveTime, dateMatch, lockerLoading }) => {
 
   return (
     <View padding={["base", "none", "none", "none"]}>
       <Grid>
         <Button
+          disabled={dateMatch ? true : false}
           overlay={
             <Modal id="reservation-confirm" padding={true}>
               <View inlineAlignment={"center"} blockAlignment="center">
                 <Heading level={1}>Confirm Reservation</Heading>
-                <View padding={["base", "none", "none", "none"]} inlineAlignment={"center"}>
+                <View
+                  padding={["base", "none", "none", "none"]}
+                  inlineAlignment={"center"}
+                >
                   <TextBlock size="medium">
                     Do you wish to confirm your locker reservation?
                   </TextBlock>
@@ -41,13 +44,17 @@ const LockerReserve = ({ handleLockerReserve, ui }) => {
                   >
                     Cancel
                   </Button>
-                  <Button onPress={() => handleLockerReserve()}>Confirm</Button>
+                  <Button onPress={() => handleLockerReserve()} loading={lockerLoading}>Confirm</Button>
                 </InlineStack>
               </View>
             </Modal>
           }
         >
-          Reserve Locker
+          {!dateMatch && !reserveTime?.expiry
+            ? "Reserve Locker"
+            : !dateMatch && reserveTime?.expiry
+            ? "Change Reserved Date"
+            : "Reserved"}
         </Button>
       </Grid>
     </View>

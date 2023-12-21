@@ -8,6 +8,7 @@ import {
   Button,
   Spinner,
   Grid,
+  InlineLayout,
 } from "@shopify/ui-extensions/checkout";
 
 import {
@@ -29,6 +30,9 @@ import {
 import { getDay } from "date-fns";
 import LocationsSelect from "./LocationsSelect.jsx";
 import LockerCountdown from "./LockerCountdown.jsx";
+import Calendar from "./Calendar.jsx";
+import PickupInfoCard from "./PickupInfoCard.jsx";
+import BlockLoader from "./BlockLoader.jsx";
 
 const QuickCollect = ({
   lineItems,
@@ -40,7 +44,7 @@ const QuickCollect = ({
   setNextDay,
   setDisplayCalendar,
   checkoutData,
-  setCheckoutData,
+
   setPenguinCart,
   setAvailableMethods,
   setSelectedMethod,
@@ -48,14 +52,18 @@ const QuickCollect = ({
   penguinCart,
   displayCalendar,
   selectedMethod,
-  minDate
+  minDate,
+  lockerReserved,
+  setLockerReserved,
+  selectLocation,
+  confirmLocation, 
+  selectDates,
+  removeLocation,
+  
 }) => {
   const nextDayMeta = useAppMetafields();
-  const [reserveTime, setReserveTime] = useState(0);
-  const [test, setTest] = useState('empty')
-  const [loading, setLoading] = useState(
-    checkoutData?.pickup?.qCollectLocations ? false : true
-  );
+  const [reserveTime, setReserveTime] = useState({});
+
 
   const changeAttributes = useApplyAttributeChange();
   const [disabled, setDisabled] = useState(false);
@@ -63,9 +71,13 @@ const QuickCollect = ({
   const attributes = useAttributes();
   const storage = useStorage();
 
-  console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
+  // console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
 
   let savedPath = useAttributeValues(["buyer-pathway"]);
+
+  useEffect(() => {
+    console.log("should calendar display? ", displayCalendar);
+  }, [displayCalendar]);
 
   useEffect(() => {
     savedPath[0] === "method-select"
@@ -93,21 +105,6 @@ const QuickCollect = ({
     updateNextDayMeta();
   }, []);
 
-  const handleReset = async () => {
-    setMinDate(null);
-    let x = checkoutData;
-    x.qCollect = false;
-    x.pickup.selectedLocation = null;
-
-    setCheckoutData(JSON.parse(JSON.stringify(x)));
-    setDisplayCalendar(false);
-    await changeAttributes({
-      type: "updateAttribute",
-      key: "buyer-pathway",
-      value: "",
-    });
-  };
-
   return (
     <>
       <View
@@ -115,24 +112,16 @@ const QuickCollect = ({
         blockAlignment="center"
         inlineAlignment={"center"}
         blockSize="fill"
+        position="relative"
       >
-        {!!reserveTime && (
-          <Banner status="success">
-            <View blockAlignment={"center"} inlineAlignment={"center"}>
-              <TextBlock>Locker reserved successfully!</TextBlock>
-              <LockerCountdown reserveTime={reserveTime} />
-            </View>
-          </Banner>
-        )}
         {!globalLoad ? (
           <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
-            {!!checkoutData?.pickup && displayCalendar && (
+            {!!checkoutData?.pickup && (
               <>
-                {!checkoutData?.checkout_date ? (
+                {!displayCalendar ? (
                   <LocationsSelect
                     locations={checkoutData.pickup.qCollectLocations}
                     checkoutData={checkoutData}
-                    setCheckoutData={setCheckoutData}
                     setMinDate={setMinDate}
                     nextDay={nextDay}
                     cart={cart}
@@ -142,6 +131,9 @@ const QuickCollect = ({
                     setDisplayCalendar={setDisplayCalendar}
                     pathway={"quick-collect"}
                     disabled={disabled}
+                    selectLocation={selectLocation}
+                    confirmLocation={confirmLocation}
+                    removeLocation={removeLocation}
                   />
                 ) : (
                   <View
@@ -158,21 +150,21 @@ const QuickCollect = ({
                 )}
               </>
             )}
-            {!!displayCalendar && minDate && selectedMethod && (
+            {!!displayCalendar && (
               <>
                 <Calendar
                   minDate={minDate}
-                  setCheckoutData={setCheckoutData}
                   checkoutData={checkoutData}
                   penguinCart={penguinCart}
                   lockerReserved={lockerReserved}
                   setLockerReserved={setLockerReserved}
-                  url={app_url}
+                  url={url}
                   selectedMethod={selectedMethod}
+                  reserveTime={reserveTime}
                   setReserveTime={setReserveTime}
-                  setTest={setTest}
-                  prop={"prop"}
+                  selectDates={selectDates}
                 />
+
                 {!!checkoutData?.pickup?.selectedLocation &&
                   !!checkoutData?.checkout_date && (
                     <PickupInfoCard
@@ -182,9 +174,37 @@ const QuickCollect = ({
                   )}
               </>
             )}
+            {!!reserveTime?.expiry && (
+              <View padding={["tight", "none", "none", "none"]}>
+                <Banner status="success">
+                  <View
+                    blockAlignment={"start"}
+                    inlineAlignment={"start"}
+                    display="inline"
+                    minInlineSize={"fill"}
+                  >
+                    <InlineLayout
+                      columns={[`${50}%`, `${50}%`]}
+                      minInlineSize={"fill"}
+                    >
+                      <View>
+                        <Text>Locker reserved successfully!</Text>
+                      </View>
+
+                      <View inlineAlignment="end">
+                        <LockerCountdown reserveTime={reserveTime} />
+                      </View>
+                    </InlineLayout>
+                  </View>
+                </Banner>
+              </View>
+            )}
           </View>
         ) : (
-          <Spinner size="large" accessibilityLabel="Getting pickup locations" />
+          <Spinner
+            size="large"
+            accessibilityLabel="Getting pickup locations list"
+          />
         )}
       </View>
     </>

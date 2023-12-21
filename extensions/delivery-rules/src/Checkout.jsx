@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect, useReducer } from "react";
 
 import {
   reactExtension,
@@ -26,6 +26,8 @@ import CSPortal from "./CSPortal.jsx";
 
 import TestMS from "./tst/TestMS.jsx";
 import TestQC from "./tst/TestQC.jsx";
+import CancelBtn from "./CancelBtn.jsx";
+import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
 
 let b = "testing";
 
@@ -45,15 +47,66 @@ const QuickCollectRender = reactExtension(
 );
 
 const MethodSelectRender = reactExtension(
-  "purchase.checkout.delivery-address.render-before",
+  "purchase.checkout.shipping-option-list.render-before",
   () => <Extension />
 );
 
 export { QuickCollectRender, MethodSelectRender };
 
 function Extension() {
+  const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
+
+  const handleSetQLocations = (locations) => {
+    dispatch({
+      type: "acquired_q_locations",
+      all_locations: locations,
+    });
+  };
+
+  const handleSetCollectLocations = (data) => {
+    dispatch({
+      type: "acquired_general_delivery_info",
+      data: data,
+    });
+  };
+
+  const handleRemoveSelectedLocation = () => {
+    dispatch({
+      type: "selected_pickup_location_removed",
+    });
+  };
+
+  const handleSelectPickupLocation = (hours, description, location) => {
+    dispatch({
+      type: "selected_pickup_location_added",
+      hours: hours,
+      description: description,
+      location: location,
+    });
+  };
+
+  const handleConfirmPickupLocation = (dates) => {
+    dispatch({
+      type: "selected_pickup_location_confirmed",
+      location_dates: dates,
+    });
+  };
+
+  const handleSelectDates = (date, weekday) => {
+    dispatch({
+      type: "selected_dates",
+      date: date,
+      weekday: weekday,
+    });
+  };
+
+  const handleMSReset = () => {
+    dispatch({
+      type: "reset_MS_Checkout",
+    });
+  };
+
   const [qCollectLocation, setQCollectLocation] = useState(null);
-  const [checkoutData, setCheckoutData] = useState({});
   const [minDate, setMinDate] = useState(null);
   const [nextDay, setNextDay] = useState(false);
   const [availableMethods, setAvailableMethods] = useState(null);
@@ -64,7 +117,6 @@ function Extension() {
   const [postcode, setPostcode] = useState(null);
   const [selectedMethod, setSelectedMethod] = useState(null);
   const [cs, setCS] = useState({ status: false });
-  const [allLocations, setAllLocations] = useState(null);
 
   const [globalLoad, setGlobalLoad] = useState(true);
   const [testnum, setTestnum] = useState(1);
@@ -75,17 +127,7 @@ function Extension() {
     console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   }, [penguinCart]);
 
-  const app_url = "https://f6fd-212-140-232-13.ngrok-free.app";
-
-  const test = useAttributeValues([
-    "Checkout-Method",
-    "Pickup-Location-Company",
-    "Pickup-Location-Type",
-    "Pickup-Date",
-    "Pickup-AM-Hours",
-    "Pickup-PM-Hours",
-    "Pickup-Location-Id",
-  ]);
+  const app_url = "https://9c46-212-140-232-13.ngrok-free.app";
 
   let changeAttributes = useApplyAttributeChange();
 
@@ -103,11 +145,16 @@ function Extension() {
     {}
   );
 
+  console.log(attributes)
+
+  // TODO delete penguin order if reservation confirmed and user hits X button
+  // TODO hide reservation banner
+
   useEffect(() => {
     // const t =  () => {
     //   t();
     // }
-    // TODO remove penguin attribute values on first APP render 
+    // TODO remove penguin attribute values on first APP render
     Object.keys(attributes).forEach(async (key) => {
       await changeAttributes({
         type: "updateAttribute",
@@ -137,16 +184,13 @@ function Extension() {
         resBody
       );
       setAvailableMethods(resBody.methods);
-      let x = checkoutData;
-      x.pickup = { qCollectLocations: resBody.locations };
-
-      setCheckoutData(JSON.parse(JSON.stringify(x)));
+      handleSetQLocations(resBody.locations);
       setGlobalLoad(false);
     };
     checkoutData.pickup?.qCollectLocations.length ? null : validateCart();
   }, []);
 
-  console.table(attributes);
+  //console.table(attributes);
 
   const cart = lineItems.map((item) => {
     return {
@@ -185,34 +229,24 @@ function Extension() {
         };
   });
 
+  const handleReset = async () => {
+    setDisplayCalendar(false);
+    handleRemoveSelectedLocation();
+    await changeAttributes({
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "",
+    });
+  };
+
   return (
     <>
       {extension.target === "purchase.checkout.block.render" ? (
         <>
-          <Heading level={1}>Quick Collect</Heading>
-          {checkoutData.pickup?.selectedLocation &&
+          <Heading level={1} >Quick Collect</Heading>
+          {checkoutData?.pickup?.selectedLocation &&
             checkoutData?.pickup?.selectedLocation?.dates && (
-              <>
-                <View
-                  position={{
-                    type: "absolute",
-                    blockStart: `${0}%`,
-                    inlineEnd: 0,
-                  }}
-                >
-                  <Pressable
-                    onPress={() => handleReset()}
-                    border={"base"}
-                    cornerRadius={"fullyRounded"}
-                    backgroud={"subdued"}
-                    padding={"extraTight"}
-                    inlineAlignment={"center"}
-                    blockAlignment={"center"}
-                  >
-                    <Icon source="close" appearance={"critical"} />
-                  </Pressable>
-                </View>
-              </>
+              <CancelBtn handler={() => handleReset()} />
             )}
           <QuickCollect
             lineItems={lineItems}
@@ -220,7 +254,6 @@ function Extension() {
             setQCollectLocation={setQCollectLocation}
             qCollectLocation={qCollectLocation}
             cart={cart}
-            setCheckoutData={setCheckoutData}
             checkoutData={checkoutData}
             setMinDate={setMinDate}
             nextDay={nextDay}
@@ -230,15 +263,21 @@ function Extension() {
             setPenguinCart={setPenguinCart}
             setAvailableMethods={setAvailableMethods}
             setSelectedMethod={setSelectedMethod}
+            displayCalendar={displayCalendar}
             setDisplayCalendar={setDisplayCalendar}
             globalLoad={globalLoad}
             setGlobalLoad={setGlobalLoad}
             minDate={minDate}
-
+            lockerReserved={lockerReserved}
+            setLockerReserved={setLockerReserved}
+            selectLocation={handleSelectPickupLocation}
+            confirmLocation={handleConfirmPickupLocation}
+            selectDates={handleSelectDates}
+            removeLocation={handleRemoveSelectedLocation}
           />
         </>
       ) : extension.target ===
-        "purchase.checkout.delivery-address.render-before" ? (
+        "purchase.checkout.shipping-option-list.render-before" ? (
         <>
           <CheckoutMethodSelect
             availableMethods={availableMethods}
@@ -250,45 +289,30 @@ function Extension() {
             setAddress={changeShippingAddress}
             setSelectedMethod={setSelectedMethod}
             selectedMethod={selectedMethod}
-            setCheckoutData={setCheckoutData}
+            penguinCart={penguinCart}
+            lockerReserved={lockerReserved}
+            setLockerReserved={setLockerReserved}
             setMinDate={setMinDate}
             setPenguinCart={setPenguinCart}
             setCollectLocation={setCollectLocation}
             collectLocation={collectLocation}
+            cs={cs}
             setCS={setCS}
-            allLocations={allLocations}
             setDisplayCalendar={setDisplayCalendar}
             checkoutData={checkoutData}
             globalLoad={globalLoad}
             setGlobalLoad={setGlobalLoad}
             setTestnum={setTestnum}
+            displayCalendar={displayCalendar}
+            selectLocation={handleSelectPickupLocation}
+            confirmLocation={handleConfirmPickupLocation}
+            selectDates={handleSelectDates}
+            setCollectLocations={handleSetCollectLocations}
+            resetMS={handleMSReset}
+            removeLocation={handleRemoveSelectedLocation}
           />
         </>
       ) : null}
-      {!!cs.status && (
-        <CSPortal setCS={setCS} cs={cs} allLocations={allLocations} />
-      )}
-      {/* {!!displayCalendar && minDate && selectedMethod && (
-        <>
-          <Calendar
-            minDate={minDate}
-            setCheckoutData={setCheckoutData}
-            checkoutData={checkoutData}
-            penguinCart={penguinCart}
-            lockerReserved={lockerReserved}
-            setLockerReserved={setLockerReserved}
-            url={app_url}
-            selectedMethod={selectedMethod}
-          />
-          {!!checkoutData?.pickup?.selectedLocation &&
-            !!checkoutData?.checkout_date && (
-              <PickupInfoCard
-                location={checkoutData.pickup.selectedLocation}
-                checkoutData={checkoutData}
-              />
-            )}
-        </>
-      )} */}
     </>
   );
 }

@@ -16,6 +16,7 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import { useEffect, useState } from "react";
 
+
 const CSPortal = ({ setCS, cs, allLocations }) => {
   useEffect(() => {
     console.log("allLocations", allLocations);
@@ -59,7 +60,8 @@ const CSPortal = ({ setCS, cs, allLocations }) => {
                     .filter(
                       (location) => location.custom_attribute_1 !== "lockers"
                     )
-                    .map((filteredLocation) => ({
+                    .map((filteredLocation, i) => ({
+                      key: `${filteredLocation.id}${i}`,
                       value: filteredLocation.id,
                       label: filteredLocation.company_name,
                     }))}

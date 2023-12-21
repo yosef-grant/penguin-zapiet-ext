@@ -2,7 +2,7 @@ import { Text } from "@shopify/ui-extensions-react/checkout";
 import React, { useEffect, useState } from "react";
 
 const LockerCountdown = ({reserveTime}) => {
-  const [seconds, setSeconds] = useState(reserveTime);
+  const [seconds, setSeconds] = useState(reserveTime.expiry);
   const currentSecs = Date.now();
   const diff = Math.floor((seconds - currentSecs) / 1000);
   useEffect(() => {

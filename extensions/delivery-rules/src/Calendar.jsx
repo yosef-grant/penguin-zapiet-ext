@@ -32,7 +32,7 @@ import {
 const dateFormat = "yyyy-MM-dd";
 const Calendar = ({
   minDate,
-  setCheckoutData,
+
   checkoutData,
   penguinCart,
   lockerReserved,
@@ -41,23 +41,16 @@ const Calendar = ({
   selectedMethod,
   setReserveTime,
   setTest,
-  prop
+  prop,
+  reserveTime,
+  selectDates,
 }) => {
   console.log(
     "::::: from calendar: ",
     minDate,
     format(new Date(minDate), dateFormat),
-    setTest,
-    setReserveTime,
-    
-
+    checkoutData
   );
-
-
-  useEffect(() => {
-    console.log('!!!!!!!!!!!!!!',prop);
-  }, [])
-
 
   const attr = useAttributes();
   const attrList = attr.reduce(
@@ -71,6 +64,9 @@ const Calendar = ({
 
   const { ui } = useApi();
   const [selectedDate, setSelectedDate] = useState(null);
+  const [lockerLoading, setLockerLoading] = useState(false);
+
+  console.log(")))here is the selected Date: ", selectedDate);
 
   const handleYearMonthChange = (e, yearMonth) => {
     let currentMonth = getMonth(new Date()) - 1;
@@ -140,18 +136,17 @@ const Calendar = ({
     return x;
   };
 
+  useEffect(() => {
+    console.log("@@@ ", selectedDate);
+  }, [selectedDate]);
+
   const handleDateSelect = async (selected) => {
     console.log(selected);
 
     console.log("day selected: ", getDay(new Date(selected)));
 
-    setCheckoutData((checkoutData) => {
-      return {
-        ...checkoutData,
-        checkout_date: { date: selected, day: getWeekday(selected) },
-      };
-    });
     setSelectedDate(selected);
+    selectDates(selected, getWeekday(selected));
 
     if (attrList["Checkout-Method"] === "pickup") {
       await changeAttributes({
@@ -192,7 +187,7 @@ const Calendar = ({
 
   const handleLockerReserve = async () => {
     console.log("___---```---___ RESERVING PENGUIN LOCKER ", attrList);
-
+    setLockerLoading(true);
     if (
       attrList["Checkout-Method"] === "pickup" &&
       attrList["Pickup-Location-Type"] === "lockers"
@@ -221,7 +216,6 @@ const Calendar = ({
       let { data } = await lockerRes.json();
 
       console.log("order-creation-res", data, data.lockerID);
-      setReserveTime(Date.now() + 1000 * 60 * 10);
 
       await changeAttributes({
         type: "updateAttribute",
@@ -244,12 +238,15 @@ const Calendar = ({
         key: "Pickup-Penguin-Locker(s)",
         value: data.lockers,
       });
-
-      setLockerReserved(true);
     }
-
+    setLockerLoading(false);
+    setLockerReserved(true);
     console.log("___---```---___ AFTER RESERVING PENGUIN LOCKER ", attrList);
     ui.overlay.close("reservation-confirm");
+    setReserveTime({
+      expiry: Date.now() + 1000 * 60 * 10,
+      date: selectedDate,
+    });
   };
 
   const getDisabledDates = () => {
@@ -288,8 +285,9 @@ const Calendar = ({
   };
 
   useEffect(() => {
+    console.log("MIN DATE HERE: ", minDate);
     handleDateSelect(format(new Date(minDate), dateFormat));
-  }, []);
+  }, [minDate]);
 
   const getHeading = () => {
     let y = attrList["Checkout-Method"];
@@ -297,13 +295,13 @@ const Calendar = ({
 
     switch (y) {
       case "delivery":
-        type = "Postal";
+        type = "Delivery";
         break;
       case "pickup":
         type = "Collection";
         break;
       case "shipping":
-        type = "Delivery";
+        type = "Postal";
         break;
     }
 
@@ -312,7 +310,7 @@ const Calendar = ({
 
   return (
     <View padding={["tight", "none", "loose", "none"]}>
-      <Heading>{getHeading()}</Heading>
+      <Heading level={2}>{getHeading()}</Heading>
       <BlockSpacer spacing="loose" />
       <DatePicker
         selected={
@@ -323,7 +321,17 @@ const Calendar = ({
       />
 
       {attrList["Pickup-Location-Type"] === "lockers" && (
-        <LockerReserve handleLockerReserve={handleLockerReserve} ui={ui} />
+        <LockerReserve
+          handleLockerReserve={handleLockerReserve}
+          ui={ui}
+          reserveTime={reserveTime}
+          dateMatch={
+            reserveTime?.expiry && reserveTime.date === selectedDate
+              ? true
+              : false
+          }
+          lockerLoading={lockerLoading}
+        />
       )}
     </View>
   );
