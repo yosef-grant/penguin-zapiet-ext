@@ -19707,6 +19707,13 @@ ${errorInfo.componentStack}`);
     } = useApi();
     return useSubscription(lines);
   }
+  function useApplyCartLinesChange() {
+    const api = useApi();
+    if ("applyCartLinesChange" in api) {
+      return api.applyCartLinesChange;
+    }
+    throw new ExtensionHasNoMethodError("applyCartLinesChange", api.extension.target);
+  }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
   var import_react27 = __toESM(require_react(), 1);
@@ -21955,6 +21962,11 @@ ${errorInfo.componentStack}`);
       {}
     );
     let changeAttributes = useApplyAttributeChange();
+    let setCartLineAttr = useApplyCartLinesChange();
+    let deliveryGroups = useDeliveryGroups();
+    console.log(":::: del groups ::::", deliveryGroups);
+    let cartLines = useCartLines();
+    console.log(":CL: ", cartLines, cartLines[0].id);
     const { ui } = useApi();
     const [selectedDate, setSelectedDate] = (0, import_react36.useState)(null);
     const [lockerLoading, setLockerLoading] = (0, import_react36.useState)(false);
@@ -22059,6 +22071,16 @@ ${errorInfo.componentStack}`);
           value: selected
         });
       }
+      let t2 = yield setCartLineAttr({
+        type: "updateCartLine",
+        id: cartLines[0].id,
+        quantity: 59,
+        attributes: [{
+          key: "_deliveryID",
+          value: "testing"
+        }]
+      });
+      console.log("::^:: ", t2);
     });
     const handleLockerReserve = () => __async(void 0, null, function* () {
       console.log("___---```---___ RESERVING PENGUIN LOCKER ", attrList);
@@ -23087,3 +23109,4 @@ ${errorInfo.componentStack}`);
     ] });
   };
 })();
+//# sourceMappingURL=delivery-rules.js.map

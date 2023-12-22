@@ -1,6 +1,11 @@
 query RunInput {
   cart {
-  
+    lines {
+      attribute(key: "_deliveryID") {
+        key
+        value
+      }
+    }
     cost {
       totalAmount {
         amount

@@ -27,12 +27,14 @@ import {
   useApi,
   Text,
   useAttributes,
+  useApplyCartLinesChange,
+  useCartLines,
+  useDeliveryGroups,
 } from "@shopify/ui-extensions-react/checkout";
 
 const dateFormat = "yyyy-MM-dd";
 const Calendar = ({
   minDate,
-
   checkoutData,
   penguinCart,
   lockerReserved,
@@ -61,7 +63,14 @@ const Calendar = ({
     {}
   );
   let changeAttributes = useApplyAttributeChange();
+  let setCartLineAttr = useApplyCartLinesChange();
 
+  let deliveryGroups = useDeliveryGroups();
+
+  console.log(':::: del groups ::::' ,deliveryGroups)
+
+    let cartLines = useCartLines();
+    console.log(':CL: ', cartLines, cartLines[0].id)
   const { ui } = useApi();
   const [selectedDate, setSelectedDate] = useState(null);
   const [lockerLoading, setLockerLoading] = useState(false);
@@ -183,6 +192,20 @@ const Calendar = ({
         value: selected,
       });
     }
+
+    
+    
+    let t = await setCartLineAttr({
+      type: "updateCartLine",
+      id: cartLines[0].id,
+      quantity: 59,
+      attributes: [{
+        key: "_deliveryID",
+        value: "testing"
+      }]
+    })
+
+    console.log('::^:: ', t)
   };
 
   const handleLockerReserve = async () => {

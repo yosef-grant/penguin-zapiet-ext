@@ -34,23 +34,29 @@ export function run(input) {
   //     }
   //   }));
 
+  console.log(
+    "heres the total: ",
+    input.cart.cost.totalAmount.amount,
+    "heres the attribue: ",
+    JSON.stringify(input.cart),
+    input.cart.lines[0].attribute
+  );
+  let deliveryAttr = input.cart.lines[0].attribute;
 
-  console.log('heres the total: ', input.cart.cost.totalAmount.amount)
   let hideAll = input.cart.deliveryGroups
-    // * Collect all delivery groups 
-    .flatMap(group => group.deliveryOptions)
+    // * Collect all delivery groups
+    .flatMap((group) => group.deliveryOptions)
     // * Construct a HIDE operation for each
-    .map(option => /* @type {Operation} */({
+    .map((option) => /* @type {Operation} */ ({
       hide: {
         deliveryOptionHandle: option.handle,
-       
-      }
+      },
     }));
 
   // The @shopify/shopify_function package applies JSON.stringify() to your function result
   // and writes it to STDOUT
   return {
     //operations: []
-    operations: hideAll
+    operations: deliveryAttr?.value ? [] : hideAll,
   };
-};
+}
