@@ -2,10 +2,13 @@ query RunInput {
   cart {
     lines {
       attribute(key: "_deliveryID") {
-        key
         value
       }
     }
+    attribute(key: "Checkout-Method") {
+      value
+    }
+
     cost {
       totalAmount {
         amount
@@ -13,9 +16,12 @@ query RunInput {
     }
     deliveryGroups {
       deliveryAddress {
-        provinceCode
+        zip
       }
       deliveryOptions {
+        code
+        description
+        deliveryMethodType
         handle
         title
       }

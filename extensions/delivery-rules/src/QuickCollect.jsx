@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from "react";
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 
 import {
   Heading,
@@ -9,7 +9,7 @@ import {
   Spinner,
   Grid,
   InlineLayout,
-} from "@shopify/ui-extensions/checkout";
+} from '@shopify/ui-extensions/checkout';
 
 import {
   BlockSpacer,
@@ -26,13 +26,16 @@ import {
   Banner,
   Text,
   TextBlock,
-} from "@shopify/ui-extensions-react/checkout";
-import { getDay } from "date-fns";
-import LocationsSelect from "./LocationsSelect.jsx";
-import LockerCountdown from "./LockerCountdown.jsx";
-import Calendar from "./Calendar.jsx";
-import PickupInfoCard from "./PickupInfoCard.jsx";
-import BlockLoader from "./BlockLoader.jsx";
+} from '@shopify/ui-extensions-react/checkout';
+import { getDay } from 'date-fns';
+import LocationsSelect from './LocationsSelect.jsx';
+import LockerCountdown from './LockerCountdown.jsx';
+import Calendar from './Calendar.jsx';
+import PickupInfoCard from './PickupInfoCard.jsx';
+import BlockLoader from './BlockLoader.jsx';
+import CancelBtn from './CancelBtn.jsx';
+
+
 
 const QuickCollect = ({
   lineItems,
@@ -56,14 +59,13 @@ const QuickCollect = ({
   lockerReserved,
   setLockerReserved,
   selectLocation,
-  confirmLocation, 
+  confirmLocation,
   selectDates,
   removeLocation,
-  
+  penguinDelete
 }) => {
   const nextDayMeta = useAppMetafields();
   const [reserveTime, setReserveTime] = useState({});
-
 
   const changeAttributes = useApplyAttributeChange();
   const [disabled, setDisabled] = useState(false);
@@ -73,14 +75,14 @@ const QuickCollect = ({
 
   // console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
 
-  let savedPath = useAttributeValues(["buyer-pathway"]);
+  let savedPath = useAttributeValues(['buyer-pathway']);
 
   useEffect(() => {
-    console.log("should calendar display? ", displayCalendar);
+    console.log('should calendar display? ', displayCalendar);
   }, [displayCalendar]);
 
   useEffect(() => {
-    savedPath[0] === "method-select"
+    savedPath[0] === 'method-select'
       ? setDisabled(true)
       : !savedPath[0] && disabled
       ? setDisabled(false)
@@ -88,7 +90,7 @@ const QuickCollect = ({
   }, [attributes]);
 
   useEffect(() => {
-    console.log("global load from qc: ", globalLoad);
+    console.log('global load from qc: ', globalLoad);
   }, [globalLoad]);
 
   useEffect(() => {
@@ -96,7 +98,7 @@ const QuickCollect = ({
       let meta = nextDayMeta.map((meta) => {
         return JSON.parse(meta.metafield.value).next_day_delivery.value;
       });
-      console.log("meta: ", meta);
+      console.log('meta: ', meta);
       meta.includes(1) || meta.includes(null)
         ? setNextDay(true)
         : setNextDay(false);
@@ -105,12 +107,29 @@ const QuickCollect = ({
     updateNextDayMeta();
   }, []);
 
+  const handleReset = async () => {
+    setDisplayCalendar(false);
+    removeLocation();
+    penguinDelete();
+    setReserveTime({});
+    await changeAttributes({
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "",
+    });
+  };
+
   return (
     <>
+      <Heading level={1}>Quick Collect</Heading>
+      {checkoutData?.pickup?.selectedLocation &&
+        checkoutData?.pickup?.selectedLocation?.dates && (
+          <CancelBtn handler={() => handleReset()} />
+        )}
       <View
-        padding={["loose", "none", "base", "none"]}
+        padding={['loose', 'none', 'base', 'none']}
         blockAlignment="center"
-        inlineAlignment={"center"}
+        inlineAlignment={'center'}
         blockSize="fill"
         position="relative"
       >
@@ -129,7 +148,7 @@ const QuickCollect = ({
                     url={url}
                     setSelectedMethod={setSelectedMethod}
                     setDisplayCalendar={setDisplayCalendar}
-                    pathway={"quick-collect"}
+                    pathway={'quick-collect'}
                     disabled={disabled}
                     selectLocation={selectLocation}
                     confirmLocation={confirmLocation}
@@ -143,7 +162,7 @@ const QuickCollect = ({
                     display="inline"
                   >
                     <Heading>
-                      Collecting from:{" "}
+                      Collecting from:{' '}
                       {checkoutData.pickup.selectedLocation.info.company_name}
                     </Heading>
                   </View>
@@ -151,53 +170,18 @@ const QuickCollect = ({
               </>
             )}
             {!!displayCalendar && (
-              <>
-                <Calendar
-                  minDate={minDate}
-                  checkoutData={checkoutData}
-                  penguinCart={penguinCart}
-                  lockerReserved={lockerReserved}
-                  setLockerReserved={setLockerReserved}
-                  url={url}
-                  selectedMethod={selectedMethod}
-                  reserveTime={reserveTime}
-                  setReserveTime={setReserveTime}
-                  selectDates={selectDates}
-                />
-
-                {!!checkoutData?.pickup?.selectedLocation &&
-                  !!checkoutData?.checkout_date && (
-                    <PickupInfoCard
-                      location={checkoutData.pickup.selectedLocation}
-                      checkoutData={checkoutData}
-                    />
-                  )}
-              </>
-            )}
-            {!!reserveTime?.expiry && (
-              <View padding={["tight", "none", "none", "none"]}>
-                <Banner status="success">
-                  <View
-                    blockAlignment={"start"}
-                    inlineAlignment={"start"}
-                    display="inline"
-                    minInlineSize={"fill"}
-                  >
-                    <InlineLayout
-                      columns={[`${50}%`, `${50}%`]}
-                      minInlineSize={"fill"}
-                    >
-                      <View>
-                        <Text>Locker reserved successfully!</Text>
-                      </View>
-
-                      <View inlineAlignment="end">
-                        <LockerCountdown reserveTime={reserveTime} />
-                      </View>
-                    </InlineLayout>
-                  </View>
-                </Banner>
-              </View>
+              <Calendar
+                minDate={minDate}
+                checkoutData={checkoutData}
+                penguinCart={penguinCart}
+                lockerReserved={lockerReserved}
+                setLockerReserved={setLockerReserved}
+                url={url}
+                selectedMethod={selectedMethod}
+                reserveTime={reserveTime}
+                setReserveTime={setReserveTime}
+                selectDates={selectDates}
+              />
             )}
           </View>
         ) : (

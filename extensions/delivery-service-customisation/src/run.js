@@ -18,7 +18,7 @@ const NO_CHANGES = {
  */
 export function run(input) {
   // The message to be added to the delivery option
-  const message = "May be delayed due to weather conditions";
+  const message = 'May be delayed due to weather conditions';
 
   // let toRename = input.cart.deliveryGroups
   //   // Filter for delivery groups with a shipping address containing the affected state or province
@@ -35,13 +35,23 @@ export function run(input) {
   //   }));
 
   console.log(
-    "heres the total: ",
+    'heres the total: ',
     input.cart.cost.totalAmount.amount,
-    "heres the attribue: ",
-    JSON.stringify(input.cart),
-    input.cart.lines[0].attribute
+    'heres the attribute: ',
+    input.cart.lines[0].attribute?.value,
+    'heres the cart attributes: ',
+    input.cart.attribute
   );
   let deliveryAttr = input.cart.lines[0].attribute;
+  let total = input.cart.cost.totalAmount.amount;
+
+  const getOptions = (deliveryOptions, deliveryType) => {
+    let r = [];
+    deliveryOptions.forEach((option) => {
+      !option.title.toLowerCase().includes(deliveryType) ? r.push(option) : null;
+    });
+    return r;
+  };
 
   let hideAll = input.cart.deliveryGroups
     // * Collect all delivery groups
@@ -53,10 +63,40 @@ export function run(input) {
       },
     }));
 
+  let x = [];
+  let searchTerm;
+  
+  switch(deliveryAttr?.value) {
+    case "D":
+      searchTerm = "delivery";
+      break;
+    case "P":
+      searchTerm = "pickup";
+      break
+  }
+  input.cart.deliveryGroups.forEach((group) =>
+    
+    x.push(getOptions(group.deliveryOptions, searchTerm))
+  );
+
+  console.log('HeRES X : ', JSON.stringify(x));
+
+  let showDelivery = x[0].map((option) => ({
+    hide: {
+      deliveryOptionHandle: option.handle,
+    },
+  }));
+
   // The @shopify/shopify_function package applies JSON.stringify() to your function result
   // and writes it to STDOUT
   return {
     //operations: []
-    operations: deliveryAttr?.value ? [] : hideAll,
+    //operations: input.cart.attribute?.value === 'delivery' ? [] : hideAll,
+
+    // ? using the price as a lever works
+    operations:
+      //parseInt(total) <= 25 &&
+      //deliveryAttr?.value === 'testing' ? showDelivery : hideAll,
+      deliveryAttr?.value ? showDelivery : hideAll,
   };
 }

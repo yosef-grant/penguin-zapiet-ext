@@ -19,20 +19,19 @@ import {
   TextBlock,
   Button,
   Icon,
-} from "@shopify/ui-extensions-react/checkout";
-import LocationFilters from "./LocationFilters.jsx";
-import { Select, Heading } from "@shopify/ui-extensions/checkout";
-import { format, getDay } from "date-fns";
-import { useState, useEffect } from "react";
-import BlockLoader from "./BlockLoader.jsx";
-import LocationInfo from "./LocationInfo.jsx";
-import DisabledState from "./DisabledState.jsx";
-import LocationList from "./LocationList.jsx";
+} from '@shopify/ui-extensions-react/checkout';
+import LocationFilters from './LocationFilters.jsx';
+import { Select, Heading } from '@shopify/ui-extensions/checkout';
+import { format, getDay } from 'date-fns';
+import { useState, useEffect } from 'react';
+import BlockLoader from './BlockLoader.jsx';
+import LocationInfo from './LocationInfo.jsx';
+import DisabledState from './DisabledState.jsx';
+import LocationList from './LocationList.jsx';
 
 const LocationsSelect = ({
   locations,
   checkoutData,
-
   setMinDate,
   nextDay,
   cart,
@@ -44,14 +43,14 @@ const LocationsSelect = ({
   disabled,
   selectLocation,
   confirmLocation,
-  removeLocation
+  removeLocation,
 }) => {
   useEffect(() => {
-    console.log("£££££££££££££££ ", checkoutData);
+    console.log('£££££££££££££££ ', checkoutData);
   }, [checkoutData]);
 
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState(["stores", "lockers"]);
+  const [filters, setFilters] = useState(['stores', 'lockers']);
 
   const { query } = useApi();
 
@@ -67,7 +66,6 @@ const LocationsSelect = ({
                 query={query}
                 disabled={disabled}
                 checkoutData={checkoutData}
-  
                 filters={filters}
                 setSelectedMethod={setSelectedMethod}
                 selectLocation={selectLocation}
@@ -76,7 +74,6 @@ const LocationsSelect = ({
           ) : (
             <LocationInfo
               location={checkoutData.pickup.selectedLocation}
-
               checkoutData={checkoutData}
               setLoading={setLoading}
               setDisplayCalendar={setDisplayCalendar}

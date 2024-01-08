@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect, useReducer } from "react";
+import React, { useEffect, useState, useLayoutEffect, useReducer } from 'react';
 
 import {
   reactExtension,
@@ -10,26 +10,26 @@ import {
   useBuyerJourneyIntercept,
   useApi,
   useApplyAttributeChange,
-} from "@shopify/ui-extensions-react/checkout";
+} from '@shopify/ui-extensions-react/checkout';
 
-import QuickCollect from "./QuickCollect.jsx";
-import Calendar from "./Calendar.jsx";
-import CheckoutMethodSelect from "./CheckoutMethodSelect.jsx";
+import QuickCollect from './QuickCollect.jsx';
+import Calendar from './Calendar.jsx';
+import CheckoutMethodSelect from './CheckoutMethodSelect.jsx';
 import {
   Heading,
   Icon,
   Pressable,
   View,
-} from "@shopify/ui-extensions/checkout";
-import PickupInfoCard from "./PickupInfoCard.jsx";
-import CSPortal from "./CSPortal.jsx";
+} from '@shopify/ui-extensions/checkout';
+import PickupInfoCard from './PickupInfoCard.jsx';
+import CSPortal from './CSPortal.jsx';
 
-import TestMS from "./tst/TestMS.jsx";
-import TestQC from "./tst/TestQC.jsx";
-import CancelBtn from "./CancelBtn.jsx";
-import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
+import TestMS from './tst/TestMS.jsx';
+import TestQC from './tst/TestQC.jsx';
+import CancelBtn from './CancelBtn.jsx';
+import { checkoutDataReducer } from './reducer_functions/CheckoutDataMethods.jsx';
 
-let b = "testing";
+let b = 'testing';
 
 // const QuickCollectRender = reactExtension(
 //   'purchase.checkout.block.render',
@@ -42,12 +42,12 @@ let b = "testing";
 // );
 
 const QuickCollectRender = reactExtension(
-  "purchase.checkout.block.render",
+  'purchase.checkout.block.render',
   () => <Extension />
 );
 
 const MethodSelectRender = reactExtension(
-  "purchase.checkout.shipping-option-list.render-before",
+  'purchase.checkout.shipping-option-list.render-before',
   () => <Extension />
 );
 
@@ -58,27 +58,27 @@ function Extension() {
 
   const handleSetQLocations = (locations) => {
     dispatch({
-      type: "acquired_q_locations",
+      type: 'acquired_q_locations',
       all_locations: locations,
     });
   };
 
   const handleSetCollectLocations = (data) => {
     dispatch({
-      type: "acquired_general_delivery_info",
+      type: 'acquired_general_delivery_info',
       data: data,
     });
   };
 
   const handleRemoveSelectedLocation = () => {
     dispatch({
-      type: "selected_pickup_location_removed",
+      type: 'selected_pickup_location_removed',
     });
   };
 
   const handleSelectPickupLocation = (hours, description, location) => {
     dispatch({
-      type: "selected_pickup_location_added",
+      type: 'selected_pickup_location_added',
       hours: hours,
       description: description,
       location: location,
@@ -87,14 +87,14 @@ function Extension() {
 
   const handleConfirmPickupLocation = (dates) => {
     dispatch({
-      type: "selected_pickup_location_confirmed",
+      type: 'selected_pickup_location_confirmed',
       location_dates: dates,
     });
   };
 
   const handleSelectDates = (date, weekday) => {
     dispatch({
-      type: "selected_dates",
+      type: 'selected_dates',
       date: date,
       weekday: weekday,
     });
@@ -102,7 +102,7 @@ function Extension() {
 
   const handleMSReset = () => {
     dispatch({
-      type: "reset_MS_Checkout",
+      type: 'reset_MS_Checkout',
     });
   };
 
@@ -124,10 +124,10 @@ function Extension() {
   const lineItems = useCartLines();
 
   useEffect(() => {
-    console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
+    console.log(':><: THIS IS THE CURRENT PENGUIN CART: ', penguinCart);
   }, [penguinCart]);
 
-  const app_url = "https://9c46-212-140-232-13.ngrok-free.app";
+  const app_url = 'https://e610-81-103-75-43.ngrok-free.app';
 
   let changeAttributes = useApplyAttributeChange();
 
@@ -145,7 +145,7 @@ function Extension() {
     {}
   );
 
-  console.log(attributes)
+  console.log(attributes);
 
   // TODO delete penguin order if reservation confirmed and user hits X button
   // TODO hide reservation banner
@@ -157,23 +157,23 @@ function Extension() {
     // TODO remove penguin attribute values on first APP render
     Object.keys(attributes).forEach(async (key) => {
       await changeAttributes({
-        type: "updateAttribute",
+        type: 'updateAttribute',
         key: key,
-        value: "",
+        value: '',
       });
     });
   }, []);
 
   // initial validation
   useEffect(() => {
-    console.log("quick collect rendered: ", lineItems);
+    console.log('quick collect rendered: ', lineItems);
 
     const validateCart = async () => {
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(cart),
       });
 
@@ -194,8 +194,8 @@ function Extension() {
 
   const cart = lineItems.map((item) => {
     return {
-      variant_id: item.merchandise.id.replace(/\D/g, ""),
-      product_id: item.merchandise.product.id.replace(/\D/g, ""),
+      variant_id: item.merchandise.id.replace(/\D/g, ''),
+      product_id: item.merchandise.product.id.replace(/\D/g, ''),
       quantity: item.quantity,
     };
   });
@@ -204,50 +204,55 @@ function Extension() {
   const shippingAddress = useShippingAddress();
 
   useEffect(() => {
-    console.log("##################checkout data ", checkoutData);
+    console.log('##################checkout data ', checkoutData);
   }, [checkoutData]);
 
   useEffect(() => {
-    console.log("++++++++++++++ cs updated: ", cs);
+    console.log('++++++++++++++ cs updated: ', cs);
   }, [cs]);
 
   // use to intercept rogue behaviour that will screw up rates
   useBuyerJourneyIntercept(({ canBlockProgress }) => {
-    return canBlockProgress && attributes["Checkout-Method"]
+    return canBlockProgress && attributes['Checkout-Method']
       ? {
-          behavior: "block",
-          reason: "Invalid shipping country",
+          behavior: 'block',
+          reason: 'Invalid shipping country',
           errors: [
             {
               // An error without a `target` property is shown at page level
-              message: "Sorry, we can only ship to Canada",
+              message: 'Sorry, we can only ship to Canada',
             },
           ],
         }
       : {
-          behavior: "allow",
+          behavior: 'allow',
         };
   });
 
-  const handleReset = async () => {
-    setDisplayCalendar(false);
-    handleRemoveSelectedLocation();
-    await changeAttributes({
-      type: "updateAttribute",
-      key: "buyer-pathway",
-      value: "",
-    });
+  const deletePenguinReservation = async () => {
+    console.log(attributes);
+    if (attributes?.['Pickup-Penguin-Id']) {
+      console.log('&&&&&&&  penguin reservation in place - should be deleted');
+      try {
+        await fetch(`${app_url}/pza/delete-locker`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          body: JSON.stringify({ locker_id: attributes['Pickup-Penguin-Id'] }),
+        });
+      } catch (error) {
+        console.error(
+          `Failed to delete locker order ${attributes['Pickup-Penguin-Id']}`
+        );
+      }
+    } else return;
   };
 
   return (
     <>
-      {extension.target === "purchase.checkout.block.render" ? (
+      {extension.target === 'purchase.checkout.block.render' ? (
         <>
-          <Heading level={1} >Quick Collect</Heading>
-          {checkoutData?.pickup?.selectedLocation &&
-            checkoutData?.pickup?.selectedLocation?.dates && (
-              <CancelBtn handler={() => handleReset()} />
-            )}
           <QuickCollect
             lineItems={lineItems}
             changeShippingAddress={changeShippingAddress}
@@ -262,6 +267,7 @@ function Extension() {
             penguinCart={penguinCart}
             setPenguinCart={setPenguinCart}
             setAvailableMethods={setAvailableMethods}
+            selectedMethod={selectedMethod}
             setSelectedMethod={setSelectedMethod}
             displayCalendar={displayCalendar}
             setDisplayCalendar={setDisplayCalendar}
@@ -274,10 +280,11 @@ function Extension() {
             confirmLocation={handleConfirmPickupLocation}
             selectDates={handleSelectDates}
             removeLocation={handleRemoveSelectedLocation}
+            penguinDelete={deletePenguinReservation}
           />
         </>
       ) : extension.target ===
-        "purchase.checkout.shipping-option-list.render-before" ? (
+        'purchase.checkout.shipping-option-list.render-before' ? (
         <>
           <CheckoutMethodSelect
             availableMethods={availableMethods}
@@ -310,6 +317,7 @@ function Extension() {
             setCollectLocations={handleSetCollectLocations}
             resetMS={handleMSReset}
             removeLocation={handleRemoveSelectedLocation}
+            penguinDelete={deletePenguinReservation}
           />
         </>
       ) : null}

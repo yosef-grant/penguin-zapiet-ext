@@ -6,10 +6,10 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 
 
-export default reactExtension(
-  "purchase.checkout.shipping-option-list.render-after",
-  () => <ShippingPanel />
-);
+// export default reactExtension(
+//   "purchase.checkout.shipping-option-list.render-after",
+//   () => <ShippingPanel />
+// );
 
 const ShippingPanel = () => {
   const deliveryGroups = useDeliveryGroups();

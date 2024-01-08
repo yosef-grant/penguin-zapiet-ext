@@ -12,7 +12,6 @@ const LocationList = ({
   locations,
   query,
   disabled,
-
   checkoutData,
   filters,
   setSelectedMethod,
@@ -80,6 +79,7 @@ const LocationList = ({
 
     console.log("|||||||||||||||||||| data: ", metaobject);
 
+
     const {
       opening_hours: {
         references: {
@@ -103,8 +103,9 @@ const LocationList = ({
       locHours
     );
     // console.log("loc __--^^^--__ data ", locData);
-    selectLocation(locHours, metaobject.description.value, targetLocation[0]);
     setSelectedMethod("pickup");
+    selectLocation(locHours, metaobject.description.value, targetLocation[0]);
+  
   };
 
   const handleScroll = (posVal) => {
