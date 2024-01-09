@@ -41,6 +41,9 @@ const LocationInfo = ({
   const changeAttributes = useApplyAttributeChange();
   const changeShippingAddress = useApplyShippingAddressChange();
 
+
+  console.log('***^^^^*** this is the pathway PROP: ', pathway)
+
   const handleFinalLocationSelect = async () => {
     setLoading(true);
     // setDisplayCalendar((displayCalender) => {
@@ -52,12 +55,6 @@ const LocationInfo = ({
       city: location.info.city,
       zip: location.info.postal_code,
     };
-
-    await changeAttributes({
-      type: "updateAttribute",
-      key: "buyer-pathway",
-      value: pathway,
-    });
 
     await changeAttributes({
       type: "updateAttribute",
@@ -133,6 +130,18 @@ const LocationInfo = ({
     };
   };
 
+  const handleRemove = async() => {
+    
+    removeLocation();
+    await changeAttributes({
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: '',
+    });
+
+  }
+
+
   return (
     <View
       border={"base"}
@@ -173,7 +182,7 @@ const LocationInfo = ({
         blockAlignment={"center"}
         padding={["base", "none", "none", "none"]}
       >
-        <Button kind="secondary" onPress={() => removeLocation()}>
+        <Button kind="secondary" onPress={() => handleRemove()}>
           Back
         </Button>
         <Button onPress={() => handleFinalLocationSelect()}>Select</Button>

@@ -99,6 +99,10 @@ export function run(input) {
     case "P":
       searchTerm = "pickup";
       break;
+    // ! change for live
+    case "S": 
+      searchTerm = "standard";
+      break;
   }
   console.log("heres the delivery string: ", deliveryAttr?.value, deliveryStr);
   input.cart.deliveryGroups.forEach((group) =>

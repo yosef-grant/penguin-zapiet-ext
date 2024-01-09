@@ -1,41 +1,21 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 
-import {
-  Heading,
-  View,
-  Select,
-  TextField,
-  Button,
-  Spinner,
-  Grid,
-  InlineLayout,
-} from '@shopify/ui-extensions/checkout';
+import { Heading, View, Spinner } from '@shopify/ui-extensions/checkout';
 
 import {
-  BlockSpacer,
-  Icon,
-  InlineSpacer,
-  InlineStack,
-  Pressable,
-  useApi,
   useAppMetafields,
   useApplyAttributeChange,
   useAttributeValues,
   useAttributes,
   useStorage,
-  Banner,
-  Text,
-  TextBlock,
 } from '@shopify/ui-extensions-react/checkout';
 import { getDay } from 'date-fns';
 import LocationsSelect from './LocationsSelect.jsx';
 import LockerCountdown from './LockerCountdown.jsx';
 import Calendar from './Calendar.jsx';
 import PickupInfoCard from './PickupInfoCard.jsx';
-import BlockLoader from './BlockLoader.jsx';
 import CancelBtn from './CancelBtn.jsx';
-
-
+import DisabledState from './DisabledState.jsx';
 
 const QuickCollect = ({
   lineItems,
@@ -47,7 +27,6 @@ const QuickCollect = ({
   setNextDay,
   setDisplayCalendar,
   checkoutData,
-
   setPenguinCart,
   setAvailableMethods,
   setSelectedMethod,
@@ -62,7 +41,7 @@ const QuickCollect = ({
   confirmLocation,
   selectDates,
   removeLocation,
-  penguinDelete
+  penguinDelete,
 }) => {
   const nextDayMeta = useAppMetafields();
   const [reserveTime, setReserveTime] = useState({});
@@ -76,6 +55,8 @@ const QuickCollect = ({
   // console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
 
   let savedPath = useAttributeValues(['buyer-pathway']);
+
+  console.log('saved path from QC: ', savedPath[0]);
 
   useEffect(() => {
     console.log('should calendar display? ', displayCalendar);
@@ -113,9 +94,9 @@ const QuickCollect = ({
     penguinDelete();
     setReserveTime({});
     await changeAttributes({
-      type: "updateAttribute",
-      key: "buyer-pathway",
-      value: "",
+      type: 'updateAttribute',
+      key: 'buyer-pathway',
+      value: '',
     });
   };
 
@@ -134,56 +115,65 @@ const QuickCollect = ({
         position="relative"
       >
         {!globalLoad ? (
-          <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
-            {!!checkoutData?.pickup && (
-              <>
-                {!displayCalendar ? (
-                  <LocationsSelect
-                    locations={checkoutData.pickup.qCollectLocations}
-                    checkoutData={checkoutData}
-                    setMinDate={setMinDate}
-                    nextDay={nextDay}
-                    cart={cart}
-                    setPenguinCart={setPenguinCart}
-                    url={url}
-                    setSelectedMethod={setSelectedMethod}
-                    setDisplayCalendar={setDisplayCalendar}
-                    pathway={'quick-collect'}
-                    disabled={disabled}
-                    selectLocation={selectLocation}
-                    confirmLocation={confirmLocation}
-                    removeLocation={removeLocation}
-                  />
-                ) : (
-                  <View
-                    inlineAlignment="start"
-                    blockAlignment="start"
-                    blockSize="fill"
-                    display="inline"
-                  >
-                    <Heading>
-                      Collecting from:{' '}
-                      {checkoutData.pickup.selectedLocation.info.company_name}
-                    </Heading>
-                  </View>
+          <>
+            {!disabled ? (
+              <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
+                {!!checkoutData?.pickup && (
+                  <>
+                    {!displayCalendar ? (
+                      <LocationsSelect
+                        locations={checkoutData.pickup.qCollectLocations}
+                        checkoutData={checkoutData}
+                        setMinDate={setMinDate}
+                        nextDay={nextDay}
+                        cart={cart}
+                        setPenguinCart={setPenguinCart}
+                        url={url}
+                        setSelectedMethod={setSelectedMethod}
+                        setDisplayCalendar={setDisplayCalendar}
+                        pathway="quick-collect"
+                        disabled={disabled}
+                        selectLocation={selectLocation}
+                        confirmLocation={confirmLocation}
+                        removeLocation={removeLocation}
+                      />
+                    ) : (
+                      <View
+                        inlineAlignment="start"
+                        blockAlignment="start"
+                        blockSize="fill"
+                        display="inline"
+                      >
+                        <Heading>
+                          Collecting from:{' '}
+                          {
+                            checkoutData.pickup.selectedLocation.info
+                              .company_name
+                          }
+                        </Heading>
+                      </View>
+                    )}
+                  </>
                 )}
-              </>
+                {!!displayCalendar && (
+                  <Calendar
+                    minDate={minDate}
+                    checkoutData={checkoutData}
+                    penguinCart={penguinCart}
+                    lockerReserved={lockerReserved}
+                    setLockerReserved={setLockerReserved}
+                    url={url}
+                    selectedMethod={selectedMethod}
+                    reserveTime={reserveTime}
+                    setReserveTime={setReserveTime}
+                    selectDates={selectDates}
+                  />
+                )}
+              </View>
+            ) : (
+              <DisabledState />
             )}
-            {!!displayCalendar && (
-              <Calendar
-                minDate={minDate}
-                checkoutData={checkoutData}
-                penguinCart={penguinCart}
-                lockerReserved={lockerReserved}
-                setLockerReserved={setLockerReserved}
-                url={url}
-                selectedMethod={selectedMethod}
-                reserveTime={reserveTime}
-                setReserveTime={setReserveTime}
-                selectDates={selectDates}
-              />
-            )}
-          </View>
+          </>
         ) : (
           <Spinner
             size="large"

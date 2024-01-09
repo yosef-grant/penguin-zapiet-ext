@@ -3,10 +3,11 @@ import {
   ChoiceList,
   ScrollView,
   Text,
-} from "@shopify/ui-extensions-react/checkout";
-import React, { useState } from "react";
-
-
+  useApplyAttributeChange,
+  useApplyCartLinesChange,
+  useCartLines,
+} from '@shopify/ui-extensions-react/checkout';
+import React, { useState } from 'react';
 
 const LocationList = ({
   locations,
@@ -15,31 +16,41 @@ const LocationList = ({
   checkoutData,
   filters,
   setSelectedMethod,
-  selectLocation
+  selectLocation,
+  pathway,
 }) => {
   const [scrollPos, setScrollPos] = useState(null);
 
+  const changeAttributes = useApplyAttributeChange();
+  const setCartLineAttr = useApplyCartLinesChange();
+  const cartLines = useCartLines();
+
+
+  console.log('PATHWAY FROM LIST: ', pathway)
   const handleLocationSelect = async (val) => {
     console.log(
-      "llllllllllllllllllllll ",
+      'llllllllllllllllllllll ',
       checkoutData,
-      "\n",
-      "choice val: ",
-      val
-    );
+      '\n',
+      'choice val: ',
+      val, 
+      '\n current pathway: ',
+      pathway
+      );
+      
+      console.log('this is the id of the selected location! ', val);
 
-    console.log("this is the id of the selected location! ", val);
 
     let targetLocation = locations.filter(
-      (location) => location.id === parseInt(val)
+      (location) => location.id === parseInt(val.replace(/[^0-9]/g, ''))
     );
 
     let locationHandle = targetLocation[0].company_name
       .toLowerCase()
-      .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "")
-      .replaceAll(/\s/gm, "-");
+      .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, '')
+      .replaceAll(/\s/gm, '-');
 
-    console.log(";;;;;;;;;;;;;;;;;;; locationHandle ", locationHandle);
+    console.log(';;;;;;;;;;;;;;;;;;; locationHandle ', locationHandle);
 
     let {
       data: { metaobject },
@@ -77,8 +88,7 @@ const LocationList = ({
               `
     );
 
-    console.log("|||||||||||||||||||| data: ", metaobject);
-
+    console.log('|||||||||||||||||||| data: ', metaobject);
 
     const {
       opening_hours: {
@@ -96,16 +106,33 @@ const LocationList = ({
       {}
     );
 
+    await changeAttributes({
+      type: 'updateAttribute',
+      key: 'buyer-pathway',
+      value: pathway,
+    });
+
+    if (pathway === "quick-collect") {
+      await setCartLineAttr({
+        type: 'updateCartLine',
+        id: cartLines[0].id,
+        attributes: [
+          {
+            key: '_deliveryID',
+            value: 'P',
+          },
+        ],
+      });
+    }
     console.log(
-      ">>>>>>>>>>>> TIMES ",
+      '>>>>>>>>>>>> TIMES ',
       times,
-      "<<<<<<<<<<<<<<<<< HOURS: ",
+      '<<<<<<<<<<<<<<<<< HOURS: ',
       locHours
     );
     // console.log("loc __--^^^--__ data ", locData);
-    setSelectedMethod("pickup");
+    setSelectedMethod('pickup');
     selectLocation(locHours, metaobject.description.value, targetLocation[0]);
-  
   };
 
   const handleScroll = (posVal) => {
@@ -127,7 +154,7 @@ const LocationList = ({
     <>
       <ScrollView
         maxBlockSize={275}
-        hint={{ type: "pill", content: "Scroll for more options" }}
+        hint={{ type: 'pill', content: 'Scroll for more options' }}
         direction="block"
         scrollTo={scrollPos ? scrollPos : disabled ? 0 : null}
         onScroll={(pos) => handleScroll(pos)}
@@ -137,21 +164,20 @@ const LocationList = ({
           value={
             checkoutData.pickup?.selectedLocation
               ? `${checkoutData.pickup.selectedLocation.info.id}`
-              : ""
+              : ''
           }
           onChange={(id) => handleLocationSelect(id)}
           variant="group"
         >
           {getFilteredLocations().map((location, i) => (
             <Choice
-              key={`${location}${i}`}
-              id={`${location.id}`}
+              key={`${location}${pathway === "method-select" ? i : i +2}`}
+              id={`${location.id}-${pathway}`}
               secondaryContent={
-                location.distance !== null ? `${location.distance} miles` : ""
+                location.distance !== null ? `${location.distance} miles` : ''
               }
             >
-              <Text
-              appearance="decorative">{location.company_name}</Text>
+              <Text appearance="decorative">{location.company_name}</Text>
             </Choice>
           ))}
         </ChoiceList>
