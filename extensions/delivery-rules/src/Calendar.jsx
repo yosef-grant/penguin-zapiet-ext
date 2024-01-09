@@ -205,16 +205,16 @@ const Calendar = ({
       });
     }
 
-    await setCartLineAttr({
-      type: 'updateCartLine',
-      id: cartLines[0].id,
-      attributes: [
-        {
-          key: '_deliveryID',
-          value: selectedMethod.charAt(0).toUpperCase(),
-        },
-      ],
-    });
+    // await setCartLineAttr({
+    //   type: 'updateCartLine',
+    //   id: cartLines[0].id,
+    //   attributes: [
+    //     {
+    //       key: '_deliveryID',
+    //       value: selectedMethod.charAt(0).toUpperCase(),
+    //     },
+    //   ],
+    // });
 
     //console.log('::^:: ', t)
   };

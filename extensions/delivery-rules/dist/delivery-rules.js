@@ -22114,16 +22114,6 @@ ${errorInfo.componentStack}`);
           value: selected
         });
       }
-      yield setCartLineAttr({
-        type: "updateCartLine",
-        id: cartLines[0].id,
-        attributes: [
-          {
-            key: "_deliveryID",
-            value: selectedMethod.charAt(0).toUpperCase()
-          }
-        ]
-      });
     });
     const handleLockerReserve = () => __async(void 0, null, function* () {
       console.log("___---```---___ RESERVING PENGUIN LOCKER ", attrList);
@@ -22580,11 +22570,11 @@ ${errorInfo.componentStack}`);
     const [disabled, setDisabled] = (0, import_react43.useState)(false);
     const [error, setError] = (0, import_react43.useState)("");
     const [reserveTime, setReserveTime] = (0, import_react43.useState)({});
+    const [firstLoad, setFirstLoad] = (0, import_react43.useState)(true);
     const attributes = useAttributes();
-    (0, import_react43.useEffect)(() => {
-      console.log("@@@@@@@@@ ", availableMethods);
-    }, [availableMethods]);
     const shippingAddress = useShippingAddress();
+    let setCartLineAttr = useApplyCartLinesChange();
+    let cartLines = useCartLines();
     let changeAttributes = useApplyAttributeChange();
     const storage = useStorage();
     let savedPath = useAttributeValues(["buyer-pathway"]);
@@ -22592,12 +22582,68 @@ ${errorInfo.componentStack}`);
       savedPath[0] === "quick-collect" ? setDisabled(true) : !savedPath[0] && disabled ? setDisabled(false) : null;
     }, [attributes]);
     (0, import_react43.useEffect)(() => {
-      const checkStorage = () => __async(void 0, null, function* () {
-        let s3 = yield storage.read("pathway");
-        console.log("*************from method select: ", s3);
+      const handlePostcode = () => __async(void 0, null, function* () {
+        if (shippingAddress.zip) {
+          let postcodeRes = yield fetch(
+            `https://api.postcodes.io/postcodes/${shippingAddress.zip}`,
+            {
+              method: "GET"
+            }
+          );
+          let postcodeData = yield postcodeRes.json();
+          console.log(postcodeData.result);
+          if (postcodeData == null ? void 0 : postcodeData.result) {
+            console.log("valid postcode!");
+            let checkBody = {
+              methods: availableMethods,
+              postcode: postcodeData.result.postcode,
+              cart,
+              twoDayDelivery: nextDay
+            };
+            console.log("::::ND ", nextDay);
+            let checkRes = yield fetch(`${url}/pza/check-postcode-test`, {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              method: "POST",
+              body: JSON.stringify(checkBody)
+            });
+            let pcCheckData = yield checkRes.json();
+            console.log(
+              "postcode results: ",
+              postcodeData,
+              "\n Postcode availability data: ",
+              pcCheckData
+            );
+            yield setAddress({
+              type: "updateShippingAddress",
+              address: { zip: postcodeData.result.postcode }
+            });
+            setCollectLocations({
+              delivery: pcCheckData.delivery,
+              shipping: pcCheckData.shipping,
+              pickup_locations: pcCheckData.pickup.locations
+            });
+            setPostcode(shippingAddress.zip);
+            setSelectedMethod("pickup");
+            yield setCartLineAttr({
+              type: "updateCartLine",
+              id: cartLines[0].id,
+              attributes: [
+                {
+                  key: "_deliveryID",
+                  value: "P"
+                }
+              ]
+            });
+          }
+        } else {
+          selectedMethod ? setSelectedMethod(null) : null;
+          postcode ? setPostcode(null) : null;
+        }
       });
-      checkStorage();
-    }, [storage]);
+      handlePostcode();
+    }, [shippingAddress]);
     const attr = useAttributes();
     const attrList = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -22605,6 +22651,9 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
+    (0, import_react43.useEffect)(() => {
+      console.log("******* available methods: ", availableMethods);
+    }, [availableMethods]);
     const checkCS = (value) => __async(void 0, null, function* () {
       const res = yield fetch(`${url}/pza/check-pw`, {
         headers: {
@@ -22721,6 +22770,18 @@ ${errorInfo.componentStack}`);
         setDisplayCalendar(false);
         method !== "pickup" ? setSelectedMethod(method) : null;
         method !== "pickup" ? setMinDate(checkoutData[method].min_date) : null;
+        let dz = method === "delivery" ? checkoutData.delivery.delivery_zone.replace(/[^0-9.]/g, "") : null;
+        console.log("THE DZ ", dz, method);
+        yield setCartLineAttr({
+          type: "updateCartLine",
+          id: cartLines[0].id,
+          attributes: [
+            {
+              key: "_deliveryID",
+              value: dz ? `${method.charAt(0).toUpperCase()}%${dz}` : method.charAt(0).toUpperCase()
+            }
+          ]
+        });
         Object.keys(attrList).forEach((key) => __async(void 0, null, function* () {
           console.log("UUU ", key);
           yield changeAttributes({
@@ -22767,7 +22828,7 @@ ${errorInfo.componentStack}`);
           allLocations: checkoutData.pickup.qCollectLocations
         }
       ),
-      postcode ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(View, { position: "relative", children: [
+      postcode && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(View, { position: "relative", children: [
         /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Heading, { level: 2, children: "Choose Hand Delivery, Collection or Nationwide Postal" }),
         /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(CancelBtn_default, { handler: handleReset }),
         /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
@@ -22795,17 +22856,6 @@ ${errorInfo.componentStack}`);
             ))
           }
         )
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(View, { minInlineSize: "fill", opacity: disabled ? 50 : 100, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Grid, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          Button,
-          {
-            disabled: disabled ? true : false,
-            onPress: () => checkPostcode(),
-            loading,
-            children: "Choose Delivery Method"
-          }
-        ) }),
-        error && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Text2, { appearance: "critical", children: error })
       ] }),
       !!selectedMethod && selectedMethod === "pickup" && !displayCalendar && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
         LocationsSelect_default,
@@ -22984,7 +23034,7 @@ ${errorInfo.componentStack}`);
     (0, import_react46.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://e610-81-103-75-43.ngrok-free.app";
+    const app_url = "https://dfae-212-140-232-13.ngrok-free.app";
     let changeAttributes = useApplyAttributeChange();
     const { extension: extension2 } = useApi();
     const attr = useAttributes();
@@ -23145,3 +23195,4 @@ ${errorInfo.componentStack}`);
     ) }) : null });
   }
 })();
+//# sourceMappingURL=delivery-rules.js.map

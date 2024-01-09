@@ -7,8 +7,8 @@ import {
   Pressable,
   Image,
   Spinner,
-} from '@shopify/ui-extensions/checkout';
-import { useEffect, useState } from 'react';
+} from "@shopify/ui-extensions/checkout";
+import { useEffect, useState } from "react";
 
 import {
   InlineStack,
@@ -20,12 +20,12 @@ import {
   useCartLines,
   useShippingAddress,
   useStorage,
-} from '@shopify/ui-extensions-react/checkout';
+} from "@shopify/ui-extensions-react/checkout";
 
-import LocationsSelect from './LocationsSelect.jsx';
-import CancelBtn from './CancelBtn.jsx';
-import CSPortal from './CSPortal.jsx';
-import Calendar from './Calendar.jsx';
+import LocationsSelect from "./LocationsSelect.jsx";
+import CancelBtn from "./CancelBtn.jsx";
+import CSPortal from "./CSPortal.jsx";
+import Calendar from "./Calendar.jsx";
 
 const CheckoutMethodSelect = ({
   availableMethods,
@@ -60,33 +60,33 @@ const CheckoutMethodSelect = ({
   const icons = {
     delivery: {
       disabled:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_disabled.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_disabled.svg?v=1702292364",
       default:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_default.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_default.svg?v=1702292364",
       hover:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_hover.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_hover.svg?v=1702292364",
       selected:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_selected.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/delivery_selected.svg?v=1702292364",
     },
     pickup: {
       disabled:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_disabled.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_disabled.svg?v=1702292364",
       default:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_default.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_default.svg?v=1702292364",
       hover:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_hover.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_hover.svg?v=1702292364",
       selected:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_selected.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/collection_selected.svg?v=1702292364",
     },
     shipping: {
       disabled:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_unavailable.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_unavailable.svg?v=1702292364",
       default:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_default.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_default.svg?v=1702292364",
       hover:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_hover.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_hover.svg?v=1702292364",
       selected:
-        'https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_selected.svg?v=1702292364',
+        "https://cdn.shopify.com/s/files/1/0503/8954/9250/files/shipping_selected.svg?v=1702292364",
     },
   };
 
@@ -97,23 +97,24 @@ const CheckoutMethodSelect = ({
   const [hover, setHover] = useState(null);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [reserveTime, setReserveTime] = useState({});
+  const [firstLoad, setFirstLoad] = useState(true);
+
   const attributes = useAttributes();
 
-  useEffect(() => {
-    console.log('@@@@@@@@@ ', availableMethods);
-  }, [availableMethods]);
-
   const shippingAddress = useShippingAddress();
+  let setCartLineAttr = useApplyCartLinesChange();
+  let cartLines = useCartLines();
+
   let changeAttributes = useApplyAttributeChange();
 
   const storage = useStorage();
 
-  let savedPath = useAttributeValues(['buyer-pathway']);
+  let savedPath = useAttributeValues(["buyer-pathway"]);
 
   useEffect(() => {
-    savedPath[0] === 'quick-collect'
+    savedPath[0] === "quick-collect"
       ? setDisabled(true)
       : !savedPath[0] && disabled
       ? setDisabled(false)
@@ -121,12 +122,80 @@ const CheckoutMethodSelect = ({
   }, [attributes]);
 
   useEffect(() => {
-    const checkStorage = async () => {
-      let s = await storage.read('pathway');
-      console.log('*************from method select: ', s);
+    const handlePostcode = async () => {
+      if (shippingAddress.zip) {
+        let postcodeRes = await fetch(
+          `https://api.postcodes.io/postcodes/${shippingAddress.zip}`,
+          {
+            method: "GET",
+          }
+        );
+
+        let postcodeData = await postcodeRes.json();
+
+        console.log(postcodeData.result);
+
+        if (postcodeData?.result) {
+          console.log("valid postcode!");
+
+          let checkBody = {
+            methods: availableMethods,
+            postcode: postcodeData.result.postcode,
+            cart: cart,
+            twoDayDelivery: nextDay,
+          };
+
+          console.log("::::ND ", nextDay);
+
+          let checkRes = await fetch(`${url}/pza/check-postcode-test`, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            method: "POST",
+            body: JSON.stringify(checkBody),
+          });
+          let pcCheckData = await checkRes.json();
+
+          console.log(
+            "postcode results: ",
+            postcodeData,
+            "\n Postcode availability data: ",
+            pcCheckData
+          );
+
+          await setAddress({
+            type: "updateShippingAddress",
+            address: { zip: postcodeData.result.postcode },
+          });
+
+          setCollectLocations({
+            delivery: pcCheckData.delivery,
+            shipping: pcCheckData.shipping,
+            pickup_locations: pcCheckData.pickup.locations,
+          });
+          setPostcode(shippingAddress.zip);
+
+          // show pickup method by default & show pickup rate
+          setSelectedMethod("pickup");
+
+          await setCartLineAttr({
+            type: "updateCartLine",
+            id: cartLines[0].id,
+            attributes: [
+              {
+                key: "_deliveryID",
+                value: "P",
+              },
+            ],
+          });
+        }
+      } else {
+        selectedMethod ? setSelectedMethod(null) : null;
+        postcode ? setPostcode(null) : null;
+      }
     };
-    checkStorage();
-  }, [storage]);
+    handlePostcode();
+  }, [shippingAddress]);
 
   const attr = useAttributes();
   const attrList = attr.reduce(
@@ -137,24 +206,24 @@ const CheckoutMethodSelect = ({
     {}
   );
 
-  // useEffect(() => {
-  //   console.log("current postcode: ", postcode, shippingAddress);
-  //   postcode && shippingAddress.zip === postcode ? null : setPostcode(null);
-  // }, [shippingAddress]);
+  useEffect(() => {
+
+    console.log('******* available methods: ', availableMethods)
+  }, [availableMethods]);
 
   const checkCS = async (value) => {
     const res = await fetch(`${url}/pza/check-pw`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         pw: value,
       }),
     });
     let z = await res.json();
 
-    console.log(';;;;;;;;;;;;;;;;;;;;;', z);
+    console.log(";;;;;;;;;;;;;;;;;;;;;", z);
     return z.status;
   };
 
@@ -162,11 +231,11 @@ const CheckoutMethodSelect = ({
     if (shippingAddress.zip) {
       setLoading(true);
       await changeAttributes({
-        type: 'updateAttribute',
-        key: 'buyer-pathway',
-        value: 'method-select',
+        type: "updateAttribute",
+        key: "buyer-pathway",
+        value: "method-select",
       });
-      await storage.write('pathway', 'method-select');
+      await storage.write("pathway", "method-select");
       console.log(shippingAddress.zip);
 
       if (shippingAddress.zip.length === 12) {
@@ -176,8 +245,8 @@ const CheckoutMethodSelect = ({
             return { ...cs, status: true };
           });
           await setAddress({
-            type: 'updateShippingAddress',
-            address: { zip: '' },
+            type: "updateShippingAddress",
+            address: { zip: "" },
           });
         }
         setLoading(false);
@@ -185,7 +254,7 @@ const CheckoutMethodSelect = ({
         let postcodeRes = await fetch(
           `https://api.postcodes.io/postcodes/${shippingAddress.zip}`,
           {
-            method: 'GET',
+            method: "GET",
           }
         );
 
@@ -194,7 +263,7 @@ const CheckoutMethodSelect = ({
         console.log(postcodeData.result);
 
         if (postcodeData?.result) {
-          console.log('valid postcode!');
+          console.log("valid postcode!");
 
           let checkBody = {
             methods: availableMethods,
@@ -203,26 +272,26 @@ const CheckoutMethodSelect = ({
             twoDayDelivery: nextDay,
           };
 
-          console.log('::::ND ', nextDay);
+          console.log("::::ND ", nextDay);
 
           let checkRes = await fetch(`${url}/pza/check-postcode-test`, {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify(checkBody),
           });
           let pcCheckData = await checkRes.json();
 
           console.log(
-            'postcode results: ',
+            "postcode results: ",
             postcodeData,
-            '\n Postcode availability data: ',
+            "\n Postcode availability data: ",
             pcCheckData
           );
 
           await setAddress({
-            type: 'updateShippingAddress',
+            type: "updateShippingAddress",
             address: { zip: postcodeData.result.postcode },
           });
 
@@ -236,14 +305,14 @@ const CheckoutMethodSelect = ({
         }
       }
     } else {
-      setError('Enter a valid postcode')
+      setError("Enter a valid postcode");
     }
   };
 
   const checkNullDelivery = (data) => {
-    return (data === 'delivery' &&
+    return (data === "delivery" &&
       checkoutData.delivery.delivery_zone.trim().toLowerCase() ===
-        'unavailable') ||
+        "unavailable") ||
       !availableMethods[data]
       ? true
       : false;
@@ -252,14 +321,14 @@ const CheckoutMethodSelect = ({
   const getKeyname = (raw) => {
     let x;
     switch (raw) {
-      case 'delivery':
-        x = 'Postal';
+      case "delivery":
+        x = "Postal";
         break;
-      case 'pickup':
-        x = 'Collection';
+      case "pickup":
+        x = "Collection";
         break;
-      case 'shipping':
-        x = 'Delivery';
+      case "shipping":
+        x = "Delivery";
         break;
     }
     return x;
@@ -273,38 +342,57 @@ const CheckoutMethodSelect = ({
 
   const handleMethodSelect = async (method) => {
     if (method !== selectedMethod) {
-      console.log('heres data from method select: ', checkoutData);
+      console.log("heres data from method select: ", checkoutData);
       reserveTime?.expiry ? setReserveTime({}) : null;
 
       setSelectedMethod(method);
       setDisplayCalendar(false);
-      method !== 'pickup' ? setSelectedMethod(method) : null;
-      method !== 'pickup' ? setMinDate(checkoutData[method].min_date) : null;
+      method !== "pickup" ? setSelectedMethod(method) : null;
+      method !== "pickup" ? setMinDate(checkoutData[method].min_date) : null;
+
+      let dz =
+        method === "delivery"
+          ? checkoutData.delivery.delivery_zone.replace(/[^0-9.]/g, "")
+          : null;
+
+      console.log("THE DZ ", dz, method);
+      await setCartLineAttr({
+        type: "updateCartLine",
+        id: cartLines[0].id,
+        attributes: [
+          {
+            key: "_deliveryID",
+            value: dz
+              ? `${method.charAt(0).toUpperCase()}%${dz}`
+              : method.charAt(0).toUpperCase(),
+          },
+        ],
+      });
       Object.keys(attrList).forEach(async (key) => {
-        console.log('UUU ', key);
+        console.log("UUU ", key);
 
         await changeAttributes({
-          type: 'updateAttribute',
-          key: 'Checkout-Method',
+          type: "updateAttribute",
+          key: "Checkout-Method",
           value: method,
         });
         if (
-          key !== 'Lolas-CS-Member' &&
-          key !== 'Customer-Service-Note' &&
-          key !== 'buyer-pathway' &&
-          key !== 'Checkout-Method'
+          key !== "Lolas-CS-Member" &&
+          key !== "Customer-Service-Note" &&
+          key !== "buyer-pathway" &&
+          key !== "Checkout-Method"
         ) {
           // TODO strange behaviour when coming from pickup --> delivery; PM time remains in attr
 
           await changeAttributes({
-            type: 'updateAttribute',
+            type: "updateAttribute",
             key: key,
-            value: '',
+            value: "",
           });
         }
-        if (method !== 'pickup') {
+        if (method !== "pickup") {
           await changeAttributes({
-            type: 'updateAttribute',
+            type: "updateAttribute",
             key: `${capitalise(method)}-Date`,
             value: checkoutData[method].min_date,
           });
@@ -321,14 +409,14 @@ const CheckoutMethodSelect = ({
     penguinDelete();
     displayCalendar ? setDisplayCalendar(false) : null;
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'buyer-pathway',
-      value: '',
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "",
     });
   };
 
   return globalLoad ? (
-    <View blockAlignment="center" inlineAlignment={'center'}>
+    <View blockAlignment="center" inlineAlignment={"center"}>
       <Spinner size="large" accessibilityLabel="Getting pickup locations" />
     </View>
   ) : (
@@ -340,18 +428,19 @@ const CheckoutMethodSelect = ({
           allLocations={checkoutData.pickup.qCollectLocations}
         />
       )}
-      {postcode ? (
-        <View position={'relative'}>
+
+      {postcode && (
+        <View position={"relative"}>
           <Heading level={2}>
             Choose Hand Delivery, Collection or Nationwide Postal
           </Heading>
           <CancelBtn handler={handleReset} />
 
           <Grid
-            columns={['fill', 'fill', 'fill']}
-            rows={['auto']}
+            columns={["fill", "fill", "fill"]}
+            rows={["auto"]}
             spacing="loose"
-            padding={['base', 'none', 'base', 'none']}
+            padding={["base", "none", "base", "none"]}
           >
             {Object.keys(availableMethods).map((key, i) => (
               <Pressable
@@ -376,21 +465,9 @@ const CheckoutMethodSelect = ({
             ))}
           </Grid>
         </View>
-      ) : (
-        <View minInlineSize="fill" opacity={disabled ? 50 : 100}>
-          <Grid>
-            <Button
-              disabled={disabled ? true : false}
-              onPress={() => checkPostcode()}
-              loading={loading}
-            >
-              Choose Delivery Method
-            </Button>
-          </Grid>
-          {error && <Text appearance="critical">{error}</Text>}
-        </View>
       )}
-      {!!selectedMethod && selectedMethod === 'pickup' && !displayCalendar && (
+
+      {!!selectedMethod && selectedMethod === "pickup" && !displayCalendar && (
         <LocationsSelect
           locations={checkoutData.pickup.collectLocations}
           checkoutData={checkoutData}
@@ -403,18 +480,18 @@ const CheckoutMethodSelect = ({
           setCollectLocation={setCollectLocation}
           setSelectedMethod={setSelectedMethod}
           setDisplayCalendar={setDisplayCalendar}
-          pathway={'method-select'}
+          pathway={"method-select"}
           selectLocation={selectLocation}
           confirmLocation={confirmLocation}
         />
       )}
-      {((!!selectedMethod && selectedMethod !== 'pickup') ||
+      {((!!selectedMethod && selectedMethod !== "pickup") ||
         (!!selectedMethod &&
-          selectedMethod === 'pickup' &&
+          selectedMethod === "pickup" &&
           !!displayCalendar)) && (
         <Calendar
           minDate={
-            selectedMethod !== 'pickup'
+            selectedMethod !== "pickup"
               ? checkoutData[selectedMethod].min_date
               : checkoutData.pickup.selectedLocation.dates.date
           }
