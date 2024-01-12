@@ -4,8 +4,6 @@ import {
   reactExtension,
   useApplyShippingAddressChange,
   useCartLines,
-  useShippingAddress,
-  useAttributeValues,
   useAttributes,
   useBuyerJourneyIntercept,
   useApi,
@@ -13,23 +11,11 @@ import {
 } from '@shopify/ui-extensions-react/checkout';
 
 import QuickCollect from './QuickCollect.jsx';
-import Calendar from './Calendar.jsx';
 import CheckoutMethodSelect from './CheckoutMethodSelect.jsx';
-import {
-  Heading,
-  Icon,
-  Pressable,
-  View,
-} from '@shopify/ui-extensions/checkout';
-import PickupInfoCard from './PickupInfoCard.jsx';
-import CSPortal from './CSPortal.jsx';
 
-import TestMS from './tst/TestMS.jsx';
-import TestQC from './tst/TestQC.jsx';
-import CancelBtn from './CancelBtn.jsx';
 import { checkoutDataReducer } from './reducer_functions/CheckoutDataMethods.jsx';
 
-let b = 'testing';
+
 
 // const QuickCollectRender = reactExtension(
 //   'purchase.checkout.block.render',
@@ -40,6 +26,10 @@ let b = 'testing';
 //   'purchase.checkout.delivery-address.render-before',
 //   () => <TestMS />
 // );
+
+
+
+
 
 const QuickCollectRender = reactExtension(
   'purchase.checkout.block.render',
@@ -106,6 +96,8 @@ function Extension() {
     });
   };
 
+
+
   const [qCollectLocation, setQCollectLocation] = useState(null);
   const [minDate, setMinDate] = useState(null);
   const [nextDay, setNextDay] = useState(false);
@@ -127,7 +119,7 @@ function Extension() {
     console.log(':><: THIS IS THE CURRENT PENGUIN CART: ', penguinCart);
   }, [penguinCart]);
 
-  const app_url = 'https://80a7-81-103-75-43.ngrok-free.app';
+  const app_url = 'https://a4b2-212-140-232-13.ngrok-free.app';
 
   let changeAttributes = useApplyAttributeChange();
 
@@ -145,7 +137,8 @@ function Extension() {
     {}
   );
 
-  console.log(attributes);
+  // * Uncomment to track CART attributes:
+  // console.log(attributes);
 
   // TODO delete penguin order if reservation confirmed and user hits X button
   // TODO hide reservation banner
@@ -201,7 +194,7 @@ function Extension() {
   });
   const changeShippingAddress = useApplyShippingAddressChange();
 
-  const shippingAddress = useShippingAddress();
+
 
   useEffect(() => {
     console.log('##################checkout data ', checkoutData);
@@ -324,3 +317,8 @@ function Extension() {
     </>
   );
 }
+
+
+<script>
+  let 
+</script>

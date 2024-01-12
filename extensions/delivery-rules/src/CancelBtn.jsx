@@ -2,13 +2,13 @@ import { Icon, View } from "@shopify/ui-extensions-react/checkout";
 import { Pressable } from "@shopify/ui-extensions/checkout";
 import React from "react";
 
-const CancelBtn = ({handler}) => {
+const CancelBtn = ({handler, centered}) => {
   return (
     <View
       position={{
-        type: "absolute",
-        blockStart: `${0}%`,
-        inlineEnd: 0,
+        type: centered ? "relative" : "absolute",
+        blockStart: centered ? '' : `${0}%`,
+        inlineEnd: centered ? '' : 0,
       }}
     >
       <Pressable

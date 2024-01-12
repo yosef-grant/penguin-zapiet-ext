@@ -97,7 +97,7 @@ export function run(input) {
       searchTerm = "delivery";
       break;
     case "P":
-      searchTerm = "pickup";
+      searchTerm = "collect";
       break;
     // ! change for live
     case "S": 

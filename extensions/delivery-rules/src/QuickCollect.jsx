@@ -1,6 +1,11 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from "react";
 
-import { Heading, View, Spinner } from '@shopify/ui-extensions/checkout';
+import {
+  Heading,
+  View,
+  Spinner,
+  Button,
+} from "@shopify/ui-extensions/checkout";
 
 import {
   useAppMetafields,
@@ -8,14 +13,14 @@ import {
   useAttributeValues,
   useAttributes,
   useStorage,
-} from '@shopify/ui-extensions-react/checkout';
-import { getDay } from 'date-fns';
-import LocationsSelect from './LocationsSelect.jsx';
-import LockerCountdown from './LockerCountdown.jsx';
-import Calendar from './Calendar.jsx';
-import PickupInfoCard from './PickupInfoCard.jsx';
-import CancelBtn from './CancelBtn.jsx';
-import DisabledState from './DisabledState.jsx';
+} from "@shopify/ui-extensions-react/checkout";
+import { getDay } from "date-fns";
+import LocationsSelect from "./LocationsSelect.jsx";
+import LockerCountdown from "./LockerCountdown.jsx";
+import Calendar from "./Calendar.jsx";
+import PickupInfoCard from "./PickupInfoCard.jsx";
+import CancelBtn from "./CancelBtn.jsx";
+import DisabledState from "./DisabledState.jsx";
 
 const QuickCollect = ({
   lineItems,
@@ -54,16 +59,14 @@ const QuickCollect = ({
 
   // console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
 
-  let savedPath = useAttributeValues(['buyer-pathway']);
-
-  console.log('saved path from QC: ', savedPath[0]);
+  let savedPath = useAttributeValues(["buyer-pathway"]);
 
   useEffect(() => {
-    console.log('should calendar display? ', displayCalendar);
+    console.log("should calendar display? ", displayCalendar);
   }, [displayCalendar]);
 
   useEffect(() => {
-    savedPath[0] === 'method-select'
+    savedPath[0] === "method-select"
       ? setDisabled(true)
       : !savedPath[0] && disabled
       ? setDisabled(false)
@@ -71,7 +74,7 @@ const QuickCollect = ({
   }, [attributes]);
 
   useEffect(() => {
-    console.log('global load from qc: ', globalLoad);
+    console.log("global load from qc: ", globalLoad);
   }, [globalLoad]);
 
   useEffect(() => {
@@ -79,7 +82,7 @@ const QuickCollect = ({
       let meta = nextDayMeta.map((meta) => {
         return JSON.parse(meta.metafield.value).next_day_delivery.value;
       });
-      console.log('meta: ', meta);
+      console.log("meta: ", meta);
       meta.includes(1) || meta.includes(null)
         ? setNextDay(true)
         : setNextDay(false);
@@ -94,23 +97,25 @@ const QuickCollect = ({
     penguinDelete();
     setReserveTime({});
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'buyer-pathway',
-      value: '',
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "",
     });
   };
 
+
+
   return (
     <>
-      <Heading level={1}>Quick Collect</Heading>
+      <Heading level={1}>Easy Collect</Heading>
       {checkoutData?.pickup?.selectedLocation &&
         checkoutData?.pickup?.selectedLocation?.dates && (
           <CancelBtn handler={() => handleReset()} />
         )}
       <View
-        padding={['loose', 'none', 'base', 'none']}
+        padding={["loose", "none", "base", "none"]}
         blockAlignment="center"
-        inlineAlignment={'center'}
+        inlineAlignment={"center"}
         blockSize="fill"
         position="relative"
       >
@@ -145,7 +150,7 @@ const QuickCollect = ({
                         display="inline"
                       >
                         <Heading>
-                          Collecting from:{' '}
+                          Collecting from:{" "}
                           {
                             checkoutData.pickup.selectedLocation.info
                               .company_name
@@ -167,6 +172,7 @@ const QuickCollect = ({
                     reserveTime={reserveTime}
                     setReserveTime={setReserveTime}
                     selectDates={selectDates}
+                    pathway={'quick-collect'}
                   />
                 )}
               </View>

@@ -41,8 +41,7 @@ const LocationInfo = ({
   const changeAttributes = useApplyAttributeChange();
   const changeShippingAddress = useApplyShippingAddressChange();
 
-
-  console.log('***^^^^*** this is the pathway PROP: ', pathway)
+  console.log("***^^^^*** this is the pathway PROP: ", pathway);
 
   const handleFinalLocationSelect = async () => {
     setLoading(true);
@@ -78,10 +77,12 @@ const LocationInfo = ({
       value: location.info.custom_attribute_1,
     });
 
-    await changeShippingAddress({
-      type: "updateShippingAddress",
-      address: targetLocationAddr,
-    });
+    if (pathway === "quick-collect") {
+      await changeShippingAddress({
+        type: "updateShippingAddress",
+        address: targetLocationAddr,
+      });
+    }
 
     let locData = await getLocationDates(location);
 
@@ -130,17 +131,14 @@ const LocationInfo = ({
     };
   };
 
-  const handleRemove = async() => {
-    
+  const handleRemove = async () => {
     removeLocation();
     await changeAttributes({
       type: "updateAttribute",
       key: "buyer-pathway",
-      value: '',
+      value: "",
     });
-
-  }
-
+  };
 
   return (
     <View

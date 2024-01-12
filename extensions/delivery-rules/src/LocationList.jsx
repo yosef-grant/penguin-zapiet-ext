@@ -25,8 +25,6 @@ const LocationList = ({
   const setCartLineAttr = useApplyCartLinesChange();
   const cartLines = useCartLines();
 
-
-  console.log('PATHWAY FROM LIST: ', pathway)
   const handleLocationSelect = async (val) => {
     console.log(
       'llllllllllllllllllllll ',

@@ -1,5 +1,5 @@
-import { View, Heading, Spinner } from '@shopify/ui-extensions/checkout';
-import { useEffect, useState } from 'react';
+import { View, Heading, Spinner } from "@shopify/ui-extensions/checkout";
+import { useEffect, useState } from "react";
 
 import {
   useApplyAttributeChange,
@@ -10,14 +10,16 @@ import {
   useDeliveryGroups,
   useShippingAddress,
   useStorage,
-} from '@shopify/ui-extensions-react/checkout';
+} from "@shopify/ui-extensions-react/checkout";
 
-import LocationsSelect from './LocationsSelect.jsx';
-import CancelBtn from './CancelBtn.jsx';
-import CSPortal from './CSPortal.jsx';
-import Calendar from './Calendar.jsx';
-import BlockLoader from './BlockLoader.jsx';
-import MethodList from './MethodList.jsx';
+import LocationsSelect from "./LocationsSelect.jsx";
+import CancelBtn from "./CancelBtn.jsx";
+import CSPortal from "./CSPortal.jsx";
+import Calendar from "./Calendar.jsx";
+import BlockLoader from "./BlockLoader.jsx";
+import MethodList from "./MethodList.jsx";
+import Summary from "./Summary.jsx";
+import LockerReserveAlert from "./LockerReserveAlert.jsx";
 
 const CheckoutMethodSelect = ({
   availableMethods,
@@ -56,9 +58,11 @@ const CheckoutMethodSelect = ({
 
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [reserveTime, setReserveTime] = useState({});
   const [fetching, setFetching] = useState(false);
+  const [optionsConfirmed, setOptionsConfirmed] = useState(false);
+  const [buPostcode, setBuPostcode] = useState({});
   const [firstLoad, setFirstLoad] = useState(true);
 
   const attributes = useAttributes();
@@ -70,36 +74,41 @@ const CheckoutMethodSelect = ({
 
   let changeAttributes = useApplyAttributeChange();
 
-  let savedPath = useAttributeValues(['buyer-pathway']);
+  let savedPath = useAttributeValues(["buyer-pathway"]);
 
   useEffect(() => {
-
-    console.log('((((DELIVERY GROUPS: ',deliveryGroups)
     !!fetching
       ? setTimeout(() => {
           setFetching(false);
         }, 750)
       : null;
-
   }, [deliveryGroups]);
 
-  console.log('saved path from MS: ', savedPath[0]);
-
   useEffect(() => {
-    savedPath[0] === 'quick-collect'
+    savedPath[0] === "quick-collect"
       ? setDisabled(true)
       : !savedPath[0] && disabled
-      ? (setDisabled(false), setSelectedMethod('pickup'))
+      ? (setDisabled(false), setSelectedMethod("pickup"))
       : null;
   }, [attributes]);
 
   useEffect(() => {
+    console.log(
+      "state of options confirmed at method-select: ",
+      optionsConfirmed
+    );
+  }, [optionsConfirmed]);
+
+  useEffect(() => {
     const handlePostcode = async () => {
-      if (shippingAddress.zip.length < 12) {
+      setError("");
+
+      if (shippingAddress.zip.length < 12 && shippingAddress.zip.length > 0) {
+        setLoading(true)
         let postcodeRes = await fetch(
           `https://api.postcodes.io/postcodes/${shippingAddress.zip}`,
           {
-            method: 'GET',
+            method: "GET",
           }
         );
 
@@ -108,7 +117,7 @@ const CheckoutMethodSelect = ({
         console.log(postcodeData.result);
 
         if (postcodeData?.result) {
-          console.log('valid postcode!');
+          console.log("valid postcode!");
 
           let checkBody = {
             methods: availableMethods,
@@ -117,53 +126,54 @@ const CheckoutMethodSelect = ({
             twoDayDelivery: nextDay,
           };
 
-          console.log('::::ND ', nextDay);
-
           let checkRes = await fetch(`${url}/pza/check-postcode-test`, {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
-            method: 'POST',
+            method: "POST",
             body: JSON.stringify(checkBody),
           });
           let pcCheckData = await checkRes.json();
 
           console.log(
-            'postcode results: ',
+            "postcode results: ",
             postcodeData,
-            '\n Postcode availability data: ',
+            "\n Postcode availability data: ",
             pcCheckData
           );
 
           await setAddress({
-            type: 'updateShippingAddress',
+            type: "updateShippingAddress",
             address: { zip: postcodeData.result.postcode },
           });
-
           setCollectLocations({
             delivery: pcCheckData.delivery,
             shipping: pcCheckData.shipping,
             pickup_locations: pcCheckData.pickup.locations,
           });
+          setDisplayCalendar(false)
 
           // * show pickup method by default & show pickup rate
-          setSelectedMethod('pickup');
+          setSelectedMethod("pickup");
 
           await setCartLineAttr({
-            type: 'updateCartLine',
+            type: "updateCartLine",
             id: cartLines[0].id,
             attributes: [
               {
-                key: '_deliveryID',
-                value: 'P',
+                key: "_deliveryID",
+                value: "P",
               },
             ],
           });
+
           setPostcode(shippingAddress.zip);
+
+        } else {
+          setError("Postcode not recognised!");
+          setPostcode(null);
         }
-        else {
-          setPostcode(null)
-        }
+        setLoading(false);
       } else if (shippingAddress.zip.length === 12) {
         let status = await checkCS(shippingAddress.zip);
         if (status === true) {
@@ -171,36 +181,43 @@ const CheckoutMethodSelect = ({
             return { ...cs, status: true };
           });
           await setAddress({
-            type: 'updateShippingAddress',
-            address: { zip: '' },
+            type: "updateShippingAddress",
+            address: { zip: "" },
           });
         }
         setLoading(false);
-      } else {
-        selectedMethod ? setSelectedMethod(null) : null;
-        postcode ? setPostcode(null) : null;
       }
+
+       else {
+        error ? setError('') : null;
+        postcode ? setPostcode() : null;
+       }
     };
-    !displayCalendar ? handlePostcode() : null;
+    // if (!checkoutData.pickup?.selectedLocation) {
+    // !displayCalendar && 
+    
+    shippingAddress?.zip !== postcode && !optionsConfirmed
+      ? handlePostcode()
+      : null;
   }, [shippingAddress]);
 
   useEffect(() => {
-    console.log('******* available methods: ', availableMethods);
+    console.log("******* available methods: ", availableMethods);
   }, [availableMethods]);
 
   const checkCS = async (value) => {
     const res = await fetch(`${url}/pza/check-pw`, {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({
         pw: value,
       }),
     });
     let z = await res.json();
 
-    console.log(';;;;;;;;;;;;;;;;;;;;;', z);
+    console.log(";;;;;;;;;;;;;;;;;;;;;", z);
     return z.status;
   };
 
@@ -238,17 +255,27 @@ const CheckoutMethodSelect = ({
   //   }
   // };
 
+  // const handleReset = async () => {
+  //   setPostcode(null);
+  //   setSelectedMethod(null);
+  //   setReserveTime({});
+  //   resetMS();
+  //   penguinDelete();
+  //   displayCalendar ? setDisplayCalendar(false) : null;
+  //   await changeAttributes({
+  //     type: "updateAttribute",
+  //     key: "buyer-pathway",
+  //     value: "",
+  //   });
+  // };
   const handleReset = async () => {
-    setPostcode(null);
-    setSelectedMethod(null);
-    setReserveTime({});
-    resetMS();
-    penguinDelete();
-    displayCalendar ? setDisplayCalendar(false) : null;
+    setDisplayCalendar(false);
+    // resetMS();
+    removeLocation();
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'buyer-pathway',
-      value: '',
+      type: "updateAttribute",
+      key: "buyer-pathway",
+      value: "",
     });
   };
 
@@ -262,85 +289,114 @@ const CheckoutMethodSelect = ({
         />
       )}
       {globalLoad ? (
-        <View blockAlignment="center" inlineAlignment={'center'}>
+        <View blockAlignment="center" inlineAlignment={"center"}>
           <Spinner size="large" accessibilityLabel="Getting pickup locations" />
         </View>
       ) : (
         <>
           {!disabled && (
             <>
-              {!!postcode ? (
+              {!!postcode && !loading ? (
                 <>
                   {!!fetching ? (
                     <BlockLoader type="rates" />
                   ) : (
                     <>
-                      <View position={'relative'}>
-                        <Heading level={2}>
-                          Choose Hand Delivery, Collection or Nationwide Postal
-                        </Heading>
-                        <CancelBtn handler={handleReset} />
-                        <MethodList
-                          availableMethods={availableMethods}
-                          selectedMethod={selectedMethod}
-                          setFetching={setFetching}
-                          setSelectedMethod={setSelectedMethod}
-                          checkoutData={checkoutData}
-                          reserveTime={reserveTime}
-                          setReserveTime={setReserveTime}
-                          setDisplayCalendar={setDisplayCalendar}
-                          setMinDate={setMinDate}
-                        />
-                      </View>
-                      {!!selectedMethod &&
-                        selectedMethod === 'pickup' &&
-                        !displayCalendar && (
-                          <LocationsSelect
-                            locations={checkoutData.pickup.collectLocations}
+                      {!optionsConfirmed ? (
+                        <>
+                          <View position={"relative"}>
+                            <Heading level={2}>
+                              Choose Hand Delivery, Collection or Nationwide
+                              Postal
+                            </Heading>
+                            {selectedMethod === "pickup" &&
+                              checkoutData.pickup?.selectedLocation && (
+                                <CancelBtn handler={handleReset} />
+                              )}
+                            <MethodList
+                              availableMethods={availableMethods}
+                              selectedMethod={selectedMethod}
+                              setFetching={setFetching}
+                              setSelectedMethod={setSelectedMethod}
+                              checkoutData={checkoutData}
+                              reserveTime={reserveTime}
+                              setReserveTime={setReserveTime}
+                              setDisplayCalendar={setDisplayCalendar}
+                              setMinDate={setMinDate}
+                            />
+                          </View>
+                          {!!selectedMethod &&
+                            selectedMethod === "pickup" &&
+                            !displayCalendar && (
+                              <LocationsSelect
+                                locations={checkoutData.pickup.collectLocations}
+                                checkoutData={checkoutData}
+                                setMinDate={setMinDate}
+                                nextDay={nextDay}
+                                cart={cart}
+                                setPenguinCart={setPenguinCart}
+                                url={url}
+                                collectLocation={collectLocation}
+                                setCollectLocation={setCollectLocation}
+                                setSelectedMethod={setSelectedMethod}
+                                setDisplayCalendar={setDisplayCalendar}
+                                pathway="method-select"
+                                selectLocation={selectLocation}
+                                confirmLocation={confirmLocation}
+                                removeLocation={removeLocation}
+                              />
+                            )}
+                          {((!!selectedMethod && selectedMethod !== "pickup") ||
+                            (!!selectedMethod &&
+                              selectedMethod === "pickup" &&
+                              !!displayCalendar)) && (
+                            <Calendar
+                              minDate={
+                                selectedMethod !== "pickup"
+                                  ? checkoutData[selectedMethod].min_date
+                                  : checkoutData.pickup.selectedLocation.dates
+                                      .date
+                              }
+                              checkoutData={checkoutData}
+                              penguinCart={penguinCart}
+                              lockerReserved={lockerReserved}
+                              setLockerReserved={setLockerReserved}
+                              url={url}
+                              selectedMethod={selectedMethod}
+                              reserveTime={reserveTime}
+                              setReserveTime={setReserveTime}
+                              selectDates={selectDates}
+                              setOptionsConfirmed={setOptionsConfirmed}
+                              pathway={"method-select"}
+                              setBuPostcode={setBuPostcode}
+                            />
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          {!!reserveTime.expiry && (
+                            <LockerReserveAlert reserveTime={reserveTime} />
+                          )}
+                          <Summary
+                            selectedMethod={selectedMethod}
                             checkoutData={checkoutData}
-                            setMinDate={setMinDate}
-                            nextDay={nextDay}
-                            cart={cart}
-                            setPenguinCart={setPenguinCart}
-                            url={url}
-                            collectLocation={collectLocation}
-                            setCollectLocation={setCollectLocation}
+                            postcode={postcode}
+                            buPostcode={buPostcode}
+                            setOptionsConfirmed={setOptionsConfirmed}
                             setSelectedMethod={setSelectedMethod}
-                            setDisplayCalendar={setDisplayCalendar}
-                            pathway="method-select"
-                            selectLocation={selectLocation}
-                            confirmLocation={confirmLocation}
                             removeLocation={removeLocation}
                           />
-                        )}
-                      {((!!selectedMethod && selectedMethod !== 'pickup') ||
-                        (!!selectedMethod &&
-                          selectedMethod === 'pickup' &&
-                          !!displayCalendar)) && (
-                        <Calendar
-                          minDate={
-                            selectedMethod !== 'pickup'
-                              ? checkoutData[selectedMethod].min_date
-                              : checkoutData.pickup.selectedLocation.dates.date
-                          }
-                          checkoutData={checkoutData}
-                          penguinCart={penguinCart}
-                          lockerReserved={lockerReserved}
-                          setLockerReserved={setLockerReserved}
-                          url={url}
-                          selectedMethod={selectedMethod}
-                          reserveTime={reserveTime}
-                          setReserveTime={setReserveTime}
-                          selectDates={selectDates}
-                        />
+                        </>
                       )}
                     </>
                   )}
                 </>
-              ) : !postcode && shippingAddress.zip ? (
+              ) : !postcode && shippingAddress.zip && !error || loading ? (
                 <>
                   <BlockLoader type="postcode-fetch" />
                 </>
+              ) : !!error ? (
+                <Heading>{error}</Heading>
               ) : null}
             </>
           )}

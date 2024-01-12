@@ -21,9 +21,7 @@ const LocationsSelect = ({
   confirmLocation,
   removeLocation,
 }) => {
-  useEffect(() => {
-    console.log('£££££££££££££££ ', checkoutData);
-  }, [checkoutData]);
+
 
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState(['stores', 'lockers']);
