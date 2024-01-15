@@ -1133,7 +1133,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState14(initialState) {
+          function useState15(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1157,11 +1157,11 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useLayoutEffect(create, deps);
           }
-          function useCallback(callback, deps) {
+          function useCallback2(callback, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo3(create, deps) {
+          function useMemo4(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
@@ -1923,7 +1923,7 @@
           exports.memo = memo2;
           exports.startTransition = startTransition;
           exports.unstable_act = act;
-          exports.useCallback = useCallback;
+          exports.useCallback = useCallback2;
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
@@ -1932,10 +1932,10 @@
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
           exports.useLayoutEffect = useLayoutEffect3;
-          exports.useMemo = useMemo3;
+          exports.useMemo = useMemo4;
           exports.useReducer = useReducer2;
           exports.useRef = useRef3;
-          exports.useState = useState14;
+          exports.useState = useState15;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -18424,7 +18424,7 @@
   });
 
   // extensions/delivery-rules/src/Checkout.jsx
-  var import_react49 = __toESM(require_react());
+  var import_react51 = __toESM(require_react());
 
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
@@ -19179,6 +19179,9 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
   var InlineStack = createRemoteComponent("InlineStack");
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/InlineSpacer/InlineSpacer.mjs
+  var InlineSpacer = createRemoteComponent("InlineSpacer");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/List/List.mjs
   var List = createRemoteComponent("List");
 
@@ -19584,6 +19587,9 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
   var InlineStack2 = createRemoteReactComponent(InlineStack);
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/InlineSpacer/InlineSpacer.mjs
+  var InlineSpacer2 = createRemoteReactComponent(InlineSpacer);
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Modal/Modal.mjs
   var Modal2 = createRemoteReactComponent(Modal);
 
@@ -19604,11 +19610,16 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/TextBlock/TextBlock.mjs
   var TextBlock2 = createRemoteReactComponent(TextBlock);
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/TextField/TextField.mjs
+  var TextField2 = createRemoteReactComponent(TextField, {
+    fragmentProps: ["accessory"]
+  });
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/View/View.mjs
   var View2 = createRemoteReactComponent(View);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react28 = __toESM(require_react(), 1);
+  var import_react30 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
@@ -19632,7 +19643,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react28.useContext)(ExtensionApiContext);
+    const api = (0, import_react30.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19640,10 +19651,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react29 = __toESM(require_react(), 1);
+  var import_react31 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react29.useState)(subscription.current);
-    (0, import_react29.useEffect)(() => {
+    const [, setValue] = (0, import_react31.useState)(subscription.current);
+    (0, import_react31.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19662,15 +19673,15 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
-  var import_react30 = __toESM(require_react(), 1);
+  var import_react32 = __toESM(require_react(), 1);
   function useBuyerJourneyIntercept(interceptor) {
     const api = useApi();
     if (!("buyerJourney" in api)) {
       throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
     }
-    const interceptorRef = (0, import_react30.useRef)(interceptor);
+    const interceptorRef = (0, import_react32.useRef)(interceptor);
     interceptorRef.current = interceptor;
-    return (0, import_react30.useEffect)(() => {
+    return (0, import_react32.useEffect)(() => {
       const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
       return () => {
         teardownPromise.then((teardown) => teardown()).catch(() => {
@@ -19733,10 +19744,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react31 = __toESM(require_react(), 1);
+  var import_react33 = __toESM(require_react(), 1);
   function useAppMetafields(filters = {}) {
     const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react31.useMemo)(() => {
+    return (0, import_react33.useMemo)(() => {
       if (filters.key && !filters.namespace) {
         throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
       }
@@ -19770,7 +19781,7 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/QuickCollect.jsx
-  var import_react44 = __toESM(require_react());
+  var import_react46 = __toESM(require_react());
 
   // node_modules/@babel/runtime/helpers/esm/typeof.js
   function _typeof(o) {
@@ -21431,46 +21442,74 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/LocationFilters.jsx
-  var import_react32 = __toESM(require_react());
+  var import_react34 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
-  var LocationFilters = ({ filters, setFilters }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View, { blockAlignment: "center", inlineAlignment: "end", padding: ["none", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-      ChoiceList2,
+  var LocationFilters = ({
+    filters,
+    setFilters,
+    searchQuery,
+    setSearchQuery
+  }) => {
+    const handleInput = (val) => {
+      console.log(val);
+      setSearchQuery(val);
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+      View,
       {
-        name: "choiceMultiple",
-        value: filters,
-        onChange: (value) => {
-          setFilters(value);
-          console.log(`onChange event with value: ${value}`);
-        },
-        children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { children: [
+        blockAlignment: "center",
+        padding: ["none", "none", "tight", "none"],
+        children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineLayout2, { columns: ["fill", "auto", "auto"], children: [
           /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-            Choice2,
+            TextField2,
             {
-              id: "stores",
-              disabled: filters.length > 1 && filters.includes("stores") || filters.length === 1 && !filters.includes("stores") ? false : true,
-              children: "Stores"
+              label: "Find a store or locker",
+              icon: { source: "geolocation", position: "start" },
+              onInput: (val) => handleInput(val),
+              value: searchQuery
             }
           ),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(InlineSpacer2, {}),
           /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
-            Choice2,
+            ChoiceList2,
             {
-              id: "lockers",
-              disabled: filters.length > 1 && filters.includes("lockers") || filters.length === 1 && !filters.includes("lockers") ? false : true,
-              children: "Lockers"
+              name: "choiceMultiple",
+              value: filters,
+              onChange: (value) => {
+                setFilters(value);
+                console.log(`onChange event with value: ${value}`);
+              },
+              children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineStack2, { blockAlignment: "center", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                  Choice2,
+                  {
+                    id: "stores",
+                    disabled: filters.length > 1 && filters.includes("stores") || filters.length === 1 && !filters.includes("stores") ? false : true,
+                    children: "Stores"
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                  Choice2,
+                  {
+                    id: "lockers",
+                    disabled: filters.length > 1 && filters.includes("lockers") || filters.length === 1 && !filters.includes("lockers") ? false : true,
+                    children: "Lockers"
+                  }
+                )
+              ] })
             }
           )
         ] })
       }
-    ) });
+    );
   };
   var LocationFilters_default = LocationFilters;
 
   // extensions/delivery-rules/src/LocationsSelect.jsx
-  var import_react36 = __toESM(require_react());
+  var import_react38 = __toESM(require_react());
 
   // extensions/delivery-rules/src/BlockLoader.jsx
-  var import_react33 = __toESM(require_react());
+  var import_react35 = __toESM(require_react());
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var BlockLoader = ({ type }) => {
     return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View2, { position: "relative", children: [
@@ -21499,7 +21538,7 @@ ${errorInfo.componentStack}`);
   var BlockLoader_default = BlockLoader;
 
   // extensions/delivery-rules/src/LocationInfo.jsx
-  var import_react34 = __toESM(require_react());
+  var import_react36 = __toESM(require_react());
   var import_jsx_runtime6 = __toESM(require_jsx_runtime());
   var weekdays = [
     "Sunday",
@@ -21656,7 +21695,7 @@ ${errorInfo.componentStack}`);
   var LocationInfo_default = LocationInfo;
 
   // extensions/delivery-rules/src/LocationList.jsx
-  var import_react35 = __toESM(require_react());
+  var import_react37 = __toESM(require_react());
   var import_jsx_runtime7 = __toESM(require_jsx_runtime());
   var LocationList = ({
     locations,
@@ -21666,10 +21705,11 @@ ${errorInfo.componentStack}`);
     filters,
     setSelectedMethod,
     selectLocation,
-    pathway
+    pathway,
+    searchQuery
   }) => {
     var _a;
-    const [scrollPos, setScrollPos] = (0, import_react35.useState)(null);
+    const [scrollPos, setScrollPos] = (0, import_react37.useState)(null);
     const changeAttributes = useApplyAttributeChange();
     const setCartLineAttr = useApplyCartLinesChange();
     const cartLines = useCartLines();
@@ -21776,6 +21816,14 @@ ${errorInfo.componentStack}`);
           (location) => filters.includes(location.custom_attribute_1)
         );
       }
+      if (searchQuery) {
+        let x3 = [];
+        fLocations.forEach((location) => {
+          location.company_name.toLowerCase().includes(searchQuery.toLowerCase()) ? x3.push(location) : null;
+        });
+        fLocations = x3;
+        console.log(x3);
+      }
       return fLocations;
     };
     return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_jsx_runtime7.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
@@ -21825,14 +21873,24 @@ ${errorInfo.componentStack}`);
     disabled,
     selectLocation,
     confirmLocation,
-    removeLocation
+    removeLocation,
+    searchQuery,
+    setSearchQuery
   }) => {
     var _a;
-    const [loading, setLoading] = (0, import_react36.useState)(false);
-    const [filters, setFilters] = (0, import_react36.useState)(["stores", "lockers"]);
+    const [loading, setLoading] = (0, import_react38.useState)(false);
+    const [filters, setFilters] = (0, import_react38.useState)(["stores", "lockers"]);
     const { query } = useApi();
     return !loading ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_jsx_runtime8.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_jsx_runtime8.Fragment, { children: !((_a = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _a.selectedLocation) ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LocationFilters_default, { filters, setFilters }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+        LocationFilters_default,
+        {
+          filters,
+          setFilters,
+          searchQuery,
+          setSearchQuery
+        }
+      ),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         LocationList_default,
         {
@@ -21843,7 +21901,8 @@ ${errorInfo.componentStack}`);
           filters,
           setSelectedMethod,
           selectLocation,
-          pathway
+          pathway,
+          searchQuery
         }
       )
     ] }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
@@ -21867,13 +21926,13 @@ ${errorInfo.componentStack}`);
   var LocationsSelect_default = LocationsSelect;
 
   // extensions/delivery-rules/src/LockerCountdown.jsx
-  var import_react37 = __toESM(require_react());
+  var import_react39 = __toESM(require_react());
   var import_jsx_runtime9 = __toESM(require_jsx_runtime());
   var LockerCountdown = ({ reserveTime }) => {
-    const [seconds, setSeconds] = (0, import_react37.useState)(reserveTime.expiry);
+    const [seconds, setSeconds] = (0, import_react39.useState)(reserveTime.expiry);
     const currentSecs = Date.now();
     const diff = Math.floor((seconds - currentSecs) / 1e3);
-    (0, import_react37.useEffect)(() => {
+    (0, import_react39.useEffect)(() => {
       const timer = setInterval(() => {
         setSeconds((seconds2) => seconds2 - 1);
       }, 1e3);
@@ -21895,10 +21954,10 @@ ${errorInfo.componentStack}`);
   var LockerCountdown_default = LockerCountdown;
 
   // extensions/delivery-rules/src/Calendar.jsx
-  var import_react41 = __toESM(require_react());
+  var import_react43 = __toESM(require_react());
 
   // extensions/delivery-rules/src/LockerReserve.jsx
-  var import_react38 = __toESM(require_react());
+  var import_react40 = __toESM(require_react());
   var import_jsx_runtime10 = __toESM(require_jsx_runtime());
   var LockerReserve = ({ handleLockerReserve, ui, reserveTime, dateMatch, lockerLoading }) => {
     return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(View, { padding: ["base", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
@@ -21945,7 +22004,7 @@ ${errorInfo.componentStack}`);
   var LockerReserve_default = LockerReserve;
 
   // extensions/delivery-rules/src/PickupInfoCard.jsx
-  var import_react39 = __toESM(require_react());
+  var import_react41 = __toESM(require_react());
   var import_jsx_runtime11 = __toESM(require_jsx_runtime());
   var PickupInfoCard = ({ location, checkoutData }) => {
     const getLocationTime = (meridiem) => {
@@ -21964,7 +22023,7 @@ ${errorInfo.componentStack}`);
   var PickupInfoCard_default = PickupInfoCard;
 
   // extensions/delivery-rules/src/LockerReserveAlert.jsx
-  var import_react40 = __toESM(require_react());
+  var import_react42 = __toESM(require_react());
   var import_jsx_runtime12 = __toESM(require_jsx_runtime());
   var LockerReserveAlert = ({ reserveTime }) => {
     return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(View2, { padding: ["tight", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Banner2, { status: "success", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
@@ -22013,7 +22072,7 @@ ${errorInfo.componentStack}`);
       "\n",
       selectedMethod
     );
-    (0, import_react41.useEffect)(() => {
+    (0, import_react43.useEffect)(() => {
       console.log(")))reserve time in calendar: ", reserveTime);
     }, []);
     const attr = useAttributes();
@@ -22032,8 +22091,8 @@ ${errorInfo.componentStack}`);
     let cartLines = useCartLines();
     console.log(":CL: ", cartLines, cartLines[0].id);
     const { ui } = useApi();
-    const [selectedDate, setSelectedDate] = (0, import_react41.useState)(null);
-    const [lockerLoading, setLockerLoading] = (0, import_react41.useState)(false);
+    const [selectedDate, setSelectedDate] = (0, import_react43.useState)(null);
+    const [lockerLoading, setLockerLoading] = (0, import_react43.useState)(false);
     console.log(")))here is the selected Date: ", selectedDate);
     const handleYearMonthChange = (e2, yearMonth) => {
       let currentMonth = getMonth(/* @__PURE__ */ new Date()) - 1;
@@ -22098,7 +22157,7 @@ ${errorInfo.componentStack}`);
       }
       return x3;
     };
-    (0, import_react41.useEffect)(() => {
+    (0, import_react43.useEffect)(() => {
       console.log("@@@ ", selectedDate);
     }, [selectedDate]);
     const handleDateSelect = (selected) => __async(void 0, null, function* () {
@@ -22229,7 +22288,7 @@ ${errorInfo.componentStack}`);
       console.log("HERE IS X FROM THE CALENDAR DISABLED DATES: ", x);
       return x;
     };
-    (0, import_react41.useEffect)(() => {
+    (0, import_react43.useEffect)(() => {
       console.log("MIN DATE HERE: ", minDate);
       handleDateSelect(format(new Date(minDate), dateFormat));
     }, [minDate]);
@@ -22317,7 +22376,7 @@ ${errorInfo.componentStack}`);
   var Calendar_default = Calendar;
 
   // extensions/delivery-rules/src/CancelBtn.jsx
-  var import_react42 = __toESM(require_react());
+  var import_react44 = __toESM(require_react());
   var import_jsx_runtime14 = __toESM(require_jsx_runtime());
   var CancelBtn = ({ handler, centered }) => {
     return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
@@ -22347,7 +22406,7 @@ ${errorInfo.componentStack}`);
   var CancelBtn_default = CancelBtn;
 
   // extensions/delivery-rules/src/DisabledState.jsx
-  var import_react43 = __toESM(require_react());
+  var import_react45 = __toESM(require_react());
   var import_jsx_runtime15 = __toESM(require_jsx_runtime());
   var DisabledState = () => {
     return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
@@ -22395,22 +22454,36 @@ ${errorInfo.componentStack}`);
   }) => {
     var _a, _b, _c;
     const nextDayMeta = useAppMetafields();
-    const [reserveTime, setReserveTime] = (0, import_react44.useState)({});
+    const [reserveTime, setReserveTime] = (0, import_react46.useState)({});
+    const [searchQuery, setSearchQuery] = (0, import_react46.useState)(null);
     const changeAttributes = useApplyAttributeChange();
-    const [disabled, setDisabled] = (0, import_react44.useState)(false);
+    const [disabled, setDisabled] = (0, import_react46.useState)(false);
+    const shippingAddress = useShippingAddress();
     const attributes = useAttributes();
     const storage = useStorage();
     let savedPath = useAttributeValues(["buyer-pathway"]);
-    (0, import_react44.useEffect)(() => {
+    (0, import_react46.useEffect)(() => {
       console.log("should calendar display? ", displayCalendar);
     }, [displayCalendar]);
-    (0, import_react44.useEffect)(() => {
+    (0, import_react46.useEffect)(() => {
+      var _a2;
+      const checkParity = savedPath[0] === "quick-collect" && ((_a2 = checkoutData.pickup) == null ? void 0 : _a2.selectedLocation) && (shippingAddress.address1 !== checkoutData.pickup.selectedLocation.info.address_line_1 || shippingAddress.city !== checkoutData.pickup.selectedLocation.info.city || shippingAddress.zip !== checkoutData.pickup.selectedLocation.info.postal_code) ? false : true;
+      !checkParity ? changeShippingAddress({
+        type: "updateShippingAddress",
+        address: {
+          address1: checkoutData.pickup.selectedLocation.info.address_line_1,
+          city: checkoutData.pickup.selectedLocation.info.city,
+          zip: checkoutData.pickup.selectedLocation.info.postal_code
+        }
+      }) : null;
+    }, [shippingAddress]);
+    (0, import_react46.useEffect)(() => {
       savedPath[0] === "method-select" ? setDisabled(true) : !savedPath[0] && disabled ? setDisabled(false) : null;
     }, [attributes]);
-    (0, import_react44.useEffect)(() => {
+    (0, import_react46.useEffect)(() => {
       console.log("global load from qc: ", globalLoad);
     }, [globalLoad]);
-    (0, import_react44.useEffect)(() => {
+    (0, import_react46.useEffect)(() => {
       updateNextDayMeta = () => {
         let meta = nextDayMeta.map((meta2) => {
           return JSON.parse(meta2.metafield.value).next_day_delivery.value;
@@ -22433,6 +22506,7 @@ ${errorInfo.componentStack}`);
     });
     return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Heading, { level: 1, children: "Easy Collect" }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Text, { children: "Alreay know where you'd like to pick up your order?" }),
       ((_a = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _a.selectedLocation) && ((_c = (_b = checkoutData == null ? void 0 : checkoutData.pickup) == null ? void 0 : _b.selectedLocation) == null ? void 0 : _c.dates) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(CancelBtn_default, { handler: () => handleReset() }),
       /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
         View,
@@ -22459,7 +22533,9 @@ ${errorInfo.componentStack}`);
                 disabled,
                 selectLocation,
                 confirmLocation,
-                removeLocation
+                removeLocation,
+                searchQuery,
+                setSearchQuery
               }
             ) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
               View,
@@ -22505,13 +22581,13 @@ ${errorInfo.componentStack}`);
   var QuickCollect_default = QuickCollect;
 
   // extensions/delivery-rules/src/CheckoutMethodSelect.jsx
-  var import_react48 = __toESM(require_react());
+  var import_react50 = __toESM(require_react());
 
   // extensions/delivery-rules/src/CSPortal.jsx
-  var import_react45 = __toESM(require_react());
+  var import_react47 = __toESM(require_react());
   var import_jsx_runtime17 = __toESM(require_jsx_runtime());
   var CSPortal = ({ setCS, cs, allLocations }) => {
-    (0, import_react45.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       console.log("allLocations", allLocations);
     }, []);
     const { ui } = useApi();
@@ -22602,7 +22678,7 @@ ${errorInfo.componentStack}`);
   var CSPortal_default = CSPortal;
 
   // extensions/delivery-rules/src/MethodList.jsx
-  var import_react46 = __toESM(require_react());
+  var import_react48 = __toESM(require_react());
 
   // extensions/delivery-rules/src/MethodIcons.jsx
   var icons = {
@@ -22640,7 +22716,7 @@ ${errorInfo.componentStack}`);
     setDisplayCalendar,
     setMinDate
   }) => {
-    const [hover, setHover] = (0, import_react46.useState)(null);
+    const [hover, setHover] = (0, import_react48.useState)(null);
     const setCartLineAttr = useApplyCartLinesChange();
     const changeAttributes = useApplyAttributeChange();
     const cartLines = useCartLines();
@@ -22733,7 +22809,7 @@ ${errorInfo.componentStack}`);
   var MethodList_default = MethodList;
 
   // extensions/delivery-rules/src/Summary.jsx
-  var import_react47 = __toESM(require_react());
+  var import_react49 = __toESM(require_react());
   var import_jsx_runtime19 = __toESM(require_jsx_runtime());
   var df = "EEEE',' do MMMM yyyy";
   var Summary = ({
@@ -22828,14 +22904,14 @@ ${errorInfo.componentStack}`);
     removeLocation
   }) => {
     var _a;
-    const [loading, setLoading] = (0, import_react48.useState)(false);
-    const [disabled, setDisabled] = (0, import_react48.useState)(false);
-    const [error, setError] = (0, import_react48.useState)("");
-    const [reserveTime, setReserveTime] = (0, import_react48.useState)({});
-    const [fetching, setFetching] = (0, import_react48.useState)(false);
-    const [optionsConfirmed, setOptionsConfirmed] = (0, import_react48.useState)(false);
-    const [buPostcode, setBuPostcode] = (0, import_react48.useState)({});
-    const [firstLoad, setFirstLoad] = (0, import_react48.useState)(true);
+    const [loading, setLoading] = (0, import_react50.useState)(false);
+    const [disabled, setDisabled] = (0, import_react50.useState)(false);
+    const [error, setError] = (0, import_react50.useState)("");
+    const [reserveTime, setReserveTime] = (0, import_react50.useState)({});
+    const [fetching, setFetching] = (0, import_react50.useState)(false);
+    const [optionsConfirmed, setOptionsConfirmed] = (0, import_react50.useState)(false);
+    const [buPostcode, setBuPostcode] = (0, import_react50.useState)({});
+    const [firstLoad, setFirstLoad] = (0, import_react50.useState)(true);
     const attributes = useAttributes();
     const shippingAddress = useShippingAddress();
     const deliveryGroups = useDeliveryGroups();
@@ -22843,21 +22919,21 @@ ${errorInfo.componentStack}`);
     let cartLines = useCartLines();
     let changeAttributes = useApplyAttributeChange();
     let savedPath = useAttributeValues(["buyer-pathway"]);
-    (0, import_react48.useEffect)(() => {
+    (0, import_react50.useEffect)(() => {
       !!fetching ? setTimeout(() => {
         setFetching(false);
       }, 750) : null;
     }, [deliveryGroups]);
-    (0, import_react48.useEffect)(() => {
+    (0, import_react50.useEffect)(() => {
       savedPath[0] === "quick-collect" ? setDisabled(true) : !savedPath[0] && disabled ? (setDisabled(false), setSelectedMethod("pickup")) : null;
     }, [attributes]);
-    (0, import_react48.useEffect)(() => {
+    (0, import_react50.useEffect)(() => {
       console.log(
         "state of options confirmed at method-select: ",
         optionsConfirmed
       );
     }, [optionsConfirmed]);
-    (0, import_react48.useEffect)(() => {
+    (0, import_react50.useEffect)(() => {
       const handlePostcode = () => __async(void 0, null, function* () {
         setError("");
         if (shippingAddress.zip.length < 12 && shippingAddress.zip.length > 0) {
@@ -22938,7 +23014,7 @@ ${errorInfo.componentStack}`);
       });
       (shippingAddress == null ? void 0 : shippingAddress.zip) !== postcode && !optionsConfirmed ? handlePostcode() : null;
     }, [shippingAddress]);
-    (0, import_react48.useEffect)(() => {
+    (0, import_react50.useEffect)(() => {
       console.log("******* available methods: ", availableMethods);
     }, [availableMethods]);
     const checkCS = (value) => __async(void 0, null, function* () {
@@ -23122,7 +23198,7 @@ ${errorInfo.componentStack}`);
     () => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Extension, {})
   );
   function Extension() {
-    const [checkoutData, dispatch] = (0, import_react49.useReducer)(checkoutDataReducer, {});
+    const [checkoutData, dispatch] = (0, import_react51.useReducer)(checkoutDataReducer, {});
     const handleSetQLocations = (locations) => {
       dispatch({
         type: "acquired_q_locations",
@@ -23166,24 +23242,24 @@ ${errorInfo.componentStack}`);
         type: "reset_MS_Checkout"
       });
     };
-    const [qCollectLocation, setQCollectLocation] = (0, import_react49.useState)(null);
-    const [minDate, setMinDate] = (0, import_react49.useState)(null);
-    const [nextDay, setNextDay] = (0, import_react49.useState)(false);
-    const [availableMethods, setAvailableMethods] = (0, import_react49.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react49.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react49.useState)(false);
-    const [collectLocation, setCollectLocation] = (0, import_react49.useState)(null);
-    const [displayCalendar, setDisplayCalendar] = (0, import_react49.useState)(false);
-    const [postcode, setPostcode] = (0, import_react49.useState)(null);
-    const [selectedMethod, setSelectedMethod] = (0, import_react49.useState)(null);
-    const [cs, setCS] = (0, import_react49.useState)({ status: false });
-    const [globalLoad, setGlobalLoad] = (0, import_react49.useState)(true);
-    const [testnum, setTestnum] = (0, import_react49.useState)(1);
+    const [qCollectLocation, setQCollectLocation] = (0, import_react51.useState)(null);
+    const [minDate, setMinDate] = (0, import_react51.useState)(null);
+    const [nextDay, setNextDay] = (0, import_react51.useState)(false);
+    const [availableMethods, setAvailableMethods] = (0, import_react51.useState)(null);
+    const [penguinCart, setPenguinCart] = (0, import_react51.useState)(null);
+    const [lockerReserved, setLockerReserved] = (0, import_react51.useState)(false);
+    const [collectLocation, setCollectLocation] = (0, import_react51.useState)(null);
+    const [displayCalendar, setDisplayCalendar] = (0, import_react51.useState)(false);
+    const [postcode, setPostcode] = (0, import_react51.useState)(null);
+    const [selectedMethod, setSelectedMethod] = (0, import_react51.useState)(null);
+    const [cs, setCS] = (0, import_react51.useState)({ status: false });
+    const [globalLoad, setGlobalLoad] = (0, import_react51.useState)(true);
+    const [testnum, setTestnum] = (0, import_react51.useState)(1);
     const lineItems = useCartLines();
-    (0, import_react49.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://a4b2-212-140-232-13.ngrok-free.app";
+    const app_url = "https://a9f8-81-103-75-43.ngrok-free.app";
     let changeAttributes = useApplyAttributeChange();
     const { extension: extension2 } = useApi();
     const attr = useAttributes();
@@ -23193,7 +23269,7 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
-    (0, import_react49.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       Object.keys(attributes).forEach((key) => __async(this, null, function* () {
         yield changeAttributes({
           type: "updateAttribute",
@@ -23202,7 +23278,7 @@ ${errorInfo.componentStack}`);
         });
       }));
     }, []);
-    (0, import_react49.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       var _a;
       console.log("quick collect rendered: ", lineItems);
       const validateCart = () => __async(this, null, function* () {
@@ -23233,10 +23309,10 @@ ${errorInfo.componentStack}`);
       };
     });
     const changeShippingAddress = useApplyShippingAddressChange();
-    (0, import_react49.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       console.log("##################checkout data ", checkoutData);
     }, [checkoutData]);
-    (0, import_react49.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       console.log("++++++++++++++ cs updated: ", cs);
     }, [cs]);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {

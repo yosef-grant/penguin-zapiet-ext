@@ -18,6 +18,7 @@ const LocationList = ({
   setSelectedMethod,
   selectLocation,
   pathway,
+  searchQuery,
 }) => {
   const [scrollPos, setScrollPos] = useState(null);
 
@@ -31,13 +32,12 @@ const LocationList = ({
       checkoutData,
       '\n',
       'choice val: ',
-      val, 
+      val,
       '\n current pathway: ',
       pathway
-      );
-      
-      console.log('this is the id of the selected location! ', val);
+    );
 
+    console.log('this is the id of the selected location! ', val);
 
     let targetLocation = locations.filter(
       (location) => location.id === parseInt(val.replace(/[^0-9]/g, ''))
@@ -110,7 +110,7 @@ const LocationList = ({
       value: pathway,
     });
 
-    if (pathway === "quick-collect") {
+    if (pathway === 'quick-collect') {
       await setCartLineAttr({
         type: 'updateCartLine',
         id: cartLines[0].id,
@@ -146,6 +146,20 @@ const LocationList = ({
         filters.includes(location.custom_attribute_1)
       );
     }
+
+    if (searchQuery) {
+      let x = [];
+      fLocations.forEach((location) => {
+        location.company_name.toLowerCase().includes(searchQuery.toLowerCase())
+          ? x.push(location)
+          : null;
+      });
+
+
+      fLocations = x;
+      console.log(x);
+    }
+
     return fLocations;
   };
   return (
@@ -169,7 +183,7 @@ const LocationList = ({
         >
           {getFilteredLocations().map((location, i) => (
             <Choice
-              key={`${location}${pathway === "method-select" ? i : i +2}`}
+              key={`${location}${pathway === 'method-select' ? i : i + 2}`}
               id={`${location.id}-${pathway}`}
               secondaryContent={
                 location.distance !== null ? `${location.distance} miles` : ''

@@ -20,11 +20,12 @@ const LocationsSelect = ({
   selectLocation,
   confirmLocation,
   removeLocation,
+  searchQuery,
+  setSearchQuery
 }) => {
-
-
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState(['stores', 'lockers']);
+ 
 
   const { query } = useApi();
 
@@ -33,7 +34,13 @@ const LocationsSelect = ({
       <>
         {!checkoutData?.pickup?.selectedLocation ? (
           <>
-            <LocationFilters filters={filters} setFilters={setFilters} />
+            <LocationFilters
+              filters={filters}
+              setFilters={setFilters}
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              
+            />
             <LocationList
               locations={locations}
               query={query}
@@ -43,6 +50,7 @@ const LocationsSelect = ({
               setSelectedMethod={setSelectedMethod}
               selectLocation={selectLocation}
               pathway={pathway}
+              searchQuery={searchQuery}
             />
           </>
         ) : (
