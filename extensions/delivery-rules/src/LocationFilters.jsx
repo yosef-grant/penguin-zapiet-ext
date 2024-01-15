@@ -8,8 +8,8 @@ import {
 } from '@shopify/ui-extensions-react/checkout';
 import { BlockStack, View } from '@shopify/ui-extensions/checkout';
 
-import React, { useCallback, useMemo, useState } from 'react';
-import { useDebounce } from 'use-debounce';
+import React from 'react';
+
 
 const LocationFilters = ({
   filters,
