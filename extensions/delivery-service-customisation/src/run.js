@@ -50,7 +50,7 @@ export function run(input) {
     let r = [];
     deliveryOptions.forEach((option) => {
       if (!zone || zone === null) {
-        !option.title.toLowerCase().includes(deliveryType)
+        !option.title.toLowerCase().includes(deliveryType) 
           ? r.push(option)
           : null;
       } else {

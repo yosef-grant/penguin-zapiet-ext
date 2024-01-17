@@ -25,7 +25,8 @@ const LocationList = ({
   const changeAttributes = useApplyAttributeChange();
   const setCartLineAttr = useApplyCartLinesChange();
   const cartLines = useCartLines();
-
+  
+  
   const handleLocationSelect = async (val) => {
     console.log(
       'llllllllllllllllllllll ',

@@ -65,6 +65,7 @@ const QuickCollect = ({
 
   // console.log("}}}}}}}}}}}}}}}}}", nextDayMeta, checkoutData);
 
+
   let savedPath = useAttributeValues(['buyer-pathway']);
 
   useEffect(() => {
@@ -135,6 +136,8 @@ const QuickCollect = ({
     });
   };
 
+
+
   return (
     <>
       <Heading level={1}>Easy Collect</Heading>
@@ -149,6 +152,7 @@ const QuickCollect = ({
         inlineAlignment={'center'}
         blockSize="fill"
         position="relative"
+   
       >
         {!globalLoad ? (
           <>
