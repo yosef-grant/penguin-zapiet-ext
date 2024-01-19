@@ -9,6 +9,7 @@ import {
   Text,
   View,
   Select,
+  Banner,
 } from "@shopify/ui-extensions-react/checkout";
 
 import React, { useEffect, useState } from "react";
@@ -24,16 +25,24 @@ import {
   addMonths,
   differenceInDays,
   startOfMonth,
+  isThisMonth,
+  getDay,
+  isAfter,
+  addYears,
+  isPast,
+  isSameMonth,
 } from "date-fns";
 import { Grid, Pressable, TextBlock } from "@shopify/ui-extensions/checkout";
 
 const days = Array.apply(null, Array(6)).map(() => {});
+const months = Array.apply(null, Array(13)).map(() => {});
 const AltCalendar = ({ methodData, attributes }) => {
   const [minDate, setMinDate] = useState(
     methodData.minDate || methodData.delivery.min_date
   );
   const [today, setToday] = useState(new Date());
-  const [locked, setLocked] = useState(false);
+  const [backwardLocked, setBackwardLocked] = useState(false);
+  const [forwardLocked, setForwardLocked] = useState(false);
   const [selected, setSelected] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
 
@@ -56,10 +65,24 @@ const AltCalendar = ({ methodData, attributes }) => {
     );
 
     format(today, dateFormat) === format(new Date(), dateFormat)
-      ? setLocked(true)
-      : locked
-      ? setLocked(false)
+      ? // || isPast(new Date(subDays(today, 6)))
+        setBackwardLocked(true)
+      : backwardLocked
+      ? setBackwardLocked(false)
       : null;
+
+    isAfter(new Date(addDays(today, 6)), addYears(new Date(), 1))
+      ? setForwardLocked(true)
+      : forwardLocked
+      ? setForwardLocked(false)
+      : null;
+
+    console.log(
+      "forward in time: ",
+      new Date(addDays(today, 5)),
+      addYears(new Date(), 1),
+      isAfter(new Date(addDays(today, 6)), addYears(new Date(), 1))
+    );
   }, [today]);
 
   const getWeek = () => {
@@ -73,13 +96,25 @@ const AltCalendar = ({ methodData, attributes }) => {
   const weekBack = () => {
     let weekAgo = new Date(format(subDays(today, 6), dateFormat).toString());
 
-    locked ? null : setToday(weekAgo);
-    console.log("weekback: ", today, new Date(), locked);
+    isSameMonth(weekAgo, new Date(today))
+      ? null
+      : setSelectedMonth(format(weekAgo, "MMMM yyyy"));
+
+    backwardLocked
+      ? null
+      : isBefore(new Date(weekAgo), new Date())
+      ? setToday(new Date())
+      : setToday(weekAgo);
+    console.log("weekback: ", today, new Date(), backwardLocked);
   };
   const weekForward = () => {
     let weekAhead = new Date(format(addDays(today, 6), dateFormat).toString());
+
+    isSameMonth(weekAhead, new Date(today))
+      ? null
+      : setSelectedMonth(format(weekAhead, "MMMM yyyy"));
     console.log("going a week forward: ", weekAhead);
-    setToday(weekAhead);
+    forwardLocked ? null : setToday(weekAhead);
   };
 
   const setSelectedDate = (date) => {
@@ -89,17 +124,52 @@ const AltCalendar = ({ methodData, attributes }) => {
 
   const handleMonthChange = (value) => {
     console.log("month has been changed! ", value);
-    value ? setToday(new Date(value)) : setToday(new Date());
+    setSelectedMonth(value);
+
+    !isThisMonth(new Date(value))
+      ? setToday(new Date(value))
+      : setToday(new Date());
+  };
+
+  const isDateDisabled = (date) => {
+    console.log(" 1 year in the future: ", addYears(new Date(), 1));
+    if (
+      isBefore(new Date(date), new Date(minDate)) ||
+      isAfter(new Date(date), addYears(new Date(), 1))
+    ) {
+      return true;
+    } else {
+      return methodData.blackout_dates.includes(date) ||
+        methodData.blackout_dates.includes(getDay(new Date(date)) + 1)
+        ? true
+        : false;
+    }
   };
 
   return (
     <View>
-      <Heading level={2}>{getHeading()}</Heading>
-      <InlineStack>
+      <InlineLayout blockAlignment={"center"} columns={["auto", "fill"]} >
+        <Heading level={2}>{getHeading()}</Heading>
+        <View inlineAlignment={"end"}>
+          <Banner
+            status="critical"
+            title={`Selected date: ${
+              selected
+                ? format(new Date(selected), "do MMMM yyyy")
+                : format(new Date(minDate), "do MMMM yyyy")
+            }`}
+          />
+        </View>
+      </InlineLayout>
+      <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
         <Pressable onPress={() => weekBack()}>
           <Icon source="arrowLeft" />
         </Pressable>
-        <View>{getWeek()}</View>
+        <View blockAlignment={"center"}>
+          <Text size={"medium"} emphasis="bold">
+            {getWeek()}
+          </Text>
+        </View>
         <Pressable onPress={() => weekForward()}>
           <Icon source="arrowRight" onPress={() => weekForward()} />
         </Pressable>
@@ -115,7 +185,17 @@ const AltCalendar = ({ methodData, attributes }) => {
             blockAlignment={"center"}
             minBlockSize={30}
           >
-            <Text>{format(addDays(today, i), "EEE").toString()}</Text>
+            <Text
+              emphasis={
+                (!selected &&
+                  format(addDays(today, i), dateFormat) === minDate) ||
+                selected === format(addDays(today, i), dateFormat)
+                  ? "bold"
+                  : ""
+              }
+            >
+              {format(addDays(today, i), "EEE").toString()}
+            </Text>
           </View>
         ))}
         {days.map((day, i) => (
@@ -123,6 +203,7 @@ const AltCalendar = ({ methodData, attributes }) => {
             inlineAlignment={"center"}
             blockAlignment={"center"}
             minBlockSize={30}
+            minInlineSize={50}
           >
             <Button
               kind={
@@ -134,94 +215,34 @@ const AltCalendar = ({ methodData, attributes }) => {
                   ? "primary"
                   : "secondary"
               }
-              disabled={
-                isBefore(new Date(addDays(today, i)), new Date(minDate))
-                // format(new Date(addDays(today, i)), dateFormat) ===
-                // format(new Date(), dateFormat)
-                //   ? true
-                //   : false
-              }
+              disabled={isDateDisabled(format(addDays(today, i), dateFormat))}
               onPress={() =>
                 setSelectedDate(format(new Date(addDays(today, i)), dateFormat))
               }
             >
               <Text>{format(addDays(today, i), "d").toString()}</Text>
             </Button>
-
-            {/* <Pressable
-              inlineAligment={"center"}
-              background={
-                format(new Date(addDays(today, i)), dateFormat) ===
-                format(today, dateFormat)
-                  ? "subdued"
-                  : format(new Date(addDays(today, i)), dateFormat) === minDate
-                  ? "base"
-                  : ""
-              }
-             
-            >
-              <Text>{format(addDays(today, i), "d").toString()}</Text>
-            </Pressable> */}
           </View>
         ))}
       </Grid>
       <Select
         label="Month"
-        value={`Testing`}
+        value={selectedMonth ? selectedMonth : format(new Date(), "MMMM yyyy")}
         onChange={(val) => handleMonthChange(val)}
-        options={[
-          {
-            value: '',
-            label: `${format(new Date(), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 1)), dateFormat),
-            label: `${format(addMonths(new Date(), 1), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 2)), dateFormat),
-            label: `${format(addMonths(new Date(), 2), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 3)), dateFormat),
-            label: `${format(addMonths(new Date(), 3), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 4)), dateFormat),
-            label: `${format(addMonths(new Date(), 4), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 5)), dateFormat),
-            label: `${format(addMonths(new Date(), 5), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 6)), dateFormat),
-            label: `${format(addMonths(new Date(), 6), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 7)), dateFormat),
-            label: `${format(addMonths(new Date(), 7), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 8)), dateFormat),
-            label: `${format(addMonths(new Date(), 8), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 9)), dateFormat),
-            label: `${format(addMonths(new Date(), 9), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 10)), dateFormat),
-            label: `${format(addMonths(new Date(), 10), "MMMM yyyy")}`,
-          },
-          {
-            value: format(startOfMonth(addMonths(new Date(), 11)), dateFormat),
-            label: `${format(addMonths(new Date(), 11), "MMMM yyyy")}`,
-          },
-        ]}
+        options={months.map((month, i) => {
+          if (i === 0) {
+            return {
+              value: `${format(new Date(), "MMMM yyyy")}`,
+              label: `${format(new Date(), "MMMM yyyy")}`,
+            };
+          } else {
+            return {
+              value: `${format(addMonths(new Date(), i), "MMMM yyyy")}`,
+              label: `${format(addMonths(new Date(), i), "MMMM yyyy")}`,
+            };
+          }
+        })}
       />
-
-      <Heading>Selected: {!selected ? minDate : selected}</Heading>
     </View>
   );
 };

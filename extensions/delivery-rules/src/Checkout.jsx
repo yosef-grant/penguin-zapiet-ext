@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 import {
+  Text,
   reactExtension,
   useApplyShippingAddressChange,
   useCartLines,
@@ -329,7 +330,7 @@ function Extension() {
     <>
       {extension.target === "purchase.checkout.block.render" ? (
         <>
-            <Button >Base</Button>
+            {/* <Button >Base</Button>
             <Button >Accent</Button>
             <Button >Decorative</Button>
             <Button >interactive</Button>
@@ -338,21 +339,35 @@ function Extension() {
             <Button >success</Button>
             <Button >warning</Button>
             <Button >critical</Button>
-            <Button >monochrome</Button>
-          <InlineLayout>
+            <Button >monochrome</Button> */}
+          <InlineLayout spacing={"tight"}>
             <Pressable
               // disabled={checkoutData?.methods?.pickup === false ? true : false}
               inlineAlignment={"center"}
+              blockAlignment={"center"}
+              cornerRadius={"base"}
+              minBlockSize={50}
+              border={"base"}
               background={
                 selectedMethod === "pickup" ? "subdued" : "transparent"
               }
               onPress={() => handleMethodSelect("pickup")}
+   
             >
+              <Text size="medium"
+              emphasis="bold"
+              >
               Collection
+              </Text>
+
             </Pressable>
             <Pressable
               // disabled={checkoutData?.methods?.delivery === false ? true : false}
               inlineAlignment={"center"}
+              blockAlignment={"center"}
+              cornerRadius={"base"}
+              minBlockSize={50}
+              border={"base"}
               background={
                 selectedMethod && selectedMethod !== "pickup"
                   ? "subdued"
@@ -360,7 +375,11 @@ function Extension() {
               }
               onPress={() => handleMethodSelect("delivery")}
             >
+              <Text size="medium"
+              emphasis="bold"
+              >
               Delivery
+              </Text>
             </Pressable>
           </InlineLayout>
           {selectedMethod === "pickup" && checkoutData?.pickup ? (
@@ -368,6 +387,7 @@ function Extension() {
               <Locations
                 checkoutData={checkoutData}
                 selectLocation={handleSelectPickupLocation}
+                removeLocation={handleRemoveSelectedLocation}
               />
             </>
           ) : (

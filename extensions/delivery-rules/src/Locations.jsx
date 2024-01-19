@@ -9,12 +9,13 @@ import {
   useApi,
   useApplyAttributeChange,
   useApplyShippingAddressChange,
+  Button
 } from "@shopify/ui-extensions-react/checkout";
 import { InlineLayout, InlineSpacer } from "@shopify/ui-extensions/checkout";
 import React, { useState } from "react";
 
 
-const Locations = ({ checkoutData, selectLocation }) => {
+const Locations = ({ checkoutData, selectLocation, removeLocation }) => {
   const [searchLocationQuery, setSearchLocationQuery] = useState(null);
   const [searchPostcodeQuery, setSearchPostcodeQuery] = useState(null);
   const [scrollPos, setScrollPos] = useState(0);
@@ -135,7 +136,7 @@ const Locations = ({ checkoutData, selectLocation }) => {
     selectLocation(locHours, metaobject.description.value, targetLocation[0]);
   };
 
-  const handleInput = (val, type) => {
+  const handleChange = (val, type) => {
     console.log(val);
     if (type === "location") {
       searchPostcodeQuery ? setSearchPostcodeQuery(null) : null;
@@ -145,6 +146,16 @@ const Locations = ({ checkoutData, selectLocation }) => {
       setSearchPostcodeQuery(val);
     }
   };
+
+  const handleInput = (val, type) => {
+    if (type === "location") {
+      searchLocationQuery && !val ? (removeLocation(), setSearchLocationQuery(null)) : null; 
+      
+    }
+    else {
+      searchPostcodeQuery && !val ? setSearchPostcodeQuery(null) : null; 
+    }
+  }
 
   const getFilteredLocations = () => {
     let fLocations = checkoutData.pickup.qCollectLocations;
@@ -169,18 +180,19 @@ const Locations = ({ checkoutData, selectLocation }) => {
   return (
     <View padding={["base", "none", "base", "none"]}>
       <Heading>Find your nearest store or locker</Heading>
-      <InlineLayout columns={[`${65}%`, "auto"]}>
+      <InlineLayout columns={[`fill`, "fill", 'auto']} spacing="base" padding={["base", "none","base","none"]}>
         <TextField
           label="Search by location name"
+          onChange={(val) => handleChange(val, "location")}
           onInput={(val) => handleInput(val, "location")}
           value={searchLocationQuery}
         />
-        <InlineSpacer />
         <TextField
           label="Search by proximity"
-          onInput={(val) => handleInput(val, "postcode")}
+          onInput={(val) => handleChange(val, "postcode")}
           value={searchPostcodeQuery}
         />
+        <Button>Search</Button>
       </InlineLayout>
 
       <ScrollView
