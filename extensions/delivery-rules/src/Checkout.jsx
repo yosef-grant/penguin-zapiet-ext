@@ -134,7 +134,7 @@ function Extension() {
     console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   }, [penguinCart]);
 
-  const app_url = "https://bf4c-81-103-75-43.ngrok-free.app";
+  const app_url = "https://6eb0-212-140-232-13.ngrok-free.app";
 
   let changeAttributes = useApplyAttributeChange();
 

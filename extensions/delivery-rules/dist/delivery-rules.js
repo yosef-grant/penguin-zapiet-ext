@@ -18424,7 +18424,7 @@
   });
 
   // extensions/delivery-rules/src/Checkout.jsx
-  var import_react46 = __toESM(require_react());
+  var import_react47 = __toESM(require_react());
 
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
@@ -19136,6 +19136,9 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ChoiceList/ChoiceList.mjs
   var ChoiceList = createRemoteComponent("ChoiceList");
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Form/Form.mjs
+  var Form = createRemoteComponent("Form");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Grid/Grid.mjs
   var Grid = createRemoteComponent("Grid");
 
@@ -19506,10 +19509,15 @@ ${errorInfo.componentStack}`);
   });
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Choice/Choice.mjs
-  var Choice2 = createRemoteReactComponent(Choice);
+  var Choice2 = createRemoteReactComponent(Choice, {
+    fragmentProps: ["details", "primaryContent", "secondaryContent", "tertiaryContent"]
+  });
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ChoiceList/ChoiceList.mjs
   var ChoiceList2 = createRemoteReactComponent(ChoiceList);
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Form/Form.mjs
+  var Form2 = createRemoteReactComponent(Form);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Heading/Heading.mjs
   var Heading2 = createRemoteReactComponent(Heading);
@@ -19546,7 +19554,7 @@ ${errorInfo.componentStack}`);
   var View2 = createRemoteReactComponent(View);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react22 = __toESM(require_react(), 1);
+  var import_react23 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
@@ -19570,7 +19578,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react22.useContext)(ExtensionApiContext);
+    const api = (0, import_react23.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19578,10 +19586,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react23 = __toESM(require_react(), 1);
+  var import_react24 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react23.useState)(subscription.current);
-    (0, import_react23.useEffect)(() => {
+    const [, setValue] = (0, import_react24.useState)(subscription.current);
+    (0, import_react24.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19600,15 +19608,15 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
-  var import_react24 = __toESM(require_react(), 1);
+  var import_react25 = __toESM(require_react(), 1);
   function useBuyerJourneyIntercept(interceptor) {
     const api = useApi();
     if (!("buyerJourney" in api)) {
       throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
     }
-    const interceptorRef = (0, import_react24.useRef)(interceptor);
+    const interceptorRef = (0, import_react25.useRef)(interceptor);
     interceptorRef.current = interceptor;
-    return (0, import_react24.useEffect)(() => {
+    return (0, import_react25.useEffect)(() => {
       const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
       return () => {
         teardownPromise.then((teardown) => teardown()).catch(() => {
@@ -19661,10 +19669,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react25 = __toESM(require_react(), 1);
+  var import_react26 = __toESM(require_react(), 1);
   function useAppMetafields(filters = {}) {
     const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react25.useMemo)(() => {
+    return (0, import_react26.useMemo)(() => {
       if (filters.key && !filters.namespace) {
         throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
       }
@@ -19684,7 +19692,7 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/QuickCollect.jsx
-  var import_react38 = __toESM(require_react());
+  var import_react39 = __toESM(require_react());
 
   // node_modules/@babel/runtime/helpers/esm/typeof.js
   function _typeof(o) {
@@ -21367,80 +21375,80 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-rules/src/LocationFilters.jsx
-  var import_react26 = __toESM(require_react());
+  var import_react27 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/LocationsSelect.jsx
-  var import_react30 = __toESM(require_react());
+  var import_react31 = __toESM(require_react());
 
   // extensions/delivery-rules/src/BlockLoader.jsx
-  var import_react27 = __toESM(require_react());
+  var import_react28 = __toESM(require_react());
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/LocationInfo.jsx
-  var import_react28 = __toESM(require_react());
+  var import_react29 = __toESM(require_react());
   var import_jsx_runtime6 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/LocationList.jsx
-  var import_react29 = __toESM(require_react());
+  var import_react30 = __toESM(require_react());
   var import_jsx_runtime7 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/LocationsSelect.jsx
   var import_jsx_runtime8 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/LockerCountdown.jsx
-  var import_react31 = __toESM(require_react());
+  var import_react32 = __toESM(require_react());
   var import_jsx_runtime9 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/Calendar.jsx
-  var import_react35 = __toESM(require_react());
+  var import_react36 = __toESM(require_react());
 
   // extensions/delivery-rules/src/LockerReserve.jsx
-  var import_react32 = __toESM(require_react());
+  var import_react33 = __toESM(require_react());
   var import_jsx_runtime10 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/PickupInfoCard.jsx
-  var import_react33 = __toESM(require_react());
+  var import_react34 = __toESM(require_react());
   var import_jsx_runtime11 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/LockerReserveAlert.jsx
-  var import_react34 = __toESM(require_react());
+  var import_react35 = __toESM(require_react());
   var import_jsx_runtime12 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/Calendar.jsx
   var import_jsx_runtime13 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/CancelBtn.jsx
-  var import_react36 = __toESM(require_react());
+  var import_react37 = __toESM(require_react());
   var import_jsx_runtime14 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/DisabledState.jsx
-  var import_react37 = __toESM(require_react());
+  var import_react38 = __toESM(require_react());
   var import_jsx_runtime15 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/QuickCollect.jsx
   var import_jsx_runtime16 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/CheckoutMethodSelect.jsx
-  var import_react42 = __toESM(require_react());
+  var import_react43 = __toESM(require_react());
 
   // extensions/delivery-rules/src/CSPortal.jsx
-  var import_react39 = __toESM(require_react());
+  var import_react40 = __toESM(require_react());
   var import_jsx_runtime17 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/MethodList.jsx
-  var import_react40 = __toESM(require_react());
+  var import_react41 = __toESM(require_react());
   var import_jsx_runtime18 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/Summary.jsx
-  var import_react41 = __toESM(require_react());
+  var import_react42 = __toESM(require_react());
   var import_jsx_runtime19 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/CheckoutMethodSelect.jsx
   var import_jsx_runtime20 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-rules/src/Locations.jsx
-  var import_react43 = __toESM(require_react());
+  var import_react44 = __toESM(require_react());
   var import_jsx_runtime21 = __toESM(require_jsx_runtime());
   var Locations = ({
     checkoutData,
@@ -21452,10 +21460,13 @@ ${errorInfo.componentStack}`);
     setProximityLocations
   }) => {
     var _a;
-    const [searchLocationQuery, setSearchLocationQuery] = (0, import_react43.useState)(null);
-    const [searchPostcodeQuery, setSearchPostcodeQuery] = (0, import_react43.useState)(null);
-    const [scrollPos, setScrollPos] = (0, import_react43.useState)(0);
-    const [postcodeError, setPostcodeError] = (0, import_react43.useState)(false);
+    const [searchLocationQuery, setSearchLocationQuery] = (0, import_react44.useState)(null);
+    const [searchPostcodeQuery, setSearchPostcodeQuery] = (0, import_react44.useState)(null);
+    const [filteredLocations, setFilteredLocations] = (0, import_react44.useState)(
+      checkoutData.pickup.qCollectLocations
+    );
+    const [scrollPos, setScrollPos] = (0, import_react44.useState)(0);
+    const [postcodeError, setPostcodeError] = (0, import_react44.useState)(false);
     const changeShippingAddress = useApplyShippingAddressChange();
     const changeAttributes = useApplyAttributeChange();
     const handleScroll = (posVal) => {
@@ -21544,7 +21555,7 @@ ${errorInfo.componentStack}`);
       });
       selectLocation(locHours, metaobject.description.value, targetLocation[0]);
     });
-    (0, import_react43.useEffect)(() => {
+    (0, import_react44.useEffect)(() => {
       const getProximityLocations = () => __async(void 0, null, function* () {
         let checkBody = {
           type: "pickup",
@@ -21560,10 +21571,12 @@ ${errorInfo.componentStack}`);
           body: JSON.stringify(checkBody)
         });
         let pcCheckData = yield checkRes.json();
+        console.log("FROM PROXIMITY CHECK: ", pcCheckData);
         setProximityLocations({
           pickup_locations: pcCheckData.pickup.locations
         });
         console.log("Postcode availability data: ", pcCheckData);
+        setFilteredLocations(pcCheckData.pickup.locations);
       });
       searchPostcodeQuery ? getProximityLocations() : null;
     }, [searchPostcodeQuery]);
@@ -21589,53 +21602,60 @@ ${errorInfo.componentStack}`);
     });
     const handleInput = (val, type) => {
       if (type === "location") {
-        searchLocationQuery && !val ? (removeLocation(), setSearchLocationQuery(null)) : null;
+        searchLocationQuery && !val ? (removeLocation(), setSearchPostcodeQuery(null), setSearchLocationQuery(null)) : null;
+        searchPostcodeQuery && val ? setSearchPostcodeQuery(null) : null;
       } else {
-        searchPostcodeQuery && !val ? setSearchPostcodeQuery(null) : null;
+        searchPostcodeQuery && !val ? setSearchLocationQuery(null) : null;
+        searchLocationQuery && val ? setSearchLocationQuery(null) : null;
       }
     };
-    const getFilteredLocations = () => {
-      console.log("checkout data from filter: ", checkoutData);
-      let fLocations = searchPostcodeQuery ? checkoutData.pickup.proximityCollectLocations : checkoutData.pickup.qCollectLocations;
+    (0, import_react44.useEffect)(() => {
+      let unfiltered = checkoutData.pickup.qCollectLocations;
       if (searchLocationQuery) {
         let x3 = [];
-        fLocations.forEach((location) => {
+        unfiltered.forEach((location) => {
           location.company_name.toLowerCase().includes(searchLocationQuery.toLowerCase()) ? x3.push(location) : null;
         });
-        fLocations = x3;
-        console.log(x3);
+        setFilteredLocations(x3);
+      } else {
+        !searchLocationQuery ? setFilteredLocations(unfiltered) : null;
       }
-      return fLocations;
-    };
+    }, [searchLocationQuery]);
     return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(View2, { padding: ["base", "none", "base", "none"], children: [
       /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Heading2, { children: "Find your nearest store or locker" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
-        InlineLayout,
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+        Form2,
         {
-          columns: [`fill`, "fill", "auto"],
-          spacing: "base",
-          padding: ["base", "none", "base", "none"],
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-              TextField2,
-              {
-                label: "Search by location name",
-                onChange: (val) => handleChange(val, "location"),
-                onInput: (val) => handleInput(val, "location"),
-                value: searchLocationQuery
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-              TextField2,
-              {
-                label: "Search by proximity",
-                onChange: (val) => handleChange(val, "postcode"),
-                onInput: (val) => handleInput(val, "postcode"),
-                value: searchPostcodeQuery
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Button2, { children: "Search" })
-          ]
+          onSubmit: () => console.log("form submitted!"),
+          children: /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+            InlineLayout,
+            {
+              columns: [`fill`, "fill", "auto"],
+              spacing: "base",
+              padding: ["base", "none", "base", "none"],
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+                  TextField2,
+                  {
+                    label: "Search by location name",
+                    onChange: (val) => handleChange(val, "location"),
+                    onInput: (val) => handleInput(val, "location"),
+                    value: searchLocationQuery
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+                  TextField2,
+                  {
+                    label: "Search by proximity",
+                    onChange: (val) => handleChange(val, "postcode"),
+                    onInput: (val) => handleInput(val, "postcode"),
+                    value: searchPostcodeQuery
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Button2, { accessibilityRole: "submit", children: "Search" })
+              ]
+            }
+          )
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
@@ -21653,7 +21673,7 @@ ${errorInfo.componentStack}`);
               value: ((_a = checkoutData.pickup) == null ? void 0 : _a.selectedLocation) ? `${checkoutData.pickup.selectedLocation.info.id}` : "",
               onChange: (id) => handleLocationSelect(id),
               variant: "group",
-              children: getFilteredLocations().map((location, i2) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+              children: filteredLocations.map((location, i2) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
                 Choice2,
                 {
                   id: `${location.id}`,
@@ -21671,30 +21691,30 @@ ${errorInfo.componentStack}`);
   var Locations_default = Locations;
 
   // extensions/delivery-rules/src/DateSelect.jsx
-  var import_react45 = __toESM(require_react());
+  var import_react46 = __toESM(require_react());
 
   // extensions/delivery-rules/src/AltCalendar.jsx
-  var import_react44 = __toESM(require_react());
+  var import_react45 = __toESM(require_react());
   var import_jsx_runtime22 = __toESM(require_jsx_runtime());
   var days = Array.apply(null, Array(6)).map(() => {
   });
   var months = Array.apply(null, Array(13)).map(() => {
   });
   var AltCalendar = ({ methodData, attributes }) => {
-    const [minDate, setMinDate] = (0, import_react44.useState)(
+    const [minDate, setMinDate] = (0, import_react45.useState)(
       methodData.minDate || methodData.delivery.min_date
     );
-    const [today, setToday] = (0, import_react44.useState)(/* @__PURE__ */ new Date());
-    const [backwardLocked, setBackwardLocked] = (0, import_react44.useState)(false);
-    const [forwardLocked, setForwardLocked] = (0, import_react44.useState)(false);
-    const [selected, setSelected] = (0, import_react44.useState)(null);
-    const [selectedMonth, setSelectedMonth] = (0, import_react44.useState)(null);
+    const [today, setToday] = (0, import_react45.useState)(/* @__PURE__ */ new Date());
+    const [backwardLocked, setBackwardLocked] = (0, import_react45.useState)(false);
+    const [forwardLocked, setForwardLocked] = (0, import_react45.useState)(false);
+    const [selected, setSelected] = (0, import_react45.useState)(null);
+    const [selectedMonth, setSelectedMonth] = (0, import_react45.useState)(null);
     const dateFormat = "yyyy-MM-dd";
     console.log("MINDATE IN CAL: ", minDate, methodData);
     const getHeading = () => {
       return attributes["Checkout-Method"] === "pickup" ? "Collection Date" : "Delivery Date";
     };
-    (0, import_react44.useEffect)(() => {
+    (0, import_react45.useEffect)(() => {
       console.log(
         "todays current value: ",
         today,
@@ -21849,8 +21869,8 @@ ${errorInfo.componentStack}`);
       currentShippingAddress,
       checkoutData
     );
-    const [methodData, setMethodData] = (0, import_react45.useState)(null);
-    (0, import_react45.useEffect)(() => {
+    const [methodData, setMethodData] = (0, import_react46.useState)(null);
+    (0, import_react46.useEffect)(() => {
       const getPickupDates = () => __async(void 0, null, function* () {
         let nextDayMeta = appMeta.map((meta) => {
           return JSON.parse(meta.metafield.value).next_day_delivery.value;
@@ -21994,7 +22014,7 @@ ${errorInfo.componentStack}`);
     () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Extension, {})
   );
   function Extension() {
-    const [checkoutData, dispatch] = (0, import_react46.useReducer)(checkoutDataReducer, {});
+    const [checkoutData, dispatch] = (0, import_react47.useReducer)(checkoutDataReducer, {});
     const handleSetQLocations = (locations) => {
       dispatch({
         type: "acquired_q_locations",
@@ -22038,26 +22058,26 @@ ${errorInfo.componentStack}`);
         type: "reset_MS_Checkout"
       });
     };
-    const [qCollectLocation, setQCollectLocation] = (0, import_react46.useState)(null);
-    const [minDate, setMinDate] = (0, import_react46.useState)(null);
-    const [availableMethods, setAvailableMethods] = (0, import_react46.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react46.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react46.useState)(false);
-    const [collectLocation, setCollectLocation] = (0, import_react46.useState)(null);
-    const [displayCalendar, setDisplayCalendar] = (0, import_react46.useState)(false);
-    const [postcode, setPostcode] = (0, import_react46.useState)(null);
-    const [selectedMethod, setSelectedMethod] = (0, import_react46.useState)(null);
-    const [cs, setCS] = (0, import_react46.useState)({ status: false });
-    const [globalLoad, setGlobalLoad] = (0, import_react46.useState)(true);
-    const [testnum, setTestnum] = (0, import_react46.useState)(1);
+    const [qCollectLocation, setQCollectLocation] = (0, import_react47.useState)(null);
+    const [minDate, setMinDate] = (0, import_react47.useState)(null);
+    const [availableMethods, setAvailableMethods] = (0, import_react47.useState)(null);
+    const [penguinCart, setPenguinCart] = (0, import_react47.useState)(null);
+    const [lockerReserved, setLockerReserved] = (0, import_react47.useState)(false);
+    const [collectLocation, setCollectLocation] = (0, import_react47.useState)(null);
+    const [displayCalendar, setDisplayCalendar] = (0, import_react47.useState)(false);
+    const [postcode, setPostcode] = (0, import_react47.useState)(null);
+    const [selectedMethod, setSelectedMethod] = (0, import_react47.useState)(null);
+    const [cs, setCS] = (0, import_react47.useState)({ status: false });
+    const [globalLoad, setGlobalLoad] = (0, import_react47.useState)(true);
+    const [testnum, setTestnum] = (0, import_react47.useState)(1);
     const lineItems = useCartLines();
     let setCartLineAttr = useApplyCartLinesChange();
     const appMeta = useAppMetafields();
-    let CollectBtn = (0, import_react46.useRef)();
-    (0, import_react46.useEffect)(() => {
+    let CollectBtn = (0, import_react47.useRef)();
+    (0, import_react47.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://bf4c-81-103-75-43.ngrok-free.app";
+    const app_url = "https://6eb0-212-140-232-13.ngrok-free.app";
     let changeAttributes = useApplyAttributeChange();
     const { extension: extension2 } = useApi();
     const attr = useAttributes();
@@ -22068,10 +22088,10 @@ ${errorInfo.componentStack}`);
       {}
     );
     console.log("attributes from parent: ", attributes);
-    (0, import_react46.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       console.log("UPDATED SELECTED METHOD: ", selectedMethod);
     }, [selectedMethod]);
-    (0, import_react46.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       Object.keys(attributes).forEach((key) => __async(this, null, function* () {
         yield changeAttributes({
           type: "updateAttribute",
@@ -22080,7 +22100,7 @@ ${errorInfo.componentStack}`);
         });
       }));
     }, []);
-    (0, import_react46.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       var _a;
       console.log("quick collect rendered: ", lineItems);
       const validateCart = () => __async(this, null, function* () {
@@ -22116,10 +22136,10 @@ ${errorInfo.componentStack}`);
       return JSON.parse(meta.metafield.value).next_day_delivery.value;
     });
     let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
-    (0, import_react46.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       console.log("##################checkout data ", checkoutData);
     }, [checkoutData]);
-    (0, import_react46.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       console.log("++++++++++++++ cs updated: ", cs);
     }, [cs]);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
@@ -22156,7 +22176,7 @@ ${errorInfo.componentStack}`);
       } else
         return;
     });
-    (0, import_react46.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       handleMethodSelect("pickup");
     }, []);
     const handleMethodSelect = (method) => __async(this, null, function* () {
@@ -22200,7 +22220,7 @@ ${errorInfo.componentStack}`);
         });
       }
     });
-    (0, import_react46.useEffect)(() => {
+    (0, import_react47.useEffect)(() => {
       console.log("shipping addresss updated! ", currentShippingAddress.zip), console.log("\n cart lines: ", lineItems);
     }, [currentShippingAddress]);
     return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_jsx_runtime24.Fragment, { children: extension2.target === "purchase.checkout.block.render" ? /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [
