@@ -71,6 +71,7 @@ const DateSelect = ({
         nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
       let checkBody = {
+        type: "delivery",
         postcode: currentShippingAddress.zip,
         cart: cart,
         twoDayDelivery: nextDay,

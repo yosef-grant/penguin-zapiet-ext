@@ -110,7 +110,7 @@ function Extension() {
 
   const [qCollectLocation, setQCollectLocation] = useState(null);
   const [minDate, setMinDate] = useState(null);
-  const [nextDay, setNextDay] = useState(false);
+  // const [nextDay, setNextDay] = useState(false);
   const [availableMethods, setAvailableMethods] = useState(null);
   const [penguinCart, setPenguinCart] = useState(null);
   const [lockerReserved, setLockerReserved] = useState(false);
@@ -134,7 +134,7 @@ function Extension() {
     console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   }, [penguinCart]);
 
-  const app_url = "https://2f17-212-140-232-13.ngrok-free.app";
+  const app_url = "https://bf4c-81-103-75-43.ngrok-free.app";
 
   let changeAttributes = useApplyAttributeChange();
 
@@ -214,6 +214,12 @@ function Extension() {
   });
   const changeShippingAddress = useApplyShippingAddressChange();
   const currentShippingAddress = useShippingAddress();
+
+  let nextDayMeta = appMeta.map((meta) => {
+    return JSON.parse(meta.metafield.value).next_day_delivery.value;
+  });
+  let nextDay =
+    nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
   // useEffect(() => {
   //   const stripAddress = async () => {
@@ -388,6 +394,10 @@ function Extension() {
                 checkoutData={checkoutData}
                 selectLocation={handleSelectPickupLocation}
                 removeLocation={handleRemoveSelectedLocation}
+                url={app_url}
+                cart={lineItems}
+                nextDay={nextDay}
+                setProximityLocations={handleSetCollectLocations}
               />
             </>
           ) : (

@@ -1145,7 +1145,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect12(create, deps) {
+          function useEffect13(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1927,7 +1927,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect12;
+          exports.useEffect = useEffect13;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -19506,9 +19506,7 @@ ${errorInfo.componentStack}`);
   });
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Choice/Choice.mjs
-  var Choice2 = createRemoteReactComponent(Choice, {
-    fragmentProps: ["details", "primaryContent", "secondaryContent", "tertiaryContent"]
-  });
+  var Choice2 = createRemoteReactComponent(Choice);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ChoiceList/ChoiceList.mjs
   var ChoiceList2 = createRemoteReactComponent(ChoiceList);
@@ -21444,11 +21442,20 @@ ${errorInfo.componentStack}`);
   // extensions/delivery-rules/src/Locations.jsx
   var import_react43 = __toESM(require_react());
   var import_jsx_runtime21 = __toESM(require_jsx_runtime());
-  var Locations = ({ checkoutData, selectLocation, removeLocation }) => {
+  var Locations = ({
+    checkoutData,
+    selectLocation,
+    removeLocation,
+    url,
+    cart,
+    nextDay,
+    setProximityLocations
+  }) => {
     var _a;
     const [searchLocationQuery, setSearchLocationQuery] = (0, import_react43.useState)(null);
     const [searchPostcodeQuery, setSearchPostcodeQuery] = (0, import_react43.useState)(null);
     const [scrollPos, setScrollPos] = (0, import_react43.useState)(0);
+    const [postcodeError, setPostcodeError] = (0, import_react43.useState)(false);
     const changeShippingAddress = useApplyShippingAddressChange();
     const changeAttributes = useApplyAttributeChange();
     const handleScroll = (posVal) => {
@@ -21537,16 +21544,49 @@ ${errorInfo.componentStack}`);
       });
       selectLocation(locHours, metaobject.description.value, targetLocation[0]);
     });
-    const handleChange = (val, type) => {
+    (0, import_react43.useEffect)(() => {
+      const getProximityLocations = () => __async(void 0, null, function* () {
+        let checkBody = {
+          type: "pickup",
+          postcode: searchPostcodeQuery,
+          cart,
+          twoDayDelivery: nextDay
+        };
+        let checkRes = yield fetch(`${url}/pza/check-postcode-test`, {
+          headers: {
+            "Content-Type": "application/json"
+          },
+          method: "POST",
+          body: JSON.stringify(checkBody)
+        });
+        let pcCheckData = yield checkRes.json();
+        setProximityLocations({
+          pickup_locations: pcCheckData.pickup.locations
+        });
+        console.log("Postcode availability data: ", pcCheckData);
+      });
+      searchPostcodeQuery ? getProximityLocations() : null;
+    }, [searchPostcodeQuery]);
+    const handleChange = (val, type) => __async(void 0, null, function* () {
       console.log(val);
       if (type === "location") {
         searchPostcodeQuery ? setSearchPostcodeQuery(null) : null;
         setSearchLocationQuery(val);
       } else {
         searchLocationQuery ? setSearchLocationQuery(null) : null;
-        setSearchPostcodeQuery(val);
+        if (val.length < 12 && val.length > 0) {
+          let postcodeRes = yield fetch(
+            `https://api.postcodes.io/postcodes/${val}`,
+            {
+              method: "GET"
+            }
+          );
+          let postcodeData = yield postcodeRes.json();
+          console.log(postcodeData.result);
+          postcodeData.result ? setSearchPostcodeQuery(postcodeData.result.postcode) : null;
+        }
       }
-    };
+    });
     const handleInput = (val, type) => {
       if (type === "location") {
         searchLocationQuery && !val ? (removeLocation(), setSearchLocationQuery(null)) : null;
@@ -21555,7 +21595,8 @@ ${errorInfo.componentStack}`);
       }
     };
     const getFilteredLocations = () => {
-      let fLocations = checkoutData.pickup.qCollectLocations;
+      console.log("checkout data from filter: ", checkoutData);
+      let fLocations = searchPostcodeQuery ? checkoutData.pickup.proximityCollectLocations : checkoutData.pickup.qCollectLocations;
       if (searchLocationQuery) {
         let x3 = [];
         fLocations.forEach((location) => {
@@ -21568,26 +21609,35 @@ ${errorInfo.componentStack}`);
     };
     return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(View2, { padding: ["base", "none", "base", "none"], children: [
       /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Heading2, { children: "Find your nearest store or locker" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(InlineLayout, { columns: [`fill`, "fill", "auto"], spacing: "base", padding: ["base", "none", "base", "none"], children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-          TextField2,
-          {
-            label: "Search by location name",
-            onChange: (val) => handleChange(val, "location"),
-            onInput: (val) => handleInput(val, "location"),
-            value: searchLocationQuery
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-          TextField2,
-          {
-            label: "Search by proximity",
-            onInput: (val) => handleChange(val, "postcode"),
-            value: searchPostcodeQuery
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Button2, { children: "Search" })
-      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+        InlineLayout,
+        {
+          columns: [`fill`, "fill", "auto"],
+          spacing: "base",
+          padding: ["base", "none", "base", "none"],
+          children: [
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+              TextField2,
+              {
+                label: "Search by location name",
+                onChange: (val) => handleChange(val, "location"),
+                onInput: (val) => handleInput(val, "location"),
+                value: searchLocationQuery
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+              TextField2,
+              {
+                label: "Search by proximity",
+                onChange: (val) => handleChange(val, "postcode"),
+                onInput: (val) => handleInput(val, "postcode"),
+                value: searchPostcodeQuery
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Button2, { children: "Search" })
+          ]
+        }
+      ),
       /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         ScrollView2,
         {
@@ -21640,7 +21690,7 @@ ${errorInfo.componentStack}`);
     const [selected, setSelected] = (0, import_react44.useState)(null);
     const [selectedMonth, setSelectedMonth] = (0, import_react44.useState)(null);
     const dateFormat = "yyyy-MM-dd";
-    console.log("MINDATE IN CAL: ", minDate);
+    console.log("MINDATE IN CAL: ", minDate, methodData);
     const getHeading = () => {
       return attributes["Checkout-Method"] === "pickup" ? "Collection Date" : "Delivery Date";
     };
@@ -21840,6 +21890,7 @@ ${errorInfo.componentStack}`);
         });
         let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
         let checkBody = {
+          type: "delivery",
           postcode: currentShippingAddress.zip,
           cart,
           twoDayDelivery: nextDay
@@ -21886,12 +21937,9 @@ ${errorInfo.componentStack}`);
         return JSON.parse(JSON.stringify(x3));
       }
       case "acquired_general_delivery_info": {
-        x3.qCollect = false;
-        x3.delivery = action.data.delivery;
-        x3.shipping = action.data.shipping;
         x3.pickup = {
           qCollectLocations: ((_a = x3 == null ? void 0 : x3.pickup) == null ? void 0 : _a.qCollectLocations) ? x3.pickup.qCollectLocations : null,
-          collectLocations: action.data.pickup_locations
+          proximityCollectLocations: action.data.pickup_locations
         };
         return JSON.parse(JSON.stringify(x3));
       }
@@ -21992,7 +22040,6 @@ ${errorInfo.componentStack}`);
     };
     const [qCollectLocation, setQCollectLocation] = (0, import_react46.useState)(null);
     const [minDate, setMinDate] = (0, import_react46.useState)(null);
-    const [nextDay, setNextDay] = (0, import_react46.useState)(false);
     const [availableMethods, setAvailableMethods] = (0, import_react46.useState)(null);
     const [penguinCart, setPenguinCart] = (0, import_react46.useState)(null);
     const [lockerReserved, setLockerReserved] = (0, import_react46.useState)(false);
@@ -22010,7 +22057,7 @@ ${errorInfo.componentStack}`);
     (0, import_react46.useEffect)(() => {
       console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
     }, [penguinCart]);
-    const app_url = "https://2f17-212-140-232-13.ngrok-free.app";
+    const app_url = "https://bf4c-81-103-75-43.ngrok-free.app";
     let changeAttributes = useApplyAttributeChange();
     const { extension: extension2 } = useApi();
     const attr = useAttributes();
@@ -22065,6 +22112,10 @@ ${errorInfo.componentStack}`);
     });
     const changeShippingAddress = useApplyShippingAddressChange();
     const currentShippingAddress = useShippingAddress();
+    let nextDayMeta = appMeta.map((meta) => {
+      return JSON.parse(meta.metafield.value).next_day_delivery.value;
+    });
+    let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
     (0, import_react46.useEffect)(() => {
       console.log("##################checkout data ", checkoutData);
     }, [checkoutData]);
@@ -22200,7 +22251,11 @@ ${errorInfo.componentStack}`);
         {
           checkoutData,
           selectLocation: handleSelectPickupLocation,
-          removeLocation: handleRemoveSelectedLocation
+          removeLocation: handleRemoveSelectedLocation,
+          url: app_url,
+          cart: lineItems,
+          nextDay,
+          setProximityLocations: handleSetCollectLocations
         }
       ) }) : "Please enter your address below to see delivery options."
     ] }) : extension2.target === "purchase.checkout.shipping-option-list.render-before" ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_jsx_runtime24.Fragment, { children: (attributes["Checkout-Method"] === "pickup" && (attributes == null ? void 0 : attributes["Pickup-Location-Id"]) && (attributes == null ? void 0 : attributes["Pickup-Location-Type"]) || attributes["Checkout-Method"] === "delivery" && currentShippingAddress.zip) && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(

@@ -48,7 +48,7 @@ const AltCalendar = ({ methodData, attributes }) => {
 
   const dateFormat = "yyyy-MM-dd";
 
-  console.log("MINDATE IN CAL: ", minDate);
+  console.log("MINDATE IN CAL: ", minDate, methodData);
 
   const getHeading = () => {
     return attributes["Checkout-Method"] === "pickup"

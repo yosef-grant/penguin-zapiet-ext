@@ -6,14 +6,11 @@ const checkoutDataReducer = (checkoutData, action) => {
       return JSON.parse(JSON.stringify(x));
     }
     case "acquired_general_delivery_info": {
-      x.qCollect = false;
-      x.delivery = action.data.delivery;
-      x.shipping = action.data.shipping;
       x.pickup = {
         qCollectLocations: x?.pickup?.qCollectLocations
           ? x.pickup.qCollectLocations
           : null,
-        collectLocations: action.data.pickup_locations,
+        proximityCollectLocations: action.data.pickup_locations,
       };
       return JSON.parse(JSON.stringify(x));
     }
