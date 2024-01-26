@@ -50,12 +50,11 @@ export function run(input) {
     let r = [];
     deliveryOptions.forEach((option) => {
       if (!zone || zone === null) {
-        !option.title.toLowerCase().includes(deliveryType) 
+        !option.title.toLowerCase().includes(deliveryType)
           ? r.push(option)
           : null;
       } else {
-        !option.title.toLowerCase().includes(`group ${zone}`) 
-        
+        !option.title.toLowerCase().includes(`group ${zone}`)
           ? r.push(option)
           : null;
       }
@@ -100,9 +99,11 @@ export function run(input) {
       searchTerm = "collect";
       break;
     // ! change for live
-    case "S": 
+    case "S":
       searchTerm = "standard";
       break;
+    case "U":
+      searchTerm = "unavailable";
   }
   console.log("heres the delivery string: ", deliveryAttr?.value, deliveryStr);
   input.cart.deliveryGroups.forEach((group) =>

@@ -23,15 +23,14 @@ import {
   useAppMetafields,
 } from "@shopify/ui-extensions-react/checkout";
 
-import QuickCollect from "./QuickCollect.jsx";
-import CheckoutMethodSelect from "./CheckoutMethodSelect.jsx";
-
 import Locations from "./Locations.jsx";
 import DateSelect from "./DateSelect.jsx";
+import CSPortal from "./CSPortal.jsx";
 
 import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
 import { Button, DatePicker } from "@shopify/ui-extensions/checkout";
-import LocationsSelect from "./LocationsSelect.jsx";
+import DeliveryEmptyState from "./DeliveryEmptyState.jsx";
+import BlockLoader from "./BlockLoader.jsx";
 
 // const QuickCollectRender = reactExtension(
 //   'purchase.checkout.block.render',
@@ -130,11 +129,11 @@ function Extension() {
 
   let CollectBtn = useRef();
 
-  useEffect(() => {
-    console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
-  }, [penguinCart]);
+  // useEffect(() => {
+  //   console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
+  // }, [penguinCart]);
 
-  const app_url = "https://6eb0-212-140-232-13.ngrok-free.app";
+  const app_url = "https://2341-212-140-232-13.ngrok-free.app";
 
   let changeAttributes = useApplyAttributeChange();
 
@@ -152,9 +151,13 @@ function Extension() {
     {}
   );
 
-  console.log("attributes from parent: ", attributes);
   // * Uncomment to track CART attributes:
-  // console.log(attributes);
+  console.log(
+    "attributes from parent: ",
+    attributes,
+    "\navailable methods from parent: ",
+    availableMethods
+  );
 
   // TODO delete penguin order if reservation confirmed and user hits X button
   // TODO hide reservation banner
@@ -236,10 +239,6 @@ function Extension() {
   // }, [selectedMethod]);
 
   useEffect(() => {
-    console.log("##################checkout data ", checkoutData);
-  }, [checkoutData]);
-
-  useEffect(() => {
     console.log("++++++++++++++ cs updated: ", cs);
   }, [cs]);
 
@@ -282,7 +281,10 @@ function Extension() {
   };
 
   useEffect(() => {
-    handleMethodSelect("pickup");
+    console.log("SELECTED METHOD ***: ", selectedMethod);
+    attributes["Checkout-Method"] !== "delivery"
+      ? handleMethodSelect("pickup")
+      : null;
   }, []);
 
   const handleMethodSelect = async (method) => {
@@ -324,19 +326,23 @@ function Extension() {
           },
         ],
       });
+      handleRemoveSelectedLocation();
     }
   };
 
   useEffect(() => {
-    console.log("shipping addresss updated! ", currentShippingAddress.zip),
-      console.log("\n cart lines: ", lineItems);
+    console.log("shipping addresss updated! ", currentShippingAddress.zip);
   }, [currentShippingAddress]);
 
   return (
     <>
-      {extension.target === "purchase.checkout.block.render" ? (
+      {globalLoad ? (
+       <BlockLoader  message={"Loading..."}/>
+      ) : (
         <>
-            {/* <Button >Base</Button>
+          {extension.target === "purchase.checkout.block.render" ? (
+            <>
+              {/* <Button >Base</Button>
             <Button >Accent</Button>
             <Button >Decorative</Button>
             <Button >interactive</Button>
@@ -346,84 +352,96 @@ function Extension() {
             <Button >warning</Button>
             <Button >critical</Button>
             <Button >monochrome</Button> */}
-          <InlineLayout spacing={"tight"}>
-            <Pressable
-              // disabled={checkoutData?.methods?.pickup === false ? true : false}
-              inlineAlignment={"center"}
-              blockAlignment={"center"}
-              cornerRadius={"base"}
-              minBlockSize={50}
-              border={"base"}
-              background={
-                selectedMethod === "pickup" ? "subdued" : "transparent"
-              }
-              onPress={() => handleMethodSelect("pickup")}
-   
-            >
-              <Text size="medium"
-              emphasis="bold"
-              >
-              Collection
-              </Text>
-
-            </Pressable>
-            <Pressable
-              // disabled={checkoutData?.methods?.delivery === false ? true : false}
-              inlineAlignment={"center"}
-              blockAlignment={"center"}
-              cornerRadius={"base"}
-              minBlockSize={50}
-              border={"base"}
-              background={
-                selectedMethod && selectedMethod !== "pickup"
-                  ? "subdued"
-                  : "transparent"
-              }
-              onPress={() => handleMethodSelect("delivery")}
-            >
-              <Text size="medium"
-              emphasis="bold"
-              >
-              Delivery
-              </Text>
-            </Pressable>
-          </InlineLayout>
-          {selectedMethod === "pickup" && checkoutData?.pickup ? (
-            <>
-              <Locations
-                checkoutData={checkoutData}
-                selectLocation={handleSelectPickupLocation}
-                removeLocation={handleRemoveSelectedLocation}
-                url={app_url}
-                cart={lineItems}
-                nextDay={nextDay}
-                setProximityLocations={handleSetCollectLocations}
-              />
+              <InlineLayout spacing={"tight"}>
+                <Pressable
+                  // disabled={checkoutData?.methods?.pickup === false ? true : false}
+                  inlineAlignment={"center"}
+                  blockAlignment={"center"}
+                  cornerRadius={"base"}
+                  minBlockSize={50}
+                  border={"base"}
+                  background={
+                    attributes["Checkout-Method"] &&
+                    attributes["Checkout-Method"] === "pickup"
+                      ? "subdued"
+                      : "transparent"
+                  }
+                  onPress={() => handleMethodSelect("pickup")}
+                >
+                  <Text size="medium" emphasis="bold">
+                    Collection
+                  </Text>
+                </Pressable>
+                <Pressable
+                  // disabled={checkoutData?.methods?.delivery === false ? true : false}
+                  inlineAlignment={"center"}
+                  blockAlignment={"center"}
+                  cornerRadius={"base"}
+                  minBlockSize={50}
+                  border={"base"}
+                  background={
+                    attributes["Checkout-Method"] &&
+                    attributes["Checkout-Method"] !== "pickup"
+                      ? "subdued"
+                      : "transparent"
+                  }
+                  onPress={() => handleMethodSelect("delivery")}
+                >
+                  <Text size="medium" emphasis="bold">
+                    Delivery
+                  </Text>
+                </Pressable>
+              </InlineLayout>
+              {attributes["Checkout-Method"] === "pickup" &&
+              checkoutData?.pickup ? (
+                <>
+                  {!!cs.status && (
+                    <CSPortal
+                      setCS={setCS}
+                      cs={cs}
+                      allLocations={checkoutData.pickup.qCollectLocations}
+                    />
+                  )}
+                  <Locations
+                    checkoutData={checkoutData}
+                    selectLocation={handleSelectPickupLocation}
+                    removeLocation={handleRemoveSelectedLocation}
+                    url={app_url}
+                    cart={lineItems}
+                    nextDay={nextDay}
+                    setProximityLocations={handleSetCollectLocations}
+                    setCS={setCS}
+                  />
+                </>
+              ) : attributes["Checkout-Method"] !== "pickup" ? (
+                "Please enter your address below to see delivery options."
+              ) : null}
             </>
-          ) : (
-            "Please enter your address below to see delivery options."
-          )}
+          ) : extension.target ===
+            "purchase.checkout.shipping-option-list.render-before" ? (
+            <>
+              {((attributes["Checkout-Method"] === "pickup" &&
+                attributes?.["Pickup-Location-Id"] &&
+                attributes?.["Pickup-Location-Type"]) ||
+                (attributes["Checkout-Method"] === "delivery" &&
+                  currentShippingAddress.zip)) &&
+                availableMethods && (
+                  <DateSelect
+                    attributes={attributes}
+                    currentShippingAddress={currentShippingAddress}
+                    checkoutData={checkoutData}
+                    cart={lineItems}
+                    appMeta={appMeta}
+                    url={app_url}
+                    setCartLineAttr={setCartLineAttr}
+                    availableMethods={availableMethods}
+                    handleMethodSelect={handleMethodSelect}
+                  />
+                )}
+            </>
+          ) : null}
         </>
-      ) : extension.target ===
-        "purchase.checkout.shipping-option-list.render-before" ? (
-        <>
-          {((attributes["Checkout-Method"] === "pickup" &&
-            attributes?.["Pickup-Location-Id"] &&
-            attributes?.["Pickup-Location-Type"]) ||
-            (attributes["Checkout-Method"] === "delivery" &&
-              currentShippingAddress.zip)) && (
-            <DateSelect
-              attributes={attributes}
-              currentShippingAddress={currentShippingAddress}
-              checkoutData={checkoutData}
-              cart={lineItems}
-              appMeta={appMeta}
-              url={app_url}
-              setCartLineAttr={setCartLineAttr}
-            />
-          )}
-        </>
-      ) : null}
+      )}
     </>
   );
 }

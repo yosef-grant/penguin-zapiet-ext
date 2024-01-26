@@ -10,6 +10,7 @@ import {
   View,
   Select,
   Banner,
+  TextBlock,
 } from "@shopify/ui-extensions-react/checkout";
 
 import React, { useEffect, useState } from "react";
@@ -32,23 +33,46 @@ import {
   isPast,
   isSameMonth,
 } from "date-fns";
-import { Grid, Pressable, TextBlock } from "@shopify/ui-extensions/checkout";
+import { Grid, Pressable } from "@shopify/ui-extensions/checkout";
 
 const days = Array.apply(null, Array(6)).map(() => {});
 const months = Array.apply(null, Array(13)).map(() => {});
-const AltCalendar = ({ methodData, attributes }) => {
-  const [minDate, setMinDate] = useState(
-    methodData.minDate || methodData.delivery.min_date
-  );
+
+const AltCalendar = ({
+  methodData,
+  attributes,
+  deliveryType,
+  rate,
+  minDate,
+  blackoutDates,
+  pickupLocationInfo,
+}) => {
   const [today, setToday] = useState(new Date());
   const [backwardLocked, setBackwardLocked] = useState(false);
   const [forwardLocked, setForwardLocked] = useState(false);
   const [selected, setSelected] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
+  const [pickupTimes, setPickupTimes] = useState(null);
 
   const dateFormat = "yyyy-MM-dd";
 
-  console.log("MINDATE IN CAL: ", minDate, methodData);
+  console.log(
+    "MINDATE IN CAL: ",
+    minDate,
+    blackoutDates,
+    deliveryType,
+    "rate attr: ",
+    rate,
+    pickupLocationInfo
+  );
+
+  // useEffect(() => {
+  //   attributes["Checkout-Method"] === "pickup"
+  //     ? methodData.minDate
+  //     : deliveryType === "driver-delivery"s
+  //     ? methodData?.delivery.min_date
+  //     : methodData?.shipping.min_date;
+  // }, []);
 
   const getHeading = () => {
     return attributes["Checkout-Method"] === "pickup"
@@ -57,13 +81,6 @@ const AltCalendar = ({ methodData, attributes }) => {
   };
 
   useEffect(() => {
-    console.log(
-      "todays current value: ",
-      today,
-      format(new Date(addDays(today, 0)), minDate),
-      minDate
-    );
-
     format(today, dateFormat) === format(new Date(), dateFormat)
       ? // || isPast(new Date(subDays(today, 6)))
         setBackwardLocked(true)
@@ -77,19 +94,19 @@ const AltCalendar = ({ methodData, attributes }) => {
       ? setForwardLocked(false)
       : null;
 
-    console.log(
-      "forward in time: ",
-      new Date(addDays(today, 5)),
-      addYears(new Date(), 1),
-      isAfter(new Date(addDays(today, 6)), addYears(new Date(), 1))
-    );
+    // console.log(
+    //   "forward in time: ",
+    //   new Date(addDays(today, 5)),
+    //   addYears(new Date(), 1),
+    //   isAfter(new Date(addDays(today, 6)), addYears(new Date(), 1))
+    // );
   }, [today]);
 
   const getWeek = () => {
     const weekStart = format(today, "do MMM").toString();
     const weekEnd = format(addDays(today, 5), "do MMM").toString();
 
-    console.log(`${weekStart} - ${weekEnd}`);
+    // console.log(`${weekStart} - ${weekEnd}`);
     return `${weekStart} - ${weekEnd}`;
   };
 
@@ -105,7 +122,7 @@ const AltCalendar = ({ methodData, attributes }) => {
       : isBefore(new Date(weekAgo), new Date())
       ? setToday(new Date())
       : setToday(weekAgo);
-    console.log("weekback: ", today, new Date(), backwardLocked);
+    // console.log("weekback: ", today, new Date(), backwardLocked);
   };
   const weekForward = () => {
     let weekAhead = new Date(format(addDays(today, 6), dateFormat).toString());
@@ -113,17 +130,16 @@ const AltCalendar = ({ methodData, attributes }) => {
     isSameMonth(weekAhead, new Date(today))
       ? null
       : setSelectedMonth(format(weekAhead, "MMMM yyyy"));
-    console.log("going a week forward: ", weekAhead);
+    // console.log("going a week forward: ", weekAhead);
     forwardLocked ? null : setToday(weekAhead);
   };
 
   const setSelectedDate = (date) => {
-    console.log("new date: ", date);
+    // console.log("new date: ", date);
     setSelected(date);
   };
 
   const handleMonthChange = (value) => {
-    console.log("month has been changed! ", value);
     setSelectedMonth(value);
 
     !isThisMonth(new Date(value))
@@ -132,23 +148,27 @@ const AltCalendar = ({ methodData, attributes }) => {
   };
 
   const isDateDisabled = (date) => {
-    console.log(" 1 year in the future: ", addYears(new Date(), 1));
     if (
       isBefore(new Date(date), new Date(minDate)) ||
       isAfter(new Date(date), addYears(new Date(), 1))
     ) {
       return true;
     } else {
-      return methodData.blackout_dates.includes(date) ||
-        methodData.blackout_dates.includes(getDay(new Date(date)) + 1)
+      return blackoutDates.includes(date) ||
+        blackoutDates.includes(getDay(new Date(date)) + 1)
         ? true
         : false;
     }
   };
 
+  const getPickupTime = (date, meridian) => {
+    let t = format(new Date(date), "EEEE").toString().toLowerCase();
+    return pickupLocationInfo.store_hours[`${t}_${meridian}_pickup_hours`];
+  };
+
   return (
     <View>
-      <InlineLayout blockAlignment={"center"} columns={["auto", "fill"]} >
+      <InlineLayout blockAlignment={"center"} columns={["auto", "fill"]}>
         <Heading level={2}>{getHeading()}</Heading>
         <View inlineAlignment={"end"}>
           <Banner
@@ -161,7 +181,11 @@ const AltCalendar = ({ methodData, attributes }) => {
           />
         </View>
       </InlineLayout>
-      <InlineStack inlineAlignment={"center"} blockAlignment={"center"}>
+      <InlineStack
+        inlineAlignment={"center"}
+        blockAlignment={"center"}
+        padding={["base", "none", "none", "none"]}
+      >
         <Pressable onPress={() => weekBack()}>
           <Icon source="arrowLeft" />
         </Pressable>
@@ -184,6 +208,7 @@ const AltCalendar = ({ methodData, attributes }) => {
             inlineAlignment={"center"}
             blockAlignment={"center"}
             minBlockSize={30}
+            key={i}
           >
             <Text
               emphasis={
@@ -200,6 +225,7 @@ const AltCalendar = ({ methodData, attributes }) => {
         ))}
         {days.map((day, i) => (
           <View
+            key={i}
             inlineAlignment={"center"}
             blockAlignment={"center"}
             minBlockSize={30}
@@ -232,17 +258,34 @@ const AltCalendar = ({ methodData, attributes }) => {
         options={months.map((month, i) => {
           if (i === 0) {
             return {
+              key: { i },
               value: `${format(new Date(), "MMMM yyyy")}`,
               label: `${format(new Date(), "MMMM yyyy")}`,
             };
           } else {
             return {
+              key: { i },
               value: `${format(addMonths(new Date(), i), "MMMM yyyy")}`,
               label: `${format(addMonths(new Date(), i), "MMMM yyyy")}`,
             };
           }
         })}
       />
+      {attributes["Checkout-Method"] === "pickup" && (
+        <View padding={["base", "none", "tight", "none"]}>
+          <TextBlock>
+            {`If you’re ordering for the next day please note your order will be
+        available to collect from ${getPickupTime(
+          selected ? selected : minDate,
+          "pm"
+        )}, otherwise your order
+        will be available from  ${getPickupTime(
+          selected ? selected : minDate,
+          "am"
+        )}`}
+          </TextBlock>
+        </View>
+      )}
     </View>
   );
 };
