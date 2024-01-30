@@ -4,7 +4,7 @@ import React, {
   useLayoutEffect,
   useReducer,
   useRef,
-} from 'react';
+} from "react";
 
 import {
   Text,
@@ -23,60 +23,65 @@ import {
   useAppMetafields,
   View,
   useStorage,
-} from '@shopify/ui-extensions-react/checkout';
+} from "@shopify/ui-extensions-react/checkout";
 
-import Locations from './Locations.jsx';
-import DateSelect from './DateSelect.jsx';
-import CSPortal from './CSPortal.jsx';
+import Locations from "./Locations.jsx";
+import DateSelect from "./DateSelect.jsx";
+import CSPortal from "./CSPortal.jsx";
 
-import { checkoutDataReducer } from './reducer_functions/CheckoutDataMethods.jsx';
-import { Button, DatePicker } from '@shopify/ui-extensions/checkout';
-import DeliveryEmptyState from './DeliveryEmptyState.jsx';
-import BlockLoader from './BlockLoader.jsx';
-import MethodSelect from './MethodSelect.jsx';
+import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
+import { Button, DatePicker } from "@shopify/ui-extensions/checkout";
+import DeliveryEmptyState from "./DeliveryEmptyState.jsx";
+import BlockLoader from "./BlockLoader.jsx";
+import MethodSelect from "./MethodSelect.jsx";
 
 // ! Rendering in two places simultaneously causing react to render unecessarily - could be disrupting app functionality
 // TODO adjust initialisation useEffects to only run when the target is purchase.checkout.block.render
 
+// ? make initial data calls outside of function and pass to both renders, rather
+// ? than passing via storage
+
 const MethodSelectRender = reactExtension(
-  'purchase.checkout.block.render',
+  "purchase.checkout.block.render",
   () => <Extension />
 );
 
 const DatePickerRender = reactExtension(
-  'purchase.checkout.shipping-option-list.render-before',
+  "purchase.checkout.shipping-option-list.render-before",
   () => <Extension />
 );
 
 export { MethodSelectRender, DatePickerRender };
 //export { QuickCollectRender };
-
 function Extension() {
+  // console.log("data before load: ", initRes);
+
+  const app_url = "https://5813-212-140-232-13.ngrok-free.app";
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {
     dispatch({
-      type: 'acquired_q_locations',
+      type: "acquired_q_locations",
       all_locations: locations,
     });
   };
 
   const handleSetCollectLocations = (data) => {
     dispatch({
-      type: 'acquired_general_delivery_info',
+      type: "acquired_general_delivery_info",
       data: data,
     });
   };
 
   const handleRemoveSelectedLocation = () => {
     dispatch({
-      type: 'selected_pickup_location_removed',
+      type: "selected_pickup_location_removed",
     });
   };
 
   const handleSelectPickupLocation = (hours, description, location) => {
     dispatch({
-      type: 'selected_pickup_location_added',
+      type: "selected_pickup_location_added",
       hours: hours,
       description: description,
       location: location,
@@ -85,14 +90,14 @@ function Extension() {
 
   const handleConfirmPickupLocation = (dates) => {
     dispatch({
-      type: 'selected_pickup_location_confirmed',
+      type: "selected_pickup_location_confirmed",
       location_dates: dates,
     });
   };
 
   const handleSelectDates = (date, weekday) => {
     dispatch({
-      type: 'selected_dates',
+      type: "selected_dates",
       date: date,
       weekday: weekday,
     });
@@ -100,7 +105,7 @@ function Extension() {
 
   const handleMSReset = () => {
     dispatch({
-      type: 'reset_MS_Checkout',
+      type: "reset_MS_Checkout",
     });
   };
 
@@ -113,6 +118,10 @@ function Extension() {
   const [collectLocation, setCollectLocation] = useState(null);
   const [displayCalendar, setDisplayCalendar] = useState(false);
   const [postcode, setPostcode] = useState(null);
+
+  // * experimental state
+  const [storedAvailibility, setStoredAvailibility] = useState(null);
+  const [datePickerInit, setDatePickerInit] = useState(false);
 
   const [cs, setCS] = useState({ status: false });
 
@@ -131,8 +140,6 @@ function Extension() {
   // useEffect(() => {
   //   console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   // }, [penguinCart]);
-
-  const app_url = 'https://dedd-81-103-75-43.ngrok-free.app';
 
   let changeAttributes = useApplyAttributeChange();
 
@@ -167,37 +174,64 @@ function Extension() {
 
   useEffect(() => {
     const handleInitLoad = async () => {
-      console.log('INITIAL REACT LOAD - RESETTING VALUES');
+      console.log("INITIAL REACT LOAD - RESETTING VALUES");
+      await localStorage.delete("selected_location_info");
       Object.keys(attributes).forEach(async (key) => {
         await changeAttributes({
-          type: 'updateAttribute',
+          type: "updateAttribute",
           key: key,
-          value: '',
+          value: "",
         });
       });
 
-      await localStorage.delete('selected_location_info');
-
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(cart),
       });
 
       let resBody = await res.json();
-      console.log('Validating Cart (using test data) ', cart, resBody);
+      console.log("Validating Cart (using test data) ", cart, resBody);
+      await localStorage.write("availibility", resBody);
+      await localStorage.delete("selected_location_info");
       handleSetQLocations(resBody.locations);
       setAvailableMethods(resBody.methods);
 
-      handleMethodSelect('pickup');
+      handleMethodSelect("pickup");
       setInitLoad(false);
     };
-    !!initLoad && extension.target === 'purchase.checkout.block.render'
+    !!initLoad && extension.target === "purchase.checkout.block.render"
       ? handleInitLoad()
       : null;
   }, []);
+
+  // useEffect(() => {
+  //   console.log("local storage has been updated!");
+
+  //   const checkStorage = async() => {
+  //     let t = await localStorage.read('selected_location_info');
+
+  //     console.log('checking storage... date picker initialised? ', datePickerInit, 'storage contents: ', t)
+  //     if (t) {
+  //       console.log('location data is still present: ', t);
+  //       setDatePickerInit(true)
+  //     }
+  //     else {
+  //       console.log('location data removed!')
+  //       datePickerInit ? setDatePickerInit(false) : null;
+  //     }
+  //   }
+
+  //   checkStorage();
+  // }, [localStorage]);
+
+  useEffect(() => {
+    if (currentShippingAddress.zip) {
+      !datePickerInit ? setDatePickerInit(true) : null;
+    }
+  }, [currentShippingAddress.zip]);
 
   // initial validation
 
@@ -205,8 +239,8 @@ function Extension() {
 
   const cart = lineItems.map((item) => {
     return {
-      variant_id: item.merchandise.id.replace(/\D/g, ''),
-      product_id: item.merchandise.product.id.replace(/\D/g, ''),
+      variant_id: item.merchandise.id.replace(/\D/g, ""),
+      product_id: item.merchandise.product.id.replace(/\D/g, ""),
       quantity: item.quantity,
     };
   });
@@ -218,7 +252,7 @@ function Extension() {
     nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
   useEffect(() => {
-    console.log('++++++++++++++ cs updated: ', cs);
+    console.log("++++++++++++++ cs updated: ", cs);
   }, [cs]);
 
   // use to intercept rogue behaviour that will screw up rates
@@ -241,27 +275,28 @@ function Extension() {
 
   const deletePenguinReservation = async () => {
     console.log(attributes);
-    if (attributes?.['Pickup-Penguin-Id']) {
-      console.log('&&&&&&&  penguin reservation in place - should be deleted');
+    if (attributes?.["Pickup-Penguin-Id"]) {
+      console.log("&&&&&&&  penguin reservation in place - should be deleted");
       try {
         await fetch(`${app_url}/pza/delete-locker`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          method: 'POST',
-          body: JSON.stringify({ locker_id: attributes['Pickup-Penguin-Id'] }),
+          method: "POST",
+          body: JSON.stringify({ locker_id: attributes["Pickup-Penguin-Id"] }),
         });
       } catch (error) {
         console.error(
-          `Failed to delete locker order ${attributes['Pickup-Penguin-Id']}`
+          `Failed to delete locker order ${attributes["Pickup-Penguin-Id"]}`
         );
       }
     } else return;
   };
 
   const handleMethodSelect = async (method) => {
+    console.log('handling selected method')
     await changeShippingAddress({
-      type: 'updateShippingAddress',
+      type: "updateShippingAddress",
       address: {
         address1: undefined,
         city: undefined,
@@ -269,24 +304,24 @@ function Extension() {
       },
     });
 
-    if (method === 'pickup') {
+    if (method === "pickup") {
       await setCartLineAttr({
-        type: 'updateCartLine',
+        type: "updateCartLine",
         id: lineItems[0].id,
         attributes: [
           {
-            key: '_deliveryID',
+            key: "_deliveryID",
             value: method.charAt(0).toUpperCase(),
           },
         ],
       });
     } else {
       await setCartLineAttr({
-        type: 'updateCartLine',
+        type: "updateCartLine",
         id: lineItems[0].id,
         attributes: [
           {
-            key: '_deliveryID',
+            key: "_deliveryID",
             value: method.charAt(0).toUpperCase(),
           },
         ],
@@ -294,22 +329,18 @@ function Extension() {
       handleRemoveSelectedLocation();
     }
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'Checkout-Method',
+      type: "updateAttribute",
+      key: "Checkout-Method",
       value: method,
     });
   };
 
-  useEffect(() => {
-    console.log('checkout data updated: ', checkoutData, extension.target);
-  }, [checkoutData]);
-
   return (
     <>
-      {extension.target === 'purchase.checkout.block.render' ? (
+      {extension.target === "purchase.checkout.block.render" ? (
         <>
           {initLoad ? (
-            <BlockLoader message={'Loading...'} />
+            <BlockLoader message={"Loading..."} />
           ) : (
             <MethodSelect
               attributes={attributes}
@@ -328,12 +359,11 @@ function Extension() {
           )}
         </>
       ) : extension.target ===
-        'purchase.checkout.shipping-option-list.render-before' ? (
+          "purchase.checkout.shipping-option-list.render-before" &&
+        datePickerInit ? (
         <>
-          {attributes['Checkout-Method'] === 'pickup' &&
-            attributes['Pickup-Location-Id'] &&
-            currentShippingAddress.zip && (
-              <DateSelect
+          <Heading>Hi I'm a datepicker. Whats happening?</Heading>
+          <DateSelect
                 attributes={attributes}
                 currentShippingAddress={currentShippingAddress}
                 checkoutData={checkoutData}
@@ -345,7 +375,6 @@ function Extension() {
                 handleMethodSelect={handleMethodSelect}
                 localStorage={localStorage}
               />
-            )}
         </>
       ) : null}
     </>

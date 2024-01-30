@@ -61,6 +61,7 @@ const Locations = ({
     checkoutData.pickup.qCollectLocations
   );
 
+
   const [postcodeError, setPostcodeError] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState(null);
 
