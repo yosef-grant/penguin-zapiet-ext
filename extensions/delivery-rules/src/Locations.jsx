@@ -19,29 +19,29 @@ import {
   ListItem,
   TextBlock,
   SkeletonTextBlock,
-} from "@shopify/ui-extensions-react/checkout";
-import { InlineLayout, InlineSpacer } from "@shopify/ui-extensions/checkout";
-import React, { useEffect, useState } from "react";
-import location_icons from "./assets/LocationIcons";
+} from '@shopify/ui-extensions-react/checkout';
+import { InlineLayout, InlineSpacer } from '@shopify/ui-extensions/checkout';
+import React, { useEffect, useState } from 'react';
+import location_icons from './assets/LocationIcons';
 // import StoreImg from './assets/postal.png'
 
 const weekdays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 
 // TODO fix auto scroll in list when user selects location
 // ? image URLs may need adjusting when live
 // ? graphql seems very slow on mobile - remove query from here to improve speed
 const StoresIcon =
-  "https://cdn.shopify.com/s/files/1/0575/1468/8647/files/store.svg?v=1706175861";
+  'https://cdn.shopify.com/s/files/1/0575/1468/8647/files/store.svg?v=1706175861';
 const LockersIcon =
-  "https://cdn.shopify.com/s/files/1/0575/1468/8647/files/locker.svg?v=1706175882";
+  'https://cdn.shopify.com/s/files/1/0575/1468/8647/files/locker.svg?v=1706175882';
 
 const Locations = ({
   checkoutData,
@@ -52,6 +52,7 @@ const Locations = ({
   nextDay,
   setProximityLocations,
   setCS,
+  localStorage,
 }) => {
   const [searchLocationQuery, setSearchLocationQuery] = useState(null);
   const [searchPostcodeQuery, setSearchPostcodeQuery] = useState(null);
@@ -63,26 +64,22 @@ const Locations = ({
   const [postcodeError, setPostcodeError] = useState(false);
   const [selectedChoice, setSelectedChoice] = useState(null);
 
- 
-
   const changeShippingAddress = useApplyShippingAddressChange();
   const changeAttributes = useApplyAttributeChange();
 
-
   const { query } = useApi();
-
 
   const handleLocationSelect = async (val) => {
     setSelectedLocation(null);
     setSelectedChoice(val);
     let targetLocation = checkoutData.pickup.qCollectLocations.filter(
-      (location) => location.id === parseInt(val.replace(/[^0-9]/g, ""))
+      (location) => location.id === parseInt(val.replace(/[^0-9]/g, ''))
     );
 
     let locationHandle = targetLocation[0].company_name
       .toLowerCase()
-      .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "")
-      .replaceAll(/\s/gm, "-");
+      .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, '')
+      .replaceAll(/\s/gm, '-');
 
     let {
       data: { metaobject },
@@ -119,23 +116,23 @@ const Locations = ({
     );
 
     await changeAttributes({
-      type: "updateAttribute",
-      key: "Pickup-Location-Id",
+      type: 'updateAttribute',
+      key: 'Pickup-Location-Id',
       value: `${targetLocation[0].id}`,
     });
 
     await changeAttributes({
-      type: "updateAttribute",
-      key: "Pickup-Location-Company",
+      type: 'updateAttribute',
+      key: 'Pickup-Location-Company',
       value: targetLocation[0].company_name,
     });
     await changeAttributes({
-      type: "updateAttribute",
-      key: "Pickup-Location-Type",
+      type: 'updateAttribute',
+      key: 'Pickup-Location-Type',
       value: targetLocation[0].custom_attribute_1,
     });
 
-    console.log("|||||||||||||||||||| data: ", metaobject);
+    console.log('|||||||||||||||||||| data: ', metaobject);
 
     const {
       opening_hours: {
@@ -167,13 +164,22 @@ const Locations = ({
       zip: targetLocation[0].postal_code,
     };
 
+    
+
+    localStorage.write('selected_location_info', {
+      location: targetLocation[0],
+      hours: locHours,
+      description: metaobject.description.value,
+    });
+    //localStorage.write('selected_location_info', 'test');
+
     setSelectedLocation({
       hours: locHours,
       description: metaobject.description.value,
     });
     selectLocation(locHours, metaobject.description.value, targetLocation[0]);
     await changeShippingAddress({
-      type: "updateShippingAddress",
+      type: 'updateShippingAddress',
       address: targetLocationAddr,
     });
   };
@@ -181,27 +187,27 @@ const Locations = ({
   useEffect(() => {
     const getProximityLocations = async () => {
       let checkBody = {
-        type: "pickup",
+        type: 'pickup',
         postcode: searchPostcodeQuery,
         cart: cart,
         twoDayDelivery: nextDay,
       };
       let checkRes = await fetch(`${url}/pza/check-postcode-test`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(checkBody),
       });
       let pcCheckData = await checkRes.json();
 
-      console.log("FROM PROXIMITY CHECK: ", pcCheckData);
+      console.log('FROM PROXIMITY CHECK: ', pcCheckData);
 
       setProximityLocations({
         pickup_locations: pcCheckData.pickup.locations,
       });
 
-      console.log("Postcode availability data: ", pcCheckData);
+      console.log('Postcode availability data: ', pcCheckData);
       setFilteredLocations(pcCheckData.pickup.locations);
     };
 
@@ -257,7 +263,7 @@ const Locations = ({
 
   const handleChange = async (val, type) => {
     console.log(val);
-    if (type === "location") {
+    if (type === 'location') {
       searchPostcodeQuery ? setSearchPostcodeQuery(null) : null;
       setSearchLocationQuery(val);
     } else {
@@ -268,7 +274,7 @@ const Locations = ({
         let postcodeRes = await fetch(
           `https://api.postcodes.io/postcodes/${val}`,
           {
-            method: "GET",
+            method: 'GET',
           }
         );
 
@@ -282,9 +288,9 @@ const Locations = ({
       } else if (val.length === 12) {
         const res = await fetch(`${url}/pza/check-pw`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify({
             pw: val,
           }),
@@ -301,7 +307,7 @@ const Locations = ({
   };
 
   const handleInput = (val, type) => {
-    if (type === "location") {
+    if (type === 'location') {
       searchLocationQuery && !val
         ? (removeLocation(),
           setSearchPostcodeQuery(null),
@@ -332,7 +338,7 @@ const Locations = ({
   }, [searchLocationQuery]);
 
   const getLocationName = (name) => {
-    let index = name.indexOf(" - ");
+    let index = name.indexOf(' - ');
     return name.slice(name[0], index);
   };
 
@@ -343,24 +349,24 @@ const Locations = ({
   };
 
   return (
-    <View padding={["base", "none", "base", "none"]}>
+    <View padding={['base', 'none', 'base', 'none']}>
       <Heading>Find your nearest store or locker</Heading>
-      <Form onSubmit={() => console.log("form submitted!")}>
+      <Form onSubmit={() => console.log('form submitted!')}>
         <InlineLayout
-          columns={[`fill`, "fill", "auto"]}
+          columns={[`fill`, 'fill', 'auto']}
           spacing="base"
-          padding={["base", "none", "base", "none"]}
+          padding={['base', 'none', 'base', 'none']}
         >
           <TextField
             label="Search by location name"
-            onChange={(val) => handleChange(val, "location")}
-            onInput={(val) => handleInput(val, "location")}
+            onChange={(val) => handleChange(val, 'location')}
+            onInput={(val) => handleInput(val, 'location')}
             value={searchLocationQuery}
           />
           <TextField
             label="Search by proximity"
-            onChange={(val) => handleChange(val, "postcode")}
-            onInput={(val) => handleInput(val, "postcode")}
+            onChange={(val) => handleChange(val, 'postcode')}
+            onInput={(val) => handleInput(val, 'postcode')}
             value={searchPostcodeQuery}
           />
           <Button accessibilityRole="submit">Search</Button>
@@ -368,12 +374,12 @@ const Locations = ({
       </Form>
       <ScrollView
         maxBlockSize={280}
-        hint={{ type: "pill", content: "Scroll for more options" }}
+        hint={{ type: 'pill', content: 'Scroll for more options' }}
         direction="block"
       >
         <ChoiceList
           name="select location"
-          value={selectedChoice ? selectedChoice : ""}
+          value={selectedChoice ? selectedChoice : ''}
           onChange={(id) => handleLocationSelect(id)}
           variant="group"
         >
@@ -385,7 +391,7 @@ const Locations = ({
                 <InlineLayout
                   inlineAlignment="end"
                   blockAlignment="center"
-                  columns={location.distance ? ["auto", "auto"] : "auto"}
+                  columns={location.distance ? ['auto', 'auto'] : 'auto'}
                 >
                   {location.distance !== null ? (
                     <>
@@ -395,7 +401,7 @@ const Locations = ({
                   ) : null}
                   <Image
                     source={
-                      location.custom_attribute_1 === "lockers"
+                      location.custom_attribute_1 === 'lockers'
                         ? LockersIcon
                         : StoresIcon
                     }

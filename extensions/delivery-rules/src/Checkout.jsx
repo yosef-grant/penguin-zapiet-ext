@@ -4,7 +4,7 @@ import React, {
   useLayoutEffect,
   useReducer,
   useRef,
-} from "react";
+} from 'react';
 
 import {
   Text,
@@ -21,65 +21,62 @@ import {
   Heading,
   useShippingAddress,
   useAppMetafields,
-} from "@shopify/ui-extensions-react/checkout";
+  View,
+  useStorage,
+} from '@shopify/ui-extensions-react/checkout';
 
-import Locations from "./Locations.jsx";
-import DateSelect from "./DateSelect.jsx";
-import CSPortal from "./CSPortal.jsx";
+import Locations from './Locations.jsx';
+import DateSelect from './DateSelect.jsx';
+import CSPortal from './CSPortal.jsx';
 
-import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
-import { Button, DatePicker } from "@shopify/ui-extensions/checkout";
-import DeliveryEmptyState from "./DeliveryEmptyState.jsx";
-import BlockLoader from "./BlockLoader.jsx";
+import { checkoutDataReducer } from './reducer_functions/CheckoutDataMethods.jsx';
+import { Button, DatePicker } from '@shopify/ui-extensions/checkout';
+import DeliveryEmptyState from './DeliveryEmptyState.jsx';
+import BlockLoader from './BlockLoader.jsx';
+import MethodSelect from './MethodSelect.jsx';
 
-// const QuickCollectRender = reactExtension(
-//   'purchase.checkout.block.render',
-//   () => <TestQC />
-// );
-
-// const MethodSelectRender = reactExtension(
-//   'purchase.checkout.delivery-address.render-before',
-//   () => <TestMS />
-// );
-
-const QuickCollectRender = reactExtension(
-  "purchase.checkout.block.render",
-  () => <Extension />
-);
+// ! Rendering in two places simultaneously causing react to render unecessarily - could be disrupting app functionality
+// TODO adjust initialisation useEffects to only run when the target is purchase.checkout.block.render
 
 const MethodSelectRender = reactExtension(
-  "purchase.checkout.shipping-option-list.render-before",
+  'purchase.checkout.block.render',
   () => <Extension />
 );
 
-export { QuickCollectRender, MethodSelectRender };
+const DatePickerRender = reactExtension(
+  'purchase.checkout.shipping-option-list.render-before',
+  () => <Extension />
+);
+
+export { MethodSelectRender, DatePickerRender };
+//export { QuickCollectRender };
 
 function Extension() {
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {
     dispatch({
-      type: "acquired_q_locations",
+      type: 'acquired_q_locations',
       all_locations: locations,
     });
   };
 
   const handleSetCollectLocations = (data) => {
     dispatch({
-      type: "acquired_general_delivery_info",
+      type: 'acquired_general_delivery_info',
       data: data,
     });
   };
 
   const handleRemoveSelectedLocation = () => {
     dispatch({
-      type: "selected_pickup_location_removed",
+      type: 'selected_pickup_location_removed',
     });
   };
 
   const handleSelectPickupLocation = (hours, description, location) => {
     dispatch({
-      type: "selected_pickup_location_added",
+      type: 'selected_pickup_location_added',
       hours: hours,
       description: description,
       location: location,
@@ -88,14 +85,14 @@ function Extension() {
 
   const handleConfirmPickupLocation = (dates) => {
     dispatch({
-      type: "selected_pickup_location_confirmed",
+      type: 'selected_pickup_location_confirmed',
       location_dates: dates,
     });
   };
 
   const handleSelectDates = (date, weekday) => {
     dispatch({
-      type: "selected_dates",
+      type: 'selected_dates',
       date: date,
       weekday: weekday,
     });
@@ -103,7 +100,7 @@ function Extension() {
 
   const handleMSReset = () => {
     dispatch({
-      type: "reset_MS_Checkout",
+      type: 'reset_MS_Checkout',
     });
   };
 
@@ -116,10 +113,11 @@ function Extension() {
   const [collectLocation, setCollectLocation] = useState(null);
   const [displayCalendar, setDisplayCalendar] = useState(false);
   const [postcode, setPostcode] = useState(null);
-  const [selectedMethod, setSelectedMethod] = useState(null);
+
   const [cs, setCS] = useState({ status: false });
 
-  const [globalLoad, setGlobalLoad] = useState(true);
+  const [initLoad, setInitLoad] = useState(true);
+
   const [testnum, setTestnum] = useState(1);
 
   const lineItems = useCartLines();
@@ -127,17 +125,20 @@ function Extension() {
   let setCartLineAttr = useApplyCartLinesChange();
   const appMeta = useAppMetafields();
 
+  const localStorage = useStorage();
   let CollectBtn = useRef();
 
   // useEffect(() => {
   //   console.log(":><: THIS IS THE CURRENT PENGUIN CART: ", penguinCart);
   // }, [penguinCart]);
 
-  const app_url = "https://2341-212-140-232-13.ngrok-free.app";
+  const app_url = 'https://dedd-81-103-75-43.ngrok-free.app';
 
   let changeAttributes = useApplyAttributeChange();
 
   const { extension } = useApi();
+  const changeShippingAddress = useApplyShippingAddressChange();
+  const currentShippingAddress = useShippingAddress();
 
   // console.log("@@@@@@@@@@@@ capabilities ", extension, extension.target);
 
@@ -152,71 +153,63 @@ function Extension() {
   );
 
   // * Uncomment to track CART attributes:
-  console.log(
-    "attributes from parent: ",
-    attributes,
-    "\navailable methods from parent: ",
-    availableMethods
-  );
+  // console.log(
+  //   'attributes from parent: ',
+  //   attributes,
+  //   '\navailable methods from parent: ',
+  //   availableMethods,
+  //   '\nisFirstTimeLoad? ',
+  //   initLoad
+  // );
 
   // TODO delete penguin order if reservation confirmed and user hits X button
   // TODO hide reservation banner
 
   useEffect(() => {
-    console.log("UPDATED SELECTED METHOD: ", selectedMethod);
-  }, [selectedMethod]);
-
-  useEffect(() => {
-    // const t =  () => {
-    //   t();
-    // }
-    // TODO remove penguin attribute values on first APP render
-    Object.keys(attributes).forEach(async (key) => {
-      await changeAttributes({
-        type: "updateAttribute",
-        key: key,
-        value: "",
+    const handleInitLoad = async () => {
+      console.log('INITIAL REACT LOAD - RESETTING VALUES');
+      Object.keys(attributes).forEach(async (key) => {
+        await changeAttributes({
+          type: 'updateAttribute',
+          key: key,
+          value: '',
+        });
       });
-    });
-  }, []);
 
-  // initial validation
-  useEffect(() => {
-    console.log("quick collect rendered: ", lineItems);
+      await localStorage.delete('selected_location_info');
 
-    const validateCart = async () => {
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(cart),
       });
 
       let resBody = await res.json();
-      console.log(
-        "TEST CART (Won't be matched on test server!): ",
-        cart,
-        resBody
-      );
-      setAvailableMethods(resBody.methods);
+      console.log('Validating Cart (using test data) ', cart, resBody);
       handleSetQLocations(resBody.locations);
-      setGlobalLoad(false);
+      setAvailableMethods(resBody.methods);
+
+      handleMethodSelect('pickup');
+      setInitLoad(false);
     };
-    checkoutData.pickup?.qCollectLocations.length ? null : validateCart();
+    !!initLoad && extension.target === 'purchase.checkout.block.render'
+      ? handleInitLoad()
+      : null;
   }, []);
+
+  // initial validation
 
   //console.table(attributes);
 
   const cart = lineItems.map((item) => {
     return {
-      variant_id: item.merchandise.id.replace(/\D/g, ""),
-      product_id: item.merchandise.product.id.replace(/\D/g, ""),
+      variant_id: item.merchandise.id.replace(/\D/g, ''),
+      product_id: item.merchandise.product.id.replace(/\D/g, ''),
       quantity: item.quantity,
     };
   });
-  const changeShippingAddress = useApplyShippingAddressChange();
-  const currentShippingAddress = useShippingAddress();
 
   let nextDayMeta = appMeta.map((meta) => {
     return JSON.parse(meta.metafield.value).next_day_delivery.value;
@@ -224,226 +217,137 @@ function Extension() {
   let nextDay =
     nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
-  // useEffect(() => {
-  //   const stripAddress = async () => {
-  //     await changeShippingAddress({
-  //       type: "updateShippingAddress",
-  //       address: {
-  //         address1: "",
-  //         city: "",
-  //         zip: "",
-  //       },
-  //     });
-  //   };
-  //   stripAddress();
-  // }, [selectedMethod]);
-
   useEffect(() => {
-    console.log("++++++++++++++ cs updated: ", cs);
+    console.log('++++++++++++++ cs updated: ', cs);
   }, [cs]);
 
   // use to intercept rogue behaviour that will screw up rates
-  useBuyerJourneyIntercept(({ canBlockProgress }) => {
-    return canBlockProgress && attributes["Checkout-Method"]
-      ? {
-          behavior: "block",
-          reason: "Invalid shipping country",
-          errors: [
-            {
-              // An error without a `target` property is shown at page level
-              message: "Sorry, we can only ship to Canada",
-            },
-          ],
-        }
-      : {
-          behavior: "allow",
-        };
-  });
+  // useBuyerJourneyIntercept(({ canBlockProgress }) => {
+  //   return canBlockProgress && attributes['Checkout-Method']
+  //     ? {
+  //         behavior: 'block',
+  //         reason: 'Invalid shipping country',
+  //         errors: [
+  //           {
+  //             // An error without a `target` property is shown at page level
+  //             message: 'Sorry, we can only ship to Canada',
+  //           },
+  //         ],
+  //       }
+  //     : {
+  //         behavior: 'allow',
+  //       };
+  // });
 
   const deletePenguinReservation = async () => {
     console.log(attributes);
-    if (attributes?.["Pickup-Penguin-Id"]) {
-      console.log("&&&&&&&  penguin reservation in place - should be deleted");
+    if (attributes?.['Pickup-Penguin-Id']) {
+      console.log('&&&&&&&  penguin reservation in place - should be deleted');
       try {
         await fetch(`${app_url}/pza/delete-locker`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "POST",
-          body: JSON.stringify({ locker_id: attributes["Pickup-Penguin-Id"] }),
+          method: 'POST',
+          body: JSON.stringify({ locker_id: attributes['Pickup-Penguin-Id'] }),
         });
       } catch (error) {
         console.error(
-          `Failed to delete locker order ${attributes["Pickup-Penguin-Id"]}`
+          `Failed to delete locker order ${attributes['Pickup-Penguin-Id']}`
         );
       }
     } else return;
   };
 
-  useEffect(() => {
-    console.log("SELECTED METHOD ***: ", selectedMethod);
-    attributes["Checkout-Method"] !== "delivery"
-      ? handleMethodSelect("pickup")
-      : null;
-  }, []);
-
   const handleMethodSelect = async (method) => {
-    await changeAttributes({
-      type: "updateAttribute",
-      key: "Checkout-Method",
-      value: method,
+    await changeShippingAddress({
+      type: 'updateShippingAddress',
+      address: {
+        address1: undefined,
+        city: undefined,
+        zip: undefined,
+      },
     });
-    if (selectedMethod !== method) {
-      await changeShippingAddress({
-        type: "updateShippingAddress",
-        address: {
-          address1: "",
-          city: "",
-          zip: "",
-        },
-      });
-    }
-    setSelectedMethod(method);
-    if (method === "pickup") {
+
+    if (method === 'pickup') {
       await setCartLineAttr({
-        type: "updateCartLine",
+        type: 'updateCartLine',
         id: lineItems[0].id,
         attributes: [
           {
-            key: "_deliveryID",
+            key: '_deliveryID',
             value: method.charAt(0).toUpperCase(),
           },
         ],
       });
     } else {
       await setCartLineAttr({
-        type: "updateCartLine",
+        type: 'updateCartLine',
         id: lineItems[0].id,
         attributes: [
           {
-            key: "_deliveryID",
+            key: '_deliveryID',
             value: method.charAt(0).toUpperCase(),
           },
         ],
       });
       handleRemoveSelectedLocation();
     }
+    await changeAttributes({
+      type: 'updateAttribute',
+      key: 'Checkout-Method',
+      value: method,
+    });
   };
 
   useEffect(() => {
-    console.log("shipping addresss updated! ", currentShippingAddress.zip);
-  }, [currentShippingAddress]);
+    console.log('checkout data updated: ', checkoutData, extension.target);
+  }, [checkoutData]);
 
   return (
     <>
-      {globalLoad ? (
-       <BlockLoader  message={"Loading..."}/>
-      ) : (
+      {extension.target === 'purchase.checkout.block.render' ? (
         <>
-          {extension.target === "purchase.checkout.block.render" ? (
-            <>
-              {/* <Button >Base</Button>
-            <Button >Accent</Button>
-            <Button >Decorative</Button>
-            <Button >interactive</Button>
-            <Button >subdued</Button>
-            <Button >info</Button>
-            <Button >success</Button>
-            <Button >warning</Button>
-            <Button >critical</Button>
-            <Button >monochrome</Button> */}
-              <InlineLayout spacing={"tight"}>
-                <Pressable
-                  // disabled={checkoutData?.methods?.pickup === false ? true : false}
-                  inlineAlignment={"center"}
-                  blockAlignment={"center"}
-                  cornerRadius={"base"}
-                  minBlockSize={50}
-                  border={"base"}
-                  background={
-                    attributes["Checkout-Method"] &&
-                    attributes["Checkout-Method"] === "pickup"
-                      ? "subdued"
-                      : "transparent"
-                  }
-                  onPress={() => handleMethodSelect("pickup")}
-                >
-                  <Text size="medium" emphasis="bold">
-                    Collection
-                  </Text>
-                </Pressable>
-                <Pressable
-                  // disabled={checkoutData?.methods?.delivery === false ? true : false}
-                  inlineAlignment={"center"}
-                  blockAlignment={"center"}
-                  cornerRadius={"base"}
-                  minBlockSize={50}
-                  border={"base"}
-                  background={
-                    attributes["Checkout-Method"] &&
-                    attributes["Checkout-Method"] !== "pickup"
-                      ? "subdued"
-                      : "transparent"
-                  }
-                  onPress={() => handleMethodSelect("delivery")}
-                >
-                  <Text size="medium" emphasis="bold">
-                    Delivery
-                  </Text>
-                </Pressable>
-              </InlineLayout>
-              {attributes["Checkout-Method"] === "pickup" &&
-              checkoutData?.pickup ? (
-                <>
-                  {!!cs.status && (
-                    <CSPortal
-                      setCS={setCS}
-                      cs={cs}
-                      allLocations={checkoutData.pickup.qCollectLocations}
-                    />
-                  )}
-                  <Locations
-                    checkoutData={checkoutData}
-                    selectLocation={handleSelectPickupLocation}
-                    removeLocation={handleRemoveSelectedLocation}
-                    url={app_url}
-                    cart={lineItems}
-                    nextDay={nextDay}
-                    setProximityLocations={handleSetCollectLocations}
-                    setCS={setCS}
-                  />
-                </>
-              ) : attributes["Checkout-Method"] !== "pickup" ? (
-                "Please enter your address below to see delivery options."
-              ) : null}
-            </>
-          ) : extension.target ===
-            "purchase.checkout.shipping-option-list.render-before" ? (
-            <>
-              {((attributes["Checkout-Method"] === "pickup" &&
-                attributes?.["Pickup-Location-Id"] &&
-                attributes?.["Pickup-Location-Type"]) ||
-                (attributes["Checkout-Method"] === "delivery" &&
-                  currentShippingAddress.zip)) &&
-                availableMethods && (
-                  <DateSelect
-                    attributes={attributes}
-                    currentShippingAddress={currentShippingAddress}
-                    checkoutData={checkoutData}
-                    cart={lineItems}
-                    appMeta={appMeta}
-                    url={app_url}
-                    setCartLineAttr={setCartLineAttr}
-                    availableMethods={availableMethods}
-                    handleMethodSelect={handleMethodSelect}
-                  />
-                )}
-            </>
-          ) : null}
+          {initLoad ? (
+            <BlockLoader message={'Loading...'} />
+          ) : (
+            <MethodSelect
+              attributes={attributes}
+              checkoutData={checkoutData}
+              setCS={setCS}
+              cs={cs}
+              url={app_url}
+              lineItems={lineItems}
+              nextDay={nextDay}
+              handleSelectPickupLocation={handleSelectPickupLocation}
+              handleRemoveSelectedLocation={handleRemoveSelectedLocation}
+              handleSetCollectLocations={handleSetCollectLocations}
+              handleMethodSelect={handleMethodSelect}
+              localStorage={localStorage}
+            />
+          )}
         </>
-      )}
+      ) : extension.target ===
+        'purchase.checkout.shipping-option-list.render-before' ? (
+        <>
+          {attributes['Checkout-Method'] === 'pickup' &&
+            attributes['Pickup-Location-Id'] &&
+            currentShippingAddress.zip && (
+              <DateSelect
+                attributes={attributes}
+                currentShippingAddress={currentShippingAddress}
+                checkoutData={checkoutData}
+                cart={lineItems}
+                appMeta={appMeta}
+                url={app_url}
+                setCartLineAttr={setCartLineAttr}
+                availableMethods={availableMethods}
+                handleMethodSelect={handleMethodSelect}
+                localStorage={localStorage}
+              />
+            )}
+        </>
+      ) : null}
     </>
   );
 }
-
-<script>let</script>;
