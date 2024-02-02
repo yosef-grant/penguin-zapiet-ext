@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import icons from './MethodIcons.jsx';
+import React, { useState } from "react";
+import icons from "./MethodIcons.jsx";
+import { capitalise } from "./helpers/StringFunctions.jsx";
 import {
   Grid,
   Image,
@@ -8,7 +9,7 @@ import {
   useApplyCartLinesChange,
   useAttributes,
   useCartLines,
-} from '@shopify/ui-extensions-react/checkout';
+} from "@shopify/ui-extensions-react/checkout";
 
 const MethodList = ({
   availableMethods,
@@ -37,43 +38,37 @@ const MethodList = ({
   );
 
   const checkNullDelivery = (data) => {
-    return (data === 'delivery' &&
+    return (data === "delivery" &&
       checkoutData.delivery.delivery_zone.trim().toLowerCase() ===
-        'unavailable') ||
+        "unavailable") ||
       !availableMethods[data]
       ? true
       : false;
   };
 
-  const capitalise = (str) => {
-    const first = str.charAt(0).toUpperCase();
-    const r = str.slice(1, str.length);
-    return `${first}${r}`;
-  };
-  
   const handleMethodSelect = async (method) => {
     if (method !== selectedMethod) {
       setFetching(true);
-      console.log('heres data from method select: ', checkoutData);
+      // console.log('heres data from method select: ', checkoutData);
       reserveTime?.expiry ? setReserveTime({}) : null;
 
       setSelectedMethod(method);
       setDisplayCalendar(false);
-      method !== 'pickup' ? setSelectedMethod(method) : null;
-      method !== 'pickup' ? setMinDate(checkoutData[method].min_date) : null;
+      method !== "pickup" ? setSelectedMethod(method) : null;
+      method !== "pickup" ? setMinDate(checkoutData[method].min_date) : null;
 
       let dz =
-        method === 'delivery'
-          ? checkoutData.delivery.delivery_zone.replace(/[^0-9.]/g, '')
+        method === "delivery"
+          ? checkoutData.delivery.delivery_zone.replace(/[^0-9.]/g, "")
           : null;
 
-      console.log('THE DZ ', dz, method);
+      // console.log('THE DZ ', dz, method);
       await setCartLineAttr({
-        type: 'updateCartLine',
+        type: "updateCartLine",
         id: cartLines[0].id,
         attributes: [
           {
-            key: '_deliveryID',
+            key: "_deliveryID",
             value: dz
               ? `${method.charAt(0).toUpperCase()}%${dz}`
               : method.charAt(0).toUpperCase(),
@@ -81,30 +76,30 @@ const MethodList = ({
         ],
       });
       Object.keys(attrList).forEach(async (key) => {
-        console.log('UUU ', key);
+        // console.log('UUU ', key);
 
         await changeAttributes({
-          type: 'updateAttribute',
-          key: 'Checkout-Method',
+          type: "updateAttribute",
+          key: "Checkout-Method",
           value: method,
         });
         if (
-          key !== 'Lolas-CS-Member' &&
-          key !== 'Customer-Service-Note' &&
-          key !== 'buyer-pathway' &&
-          key !== 'Checkout-Method'
+          key !== "Lolas-CS-Member" &&
+          key !== "Customer-Service-Note" &&
+          key !== "buyer-pathway" &&
+          key !== "Checkout-Method"
         ) {
           // TODO strange behaviour when coming from pickup --> delivery; PM time remains in attr
 
           await changeAttributes({
-            type: 'updateAttribute',
+            type: "updateAttribute",
             key: key,
-            value: '',
+            value: "",
           });
         }
-        if (method !== 'pickup') {
+        if (method !== "pickup") {
           await changeAttributes({
-            type: 'updateAttribute',
+            type: "updateAttribute",
             key: `${capitalise(method)}-Date`,
             value: checkoutData[method].min_date,
           });
@@ -115,10 +110,10 @@ const MethodList = ({
 
   return (
     <Grid
-      columns={['fill', 'fill', 'fill']}
-      rows={['auto']}
+      columns={["fill", "fill", "fill"]}
+      rows={["auto"]}
       spacing="loose"
-      padding={['base', 'none', 'base', 'none']}
+      padding={["base", "none", "base", "none"]}
     >
       {Object.keys(availableMethods).map((key, i) => (
         <Pressable

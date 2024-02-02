@@ -212,53 +212,7 @@ const Locations = ({
       setFilteredLocations(pcCheckData.pickup.locations);
     };
 
-    // setCollectLocations({
-    //   delivery: pcCheckData.delivery,
-    //   shipping: pcCheckData.shipping,
-    //   pickup_locations: pcCheckData.pickup.locations,
-    // });
-    // setDisplayCalendar(false);
 
-    // // * show pickup method by default & show pickup rate
-    // setSelectedMethod('pickup');
-
-    // await setCartLineAttr({
-    //   type: 'updateCartLine',
-    //   id: cartLines[0].id,
-    //   attributes: [
-    //     {
-    //       key: '_deliveryID',
-    //       value: 'P',
-    //     },
-    //   ],
-    // });
-
-    // setPostcode(shippingAddress.zip);
-    //}
-    //   else {
-    //     setError('Postcode not recognised!');
-    //     setPostcode(null);
-    //   }
-    //   setLoading(false);
-    // } else if (shippingAddress.zip.length === 12) {
-    //   let status = await checkCS(shippingAddress.zip);
-    //   if (status === true) {
-    //     setCS((cs) => {
-    //       return { ...cs, status: true };
-    //     });
-    //     await setAddress({
-    //       type: 'updateShippingAddress',
-    //       address: { zip: '' },
-    //     });
-    //   }
-    //   setLoading(false);
-    // } else {
-    //   error ? setError('') : null;
-    //   postcode ? setPostcode() : null;
-    // }
-    //     }
-    //   };
-    //   searchPostcodeQuery ? checkPostcodeSearch() : null;
     searchPostcodeQuery ? getProximityLocations() : null;
   }, [searchPostcodeQuery]);
 

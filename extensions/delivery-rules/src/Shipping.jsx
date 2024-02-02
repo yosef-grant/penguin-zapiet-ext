@@ -14,7 +14,7 @@ import {
 const ShippingPanel = () => {
   const deliveryGroups = useDeliveryGroups();
 
-  console.log("______________ ", deliveryGroups);
+  // console.log("______________ ", deliveryGroups);
   return (
     deliveryGroups &&
     deliveryGroups[0]?.deliveryOptions && (

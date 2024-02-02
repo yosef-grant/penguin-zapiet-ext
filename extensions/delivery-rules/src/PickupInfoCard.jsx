@@ -19,7 +19,7 @@ const PickupInfoCard = ({ location, checkoutData }) => {
     ];
   };
 
-  console.log(">>>>>>>>>>>>>>>>", checkoutData);
+  // console.log(">>>>>>>>>>>>>>>>", checkoutData);
   return (
     <View>
       <TextBlock>

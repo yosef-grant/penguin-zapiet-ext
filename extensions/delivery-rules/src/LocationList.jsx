@@ -116,6 +116,7 @@ const LocationList = ({
         type: 'updateCartLine',
         id: cartLines[0].id,
         attributes: [
+          cartLines[0].attributes,
           {
             key: '_deliveryID',
             value: 'P',

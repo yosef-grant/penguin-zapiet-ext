@@ -18,8 +18,10 @@ const DeliveryTypeSelect = ({
   availableMethods,
   cart,
   setBlackoutDates,
+  changeAttributes,
+  attributes,
 }) => {
-  console.log("rendered del type select: ", methodData);
+  console.log("rendered del type select: ", methodData, availableMethods);
 
   return (
     <View padding={["none", "none", "base", "none"]}>
@@ -27,6 +29,7 @@ const DeliveryTypeSelect = ({
         value={deliveryType}
         onChange={async (val) => {
           setDeliveryType(val);
+          let method = val === "driver-delivery" ? "delivery" : "shipping"
           let lineItemProp =
             val === "driver-delivery"
               ? "D" +
@@ -42,15 +45,33 @@ const DeliveryTypeSelect = ({
               ? methodData.delivery.blackouts
               : methodData.shipping.blackouts
           );
+
+          // change Checkout-Method attribute to 'Shipping'
           await setCartLineAttr({
             type: "updateCartLine",
             id: cart[0].id,
             attributes: [
+              ...cart[0].attributes,
               {
                 key: "_deliveryID",
                 value: lineItemProp,
               },
             ],
+          });
+          Object.keys(attributes).forEach(async (key) => {
+            if (key === "Checkout-Method") {
+              await changeAttributes({
+                type: "updateAttribute",
+                key: key,
+                value: method,
+              });
+            } else {
+              await changeAttributes({
+                type: "updateAttribute",
+                key: key,
+                value: "",
+              });
+            }
           });
         }}
       >

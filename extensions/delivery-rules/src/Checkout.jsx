@@ -23,6 +23,11 @@ import {
   useAppMetafields,
   View,
   useStorage,
+  Divider,
+  useShippingOptionTarget,
+  useDeliveryGroups,
+  useApplyNoteChange,
+  useNote,
 } from "@shopify/ui-extensions-react/checkout";
 
 import Locations from "./Locations.jsx";
@@ -31,9 +36,13 @@ import CSPortal from "./CSPortal.jsx";
 
 import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
 import { Button, DatePicker } from "@shopify/ui-extensions/checkout";
-import DeliveryEmptyState from "./DeliveryEmptyState.jsx";
+
 import BlockLoader from "./BlockLoader.jsx";
 import MethodSelect from "./MethodSelect.jsx";
+
+import Summary from "./Summary.jsx";
+import LineItemProperties from "./LineItemProperties.jsx";
+import DeliveryInstructions from "./DeliveryInstructions.jsx";
 
 // ! Rendering in two places simultaneously causing react to render unecessarily - could be disrupting app functionality
 // TODO adjust initialisation useEffects to only run when the target is purchase.checkout.block.render
@@ -51,12 +60,48 @@ const DatePickerRender = reactExtension(
   () => <Extension />
 );
 
-export { MethodSelectRender, DatePickerRender };
+const SummaryRender = reactExtension(
+  "purchase.checkout.cart-line-list.render-after",
+  () => <SummaryExtension />
+);
+
+const DeliveryInstructionsRender = reactExtension(
+  "purchase.checkout.delivery-address.render-after",
+  () => <DeliveryInstructionsExtension />
+);
+
+const LineItemPropsRender = reactExtension(
+  "purchase.checkout.cart-line-item.render-after",
+  () => <LineItemPropsExtension />
+);
+
+function LineItemPropsExtension() {
+  return <LineItemProperties />;
+}
+function SummaryExtension() {
+  return <Summary />;
+}
+
+function DeliveryInstructionsExtension() {
+  return <DeliveryInstructions />;
+}
+
+export {
+  MethodSelectRender,
+  DatePickerRender,
+  SummaryRender,
+  LineItemPropsRender,
+  DeliveryInstructionsRender,
+};
+
 //export { QuickCollectRender };
 function Extension() {
   // console.log("data before load: ", initRes);
 
-  const app_url = "https://5813-212-140-232-13.ngrok-free.app";
+  // const delGroups = useDeliveryGroups()
+  // console.log('SHIPPING OPTION: ', delGroups)
+
+  const app_url = "https://ac3b-212-140-232-13.ngrok-free.app";
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {
@@ -146,6 +191,8 @@ function Extension() {
   const { extension } = useApi();
   const changeShippingAddress = useApplyShippingAddressChange();
   const currentShippingAddress = useShippingAddress();
+  const changeNote = useApplyNoteChange();
+  const cartNote = useNote();
 
   // console.log("@@@@@@@@@@@@ capabilities ", extension, extension.target);
 
@@ -176,14 +223,7 @@ function Extension() {
     const handleInitLoad = async () => {
       console.log("INITIAL REACT LOAD - RESETTING VALUES");
       await localStorage.delete("selected_location_info");
-      Object.keys(attributes).forEach(async (key) => {
-        await changeAttributes({
-          type: "updateAttribute",
-          key: key,
-          value: "",
-        });
-      });
-
+      await localStorage.delete("availability");
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
           "Content-Type": "application/json",
@@ -191,11 +231,18 @@ function Extension() {
         method: "POST",
         body: JSON.stringify(cart),
       });
+      await localStorage.delete("selected_location_info");
+      // Object.keys(attributes).forEach(async (key) => {
+      //   await changeAttributes({
+      //     type: "updateAttribute",
+      //     key: key,
+      //     value: "",
+      //   });
+      // });
 
       let resBody = await res.json();
       console.log("Validating Cart (using test data) ", cart, resBody);
-      await localStorage.write("availibility", resBody);
-      await localStorage.delete("selected_location_info");
+      await localStorage.write("availability", resBody);
       handleSetQLocations(resBody.locations);
       setAvailableMethods(resBody.methods);
 
@@ -230,6 +277,8 @@ function Extension() {
   useEffect(() => {
     if (currentShippingAddress.zip) {
       !datePickerInit ? setDatePickerInit(true) : null;
+    } else if (!currentShippingAddress.zip) {
+      datePickerInit ? setDatePickerInit(false) : null;
     }
   }, [currentShippingAddress.zip]);
 
@@ -294,7 +343,7 @@ function Extension() {
   };
 
   const handleMethodSelect = async (method) => {
-    console.log('handling selected method')
+    console.log("handling selected method ", method);
     await changeShippingAddress({
       type: "updateShippingAddress",
       address: {
@@ -309,17 +358,24 @@ function Extension() {
         type: "updateCartLine",
         id: lineItems[0].id,
         attributes: [
+          ...lineItems[0].attributes,
           {
             key: "_deliveryID",
             value: method.charAt(0).toUpperCase(),
           },
         ],
       });
+      if (cartNote) {
+        await changeNote({
+          type: "removeNote",
+        });
+      }
     } else {
       await setCartLineAttr({
         type: "updateCartLine",
         id: lineItems[0].id,
         attributes: [
+          ...lineItems[0].attributes,
           {
             key: "_deliveryID",
             value: method.charAt(0).toUpperCase(),
@@ -328,10 +384,20 @@ function Extension() {
       });
       handleRemoveSelectedLocation();
     }
+
     await changeAttributes({
       type: "updateAttribute",
       key: "Checkout-Method",
       value: method,
+    });
+    Object.keys(attributes).forEach(async (key) => {
+      if (key !== "Checkout-Method") {
+        await changeAttributes({
+          type: "updateAttribute",
+          key: key,
+          value: "",
+        });
+      }
     });
   };
 
@@ -362,19 +428,20 @@ function Extension() {
           "purchase.checkout.shipping-option-list.render-before" &&
         datePickerInit ? (
         <>
-          <Heading>Hi I'm a datepicker. Whats happening?</Heading>
           <DateSelect
-                attributes={attributes}
-                currentShippingAddress={currentShippingAddress}
-                checkoutData={checkoutData}
-                cart={lineItems}
-                appMeta={appMeta}
-                url={app_url}
-                setCartLineAttr={setCartLineAttr}
-                availableMethods={availableMethods}
-                handleMethodSelect={handleMethodSelect}
-                localStorage={localStorage}
-              />
+            attributes={attributes}
+            currentShippingAddress={currentShippingAddress}
+            checkoutData={checkoutData}
+            cart={lineItems}
+            appMeta={appMeta}
+            url={app_url}
+            changeAttributes={changeAttributes}
+            setCartLineAttr={setCartLineAttr}
+            availableMethods={availableMethods}
+            setAvailableMethods={setAvailableMethods}
+            handleMethodSelect={handleMethodSelect}
+            localStorage={localStorage}
+          />
         </>
       ) : null}
     </>

@@ -11,6 +11,7 @@ import {
   Select,
   Banner,
   TextBlock,
+  useDeliveryGroups,
 } from "@shopify/ui-extensions-react/checkout";
 
 import React, { useEffect, useState } from "react";
@@ -34,6 +35,7 @@ import {
   isSameMonth,
 } from "date-fns";
 import { Grid, Pressable } from "@shopify/ui-extensions/checkout";
+import { capitalise } from "./helpers/StringFunctions.jsx";
 
 const days = Array.apply(null, Array(6)).map(() => {});
 const months = Array.apply(null, Array(13)).map(() => {});
@@ -46,6 +48,8 @@ const AltCalendar = ({
   minDate,
   blackoutDates,
   pickupLocationInfo,
+  changeAttributes,
+  localStorage,
 }) => {
   const [today, setToday] = useState(new Date());
   const [backwardLocked, setBackwardLocked] = useState(false);
@@ -66,19 +70,51 @@ const AltCalendar = ({
     pickupLocationInfo
   );
 
-  // useEffect(() => {
-  //   attributes["Checkout-Method"] === "pickup"
-  //     ? methodData.minDate
-  //     : deliveryType === "driver-delivery"s
-  //     ? methodData?.delivery.min_date
-  //     : methodData?.shipping.min_date;
-  // }, []);
 
   const getHeading = () => {
     return attributes["Checkout-Method"] === "pickup"
       ? "Collection Date"
       : "Delivery Date";
   };
+
+  useEffect(() => {
+    let method = capitalise(attributes["Checkout-Method"]);
+    const updateAttributeDate = async () => {
+      await changeAttributes({
+        type: "updateAttribute",
+        key: `${method}-Date`,
+        value: selected ? selected : minDate,
+      });
+      if (attributes["Checkout-Method"] === "pickup") {
+        const data = await localStorage.read("selected_location_info");
+        console.log("local data from CALENDAR: ", data);
+        let tDate = selected ? selected : minDate;
+        await changeAttributes({
+          type: "updateAttribute",
+          key: `Pickup-AM-Hours`,
+          value: `${
+            data.hours[
+              `${format(new Date(tDate), "EEEE").toLowerCase()}_am_pickup_hours`
+            ]
+          }`,
+        });
+        await changeAttributes({
+          type: "updateAttribute",
+          key: `Pickup-PM-Hours`,
+          value: `${
+            data.hours[
+              `${format(new Date(tDate), "EEEE").toLowerCase()}_pm_pickup_hours`
+            ]
+          }`,
+        });
+      }
+    };
+
+    (selected && attributes[`${method}-Date`] !== selected) ||
+    (!selected && attributes[`${method}-Date`] !== minDate)
+      ? updateAttributeDate()
+      : null;
+  }, [attributes["Checkout-Method"]]);
 
   useEffect(() => {
     format(today, dateFormat) === format(new Date(), dateFormat)
@@ -134,9 +170,14 @@ const AltCalendar = ({
     forwardLocked ? null : setToday(weekAhead);
   };
 
-  const setSelectedDate = (date) => {
+  const setSelectedDate = async (date) => {
     // console.log("new date: ", date);
     setSelected(date);
+    await changeAttributes({
+      type: "updateAttribute",
+      key: `${capitalise(attributes["Checkout-Method"])}-Date`,
+      value: date,
+    });
   };
 
   const handleMonthChange = (value) => {

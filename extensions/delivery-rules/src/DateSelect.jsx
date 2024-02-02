@@ -21,8 +21,11 @@ const DateSelect = ({
   url,
   handleMethodSelect,
   setCartLineAttr,
+  setAvailableMethods,
   availableMethods,
   localStorage,
+  changeAttributes,
+  
 }) => {
   console.log(
     "current attributes: ",
@@ -114,6 +117,9 @@ const DateSelect = ({
 
     const getDeliveryDates = async () => {
       setFetching(true);
+      let availability = await localStorage.read("availability");
+      console.log("UILP ", availability);
+      setAvailableMethods(availability.methods);
       let nextDayMeta = appMeta.map((meta) => {
         return JSON.parse(meta.metafield.value).next_day_delivery.value;
       });
@@ -148,12 +154,13 @@ const DateSelect = ({
 
       if (
         delData?.delivery?.delivery_zone === "unavailable" &&
-        availableMethods.shipping === false
+        availability.methods.shipping === false
       ) {
         await setCartLineAttr({
           type: "updateCartLine",
           id: cart[0].id,
           attributes: [
+            ...cart[0].attributes,
             {
               key: "_deliveryID",
               value: `U`,
@@ -169,6 +176,7 @@ const DateSelect = ({
           type: "updateCartLine",
           id: cart[0].id,
           attributes: [
+            ...cart[0].attributes,
             {
               key: "_deliveryID",
               value: `D%${dz}`,
@@ -176,20 +184,7 @@ const DateSelect = ({
           ],
         }),
           setDeliveryType("driver-delivery");
-        // dz
-        //   ? await setCartLineAttr({
-        //       type: "updateCartLine",
-        //       id: cart[0].id,
-        //       attributes: [
-        //         {
-        //           key: "_deliveryID",
-        //           value: `${attributes["Checkout-Method"]
-        //             .charAt(0)
-        //             .toUpperCase()}%${dz}`,
-        //         },
-        //       ],
-        //     })
-        //   : null;
+
 
         setBlackoutDates(delData.delivery.blackouts);
         setMinDate(delData.delivery.min_date);
@@ -197,19 +192,35 @@ const DateSelect = ({
 
       if (
         delData.delivery.delivery_zone === "unavailable" &&
-        availableMethods.shipping === true
+        availability.methods.shipping === true
       ) {
         await setCartLineAttr({
           type: "updateCartLine",
           id: cart[0].id,
           attributes: [
+            ...cart[0].attributes,
             {
               key: "_deliveryID",
               value: `S`,
             },
           ],
         }),
-          setDeliveryType("postal");
+          await changeAttributes({
+            type: "updateAttribute",
+            key: "Checkout-Method",
+            value: "shipping",
+          });
+        Object.keys(attributes).forEach(async (key) => {
+          if (key.includes("Delivery")) {
+            await changeAttributes({
+              type: "updateAttribute",
+              key: key,
+              value: "",
+            });
+          }
+        });
+
+        setDeliveryType("postal");
         setBlackoutDates(delData.shipping.blackouts);
         setMinDate(delData.shipping.min_date);
       }
@@ -265,17 +276,21 @@ const DateSelect = ({
         <>
           {!!minDate && methodData && (
             <>
-              {attributes["Checkout-Method"] === "delivery" && (
-                <DeliveryTypeSelect
-                  setDeliveryType={setDeliveryType}
-                  deliveryType={deliveryType}
-                  setCartLineAttr={setCartLineAttr}
-                  methodData={methodData}
-                  availableMethods={availableMethods}
-                  cart={cart}
-                  setBlackoutDates={setBlackoutDates}
-                />
-              )}
+              {(attributes["Checkout-Method"] === "delivery" ||
+                attributes["Checkout-Method"] === "shipping") &&
+                availableMethods && (
+                  <DeliveryTypeSelect
+                    setDeliveryType={setDeliveryType}
+                    deliveryType={deliveryType}
+                    setCartLineAttr={setCartLineAttr}
+                    methodData={methodData}
+                    availableMethods={availableMethods}
+                    cart={cart}
+                    setBlackoutDates={setBlackoutDates}
+                    changeAttributes={changeAttributes}
+                    attributes={attributes}
+                  />
+                )}
               <AltCalendar
                 rate={cart[0].attributes[0].value}
                 deliveryZone={deliveryZone}
@@ -284,8 +299,14 @@ const DateSelect = ({
                 minDate={minDate}
                 blackoutDates={blackoutDates}
                 pickupLocationInfo={pickupLocationInfo}
+                changeAttributes={changeAttributes}
+                localStorage={localStorage}
+              
               />
             </>
+          )}
+          {!minDate && methodData && (
+            <DeliveryEmptyState handleMethodSelect={handleMethodSelect} />
           )}
         </>
       ) : (
@@ -303,43 +324,3 @@ const DateSelect = ({
 
 export default DateSelect;
 
-// {!fetching ? (
-//   <>
-//     {!!minDate && methodData && (
-//       <>
-//         {attributes['Checkout-Method'] === 'delivery' && (
-//           <DeliveryTypeSelect
-//             setDeliveryType={setDeliveryType}
-//             deliveryType={deliveryType}
-//             setCartLineAttr={setCartLineAttr}
-//             methodData={methodData}
-//             availableMethods={availableMethods}
-//             cart={cart}
-//             setBlackoutDates={setBlackoutDates}
-//           />
-//         )}
-//         <AltCalendar
-//           rate={cart[0].attributes[0].value}
-//           deliveryZone={deliveryZone}
-//           attributes={attributes}
-//           deliveryType={deliveryType}
-//           minDate={minDate}
-//           blackoutDates={blackoutDates}
-//           pickupLocationInfo={pickupLocationInfo}
-//         />
-//       </>
-//     )}
-
-//     {!minDate && methodData && (
-//       <DeliveryEmptyState handleMethodSelect={handleMethodSelect} />
-//     )}
-//   </>
-// ) : (
-//   <BlockLoader
-//     message={`Getting ${
-//       attributes['Checkout-Method'] === 'pickup'
-//         ? 'collection'
-//         : 'delivery'
-//     } dates...`}
-//   />
-// )}
