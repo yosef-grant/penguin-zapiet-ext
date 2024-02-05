@@ -6,8 +6,8 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   View,
-} from "@shopify/ui-extensions-react/checkout";
-import React from "react";
+} from '@shopify/ui-extensions-react/checkout';
+import React from 'react';
 
 const DeliveryTypeSelect = ({
   setDeliveryType,
@@ -21,74 +21,78 @@ const DeliveryTypeSelect = ({
   changeAttributes,
   attributes,
 }) => {
-  console.log("rendered del type select: ", methodData, availableMethods);
+  console.log('rendered del type select: ', methodData, availableMethods);
 
   return (
-    <View padding={["none", "none", "base", "none"]}>
+    <View padding={['none', 'none', 'base', 'none']}>
       <ToggleButtonGroup
         value={deliveryType}
         onChange={async (val) => {
           setDeliveryType(val);
-          let method = val === "driver-delivery" ? "delivery" : "shipping"
+          let method = val === 'driver-delivery' ? 'delivery' : 'shipping';
           let lineItemProp =
-            val === "driver-delivery"
-              ? "D" +
+            val === 'driver-delivery'
+              ? 'D' +
                 `${
-                  methodData.delivery.delivery_zone !== "unavailable"
-                    ? "%" +
-                      methodData.delivery.delivery_zone.replace(/[^0-9.]/g, "")
-                    : ""
+                  methodData.delivery.delivery_zone !== 'unavailable'
+                    ? '%' +
+                      methodData.delivery.delivery_zone.replace(/[^0-9.]/g, '')
+                    : ''
                 }`
-              : "S";
+              : 'S';
           setBlackoutDates(
-            val === "driver-delivery"
+            val === 'driver-delivery'
               ? methodData.delivery.blackouts
               : methodData.shipping.blackouts
           );
 
           // change Checkout-Method attribute to 'Shipping'
           await setCartLineAttr({
-            type: "updateCartLine",
+            type: 'updateCartLine',
             id: cart[0].id,
             attributes: [
               ...cart[0].attributes,
               {
-                key: "_deliveryID",
+                key: '_deliveryID',
                 value: lineItemProp,
               },
             ],
           });
           Object.keys(attributes).forEach(async (key) => {
-            if (key === "Checkout-Method") {
+            if (key === 'Checkout-Method') {
               await changeAttributes({
-                type: "updateAttribute",
+                type: 'updateAttribute',
                 key: key,
                 value: method,
               });
-            } else {
+            } else if (
+              key !== 'Gift-Note' &&
+              key !== 'Customer-Service-Note' &&
+              key !== 'Lolas-CS-Member'
+            ) {
               await changeAttributes({
-                type: "updateAttribute",
+                type: 'updateAttribute',
                 key: key,
-                value: "",
+                value: '',
               });
             }
           });
         }}
       >
-        <InlineLayout spacing={"base"}>
+        <InlineLayout spacing={'base'}>
           <ToggleButton
             id="driver-delivery"
-            disabled={deliveryZone === "unavailable" ? true : false}
+            disabled={deliveryZone === 'unavailable' ? true : false}
           >
             <View
               inlineAlignment="center"
               blockAlignment="center"
               minBlockSize="fill"
             >
-              <Text emphasis={deliveryType === "driver-delivery" ? "bold" : ""}>
-                {deliveryZone === "unavailable"
-                  ? "Driver delivery unavailable for this address"
-                  : "Driver Delivery"}
+              <Text emphasis={deliveryType === 'driver-delivery' ? 'bold' : ''}>
+                {deliveryZone === 'unavailable'
+                  ? 'Driver delivery unavailable for this address'
+                  : 'Driver Delivery'}
               </Text>
             </View>
           </ToggleButton>
@@ -97,14 +101,14 @@ const DeliveryTypeSelect = ({
             disabled={availableMethods.shipping ? false : true}
           >
             <View
-              inlineAlignment={"center"}
+              inlineAlignment={'center'}
               blockAlignment="center"
               minBlockSize="fill"
             >
-              <Text emphasis={deliveryType === "postal" ? "bold" : ""}>
+              <Text emphasis={deliveryType === 'postal' ? 'bold' : ''}>
                 {availableMethods.shipping
-                  ? "Postal"
-                  : "Postal unavailable due to products in basket"}
+                  ? 'Postal'
+                  : 'Postal unavailable due to products in basket'}
               </Text>
             </View>
           </ToggleButton>

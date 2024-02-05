@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Disclosure,
@@ -13,22 +13,23 @@ import {
   useStorage,
   List,
   ListItem,
-} from "@shopify/ui-extensions-react/checkout";
+  useNote,
+} from '@shopify/ui-extensions-react/checkout';
 
-import currency from "./helpers/Currency.jsx";
-import { format } from "date-fns";
+import currency from './helpers/Currency.jsx';
+import { format } from 'date-fns';
 
 const weekdays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
 ];
 
-const dateFormat = "do MMM yyyy";
+const dateFormat = 'do MMM yyyy';
 
 const Summary = () => {
   const [checkoutDetails, setCheckoutDetails] = useState(null);
@@ -37,6 +38,10 @@ const Summary = () => {
   const localStorage = useStorage();
 
   const changeAttributes = useApplyAttributeChange();
+
+  const currentNote = useNote();
+
+  
 
   const attr = useAttributes();
   const cartAddress = useShippingAddress();
@@ -50,8 +55,8 @@ const Summary = () => {
 
   useEffect(() => {
     const updateStoredData = async () => {
-      console.log("updating stored data in summary");
-      const data = await localStorage.read("selected_location_info");
+      console.log('updating stored data in summary');
+      const data = await localStorage.read('selected_location_info');
       setStoredData(data);
     };
     updateStoredData();
@@ -72,34 +77,34 @@ const Summary = () => {
 
       let price = selectedDeliveryOption[0].costAfterDiscounts.amount * 100;
 
-      console.log("delivery price: ", price);
+      console.log('delivery price: ', price);
 
       let timeRegex = new RegExp(/-\s(.*)\s\(/g);
 
       const time = timeRegex.exec(title)[1];
 
-      if (attributes["Delivery-Time"] && attributes["Delivery-Time"] === time) {
+      if (attributes['Delivery-Time'] && attributes['Delivery-Time'] === time) {
         return;
       } else {
         await changeAttributes({
-          type: "updateAttribute",
-          key: "Delivery-Time",
+          type: 'updateAttribute',
+          key: 'Delivery-Time',
           value: time,
         });
         await changeAttributes({
-          type: "updateAttribute",
-          key: "Delivery-Price",
+          type: 'updateAttribute',
+          key: 'Delivery-Price',
           value: `${price}`,
         });
         await changeAttributes({
-          type: "updateAttribute",
-          key: "Delivery-Title",
+          type: 'updateAttribute',
+          key: 'Delivery-Title',
           value: truncTitle,
         });
       }
     };
-    delGroups.length && attributes["Checkout-Method"] === "delivery"
-      ? (console.log("delivery groups updated: ", delGroups),
+    delGroups.length && attributes['Checkout-Method'] === 'delivery'
+      ? (console.log('delivery groups updated: ', delGroups),
         setDeliveryAttributes())
       : null;
   }, [delGroups]);
@@ -107,14 +112,14 @@ const Summary = () => {
   const capitalise = (str) => {
     let f = str.charAt(0).toUpperCase();
     let r = str.slice(1, str.length);
-    console.log("capitalisation: ", f, r);
+    console.log('capitalisation: ', f, r);
     return `${f}${r}`;
   };
 
-  console.log("attributes from summary: ", attributes);
+  console.log('attributes from summary: ', attributes);
 
   const getOpeningTime = () => {
-    let day = format(new Date(attributes["Pickup-Date"]), "EEEE").toLowerCase();
+    let day = format(new Date(attributes['Pickup-Date']), 'EEEE').toLowerCase();
     let openingTime = storedData.hours[`${day}_opening_hours`];
 
     return openingTime;
@@ -124,20 +129,20 @@ const Summary = () => {
     const initialiseSummary = async () => {
       if (cartAddress.zip && cartAddress.address1 && cartAddress.city) {
         let method =
-          attributes["Checkout-Method"] === "pickup"
-            ? "Collection"
-            : attributes["Checkout-Method"] === "shipping"
-            ? "Postal"
-            : "Delivery";
+          attributes['Checkout-Method'] === 'pickup'
+            ? 'Collection'
+            : attributes['Checkout-Method'] === 'shipping'
+            ? 'Postal'
+            : 'Delivery';
 
         let selected_day_opening_time = null;
 
         setCheckoutDetails({
           method: method,
           address: `${
-            attributes["Checkout-Method"] === "pickup"
-              ? attributes["Pickup-Location-Company"] + ", "
-              : ""
+            attributes['Checkout-Method'] === 'pickup'
+              ? attributes['Pickup-Location-Company'] + ', '
+              : ''
           }${cartAddress.address1}, ${cartAddress.city}, ${cartAddress.zip}`,
         });
       } else {
@@ -146,10 +151,10 @@ const Summary = () => {
     };
 
     initialiseSummary();
-  }, [cartAddress, attributes["Checkout-Method"]]);
+  }, [cartAddress, attributes['Checkout-Method']]);
 
   useEffect(() => {
-    console.log("checkout details changed: ", checkoutDetails);
+    console.log('checkout details changed: ', checkoutDetails);
   }, [checkoutDetails]);
 
   return (
@@ -157,11 +162,11 @@ const Summary = () => {
       {checkoutDetails?.method && (
         <>
           <Divider />
-          <View padding={["base", "none", "base", "none"]}>
+          <View padding={['base', 'none', 'base', 'none']}>
             <Heading>{checkoutDetails.method} Address</Heading>
             <Text>{checkoutDetails.address}</Text>
             {attributes[
-              `${capitalise(attributes["Checkout-Method"])}-Date`
+              `${capitalise(attributes['Checkout-Method'])}-Date`
             ] && (
               // {`${
               //   attributes[capitalise(attributes["Checkout-Method"])]
@@ -172,7 +177,7 @@ const Summary = () => {
                   {format(
                     new Date(
                       attributes[
-                        `${capitalise(attributes["Checkout-Method"])}-Date`
+                        `${capitalise(attributes['Checkout-Method'])}-Date`
                       ]
                     ),
                     dateFormat
@@ -180,21 +185,21 @@ const Summary = () => {
                 </Text>
               </>
             )}
-            {attributes["Checkout-Method"] === "delivery" &&
-              attributes["Delivery-Title"] &&
-              attributes["Delivery-Time"] &&
-              attributes["Delivery-Price"] && (
+            {attributes['Checkout-Method'] === 'delivery' &&
+              attributes['Delivery-Title'] &&
+              attributes['Delivery-Time'] &&
+              attributes['Delivery-Price'] && (
                 <>
-                  <Heading>{attributes["Delivery-Title"]}</Heading>
-                  <Heading>{attributes["Delivery-Time"]}</Heading>
-                  <Heading>{currency(attributes["Delivery-Price"])}</Heading>
+                  <Heading>{attributes['Delivery-Title']}</Heading>
+                  <Heading>{attributes['Delivery-Time']}</Heading>
+                  <Heading>{currency(attributes['Delivery-Price'])}</Heading>
                 </>
               )}
-            {attributes["Checkout-Method"] === "pickup" &&
-              attributes["Pickup-Date"] &&
+            {attributes['Checkout-Method'] === 'pickup' &&
+              attributes['Pickup-Date'] &&
               storedData && (
                 <>
-                  <Heading>{`${attributes["Pickup-Location-Company"]} Opening Times`}</Heading>
+                  <Heading>{`${attributes['Pickup-Location-Company']} Opening Times`}</Heading>
                   <Heading>On selected date:</Heading>
                   <Text>{getOpeningTime()}</Text>
 
@@ -202,10 +207,10 @@ const Summary = () => {
                     <Disclosure>
                       <Button toggles="test">See all opening times</Button>
                       <View id="test">
-                        <List marker={"none"} spacing="tight">
+                        <List marker={'none'} spacing="tight">
                           {weekdays.map((weekday, i) => (
                             <ListItem key={`${weekday}${i}`}>
-                              <Text size={"base"} emphasis="bold">
+                              <Text size={'base'} emphasis="bold">
                                 {`${weekday.slice(0, 3)}: `}
                               </Text>
                               <Text size="base">
@@ -224,6 +229,18 @@ const Summary = () => {
                 </>
               )}
           </View>
+            {attributes['Gift-Note'] && (
+              <>
+                <Heading>Gift Note:</Heading>
+                <Text>{attributes['Gift-Note']}</Text>
+              </>
+            )}
+            {currentNote && (
+              <>
+                <Heading>Safe place:</Heading>
+                <Text>{currentNote}</Text>
+              </>
+            )}
           <Divider />
         </>
       )}
