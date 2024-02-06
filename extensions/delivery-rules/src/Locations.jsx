@@ -77,44 +77,56 @@ const Locations = ({
       (location) => location.id === parseInt(val.replace(/[^0-9]/g, ''))
     );
 
+    
+    let targetLocationAddr = {
+      address1: targetLocation[0].address_line_1,
+      city: targetLocation[0].city,
+      zip: targetLocation[0].postal_code,
+    };
+
+    await changeShippingAddress({
+      type: 'updateShippingAddress',
+      address: targetLocationAddr,
+    });
+
     let locationHandle = targetLocation[0].company_name
       .toLowerCase()
       .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, '')
       .replaceAll(/\s/gm, '-');
 
-    let {
-      data: { metaobject },
-    } = await query(
-      `
-              {
-                metaobject(
-                  handle: {type: "store_location", handle: "${locationHandle}"}
-                ) {
-                  location_type: field(key: "store_type") {
-                    value
-                  }
-                  zapiet_id: field(key: "zapiet_location_id") {
-                    value
-                  }
-                  description: field(key: "description") {
-                    value
-                  }
-                  opening_hours: field(key: "opening_time") {
-                    references(first: 50) {
-                      nodes {
-                        ... on Metaobject {
-                          fields {
-                            key
-                            value
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              `
-    );
+    // let {
+    //   data: { metaobject },
+    // } = await query(
+    //   `
+    //           {
+    //             metaobject(
+    //               handle: {type: "store_location", handle: "${locationHandle}"}
+    //             ) {
+    //               location_type: field(key: "store_type") {
+    //                 value
+    //               }
+    //               zapiet_id: field(key: "zapiet_location_id") {
+    //                 value
+    //               }
+    //               description: field(key: "description") {
+    //                 value
+    //               }
+    //               opening_hours: field(key: "opening_time") {
+    //                 references(first: 50) {
+    //                   nodes {
+    //                     ... on Metaobject {
+    //                       fields {
+    //                         key
+    //                         value
+    //                       }
+    //                     }
+    //                   }
+    //                 }
+    //               }
+    //             }
+    //           }
+    //           `
+    // );
 
     await changeAttributes({
       type: 'updateAttribute',
@@ -133,23 +145,23 @@ const Locations = ({
       value: targetLocation[0].custom_attribute_1,
     });
 
-    console.log('|||||||||||||||||||| data: ', metaobject);
 
-    const {
-      opening_hours: {
-        references: {
-          nodes: [{ fields: times }],
-        },
-      },
-    } = metaobject;
 
-    let locHours = times.reduce(
-      (obj, item) => ({
-        ...obj,
-        [item.key]: item.value,
-      }),
-      {}
-    );
+    // const {
+    //   opening_hours: {
+    //     references: {
+    //       nodes: [{ fields: times }],
+    //     },
+    //   },
+    // } = metaobject;
+
+    // let locHours = times.reduce(
+    //   (obj, item) => ({
+    //     ...obj,
+    //     [item.key]: item.value,
+    //   }),
+    //   {}
+    // );
 
     // console.log(
     //   '>>>>>>>>>>>> TIMES ',
@@ -159,30 +171,20 @@ const Locations = ({
     // );
     // // console.log("loc __--^^^--__ data ", locData);
 
-    let targetLocationAddr = {
-      address1: targetLocation[0].address_line_1,
-      city: targetLocation[0].city,
-      zip: targetLocation[0].postal_code,
-    };
-
     
 
-    localStorage.write('selected_location_info', {
-      location: targetLocation[0],
-      hours: locHours,
-      description: metaobject.description.value,
-    });
-    //localStorage.write('selected_location_info', 'test');
+    // localStorage.write('selected_location_info', {
+    //   location: targetLocation[0],
+    //   hours: locHours,
+    //   description: metaobject.description.value,
+    // });
 
-    setSelectedLocation({
-      hours: locHours,
-      description: metaobject.description.value,
-    });
-    selectLocation(locHours, metaobject.description.value, targetLocation[0]);
-    await changeShippingAddress({
-      type: 'updateShippingAddress',
-      address: targetLocationAddr,
-    });
+    // setSelectedLocation({
+    //   hours: locHours,
+    //   description: metaobject.description.value,
+    // });
+    // selectLocation(locHours, metaobject.description.value, targetLocation[0]);
+ 
   };
 
   useEffect(() => {

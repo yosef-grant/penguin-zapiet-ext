@@ -8,8 +8,14 @@ import {
   useNote,
   Heading,
   BlockLayout,
+  reactExtension,
 } from "@shopify/ui-extensions-react/checkout";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+export default reactExtension(
+  "purchase.checkout.shipping-option-list.render-before",
+  () => <DeliveryInstructions />
+);
 
 const DeliveryInstructions = () => {
   const changeAttr = useApplyAttributeChange();
@@ -18,20 +24,19 @@ const DeliveryInstructions = () => {
   const changeNote = useApplyNoteChange();
   const currentNote = useNote();
 
-  const [gNoteVisible, setGNoteVisible] = useState(giftNote && giftNote !== '' ? true : false);
+  const [gNoteVisible, setGNoteVisible] = useState(
+    giftNote && giftNote !== "" ? true : false
+  );
   console.log(
     "method from note: ",
     currentMethod,
     currentNote,
-    '\nGift note: ',
+    "\nGift note: ",
     giftNote,
     "\nis note visible? ",
     gNoteVisible
   );
 
-  // useEffect(() => {
-  //   giftNote && !gNoteVisible ? setGNoteVisible(true) : null;
-  // }, [giftNote]);
 
   const handleNoteChange = async (val) => {
     console.log("heres the note value: ", val);
@@ -117,5 +122,3 @@ const DeliveryInstructions = () => {
     </>
   );
 };
-
-export default DeliveryInstructions;

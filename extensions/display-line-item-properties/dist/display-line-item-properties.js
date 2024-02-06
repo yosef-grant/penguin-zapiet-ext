@@ -1,27 +1,24 @@
 (() => {
   var __create = Object.create;
   var __defProp = Object.defineProperty;
-  var __defProps = Object.defineProperties;
   var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-  var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
   var __getOwnPropNames = Object.getOwnPropertyNames;
   var __getOwnPropSymbols = Object.getOwnPropertySymbols;
   var __getProtoOf = Object.getPrototypeOf;
   var __hasOwnProp = Object.prototype.hasOwnProperty;
   var __propIsEnum = Object.prototype.propertyIsEnumerable;
   var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-  var __spreadValues = (a3, b2) => {
-    for (var prop in b2 || (b2 = {}))
-      if (__hasOwnProp.call(b2, prop))
-        __defNormalProp(a3, prop, b2[prop]);
+  var __spreadValues = (a, b) => {
+    for (var prop in b || (b = {}))
+      if (__hasOwnProp.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
     if (__getOwnPropSymbols)
-      for (var prop of __getOwnPropSymbols(b2)) {
-        if (__propIsEnum.call(b2, prop))
-          __defNormalProp(a3, prop, b2[prop]);
+      for (var prop of __getOwnPropSymbols(b)) {
+        if (__propIsEnum.call(b, prop))
+          __defNormalProp(a, prop, b[prop]);
       }
-    return a3;
+    return a;
   };
-  var __spreadProps = (a3, b2) => __defProps(a3, __getOwnPropDescs(b2));
   var __objRest = (source, exclude) => {
     var target = {};
     for (var prop in source)
@@ -58,18 +55,18 @@
       var fulfilled = (value) => {
         try {
           step(generator.next(value));
-        } catch (e2) {
-          reject(e2);
+        } catch (e) {
+          reject(e);
         }
       };
       var rejected = (value) => {
         try {
           step(generator.throw(value));
-        } catch (e2) {
-          reject(e2);
+        } catch (e) {
+          reject(e);
         }
       };
-      var step = (x2) => x2.done ? resolve(x2.value) : Promise.resolve(x2.value).then(fulfilled, rejected);
+      var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
       step((generator = generator.apply(__this, __arguments)).next());
     });
   };
@@ -173,38 +170,38 @@
             ReactSharedInternals.ReactDebugCurrentFrame = ReactDebugCurrentFrame;
             ReactSharedInternals.ReactCurrentActQueue = ReactCurrentActQueue;
           }
-          function warn(format2) {
+          function warn(format) {
             {
               {
                 for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
                   args[_key - 1] = arguments[_key];
                 }
-                printWarning("warn", format2, args);
+                printWarning("warn", format, args);
               }
             }
           }
-          function error(format2) {
+          function error(format) {
             {
               {
                 for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
                   args[_key2 - 1] = arguments[_key2];
                 }
-                printWarning("error", format2, args);
+                printWarning("error", format, args);
               }
             }
           }
-          function printWarning(level, format2, args) {
+          function printWarning(level, format, args) {
             {
               var ReactDebugCurrentFrame2 = ReactSharedInternals.ReactDebugCurrentFrame;
               var stack = ReactDebugCurrentFrame2.getStackAddendum();
               if (stack !== "") {
-                format2 += "%s";
+                format += "%s";
                 args = args.concat([stack]);
               }
               var argsWithFormat = args.map(function(item) {
                 return String(item);
               });
-              argsWithFormat.unshift("Warning: " + format2);
+              argsWithFormat.unshift("Warning: " + format);
               Function.prototype.apply.call(console[level], console, argsWithFormat);
             }
           }
@@ -345,8 +342,8 @@
             return refObject;
           }
           var isArrayImpl = Array.isArray;
-          function isArray(a3) {
-            return isArrayImpl(a3);
+          function isArray(a) {
+            return isArrayImpl(a);
           }
           function typeName(value) {
             {
@@ -360,7 +357,7 @@
               try {
                 testStringCoercion(value);
                 return false;
-              } catch (e2) {
+              } catch (e) {
                 return true;
               }
             }
@@ -438,7 +435,7 @@
                   var init = lazyComponent._init;
                   try {
                     return getComponentNameFromType(init(payload));
-                  } catch (x2) {
+                  } catch (x) {
                     return null;
                   }
                 }
@@ -592,8 +589,8 @@
               props.children = children;
             } else if (childrenLength > 1) {
               var childArray = Array(childrenLength);
-              for (var i2 = 0; i2 < childrenLength; i2++) {
-                childArray[i2] = arguments[i2 + 2];
+              for (var i = 0; i < childrenLength; i++) {
+                childArray[i] = arguments[i + 2];
               }
               {
                 if (Object.freeze) {
@@ -668,14 +665,14 @@
               props.children = children;
             } else if (childrenLength > 1) {
               var childArray = Array(childrenLength);
-              for (var i2 = 0; i2 < childrenLength; i2++) {
-                childArray[i2] = arguments[i2 + 2];
+              for (var i = 0; i < childrenLength; i++) {
+                childArray[i] = arguments[i + 2];
               }
               props.children = childArray;
             }
             return ReactElement(element.type, key, ref, self, source, owner, props);
           }
-          function isValidElement2(object) {
+          function isValidElement(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
           }
           var SEPARATOR = ".";
@@ -686,8 +683,8 @@
               "=": "=0",
               ":": "=2"
             };
-            var escapedString = key.replace(escapeRegex, function(match2) {
-              return escaperLookup[match2];
+            var escapedString = key.replace(escapeRegex, function(match) {
+              return escaperLookup[match];
             });
             return "$" + escapedString;
           }
@@ -736,11 +733,11 @@
                 if (childKey != null) {
                   escapedChildKey = escapeUserProvidedKey(childKey) + "/";
                 }
-                mapIntoArray(mappedChild, array, escapedChildKey, "", function(c2) {
-                  return c2;
+                mapIntoArray(mappedChild, array, escapedChildKey, "", function(c) {
+                  return c;
                 });
               } else if (mappedChild != null) {
-                if (isValidElement2(mappedChild)) {
+                if (isValidElement(mappedChild)) {
                   {
                     if (mappedChild.key && (!_child || _child.key !== mappedChild.key)) {
                       checkKeyStringCoercion(mappedChild.key);
@@ -767,9 +764,9 @@
             var subtreeCount = 0;
             var nextNamePrefix = nameSoFar === "" ? SEPARATOR : nameSoFar + SUBSEPARATOR;
             if (isArray(children)) {
-              for (var i2 = 0; i2 < children.length; i2++) {
-                child = children[i2];
-                nextName = nextNamePrefix + getElementKey(child, i2);
+              for (var i = 0; i < children.length; i++) {
+                child = children[i];
+                nextName = nextNamePrefix + getElementKey(child, i);
                 subtreeCount += mapIntoArray(child, array, escapedPrefix, nextName, callback);
               }
             } else {
@@ -828,7 +825,7 @@
             }) || [];
           }
           function onlyChild(children) {
-            if (!isValidElement2(children)) {
+            if (!isValidElement(children)) {
               throw new Error("React.Children.only expected to receive a single React element child.");
             }
             return children;
@@ -1081,7 +1078,7 @@
             }
             return false;
           }
-          function memo2(type, compare) {
+          function memo(type, compare) {
             {
               if (!isValidElementType(type)) {
                 error("memo: The first argument must be a component. Instead received: %s", type === null ? "null" : typeof type);
@@ -1119,7 +1116,7 @@
             }
             return dispatcher;
           }
-          function useContext3(Context) {
+          function useContext2(Context) {
             var dispatcher = resolveDispatcher();
             {
               if (Context._context !== void 0) {
@@ -1133,19 +1130,19 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState9(initialState) {
+          function useState2(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
-          function useReducer2(reducer, initialArg, init) {
+          function useReducer(reducer, initialArg, init) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useReducer(reducer, initialArg, init);
           }
-          function useRef3(initialValue) {
+          function useRef(initialValue) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect10(create, deps) {
+          function useEffect2(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1153,7 +1150,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useInsertionEffect(create, deps);
           }
-          function useLayoutEffect2(create, deps) {
+          function useLayoutEffect(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useLayoutEffect(create, deps);
           }
@@ -1161,7 +1158,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
-          function useMemo3(create, deps) {
+          function useMemo(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useMemo(create, deps);
           }
@@ -1276,9 +1273,9 @@
               if (prefix === void 0) {
                 try {
                   throw Error();
-                } catch (x2) {
-                  var match2 = x2.stack.trim().match(/\n( *(at )?)/);
-                  prefix = match2 && match2[1] || "";
+                } catch (x) {
+                  var match = x.stack.trim().match(/\n( *(at )?)/);
+                  prefix = match && match[1] || "";
                 }
               }
               return "\n" + prefix + name;
@@ -1323,23 +1320,23 @@
                 if (typeof Reflect === "object" && Reflect.construct) {
                   try {
                     Reflect.construct(Fake, []);
-                  } catch (x2) {
-                    control = x2;
+                  } catch (x) {
+                    control = x;
                   }
                   Reflect.construct(fn, [], Fake);
                 } else {
                   try {
                     Fake.call();
-                  } catch (x2) {
-                    control = x2;
+                  } catch (x) {
+                    control = x;
                   }
                   fn.call(Fake.prototype);
                 }
               } else {
                 try {
                   throw Error();
-                } catch (x2) {
-                  control = x2;
+                } catch (x) {
+                  control = x;
                 }
                 fn();
               }
@@ -1347,19 +1344,19 @@
               if (sample && control && typeof sample.stack === "string") {
                 var sampleLines = sample.stack.split("\n");
                 var controlLines = control.stack.split("\n");
-                var s3 = sampleLines.length - 1;
-                var c2 = controlLines.length - 1;
-                while (s3 >= 1 && c2 >= 0 && sampleLines[s3] !== controlLines[c2]) {
-                  c2--;
+                var s = sampleLines.length - 1;
+                var c = controlLines.length - 1;
+                while (s >= 1 && c >= 0 && sampleLines[s] !== controlLines[c]) {
+                  c--;
                 }
-                for (; s3 >= 1 && c2 >= 0; s3--, c2--) {
-                  if (sampleLines[s3] !== controlLines[c2]) {
-                    if (s3 !== 1 || c2 !== 1) {
+                for (; s >= 1 && c >= 0; s--, c--) {
+                  if (sampleLines[s] !== controlLines[c]) {
+                    if (s !== 1 || c !== 1) {
                       do {
-                        s3--;
-                        c2--;
-                        if (c2 < 0 || sampleLines[s3] !== controlLines[c2]) {
-                          var _frame = "\n" + sampleLines[s3].replace(" at new ", " at ");
+                        s--;
+                        c--;
+                        if (c < 0 || sampleLines[s] !== controlLines[c]) {
+                          var _frame = "\n" + sampleLines[s].replace(" at new ", " at ");
                           if (fn.displayName && _frame.includes("<anonymous>")) {
                             _frame = _frame.replace("<anonymous>", fn.displayName);
                           }
@@ -1370,7 +1367,7 @@
                           }
                           return _frame;
                         }
-                      } while (s3 >= 1 && c2 >= 0);
+                      } while (s >= 1 && c >= 0);
                     }
                     break;
                   }
@@ -1432,7 +1429,7 @@
                   var init = lazyComponent._init;
                   try {
                     return describeUnknownElementTypeFrameInDEV(init(payload), source, ownerFn);
-                  } catch (x2) {
+                  } catch (x) {
                   }
                 }
               }
@@ -1557,13 +1554,13 @@
               return;
             }
             if (isArray(node)) {
-              for (var i2 = 0; i2 < node.length; i2++) {
-                var child = node[i2];
-                if (isValidElement2(child)) {
+              for (var i = 0; i < node.length; i++) {
+                var child = node[i];
+                if (isValidElement(child)) {
                   validateExplicitKey(child, parentType);
                 }
               }
-            } else if (isValidElement2(node)) {
+            } else if (isValidElement(node)) {
               if (node._store) {
                 node._store.validated = true;
               }
@@ -1574,7 +1571,7 @@
                   var iterator = iteratorFn.call(node);
                   var step;
                   while (!(step = iterator.next()).done) {
-                    if (isValidElement2(step.value)) {
+                    if (isValidElement(step.value)) {
                       validateExplicitKey(step.value, parentType);
                     }
                   }
@@ -1614,8 +1611,8 @@
           function validateFragmentProps(fragment) {
             {
               var keys = Object.keys(fragment.props);
-              for (var i2 = 0; i2 < keys.length; i2++) {
-                var key = keys[i2];
+              for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
                 if (key !== "children" && key !== "key") {
                   setCurrentlyValidatingElement$1(fragment);
                   error("Invalid prop `%s` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props.", key);
@@ -1663,8 +1660,8 @@
               return element;
             }
             if (validType) {
-              for (var i2 = 2; i2 < arguments.length; i2++) {
-                validateChildKeys(arguments[i2], type);
+              for (var i = 2; i < arguments.length; i++) {
+                validateChildKeys(arguments[i], type);
               }
             }
             if (type === REACT_FRAGMENT_TYPE) {
@@ -1698,8 +1695,8 @@
           }
           function cloneElementWithValidation(element, props, children) {
             var newElement = cloneElement.apply(this, arguments);
-            for (var i2 = 2; i2 < arguments.length; i2++) {
-              validateChildKeys(arguments[i2], newElement.type);
+            for (var i = 2; i < arguments.length; i++) {
+              validateChildKeys(arguments[i], newElement.type);
             }
             validatePropTypes(newElement);
             return newElement;
@@ -1876,17 +1873,17 @@
             {
               if (!isFlushing) {
                 isFlushing = true;
-                var i2 = 0;
+                var i = 0;
                 try {
-                  for (; i2 < queue.length; i2++) {
-                    var callback = queue[i2];
+                  for (; i < queue.length; i++) {
+                    var callback = queue[i];
                     do {
                       callback = callback(true);
                     } while (callback !== null);
                   }
                   queue.length = 0;
                 } catch (error2) {
-                  queue = queue.slice(i2 + 1);
+                  queue = queue.slice(i + 1);
                   throw error2;
                 } finally {
                   isFlushing = false;
@@ -1897,14 +1894,14 @@
           var createElement$1 = createElementWithValidation;
           var cloneElement$1 = cloneElementWithValidation;
           var createFactory = createFactoryWithValidation;
-          var Children2 = {
+          var Children = {
             map: mapChildren,
             forEach: forEachChildren,
             count: countChildren,
             toArray,
             only: onlyChild
           };
-          exports.Children = Children2;
+          exports.Children = Children;
           exports.Component = Component2;
           exports.Fragment = REACT_FRAGMENT_TYPE;
           exports.Profiler = REACT_PROFILER_TYPE;
@@ -1918,24 +1915,24 @@
           exports.createFactory = createFactory;
           exports.createRef = createRef;
           exports.forwardRef = forwardRef;
-          exports.isValidElement = isValidElement2;
+          exports.isValidElement = isValidElement;
           exports.lazy = lazy;
-          exports.memo = memo2;
+          exports.memo = memo;
           exports.startTransition = startTransition;
           exports.unstable_act = act;
           exports.useCallback = useCallback;
-          exports.useContext = useContext3;
+          exports.useContext = useContext2;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect10;
+          exports.useEffect = useEffect2;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
-          exports.useLayoutEffect = useLayoutEffect2;
-          exports.useMemo = useMemo3;
-          exports.useReducer = useReducer2;
-          exports.useRef = useRef3;
-          exports.useState = useState9;
+          exports.useLayoutEffect = useLayoutEffect;
+          exports.useMemo = useMemo;
+          exports.useReducer = useReducer;
+          exports.useRef = useRef;
+          exports.useState = useState2;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -1992,8 +1989,8 @@
             }
             return first;
           }
-          function siftUp(heap, node, i2) {
-            var index = i2;
+          function siftUp(heap, node, i) {
+            var index = i;
             while (index > 0) {
               var parentIndex = index - 1 >>> 1;
               var parent = heap[parentIndex];
@@ -2006,8 +2003,8 @@
               }
             }
           }
-          function siftDown(heap, node, i2) {
-            var index = i2;
+          function siftDown(heap, node, i) {
+            var index = i;
             var length = heap.length;
             var halfLength = length >>> 1;
             while (index < halfLength) {
@@ -2034,9 +2031,9 @@
               }
             }
           }
-          function compare(a3, b2) {
-            var diff = a3.sortIndex - b2.sortIndex;
-            return diff !== 0 ? diff : a3.id - b2.id;
+          function compare(a, b) {
+            var diff = a.sortIndex - b.sortIndex;
+            return diff !== 0 ? diff : a.id - b.id;
           }
           var ImmediatePriority = 1;
           var UserBlockingPriority = 2;
@@ -2429,47 +2426,47 @@
         module.exports = function $$$reconciler($$$hostConfig) {
           var exports2 = {};
           "use strict";
-          var React12 = require_react();
+          var React2 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React12.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React2.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
               suppressWarning = newSuppressWarning;
             }
           }
-          function warn(format2) {
+          function warn(format) {
             {
               if (!suppressWarning) {
                 for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
                   args[_key - 1] = arguments[_key];
                 }
-                printWarning("warn", format2, args);
+                printWarning("warn", format, args);
               }
             }
           }
-          function error(format2) {
+          function error(format) {
             {
               if (!suppressWarning) {
                 for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
                   args[_key2 - 1] = arguments[_key2];
                 }
-                printWarning("error", format2, args);
+                printWarning("error", format, args);
               }
             }
           }
-          function printWarning(level, format2, args) {
+          function printWarning(level, format, args) {
             {
               var ReactDebugCurrentFrame2 = ReactSharedInternals.ReactDebugCurrentFrame;
               var stack = ReactDebugCurrentFrame2.getStackAddendum();
               if (stack !== "") {
-                format2 += "%s";
+                format += "%s";
                 args = args.concat([stack]);
               }
               var argsWithFormat = args.map(function(item) {
                 return String(item);
               });
-              argsWithFormat.unshift("Warning: " + format2);
+              argsWithFormat.unshift("Warning: " + format);
               Function.prototype.apply.call(console[level], console, argsWithFormat);
             }
           }
@@ -2495,7 +2492,7 @@
           var HostPortal = 4;
           var HostComponent = 5;
           var HostText = 6;
-          var Fragment9 = 7;
+          var Fragment2 = 7;
           var Mode = 8;
           var ContextConsumer = 9;
           var ContextProvider = 10;
@@ -2605,7 +2602,7 @@
                   var init = lazyComponent._init;
                   try {
                     return getComponentNameFromType(init(payload));
-                  } catch (x2) {
+                  } catch (x) {
                     return null;
                   }
                 }
@@ -2635,7 +2632,7 @@
                 return "DehydratedFragment";
               case ForwardRef:
                 return getWrappedName$1(type, type.render, "ForwardRef");
-              case Fragment9:
+              case Fragment2:
                 return "Fragment";
               case HostComponent:
                 return type;
@@ -2851,10 +2848,10 @@
               }
               return fiber;
             }
-            var a3 = fiber;
-            var b2 = alternate;
+            var a = fiber;
+            var b = alternate;
             while (true) {
-              var parentA = a3.return;
+              var parentA = a.return;
               if (parentA === null) {
                 break;
               }
@@ -2862,7 +2859,7 @@
               if (parentB === null) {
                 var nextParent = parentA.return;
                 if (nextParent !== null) {
-                  a3 = b2 = nextParent;
+                  a = b = nextParent;
                   continue;
                 }
                 break;
@@ -2870,11 +2867,11 @@
               if (parentA.child === parentB.child) {
                 var child = parentA.child;
                 while (child) {
-                  if (child === a3) {
+                  if (child === a) {
                     assertIsMounted(parentA);
                     return fiber;
                   }
-                  if (child === b2) {
+                  if (child === b) {
                     assertIsMounted(parentA);
                     return alternate;
                   }
@@ -2882,23 +2879,23 @@
                 }
                 throw new Error("Unable to find node on an unmounted component.");
               }
-              if (a3.return !== b2.return) {
-                a3 = parentA;
-                b2 = parentB;
+              if (a.return !== b.return) {
+                a = parentA;
+                b = parentB;
               } else {
                 var didFindChild = false;
                 var _child = parentA.child;
                 while (_child) {
-                  if (_child === a3) {
+                  if (_child === a) {
                     didFindChild = true;
-                    a3 = parentA;
-                    b2 = parentB;
+                    a = parentA;
+                    b = parentB;
                     break;
                   }
-                  if (_child === b2) {
+                  if (_child === b) {
                     didFindChild = true;
-                    b2 = parentA;
-                    a3 = parentB;
+                    b = parentA;
+                    a = parentB;
                     break;
                   }
                   _child = _child.sibling;
@@ -2906,16 +2903,16 @@
                 if (!didFindChild) {
                   _child = parentB.child;
                   while (_child) {
-                    if (_child === a3) {
+                    if (_child === a) {
                       didFindChild = true;
-                      a3 = parentB;
-                      b2 = parentA;
+                      a = parentB;
+                      b = parentA;
                       break;
                     }
-                    if (_child === b2) {
+                    if (_child === b) {
                       didFindChild = true;
-                      b2 = parentB;
-                      a3 = parentA;
+                      b = parentB;
+                      a = parentA;
                       break;
                     }
                     _child = _child.sibling;
@@ -2925,14 +2922,14 @@
                   }
                 }
               }
-              if (a3.alternate !== b2) {
+              if (a.alternate !== b) {
                 throw new Error("Return fibers should always be each others' alternates. This error is likely caused by a bug in React. Please file an issue.");
               }
             }
-            if (a3.tag !== HostRoot) {
+            if (a.tag !== HostRoot) {
               throw new Error("Unable to find node on an unmounted component.");
             }
-            if (a3.stateNode.current === a3) {
+            if (a.stateNode.current === a) {
               return fiber;
             }
             return alternate;
@@ -2947,9 +2944,9 @@
             }
             var child = node.child;
             while (child !== null) {
-              var match2 = findCurrentHostFiberImpl(child);
-              if (match2 !== null) {
-                return match2;
+              var match = findCurrentHostFiberImpl(child);
+              if (match !== null) {
+                return match;
               }
               child = child.sibling;
             }
@@ -2966,9 +2963,9 @@
             var child = node.child;
             while (child !== null) {
               if (child.tag !== HostPortal) {
-                var match2 = findCurrentHostFiberWithNoPortalsImpl(child);
-                if (match2 !== null) {
-                  return match2;
+                var match = findCurrentHostFiberWithNoPortalsImpl(child);
+                if (match !== null) {
+                  return match;
                 }
               }
               child = child.sibling;
@@ -2976,8 +2973,8 @@
             return null;
           }
           var isArrayImpl = Array.isArray;
-          function isArray(a3) {
-            return isArrayImpl(a3);
+          function isArray(a) {
+            return isArrayImpl(a);
           }
           var getPublicInstance = $$$hostConfig.getPublicInstance;
           var getRootHostContext = $$$hostConfig.getRootHostContext;
@@ -3158,9 +3155,9 @@
               if (prefix === void 0) {
                 try {
                   throw Error();
-                } catch (x2) {
-                  var match2 = x2.stack.trim().match(/\n( *(at )?)/);
-                  prefix = match2 && match2[1] || "";
+                } catch (x) {
+                  var match = x.stack.trim().match(/\n( *(at )?)/);
+                  prefix = match && match[1] || "";
                 }
               }
               return "\n" + prefix + name;
@@ -3205,23 +3202,23 @@
                 if (typeof Reflect === "object" && Reflect.construct) {
                   try {
                     Reflect.construct(Fake, []);
-                  } catch (x2) {
-                    control = x2;
+                  } catch (x) {
+                    control = x;
                   }
                   Reflect.construct(fn, [], Fake);
                 } else {
                   try {
                     Fake.call();
-                  } catch (x2) {
-                    control = x2;
+                  } catch (x) {
+                    control = x;
                   }
                   fn.call(Fake.prototype);
                 }
               } else {
                 try {
                   throw Error();
-                } catch (x2) {
-                  control = x2;
+                } catch (x) {
+                  control = x;
                 }
                 fn();
               }
@@ -3229,19 +3226,19 @@
               if (sample && control && typeof sample.stack === "string") {
                 var sampleLines = sample.stack.split("\n");
                 var controlLines = control.stack.split("\n");
-                var s3 = sampleLines.length - 1;
-                var c2 = controlLines.length - 1;
-                while (s3 >= 1 && c2 >= 0 && sampleLines[s3] !== controlLines[c2]) {
-                  c2--;
+                var s = sampleLines.length - 1;
+                var c = controlLines.length - 1;
+                while (s >= 1 && c >= 0 && sampleLines[s] !== controlLines[c]) {
+                  c--;
                 }
-                for (; s3 >= 1 && c2 >= 0; s3--, c2--) {
-                  if (sampleLines[s3] !== controlLines[c2]) {
-                    if (s3 !== 1 || c2 !== 1) {
+                for (; s >= 1 && c >= 0; s--, c--) {
+                  if (sampleLines[s] !== controlLines[c]) {
+                    if (s !== 1 || c !== 1) {
                       do {
-                        s3--;
-                        c2--;
-                        if (c2 < 0 || sampleLines[s3] !== controlLines[c2]) {
-                          var _frame = "\n" + sampleLines[s3].replace(" at new ", " at ");
+                        s--;
+                        c--;
+                        if (c < 0 || sampleLines[s] !== controlLines[c]) {
+                          var _frame = "\n" + sampleLines[s].replace(" at new ", " at ");
                           if (fn.displayName && _frame.includes("<anonymous>")) {
                             _frame = _frame.replace("<anonymous>", fn.displayName);
                           }
@@ -3252,7 +3249,7 @@
                           }
                           return _frame;
                         }
-                      } while (s3 >= 1 && c2 >= 0);
+                      } while (s >= 1 && c >= 0);
                     }
                     break;
                   }
@@ -3319,7 +3316,7 @@
                   var init = lazyComponent._init;
                   try {
                     return describeUnknownElementTypeFrameInDEV(init(payload), source, ownerFn);
-                  } catch (x2) {
+                  } catch (x) {
                   }
                 }
               }
@@ -3596,8 +3593,8 @@
           var clz32 = Math.clz32 ? Math.clz32 : clz32Fallback;
           var log = Math.log;
           var LN2 = Math.LN2;
-          function clz32Fallback(x2) {
-            var asUint = x2 >>> 0;
+          function clz32Fallback(x) {
+            var asUint = x >>> 0;
             if (asUint === 0) {
               return 32;
             }
@@ -4053,30 +4050,30 @@
           function laneToIndex(lane) {
             return pickArbitraryLaneIndex(lane);
           }
-          function includesSomeLane(a3, b2) {
-            return (a3 & b2) !== NoLanes;
+          function includesSomeLane(a, b) {
+            return (a & b) !== NoLanes;
           }
           function isSubsetOfLanes(set2, subset) {
             return (set2 & subset) === subset;
           }
-          function mergeLanes(a3, b2) {
-            return a3 | b2;
+          function mergeLanes(a, b) {
+            return a | b;
           }
           function removeLanes(set2, subset) {
             return set2 & ~subset;
           }
-          function intersectLanes(a3, b2) {
-            return a3 & b2;
+          function intersectLanes(a, b) {
+            return a & b;
           }
           function laneToLanes(lane) {
             return lane;
           }
-          function higherPriorityLane(a3, b2) {
-            return a3 !== NoLane && a3 < b2 ? a3 : b2;
+          function higherPriorityLane(a, b) {
+            return a !== NoLane && a < b ? a : b;
           }
           function createLaneMap(initial) {
             var laneMap = [];
-            for (var i2 = 0; i2 < TotalLanes; i2++) {
+            for (var i = 0; i < TotalLanes; i++) {
               laneMap.push(initial);
             }
             return laneMap;
@@ -4249,14 +4246,14 @@
               currentUpdatePriority = previousPriority;
             }
           }
-          function higherEventPriority(a3, b2) {
-            return a3 !== 0 && a3 < b2 ? a3 : b2;
+          function higherEventPriority(a, b) {
+            return a !== 0 && a < b ? a : b;
           }
-          function lowerEventPriority(a3, b2) {
-            return a3 === 0 || a3 > b2 ? a3 : b2;
+          function lowerEventPriority(a, b) {
+            return a === 0 || a > b ? a : b;
           }
-          function isHigherEventPriority(a3, b2) {
-            return a3 !== 0 && a3 < b2;
+          function isHigherEventPriority(a, b) {
+            return a !== 0 && a < b;
           }
           function lanesToEventPriority(lanes) {
             var lane = getHighestPriorityLane(lanes);
@@ -4603,8 +4600,8 @@
               }
             }
           }
-          function is(x2, y3) {
-            return x2 === y3 && (x2 !== 0 || 1 / x2 === 1 / y3) || x2 !== x2 && y3 !== y3;
+          function is(x, y) {
+            return x === y && (x !== 0 || 1 / x === 1 / y) || x !== x && y !== y;
           }
           var objectIs = typeof Object.is === "function" ? Object.is : is;
           var syncQueue = null;
@@ -4629,14 +4626,14 @@
           function flushSyncCallbacks() {
             if (!isFlushingSyncQueue && syncQueue !== null) {
               isFlushingSyncQueue = true;
-              var i2 = 0;
+              var i = 0;
               var previousUpdatePriority = getCurrentUpdatePriority();
               try {
                 var isSync = true;
                 var queue = syncQueue;
                 setCurrentUpdatePriority(DiscreteEventPriority);
-                for (; i2 < queue.length; i2++) {
-                  var callback = queue[i2];
+                for (; i < queue.length; i++) {
+                  var callback = queue[i];
                   do {
                     callback = callback(isSync);
                   } while (callback !== null);
@@ -4645,7 +4642,7 @@
                 includesLegacySyncCallbacks = false;
               } catch (error2) {
                 if (syncQueue !== null) {
-                  syncQueue = syncQueue.slice(i2 + 1);
+                  syncQueue = syncQueue.slice(i + 1);
                 }
                 scheduleCallback(ImmediatePriority, flushSyncCallbacks);
                 throw error2;
@@ -5221,8 +5218,8 @@
             if (keysA.length !== keysB.length) {
               return false;
             }
-            for (var i2 = 0; i2 < keysA.length; i2++) {
-              var currentKey = keysA[i2];
+            for (var i = 0; i < keysA.length; i++) {
+              var currentKey = keysA[i];
               if (!hasOwnProperty2.call(objB, currentKey) || !objectIs(objA[currentKey], objB[currentKey])) {
                 return false;
               }
@@ -5262,8 +5259,8 @@
                 node = node.return;
               } while (node);
               return info;
-            } catch (x2) {
-              return "\nError generating stack: " + x2.message + "\n" + x2.stack;
+            } catch (x) {
+              return "\nError generating stack: " + x.message + "\n" + x.stack;
             }
           }
           var ReactDebugCurrentFrame$1 = ReactSharedInternals.ReactDebugCurrentFrame;
@@ -5511,7 +5508,7 @@
               try {
                 testStringCoercion(value);
                 return false;
-              } catch (e2) {
+              } catch (e) {
                 return true;
               }
             }
@@ -5775,8 +5772,8 @@
           }
           function finishQueueingConcurrentUpdates() {
             if (concurrentQueues !== null) {
-              for (var i2 = 0; i2 < concurrentQueues.length; i2++) {
-                var queue = concurrentQueues[i2];
+              for (var i = 0; i < concurrentQueues.length; i++) {
+                var queue = concurrentQueues[i];
                 var lastInterleavedUpdate = queue.interleaved;
                 if (lastInterleavedUpdate !== null) {
                   queue.interleaved = null;
@@ -6218,8 +6215,8 @@
             var effects = finishedQueue.effects;
             finishedQueue.effects = null;
             if (effects !== null) {
-              for (var i2 = 0; i2 < effects.length; i2++) {
-                var effect = effects[i2];
+              for (var i = 0; i < effects.length; i++) {
+                var effect = effects[i];
                 var callback = effect.callback;
                 if (callback !== null) {
                   effect.callback = null;
@@ -6229,7 +6226,7 @@
             }
           }
           var fakeInternalInstance = {};
-          var emptyRefsObject = new React12.Component().refs;
+          var emptyRefsObject = new React2.Component().refs;
           var didWarnAboutStateAssignmentForComponent;
           var didWarnAboutUninitializedState;
           var didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate;
@@ -6484,11 +6481,11 @@
             var contextType = ctor.contextType;
             {
               if ("contextType" in ctor) {
-                var isValid2 = (
+                var isValid = (
                   // Allow null for conditional declaration
                   contextType === null || contextType !== void 0 && contextType.$$typeof === REACT_CONTEXT_TYPE && contextType._context === void 0
                 );
-                if (!isValid2 && !didWarnAboutInvalidateContextType.has(ctor)) {
+                if (!isValid && !didWarnAboutInvalidateContextType.has(ctor)) {
                   didWarnAboutInvalidateContextType.add(ctor);
                   var addendum = "";
                   if (contextType === void 0) {
@@ -7053,7 +7050,7 @@
               }
             }
             function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-              if (current2 === null || current2.tag !== Fragment9) {
+              if (current2 === null || current2.tag !== Fragment2) {
                 var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
                 created.return = returnFiber;
                 return created;
@@ -7216,8 +7213,8 @@
             function reconcileChildrenArray(returnFiber, currentFirstChild, newChildren, lanes) {
               {
                 var knownKeys = null;
-                for (var i2 = 0; i2 < newChildren.length; i2++) {
-                  var child = newChildren[i2];
+                for (var i = 0; i < newChildren.length; i++) {
+                  var child = newChildren[i];
                   knownKeys = warnOnInvalidKey(child, knownKeys, returnFiber);
                 }
               }
@@ -7456,7 +7453,7 @@
                 if (child.key === key) {
                   var elementType = element.type;
                   if (elementType === REACT_FRAGMENT_TYPE) {
-                    if (child.tag === Fragment9) {
+                    if (child.tag === Fragment2) {
                       deleteRemainingChildren(returnFiber, child.sibling);
                       var existing = useFiber(child, element.props.children);
                       existing.return = returnFiber;
@@ -7592,11 +7589,11 @@
           var contextStackCursor$1 = createCursor(NO_CONTEXT);
           var contextFiberStackCursor = createCursor(NO_CONTEXT);
           var rootInstanceStackCursor = createCursor(NO_CONTEXT);
-          function requiredContext(c2) {
-            if (c2 === NO_CONTEXT) {
+          function requiredContext(c) {
+            if (c === NO_CONTEXT) {
               throw new Error("Expected host context to exist. This error is likely caused by a bug in React. Please file an issue.");
             }
-            return c2;
+            return c;
           }
           function getRootHostContainer() {
             var rootInstance = requiredContext(rootInstanceStackCursor.current);
@@ -7731,8 +7728,8 @@
           );
           var workInProgressSources = [];
           function resetWorkInProgressVersions() {
-            for (var i2 = 0; i2 < workInProgressSources.length; i2++) {
-              var mutableSource = workInProgressSources[i2];
+            for (var i = 0; i < workInProgressSources.length; i++) {
+              var mutableSource = workInProgressSources[i];
               if (isPrimaryRenderer) {
                 mutableSource._workInProgressVersionPrimary = null;
               } else {
@@ -7805,10 +7802,10 @@
                 if (hookTypesDev !== null) {
                   var table = "";
                   var secondColumnStart = 30;
-                  for (var i2 = 0; i2 <= hookTypesUpdateIndexDev; i2++) {
-                    var oldHookName = hookTypesDev[i2];
-                    var newHookName = i2 === hookTypesUpdateIndexDev ? currentHookName : oldHookName;
-                    var row = i2 + 1 + ". " + oldHookName;
+                  for (var i = 0; i <= hookTypesUpdateIndexDev; i++) {
+                    var oldHookName = hookTypesDev[i];
+                    var newHookName = i === hookTypesUpdateIndexDev ? currentHookName : oldHookName;
+                    var row = i + 1 + ". " + oldHookName;
                     while (row.length < secondColumnStart) {
                       row += " ";
                     }
@@ -7840,8 +7837,8 @@
                 error("The final argument passed to %s changed size between renders. The order and size of this array must remain constant.\n\nPrevious: %s\nIncoming: %s", currentHookNameInDev, "[" + prevDeps.join(", ") + "]", "[" + nextDeps.join(", ") + "]");
               }
             }
-            for (var i2 = 0; i2 < prevDeps.length && i2 < nextDeps.length; i2++) {
-              if (objectIs(nextDeps[i2], prevDeps[i2])) {
+            for (var i = 0; i < prevDeps.length && i < nextDeps.length; i++) {
+              if (objectIs(nextDeps[i], prevDeps[i])) {
                 continue;
               }
               return false;
@@ -9737,9 +9734,9 @@
               } else {
                 console["error"](error2);
               }
-            } catch (e2) {
+            } catch (e) {
               setTimeout(function() {
-                throw e2;
+                throw e;
               });
             }
           }
@@ -10125,7 +10122,7 @@
                   var init = lazyComponent._init;
                   try {
                     outerMemoType = init(payload);
-                  } catch (x2) {
+                  } catch (x) {
                     outerMemoType = null;
                   }
                   var outerPropTypes = outerMemoType && outerMemoType.propTypes;
@@ -11169,8 +11166,8 @@
             {
               if ((revealOrder === "forwards" || revealOrder === "backwards") && children !== void 0 && children !== null && children !== false) {
                 if (isArray(children)) {
-                  for (var i2 = 0; i2 < children.length; i2++) {
-                    if (!validateSuspenseListNestedChild(children[i2], i2)) {
+                  for (var i = 0; i < children.length; i++) {
+                    if (!validateSuspenseListNestedChild(children[i], i)) {
                       return;
                     }
                   }
@@ -11633,7 +11630,7 @@
                 var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
                 return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
               }
-              case Fragment9:
+              case Fragment2:
                 return updateFragment(current2, workInProgress2, renderLanes2);
               case Mode:
                 return updateMode(current2, workInProgress2, renderLanes2);
@@ -12074,7 +12071,7 @@
               case SimpleMemoComponent:
               case FunctionComponent:
               case ForwardRef:
-              case Fragment9:
+              case Fragment2:
               case Mode:
               case Profiler:
               case ContextConsumer:
@@ -12511,7 +12508,7 @@
                 break;
             }
           }
-          function invokeGuardedCallbackProd(name, func, context, a3, b2, c2, d3, e2, f) {
+          function invokeGuardedCallbackProd(name, func, context, a, b, c, d, e, f) {
             var funcArgs = Array.prototype.slice.call(arguments, 3);
             try {
               func.apply(context, funcArgs);
@@ -12523,7 +12520,7 @@
           {
             if (typeof window !== "undefined" && typeof window.dispatchEvent === "function" && typeof document !== "undefined" && typeof document.createEvent === "function") {
               var fakeNode = document.createElement("react");
-              invokeGuardedCallbackImpl = function invokeGuardedCallbackDev(name, func, context, a3, b2, c2, d3, e2, f) {
+              invokeGuardedCallbackImpl = function invokeGuardedCallbackDev(name, func, context, a, b, c, d, e, f) {
                 if (typeof document === "undefined" || document === null) {
                   throw new Error("The `document` global was defined when React was initialized, but is not defined anymore. This can happen in a test environment if a component schedules an update from an asynchronous callback, but the test has already finished running. To solve this, you can either unmount the component at the end of your test (and ensure that any asynchronous operations get canceled in `componentWillUnmount`), or you can change the test itself to be asynchronous.");
                 }
@@ -12596,7 +12593,7 @@
               caughtError = error2;
             }
           };
-          function invokeGuardedCallback(name, func, context, a3, b2, c2, d3, e2, f) {
+          function invokeGuardedCallback(name, func, context, a, b, c, d, e, f) {
             hasError = false;
             caughtError = null;
             invokeGuardedCallbackImpl$1.apply(reporter, arguments);
@@ -13657,8 +13654,8 @@
           function recursivelyTraverseMutationEffects(root, parentFiber, lanes) {
             var deletions = parentFiber.deletions;
             if (deletions !== null) {
-              for (var i2 = 0; i2 < deletions.length; i2++) {
-                var childToDelete = deletions[i2];
+              for (var i = 0; i < deletions.length; i++) {
+                var childToDelete = deletions[i];
                 try {
                   commitDeletionEffects(root, parentFiber, childToDelete);
                 } catch (error2) {
@@ -14185,8 +14182,8 @@
               if ((nextEffect.flags & ChildDeletion) !== NoFlags) {
                 var deletions = fiber.deletions;
                 if (deletions !== null) {
-                  for (var i2 = 0; i2 < deletions.length; i2++) {
-                    var fiberToDelete = deletions[i2];
+                  for (var i = 0; i < deletions.length; i++) {
+                    var fiberToDelete = deletions[i];
                     nextEffect = fiberToDelete;
                     commitPassiveUnmountEffectsInsideOfDeletedTree_begin(fiberToDelete, fiber);
                   }
@@ -14604,8 +14601,8 @@
             }
             if (maxSelectorIndex < selectors.length) {
               var unmatchedNames = [];
-              for (var i2 = maxSelectorIndex; i2 < selectors.length; i2++) {
-                unmatchedNames.push(selectorToString(selectors[i2]));
+              for (var i = maxSelectorIndex; i < selectors.length; i++) {
+                unmatchedNames.push(selectorToString(selectors[i]));
               }
               return "findAllNodes was able to match part of the selector:\n" + ("  " + matchedNames.join(" > ") + "\n\n") + "No matching component was found for:\n" + ("  " + unmatchedNames.join(" > "));
             }
@@ -14617,8 +14614,8 @@
             }
             var instanceRoots = findAllNodes(hostRoot, selectors);
             var boundingRects = [];
-            for (var i2 = 0; i2 < instanceRoots.length; i2++) {
-              boundingRects.push(getBoundingRect(instanceRoots[i2]));
+            for (var i = 0; i < instanceRoots.length; i++) {
+              boundingRects.push(getBoundingRect(instanceRoots[i]));
             }
             for (var _i = boundingRects.length - 1; _i > 0; _i--) {
               var targetRect = boundingRects[_i];
@@ -15158,8 +15155,8 @@
                 if (updateQueue !== null) {
                   var checks = updateQueue.stores;
                   if (checks !== null) {
-                    for (var i2 = 0; i2 < checks.length; i2++) {
-                      var check = checks[i2];
+                    for (var i = 0; i < checks.length; i++) {
+                      var check = checks[i];
                       var getSnapshot = check.getSnapshot;
                       var renderedValue = check.value;
                       try {
@@ -15258,11 +15255,11 @@
               ReactCurrentBatchConfig$2.transition = prevTransition;
             }
           }
-          function batchedUpdates(fn, a3) {
+          function batchedUpdates(fn, a) {
             var prevExecutionContext = executionContext;
             executionContext |= BatchedContext;
             try {
-              return fn(a3);
+              return fn(a);
             } finally {
               executionContext = prevExecutionContext;
               if (executionContext === NoContext && // Treat `act` as if it's inside `batchedUpdates`, even in legacy mode.
@@ -15272,13 +15269,13 @@
               }
             }
           }
-          function discreteUpdates(fn, a3, b2, c2, d3) {
+          function discreteUpdates(fn, a, b, c, d) {
             var previousPriority = getCurrentUpdatePriority();
             var prevTransition = ReactCurrentBatchConfig$2.transition;
             try {
               ReactCurrentBatchConfig$2.transition = null;
               setCurrentUpdatePriority(DiscreteEventPriority);
-              return fn(a3, b2, c2, d3);
+              return fn(a, b, c, d);
             } finally {
               setCurrentUpdatePriority(previousPriority);
               ReactCurrentBatchConfig$2.transition = prevTransition;
@@ -15767,8 +15764,8 @@
             ensureRootIsScheduled(root, now());
             if (recoverableErrors !== null) {
               var onRecoverableError = root.onRecoverableError;
-              for (var i2 = 0; i2 < recoverableErrors.length; i2++) {
-                var recoverableError = recoverableErrors[i2];
+              for (var i = 0; i < recoverableErrors.length; i++) {
+                var recoverableError = recoverableErrors[i];
                 var componentStack = recoverableError.stack;
                 var digest = recoverableError.digest;
                 onRecoverableError(recoverableError.value, {
@@ -15862,8 +15859,8 @@
             {
               var profilerEffects = pendingPassiveProfilerEffects;
               pendingPassiveProfilerEffects = [];
-              for (var i2 = 0; i2 < profilerEffects.length; i2++) {
-                var _fiber = profilerEffects[i2];
+              for (var i = 0; i < profilerEffects.length; i++) {
+                var _fiber = profilerEffects[i];
                 commitPassiveEffectDurations(root, _fiber);
               }
             }
@@ -16546,7 +16543,7 @@
               var nonExtensibleObject = Object.preventExtensions({});
               /* @__PURE__ */ new Map([[nonExtensibleObject, null]]);
               /* @__PURE__ */ new Set([nonExtensibleObject]);
-            } catch (e2) {
+            } catch (e) {
               hasBadMapPolyfill = true;
             }
           }
@@ -16840,7 +16837,7 @@
             return fiber;
           }
           function createFiberFromFragment(elements, mode, lanes, key) {
-            var fiber = createFiber(Fragment9, elements, key, mode);
+            var fiber = createFiber(Fragment2, elements, key, mode);
             fiber.lanes = lanes;
             return fiber;
           }
@@ -17324,8 +17321,8 @@
                 warn("copyWithRename() expects paths of the same length");
                 return;
               } else {
-                for (var i2 = 0; i2 < newPath.length - 1; i2++) {
-                  if (oldPath[i2] !== newPath[i2]) {
+                for (var i = 0; i < newPath.length - 1; i++) {
+                  if (oldPath[i] !== newPath[i]) {
                     warn("copyWithRename() expects paths to be the same except for the deepest key");
                     return;
                   }
@@ -17540,7 +17537,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React12 = require_react();
+          var React2 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -17566,29 +17563,29 @@
             }
             return null;
           }
-          var ReactSharedInternals = React12.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-          function error(format2) {
+          var ReactSharedInternals = React2.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          function error(format) {
             {
               {
                 for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
                   args[_key2 - 1] = arguments[_key2];
                 }
-                printWarning("error", format2, args);
+                printWarning("error", format, args);
               }
             }
           }
-          function printWarning(level, format2, args) {
+          function printWarning(level, format, args) {
             {
               var ReactDebugCurrentFrame2 = ReactSharedInternals.ReactDebugCurrentFrame;
               var stack = ReactDebugCurrentFrame2.getStackAddendum();
               if (stack !== "") {
-                format2 += "%s";
+                format += "%s";
                 args = args.concat([stack]);
               }
               var argsWithFormat = args.map(function(item) {
                 return String(item);
               });
-              argsWithFormat.unshift("Warning: " + format2);
+              argsWithFormat.unshift("Warning: " + format);
               Function.prototype.apply.call(console[level], console, argsWithFormat);
             }
           }
@@ -17681,7 +17678,7 @@
                   var init = lazyComponent._init;
                   try {
                     return getComponentNameFromType(init(payload));
-                  } catch (x2) {
+                  } catch (x) {
                     return null;
                   }
                 }
@@ -17775,9 +17772,9 @@
               if (prefix === void 0) {
                 try {
                   throw Error();
-                } catch (x2) {
-                  var match2 = x2.stack.trim().match(/\n( *(at )?)/);
-                  prefix = match2 && match2[1] || "";
+                } catch (x) {
+                  var match = x.stack.trim().match(/\n( *(at )?)/);
+                  prefix = match && match[1] || "";
                 }
               }
               return "\n" + prefix + name;
@@ -17822,23 +17819,23 @@
                 if (typeof Reflect === "object" && Reflect.construct) {
                   try {
                     Reflect.construct(Fake, []);
-                  } catch (x2) {
-                    control = x2;
+                  } catch (x) {
+                    control = x;
                   }
                   Reflect.construct(fn, [], Fake);
                 } else {
                   try {
                     Fake.call();
-                  } catch (x2) {
-                    control = x2;
+                  } catch (x) {
+                    control = x;
                   }
                   fn.call(Fake.prototype);
                 }
               } else {
                 try {
                   throw Error();
-                } catch (x2) {
-                  control = x2;
+                } catch (x) {
+                  control = x;
                 }
                 fn();
               }
@@ -17846,19 +17843,19 @@
               if (sample && control && typeof sample.stack === "string") {
                 var sampleLines = sample.stack.split("\n");
                 var controlLines = control.stack.split("\n");
-                var s3 = sampleLines.length - 1;
-                var c2 = controlLines.length - 1;
-                while (s3 >= 1 && c2 >= 0 && sampleLines[s3] !== controlLines[c2]) {
-                  c2--;
+                var s = sampleLines.length - 1;
+                var c = controlLines.length - 1;
+                while (s >= 1 && c >= 0 && sampleLines[s] !== controlLines[c]) {
+                  c--;
                 }
-                for (; s3 >= 1 && c2 >= 0; s3--, c2--) {
-                  if (sampleLines[s3] !== controlLines[c2]) {
-                    if (s3 !== 1 || c2 !== 1) {
+                for (; s >= 1 && c >= 0; s--, c--) {
+                  if (sampleLines[s] !== controlLines[c]) {
+                    if (s !== 1 || c !== 1) {
                       do {
-                        s3--;
-                        c2--;
-                        if (c2 < 0 || sampleLines[s3] !== controlLines[c2]) {
-                          var _frame = "\n" + sampleLines[s3].replace(" at new ", " at ");
+                        s--;
+                        c--;
+                        if (c < 0 || sampleLines[s] !== controlLines[c]) {
+                          var _frame = "\n" + sampleLines[s].replace(" at new ", " at ");
                           if (fn.displayName && _frame.includes("<anonymous>")) {
                             _frame = _frame.replace("<anonymous>", fn.displayName);
                           }
@@ -17869,7 +17866,7 @@
                           }
                           return _frame;
                         }
-                      } while (s3 >= 1 && c2 >= 0);
+                      } while (s >= 1 && c >= 0);
                     }
                     break;
                   }
@@ -17931,7 +17928,7 @@
                   var init = lazyComponent._init;
                   try {
                     return describeUnknownElementTypeFrameInDEV(init(payload), source, ownerFn);
-                  } catch (x2) {
+                  } catch (x) {
                   }
                 }
               }
@@ -17984,8 +17981,8 @@
             }
           }
           var isArrayImpl = Array.isArray;
-          function isArray(a3) {
-            return isArrayImpl(a3);
+          function isArray(a) {
+            return isArrayImpl(a);
           }
           function typeName(value) {
             {
@@ -17999,7 +17996,7 @@
               try {
                 testStringCoercion(value);
                 return false;
-              } catch (e2) {
+              } catch (e) {
                 return true;
               }
             }
@@ -18194,7 +18191,7 @@
           {
             propTypesMisspellWarningShown = false;
           }
-          function isValidElement2(object) {
+          function isValidElement(object) {
             {
               return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
             }
@@ -18259,13 +18256,13 @@
                 return;
               }
               if (isArray(node)) {
-                for (var i2 = 0; i2 < node.length; i2++) {
-                  var child = node[i2];
-                  if (isValidElement2(child)) {
+                for (var i = 0; i < node.length; i++) {
+                  var child = node[i];
+                  if (isValidElement(child)) {
                     validateExplicitKey(child, parentType);
                   }
                 }
-              } else if (isValidElement2(node)) {
+              } else if (isValidElement(node)) {
                 if (node._store) {
                   node._store.validated = true;
                 }
@@ -18276,7 +18273,7 @@
                     var iterator = iteratorFn.call(node);
                     var step;
                     while (!(step = iterator.next()).done) {
-                      if (isValidElement2(step.value)) {
+                      if (isValidElement(step.value)) {
                         validateExplicitKey(step.value, parentType);
                       }
                     }
@@ -18317,8 +18314,8 @@
           function validateFragmentProps(fragment) {
             {
               var keys = Object.keys(fragment.props);
-              for (var i2 = 0; i2 < keys.length; i2++) {
-                var key = keys[i2];
+              for (var i = 0; i < keys.length; i++) {
+                var key = keys[i];
                 if (key !== "children" && key !== "key") {
                   setCurrentlyValidatingElement$1(fragment);
                   error("Invalid prop `%s` supplied to `React.Fragment`. React.Fragment can only have `key` and `children` props.", key);
@@ -18369,8 +18366,8 @@
                 if (children !== void 0) {
                   if (isStaticChildren) {
                     if (isArray(children)) {
-                      for (var i2 = 0; i2 < children.length; i2++) {
-                        validateChildKeys(children[i2], type);
+                      for (var i = 0; i < children.length; i++) {
+                        validateChildKeys(children[i], type);
                       }
                       if (Object.freeze) {
                         Object.freeze(children);
@@ -18401,11 +18398,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx17 = jsxWithValidationDynamic;
-          var jsxs11 = jsxWithValidationStatic;
+          var jsx4 = jsxWithValidationDynamic;
+          var jsxs2 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx17;
-          exports.jsxs = jsxs11;
+          exports.jsx = jsx4;
+          exports.jsxs = jsxs2;
         })();
       }
     }
@@ -18422,9 +18419,6 @@
       }
     }
   });
-
-  // extensions/delivery-rules/src/Checkout.jsx
-  var import_react44 = __toESM(require_react());
 
   // node_modules/@remote-ui/rpc/build/esm/memory.mjs
   function isBasicObject(value) {
@@ -19061,24 +19055,24 @@
     const currentLength = currentValue.length;
     const maxLength = Math.max(currentLength, newLength);
     const normalizedNewValue = [];
-    for (let i2 = 0; i2 < maxLength; i2++) {
-      const currentArrayValue = currentValue[i2];
-      const newArrayValue = newValue[i2];
-      if (i2 < newLength) {
-        if (i2 >= currentLength) {
+    for (let i = 0; i < maxLength; i++) {
+      const currentArrayValue = currentValue[i];
+      const newArrayValue = newValue[i];
+      if (i < newLength) {
+        if (i >= currentLength) {
           hasChanged = true;
-          normalizedNewValue[i2] = makeValueHotSwappable(newArrayValue);
+          normalizedNewValue[i] = makeValueHotSwappable(newArrayValue);
           continue;
         }
         const [updatedValue, elementHotSwaps] = tryHotSwappingValues(currentArrayValue, newArrayValue, seen);
         if (elementHotSwaps)
           hotSwaps.push(...elementHotSwaps);
         if (updatedValue === IGNORE) {
-          normalizedNewValue[i2] = currentArrayValue;
+          normalizedNewValue[i] = currentArrayValue;
           continue;
         }
         hasChanged = true;
-        normalizedNewValue[i2] = updatedValue;
+        normalizedNewValue[i] = updatedValue;
       } else {
         hasChanged = true;
         const nestedHotSwappables = collectNestedHotSwappableValues(currentArrayValue);
@@ -19124,80 +19118,11 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/extension.mjs
   var extension = createExtensionRegistrationFunction();
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Banner/Banner.mjs
-  var Banner = createRemoteComponent("Banner");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Button/Button.mjs
-  var Button = createRemoteComponent("Button");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Choice/Choice.mjs
-  var Choice = createRemoteComponent("Choice");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ChoiceList/ChoiceList.mjs
-  var ChoiceList = createRemoteComponent("ChoiceList");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Form/Form.mjs
-  var Form = createRemoteComponent("Form");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Grid/Grid.mjs
-  var Grid = createRemoteComponent("Grid");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Heading/Heading.mjs
-  var Heading = createRemoteComponent("Heading");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Icon/Icon.mjs
-  var Icon = createRemoteComponent("Icon");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Image/Image.mjs
-  var Image = createRemoteComponent("Image");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/InlineLayout/InlineLayout.mjs
-  var InlineLayout = createRemoteComponent("InlineLayout");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
-  var InlineStack = createRemoteComponent("InlineStack");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/InlineSpacer/InlineSpacer.mjs
-  var InlineSpacer = createRemoteComponent("InlineSpacer");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Modal/Modal.mjs
-  var Modal = createRemoteComponent("Modal");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Pressable/Pressable.mjs
-  var Pressable = createRemoteComponent("Pressable");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ScrollView/ScrollView.mjs
-  var ScrollView = createRemoteComponent("ScrollView");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Select/Select.mjs
-  var Select = createRemoteComponent("Select");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/SkeletonImage/SkeletonImage.mjs
-  var SkeletonImage = createRemoteComponent("SkeletonImage");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
-  var Spinner = createRemoteComponent("Spinner");
-
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Text/Text.mjs
   var Text = createRemoteComponent("Text");
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/TextBlock/TextBlock.mjs
-  var TextBlock = createRemoteComponent("TextBlock");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/TextField/TextField.mjs
-  var TextField = createRemoteComponent("TextField");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ToggleButton/ToggleButton.mjs
-  var ToggleButton = createRemoteComponent("ToggleButton");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ToggleButtonGroup/ToggleButtonGroup.mjs
-  var ToggleButtonGroup = createRemoteComponent("ToggleButtonGroup");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/View/View.mjs
-  var View = createRemoteComponent("View");
-
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/render.mjs
-  var import_react6 = __toESM(require_react(), 1);
+  var import_react4 = __toESM(require_react(), 1);
 
   // node_modules/@remote-ui/react/build/esm/render.mjs
   var import_react2 = __toESM(require_react(), 1);
@@ -19394,97 +19319,20 @@
     }), container, null, callback);
   }
 
-  // node_modules/@remote-ui/react/build/esm/components.mjs
-  var import_react4 = __toESM(require_react(), 1);
-  var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
-
-  // node_modules/@remote-ui/react/build/esm/hooks/render.mjs
-  var import_react3 = __toESM(require_react(), 1);
-  function useRender() {
-    const render3 = (0, import_react3.useContext)(RenderContext);
-    if (render3 == null) {
-      throw new Error("No remote-ui Render instance found in context");
-    }
-    return render3;
-  }
-
-  // node_modules/@remote-ui/react/build/esm/components.mjs
-  function createRemoteReactComponent(componentType, {
-    fragmentProps
-  } = {}) {
-    if (!fragmentProps || !fragmentProps.length) {
-      return componentType;
-    }
-    const wrapper = createComponentWrapper(componentType, fragmentProps);
-    wrapper.displayName = componentType;
-    return wrapper;
-  }
-  function createComponentWrapper(componentType, fragmentProps) {
-    const Component2 = componentType;
-    return /* @__PURE__ */ (0, import_react4.memo)(function ComponentWrapper(_a) {
-      var _b = _a, {
-        children: externalChildren = []
-      } = _b, externalProps = __objRest(_b, [
-        "children"
-      ]);
-      const fragments = (0, import_react4.useRef)({});
-      const {
-        root,
-        reconciler
-      } = useRender();
-      const {
-        props,
-        children
-      } = (0, import_react4.useMemo)(() => {
-        const portals = [];
-        const props2 = {};
-        for (const key of Object.keys(externalProps)) {
-          const element = externalProps[key];
-          if (fragmentProps.includes(key) && /* @__PURE__ */ (0, import_react4.isValidElement)(element)) {
-            const currentFragment = fragments.current[key];
-            const fragment = isRemoteFragment(currentFragment) ? currentFragment : root.createFragment();
-            fragments.current[key] = fragment;
-            Object.assign(fragment, {
-              createText(...args) {
-                return root.createText(...args);
-              },
-              createComponent(type, ...args) {
-                return root.createComponent(type, ...args);
-              }
-            });
-            const portal = reconciler.createPortal(element, fragment, null, null);
-            portals.push(portal);
-            props2[key] = fragment;
-          } else {
-            props2[key] = element;
-            delete fragments.current[key];
-          }
-        }
-        return {
-          props: props2,
-          children: [...import_react4.Children.toArray(externalChildren), ...portals]
-        };
-      }, [externalChildren, externalProps, root, reconciler, fragments]);
-      return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(Component2, __spreadProps(__spreadValues({}, props), {
-        children
-      }));
-    });
-  }
-
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/context.mjs
-  var import_react5 = __toESM(require_react(), 1);
-  var ExtensionApiContext = /* @__PURE__ */ (0, import_react5.createContext)(null);
+  var import_react3 = __toESM(require_react(), 1);
+  var ExtensionApiContext = /* @__PURE__ */ (0, import_react3.createContext)(null);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/render.mjs
-  var import_jsx_runtime3 = __toESM(require_jsx_runtime(), 1);
+  var import_jsx_runtime2 = __toESM(require_jsx_runtime(), 1);
   function reactExtension(target, render3) {
     return extension(target, (root, api) => __async(this, null, function* () {
       const element = yield render3(api);
       yield new Promise((resolve, reject) => {
         try {
-          render(/* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ExtensionApiContext.Provider, {
+          render(/* @__PURE__ */ (0, import_jsx_runtime2.jsx)(ExtensionApiContext.Provider, {
             value: api,
-            children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ErrorBoundary, {
+            children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(ErrorBoundary, {
               children: element
             })
           }), root, () => {
@@ -19497,7 +19345,7 @@
       });
     }));
   }
-  var ErrorBoundary = class extends import_react6.Component {
+  var ErrorBoundary = class extends import_react4.Component {
     constructor(...args) {
       super(...args);
       this.state = {
@@ -19524,82 +19372,8 @@ ${errorInfo.componentStack}`);
     }
   };
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Banner/Banner.mjs
-  var Banner2 = createRemoteReactComponent(Banner);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Button/Button.mjs
-  var Button2 = createRemoteReactComponent(Button, {
-    fragmentProps: ["overlay"]
-  });
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Choice/Choice.mjs
-  var Choice2 = createRemoteReactComponent(Choice, {
-    fragmentProps: ["details", "primaryContent", "secondaryContent", "tertiaryContent"]
-  });
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ChoiceList/ChoiceList.mjs
-  var ChoiceList2 = createRemoteReactComponent(ChoiceList);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Form/Form.mjs
-  var Form2 = createRemoteReactComponent(Form);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Grid/Grid.mjs
-  var Grid2 = createRemoteReactComponent(Grid);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Heading/Heading.mjs
-  var Heading2 = createRemoteReactComponent(Heading);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Icon/Icon.mjs
-  var Icon2 = createRemoteReactComponent(Icon);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Image/Image.mjs
-  var Image2 = createRemoteReactComponent(Image);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/InlineLayout/InlineLayout.mjs
-  var InlineLayout2 = createRemoteReactComponent(InlineLayout);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
-  var InlineStack2 = createRemoteReactComponent(InlineStack);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Modal/Modal.mjs
-  var Modal2 = createRemoteReactComponent(Modal);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Pressable/Pressable.mjs
-  var Pressable2 = createRemoteReactComponent(Pressable, {
-    fragmentProps: ["overlay"]
-  });
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ScrollView/ScrollView.mjs
-  var ScrollView2 = createRemoteReactComponent(ScrollView);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Select/Select.mjs
-  var Select2 = createRemoteReactComponent(Select);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
-  var Spinner2 = createRemoteReactComponent(Spinner);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Text/Text.mjs
-  var Text2 = createRemoteReactComponent(Text);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/TextBlock/TextBlock.mjs
-  var TextBlock2 = createRemoteReactComponent(TextBlock);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/TextField/TextField.mjs
-  var TextField2 = createRemoteReactComponent(TextField, {
-    fragmentProps: ["accessory"]
-  });
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ToggleButton/ToggleButton.mjs
-  var ToggleButton2 = createRemoteReactComponent(ToggleButton);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ToggleButtonGroup/ToggleButtonGroup.mjs
-  var ToggleButtonGroup2 = createRemoteReactComponent(ToggleButtonGroup);
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/View/View.mjs
-  var View2 = createRemoteReactComponent(View);
-
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react30 = __toESM(require_react(), 1);
+  var import_react6 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
@@ -19608,22 +19382,16 @@ ${errorInfo.componentStack}`);
       this.name = "CheckoutUIExtensionError";
     }
   };
-  var ScopeNotGrantedError = class extends Error {
-    constructor(...args) {
-      super(...args);
-      this.name = "ScopeNotGrantedError";
-    }
-  };
-  var ExtensionHasNoMethodError = class extends Error {
+  var ExtensionHasNoTargetError = class extends Error {
     constructor(method, target) {
-      super(`Cannot call '${method}()' on target '${target}'. The corresponding property was not found on the API.`);
-      this.name = "ExtensionHasNoMethodError";
+      super(`Cannot call '${method}()' on target '${target}'. Property 'target' is not found on api.`);
+      this.name = "ExtensionHasNoTargetError";
     }
   };
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react30.useContext)(ExtensionApiContext);
+    const api = (0, import_react6.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19631,10 +19399,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react31 = __toESM(require_react(), 1);
+  var import_react7 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react31.useState)(subscription.current);
-    (0, import_react31.useEffect)(() => {
+    const [, setValue] = (0, import_react7.useState)(subscription.current);
+    (0, import_react7.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19652,3063 +19420,32 @@ ${errorInfo.componentStack}`);
     return subscription.current;
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/note.mjs
-  function useNote() {
-    return useSubscription(useApi().note);
-  }
-  function useApplyNoteChange() {
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/cart-line-target.mjs
+  function useCartLineTarget() {
     const api = useApi();
-    if ("applyNoteChange" in api) {
-      return api.applyNoteChange;
+    if (!api.target) {
+      throw new ExtensionHasNoTargetError("useCartLineTarget", api.extension.target);
     }
-    throw new ExtensionHasNoMethodError("applyNoteChange", api.extension.target);
+    return useSubscription(api.target);
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/attributes.mjs
-  function useAttributes() {
-    return useSubscription(useApi().attributes);
-  }
-  function useApplyAttributeChange() {
-    const api = useApi();
-    if ("applyAttributeChange" in api) {
-      return api.applyAttributeChange;
-    }
-    throw new ExtensionHasNoMethodError("applyAttributeChange", api.extension.target);
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/shipping-address.mjs
-  function useShippingAddress() {
-    const shippingAddress = useApi().shippingAddress;
-    if (!shippingAddress) {
-      throw new ScopeNotGrantedError("Using shipping address requires having shipping address permissions granted to your app.");
-    }
-    return useSubscription(shippingAddress);
-  }
-  function useApplyShippingAddressChange() {
-    const api = useApi();
-    if ("applyShippingAddressChange" in api) {
-      return api.applyShippingAddressChange;
-    }
-    throw new ExtensionHasNoMethodError("applyCartLinesChange", api.extension.target);
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/cart-lines.mjs
-  function useCartLines() {
-    const {
-      lines
-    } = useApi();
-    return useSubscription(lines);
-  }
-  function useApplyCartLinesChange() {
-    const api = useApi();
-    if ("applyCartLinesChange" in api) {
-      return api.applyCartLinesChange;
-    }
-    throw new ExtensionHasNoMethodError("applyCartLinesChange", api.extension.target);
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react32 = __toESM(require_react(), 1);
-  function useAppMetafields(filters = {}) {
-    const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react32.useMemo)(() => {
-      if (filters.key && !filters.namespace) {
-        throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
-      }
-      const filterKeys = Object.keys(filters);
-      if (filterKeys.length) {
-        return appMetafields.filter((app) => {
-          return filterKeys.every((key) => {
-            if (key === "id" || key === "type") {
-              return app.target[key] === filters[key];
-            }
-            return app.metafield[key] === filters[key];
-          });
-        });
-      }
-      return appMetafields;
-    }, [filters, appMetafields]);
-  }
-
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/storage.mjs
-  function useStorage() {
-    return useApi().storage;
-  }
-
-  // extensions/delivery-rules/src/Locations.jsx
-  var import_react33 = __toESM(require_react());
-
-  // extensions/delivery-rules/src/assets/LocationIcons.js
-  var import_jsx_runtime4 = __toESM(require_jsx_runtime());
-
-  // extensions/delivery-rules/src/Locations.jsx
-  var import_jsx_runtime5 = __toESM(require_jsx_runtime());
-  var StoresIcon = "https://cdn.shopify.com/s/files/1/0575/1468/8647/files/store.svg?v=1706175861";
-  var LockersIcon = "https://cdn.shopify.com/s/files/1/0575/1468/8647/files/locker.svg?v=1706175882";
-  var Locations = ({
-    checkoutData,
-    selectLocation,
-    removeLocation,
-    url,
-    cart,
-    nextDay,
-    setProximityLocations,
-    setCS,
-    localStorage
-  }) => {
-    const [searchLocationQuery, setSearchLocationQuery] = (0, import_react33.useState)(null);
-    const [searchPostcodeQuery, setSearchPostcodeQuery] = (0, import_react33.useState)(null);
-    const [selectedLocation, setSelectedLocation] = (0, import_react33.useState)(null);
-    const [filteredLocations, setFilteredLocations] = (0, import_react33.useState)(
-      checkoutData.pickup.qCollectLocations
-    );
-    const [postcodeError, setPostcodeError] = (0, import_react33.useState)(false);
-    const [selectedChoice, setSelectedChoice] = (0, import_react33.useState)(null);
-    const changeShippingAddress = useApplyShippingAddressChange();
-    const changeAttributes = useApplyAttributeChange();
-    const { query } = useApi();
-    const handleLocationSelect = (val) => __async(void 0, null, function* () {
-      setSelectedLocation(null);
-      setSelectedChoice(val);
-      let targetLocation = checkoutData.pickup.qCollectLocations.filter(
-        (location) => location.id === parseInt(val.replace(/[^0-9]/g, ""))
-      );
-      let targetLocationAddr = {
-        address1: targetLocation[0].address_line_1,
-        city: targetLocation[0].city,
-        zip: targetLocation[0].postal_code
-      };
-      yield changeShippingAddress({
-        type: "updateShippingAddress",
-        address: targetLocationAddr
-      });
-      let locationHandle = targetLocation[0].company_name.toLowerCase().replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "").replaceAll(/\s/gm, "-");
-      yield changeAttributes({
-        type: "updateAttribute",
-        key: "Pickup-Location-Id",
-        value: `${targetLocation[0].id}`
-      });
-      yield changeAttributes({
-        type: "updateAttribute",
-        key: "Pickup-Location-Company",
-        value: targetLocation[0].company_name
-      });
-      yield changeAttributes({
-        type: "updateAttribute",
-        key: "Pickup-Location-Type",
-        value: targetLocation[0].custom_attribute_1
-      });
-    });
-    (0, import_react33.useEffect)(() => {
-      const getProximityLocations = () => __async(void 0, null, function* () {
-        let checkBody = {
-          type: "pickup",
-          postcode: searchPostcodeQuery,
-          cart,
-          twoDayDelivery: nextDay
-        };
-        let checkRes = yield fetch(`${url}/pza/check-postcode-test`, {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          method: "POST",
-          body: JSON.stringify(checkBody)
-        });
-        let pcCheckData = yield checkRes.json();
-        console.log("FROM PROXIMITY CHECK: ", pcCheckData);
-        setProximityLocations({
-          pickup_locations: pcCheckData.pickup.locations
-        });
-        console.log("Postcode availability data: ", pcCheckData);
-        setFilteredLocations(pcCheckData.pickup.locations);
-      });
-      searchPostcodeQuery ? getProximityLocations() : null;
-    }, [searchPostcodeQuery]);
-    const handleChange = (val, type) => __async(void 0, null, function* () {
-      console.log(val);
-      if (type === "location") {
-        searchPostcodeQuery ? setSearchPostcodeQuery(null) : null;
-        setSearchLocationQuery(val);
-      } else {
-        searchLocationQuery ? setSearchLocationQuery(null) : null;
-        if (val.length < 12 && val.length > 0) {
-          let postcodeRes = yield fetch(
-            `https://api.postcodes.io/postcodes/${val}`,
-            {
-              method: "GET"
-            }
-          );
-          let postcodeData = yield postcodeRes.json();
-          console.log(postcodeData.result);
-          postcodeData.result ? setSearchPostcodeQuery(postcodeData.result.postcode) : null;
-        } else if (val.length === 12) {
-          const res = yield fetch(`${url}/pza/check-pw`, {
-            headers: {
-              "Content-Type": "application/json"
-            },
-            method: "POST",
-            body: JSON.stringify({
-              pw: val
-            })
-          });
-          let z2 = yield res.json();
-          if (z2.status === true) {
-            setCS({ status: z2.status });
-          }
-        }
-      }
-    });
-    const handleInput = (val, type) => {
-      if (type === "location") {
-        searchLocationQuery && !val ? (removeLocation(), setSearchPostcodeQuery(null), setSearchLocationQuery(null)) : null;
-        searchPostcodeQuery && val ? setSearchPostcodeQuery(null) : null;
-      } else {
-        searchPostcodeQuery && !val ? setSearchLocationQuery(null) : null;
-        searchLocationQuery && val ? setSearchLocationQuery(null) : null;
-      }
-    };
-    (0, import_react33.useEffect)(() => {
-      let unfiltered = checkoutData.pickup.qCollectLocations;
-      if (searchLocationQuery) {
-        let x2 = [];
-        unfiltered.forEach((location) => {
-          location.company_name.toLowerCase().includes(searchLocationQuery.toLowerCase()) ? x2.push(location) : null;
-        });
-        setFilteredLocations(x2);
-      } else {
-        !searchLocationQuery ? setFilteredLocations(unfiltered) : null;
-      }
-    }, [searchLocationQuery]);
-    const getLocationName = (name) => {
-      let index = name.indexOf(" - ");
-      return name.slice(name[0], index);
-    };
-    const getLocationType = (type) => {
-      let firstLetter = type.charAt(0).toUpperCase();
-      let singular = type.slice(1, type.length - 1);
-      return `${firstLetter}${singular} Collection`;
-    };
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View2, { padding: ["base", "none", "base", "none"], children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Heading2, { children: "Find your nearest store or locker" }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Form2, { onSubmit: () => console.log("form submitted!"), children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
-        InlineLayout,
-        {
-          columns: [`fill`, "fill", "auto"],
-          spacing: "base",
-          padding: ["base", "none", "base", "none"],
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-              TextField2,
-              {
-                label: "Search by location name",
-                onChange: (val) => handleChange(val, "location"),
-                onInput: (val) => handleInput(val, "location"),
-                value: searchLocationQuery
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-              TextField2,
-              {
-                label: "Search by proximity",
-                onChange: (val) => handleChange(val, "postcode"),
-                onInput: (val) => handleInput(val, "postcode"),
-                value: searchPostcodeQuery
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Button2, { accessibilityRole: "submit", children: "Search" })
-          ]
-        }
-      ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-        ScrollView2,
-        {
-          maxBlockSize: 280,
-          hint: { type: "pill", content: "Scroll for more options" },
-          direction: "block",
-          children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-            ChoiceList2,
-            {
-              name: "select location",
-              value: selectedChoice ? selectedChoice : "",
-              onChange: (id) => handleLocationSelect(id),
-              variant: "group",
-              children: filteredLocations.map((location, i2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-                Choice2,
-                {
-                  id: `${location.id}`,
-                  secondaryContent: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
-                    InlineLayout,
-                    {
-                      inlineAlignment: "end",
-                      blockAlignment: "center",
-                      columns: location.distance ? ["auto", "auto"] : "auto",
-                      children: [
-                        location.distance !== null ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text2, { children: `${location.distance} miles` }),
-                          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(InlineSpacer, { spacing: "tight" })
-                        ] }) : null,
-                        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-                          Image2,
-                          {
-                            source: location.custom_attribute_1 === "lockers" ? LockersIcon : StoresIcon
-                          }
-                        )
-                      ]
-                    }
-                  ),
-                  tertiaryContent: getLocationType(location.custom_attribute_1),
-                  children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text2, { appearance: "decorative", children: getLocationName(location.company_name) })
-                },
-                `${location}${i2}`
-              ))
-            }
-          )
-        }
-      )
-    ] });
-  };
-  var Locations_default = Locations;
-
-  // extensions/delivery-rules/src/DateSelect.jsx
-  var import_react38 = __toESM(require_react());
-
-  // extensions/delivery-rules/src/AltCalendar.jsx
-  var import_react34 = __toESM(require_react());
-
-  // node_modules/@babel/runtime/helpers/esm/typeof.js
-  function _typeof(o) {
-    "@babel/helpers - typeof";
-    return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function(o2) {
-      return typeof o2;
-    } : function(o2) {
-      return o2 && "function" == typeof Symbol && o2.constructor === Symbol && o2 !== Symbol.prototype ? "symbol" : typeof o2;
-    }, _typeof(o);
-  }
-
-  // node_modules/date-fns/esm/_lib/toInteger/index.js
-  function toInteger(dirtyNumber) {
-    if (dirtyNumber === null || dirtyNumber === true || dirtyNumber === false) {
-      return NaN;
-    }
-    var number = Number(dirtyNumber);
-    if (isNaN(number)) {
-      return number;
-    }
-    return number < 0 ? Math.ceil(number) : Math.floor(number);
-  }
-
-  // node_modules/date-fns/esm/_lib/requiredArgs/index.js
-  function requiredArgs(required, args) {
-    if (args.length < required) {
-      throw new TypeError(required + " argument" + (required > 1 ? "s" : "") + " required, but only " + args.length + " present");
-    }
-  }
-
-  // node_modules/date-fns/esm/toDate/index.js
-  function toDate(argument) {
-    requiredArgs(1, arguments);
-    var argStr = Object.prototype.toString.call(argument);
-    if (argument instanceof Date || _typeof(argument) === "object" && argStr === "[object Date]") {
-      return new Date(argument.getTime());
-    } else if (typeof argument === "number" || argStr === "[object Number]") {
-      return new Date(argument);
-    } else {
-      if ((typeof argument === "string" || argStr === "[object String]") && typeof console !== "undefined") {
-        console.warn("Starting with v2.0.0-beta.1 date-fns doesn't accept strings as date arguments. Please use `parseISO` to parse strings. See: https://github.com/date-fns/date-fns/blob/master/docs/upgradeGuide.md#string-arguments");
-        console.warn(new Error().stack);
-      }
-      return /* @__PURE__ */ new Date(NaN);
-    }
-  }
-
-  // node_modules/date-fns/esm/addDays/index.js
-  function addDays(dirtyDate, dirtyAmount) {
-    requiredArgs(2, arguments);
-    var date = toDate(dirtyDate);
-    var amount = toInteger(dirtyAmount);
-    if (isNaN(amount)) {
-      return /* @__PURE__ */ new Date(NaN);
-    }
-    if (!amount) {
-      return date;
-    }
-    date.setDate(date.getDate() + amount);
-    return date;
-  }
-
-  // node_modules/date-fns/esm/addMonths/index.js
-  function addMonths(dirtyDate, dirtyAmount) {
-    requiredArgs(2, arguments);
-    var date = toDate(dirtyDate);
-    var amount = toInteger(dirtyAmount);
-    if (isNaN(amount)) {
-      return /* @__PURE__ */ new Date(NaN);
-    }
-    if (!amount) {
-      return date;
-    }
-    var dayOfMonth = date.getDate();
-    var endOfDesiredMonth = new Date(date.getTime());
-    endOfDesiredMonth.setMonth(date.getMonth() + amount + 1, 0);
-    var daysInMonth = endOfDesiredMonth.getDate();
-    if (dayOfMonth >= daysInMonth) {
-      return endOfDesiredMonth;
-    } else {
-      date.setFullYear(endOfDesiredMonth.getFullYear(), endOfDesiredMonth.getMonth(), dayOfMonth);
-      return date;
-    }
-  }
-
-  // node_modules/date-fns/esm/addMilliseconds/index.js
-  function addMilliseconds(dirtyDate, dirtyAmount) {
-    requiredArgs(2, arguments);
-    var timestamp = toDate(dirtyDate).getTime();
-    var amount = toInteger(dirtyAmount);
-    return new Date(timestamp + amount);
-  }
-
-  // node_modules/date-fns/esm/_lib/defaultOptions/index.js
-  var defaultOptions = {};
-  function getDefaultOptions() {
-    return defaultOptions;
-  }
-
-  // node_modules/date-fns/esm/_lib/getTimezoneOffsetInMilliseconds/index.js
-  function getTimezoneOffsetInMilliseconds(date) {
-    var utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds()));
-    utcDate.setUTCFullYear(date.getFullYear());
-    return date.getTime() - utcDate.getTime();
-  }
-
-  // node_modules/date-fns/esm/addYears/index.js
-  function addYears(dirtyDate, dirtyAmount) {
-    requiredArgs(2, arguments);
-    var amount = toInteger(dirtyAmount);
-    return addMonths(dirtyDate, amount * 12);
-  }
-
-  // node_modules/date-fns/esm/isDate/index.js
-  function isDate(value) {
-    requiredArgs(1, arguments);
-    return value instanceof Date || _typeof(value) === "object" && Object.prototype.toString.call(value) === "[object Date]";
-  }
-
-  // node_modules/date-fns/esm/isValid/index.js
-  function isValid(dirtyDate) {
-    requiredArgs(1, arguments);
-    if (!isDate(dirtyDate) && typeof dirtyDate !== "number") {
-      return false;
-    }
-    var date = toDate(dirtyDate);
-    return !isNaN(Number(date));
-  }
-
-  // node_modules/date-fns/esm/subMilliseconds/index.js
-  function subMilliseconds(dirtyDate, dirtyAmount) {
-    requiredArgs(2, arguments);
-    var amount = toInteger(dirtyAmount);
-    return addMilliseconds(dirtyDate, -amount);
-  }
-
-  // node_modules/date-fns/esm/_lib/getUTCDayOfYear/index.js
-  var MILLISECONDS_IN_DAY = 864e5;
-  function getUTCDayOfYear(dirtyDate) {
-    requiredArgs(1, arguments);
-    var date = toDate(dirtyDate);
-    var timestamp = date.getTime();
-    date.setUTCMonth(0, 1);
-    date.setUTCHours(0, 0, 0, 0);
-    var startOfYearTimestamp = date.getTime();
-    var difference = timestamp - startOfYearTimestamp;
-    return Math.floor(difference / MILLISECONDS_IN_DAY) + 1;
-  }
-
-  // node_modules/date-fns/esm/_lib/startOfUTCISOWeek/index.js
-  function startOfUTCISOWeek(dirtyDate) {
-    requiredArgs(1, arguments);
-    var weekStartsOn = 1;
-    var date = toDate(dirtyDate);
-    var day = date.getUTCDay();
-    var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
-    date.setUTCDate(date.getUTCDate() - diff);
-    date.setUTCHours(0, 0, 0, 0);
-    return date;
-  }
-
-  // node_modules/date-fns/esm/_lib/getUTCISOWeekYear/index.js
-  function getUTCISOWeekYear(dirtyDate) {
-    requiredArgs(1, arguments);
-    var date = toDate(dirtyDate);
-    var year = date.getUTCFullYear();
-    var fourthOfJanuaryOfNextYear = /* @__PURE__ */ new Date(0);
-    fourthOfJanuaryOfNextYear.setUTCFullYear(year + 1, 0, 4);
-    fourthOfJanuaryOfNextYear.setUTCHours(0, 0, 0, 0);
-    var startOfNextYear = startOfUTCISOWeek(fourthOfJanuaryOfNextYear);
-    var fourthOfJanuaryOfThisYear = /* @__PURE__ */ new Date(0);
-    fourthOfJanuaryOfThisYear.setUTCFullYear(year, 0, 4);
-    fourthOfJanuaryOfThisYear.setUTCHours(0, 0, 0, 0);
-    var startOfThisYear = startOfUTCISOWeek(fourthOfJanuaryOfThisYear);
-    if (date.getTime() >= startOfNextYear.getTime()) {
-      return year + 1;
-    } else if (date.getTime() >= startOfThisYear.getTime()) {
-      return year;
-    } else {
-      return year - 1;
-    }
-  }
-
-  // node_modules/date-fns/esm/_lib/startOfUTCISOWeekYear/index.js
-  function startOfUTCISOWeekYear(dirtyDate) {
-    requiredArgs(1, arguments);
-    var year = getUTCISOWeekYear(dirtyDate);
-    var fourthOfJanuary = /* @__PURE__ */ new Date(0);
-    fourthOfJanuary.setUTCFullYear(year, 0, 4);
-    fourthOfJanuary.setUTCHours(0, 0, 0, 0);
-    var date = startOfUTCISOWeek(fourthOfJanuary);
-    return date;
-  }
-
-  // node_modules/date-fns/esm/_lib/getUTCISOWeek/index.js
-  var MILLISECONDS_IN_WEEK = 6048e5;
-  function getUTCISOWeek(dirtyDate) {
-    requiredArgs(1, arguments);
-    var date = toDate(dirtyDate);
-    var diff = startOfUTCISOWeek(date).getTime() - startOfUTCISOWeekYear(date).getTime();
-    return Math.round(diff / MILLISECONDS_IN_WEEK) + 1;
-  }
-
-  // node_modules/date-fns/esm/_lib/startOfUTCWeek/index.js
-  function startOfUTCWeek(dirtyDate, options) {
-    var _ref, _ref2, _ref3, _options$weekStartsOn, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
-    requiredArgs(1, arguments);
-    var defaultOptions2 = getDefaultOptions();
-    var weekStartsOn = toInteger((_ref = (_ref2 = (_ref3 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.weekStartsOn) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions2.weekStartsOn) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions2.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.weekStartsOn) !== null && _ref !== void 0 ? _ref : 0);
-    if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
-      throw new RangeError("weekStartsOn must be between 0 and 6 inclusively");
-    }
-    var date = toDate(dirtyDate);
-    var day = date.getUTCDay();
-    var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
-    date.setUTCDate(date.getUTCDate() - diff);
-    date.setUTCHours(0, 0, 0, 0);
-    return date;
-  }
-
-  // node_modules/date-fns/esm/_lib/getUTCWeekYear/index.js
-  function getUTCWeekYear(dirtyDate, options) {
-    var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
-    requiredArgs(1, arguments);
-    var date = toDate(dirtyDate);
-    var year = date.getUTCFullYear();
-    var defaultOptions2 = getDefaultOptions();
-    var firstWeekContainsDate = toInteger((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions2.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1);
-    if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
-      throw new RangeError("firstWeekContainsDate must be between 1 and 7 inclusively");
-    }
-    var firstWeekOfNextYear = /* @__PURE__ */ new Date(0);
-    firstWeekOfNextYear.setUTCFullYear(year + 1, 0, firstWeekContainsDate);
-    firstWeekOfNextYear.setUTCHours(0, 0, 0, 0);
-    var startOfNextYear = startOfUTCWeek(firstWeekOfNextYear, options);
-    var firstWeekOfThisYear = /* @__PURE__ */ new Date(0);
-    firstWeekOfThisYear.setUTCFullYear(year, 0, firstWeekContainsDate);
-    firstWeekOfThisYear.setUTCHours(0, 0, 0, 0);
-    var startOfThisYear = startOfUTCWeek(firstWeekOfThisYear, options);
-    if (date.getTime() >= startOfNextYear.getTime()) {
-      return year + 1;
-    } else if (date.getTime() >= startOfThisYear.getTime()) {
-      return year;
-    } else {
-      return year - 1;
-    }
-  }
-
-  // node_modules/date-fns/esm/_lib/startOfUTCWeekYear/index.js
-  function startOfUTCWeekYear(dirtyDate, options) {
-    var _ref, _ref2, _ref3, _options$firstWeekCon, _options$locale, _options$locale$optio, _defaultOptions$local, _defaultOptions$local2;
-    requiredArgs(1, arguments);
-    var defaultOptions2 = getDefaultOptions();
-    var firstWeekContainsDate = toInteger((_ref = (_ref2 = (_ref3 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale = options.locale) === null || _options$locale === void 0 ? void 0 : (_options$locale$optio = _options$locale.options) === null || _options$locale$optio === void 0 ? void 0 : _options$locale$optio.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : defaultOptions2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : (_defaultOptions$local = defaultOptions2.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref !== void 0 ? _ref : 1);
-    var year = getUTCWeekYear(dirtyDate, options);
-    var firstWeek = /* @__PURE__ */ new Date(0);
-    firstWeek.setUTCFullYear(year, 0, firstWeekContainsDate);
-    firstWeek.setUTCHours(0, 0, 0, 0);
-    var date = startOfUTCWeek(firstWeek, options);
-    return date;
-  }
-
-  // node_modules/date-fns/esm/_lib/getUTCWeek/index.js
-  var MILLISECONDS_IN_WEEK2 = 6048e5;
-  function getUTCWeek(dirtyDate, options) {
-    requiredArgs(1, arguments);
-    var date = toDate(dirtyDate);
-    var diff = startOfUTCWeek(date, options).getTime() - startOfUTCWeekYear(date, options).getTime();
-    return Math.round(diff / MILLISECONDS_IN_WEEK2) + 1;
-  }
-
-  // node_modules/date-fns/esm/_lib/addLeadingZeros/index.js
-  function addLeadingZeros(number, targetLength) {
-    var sign = number < 0 ? "-" : "";
-    var output = Math.abs(number).toString();
-    while (output.length < targetLength) {
-      output = "0" + output;
-    }
-    return sign + output;
-  }
-
-  // node_modules/date-fns/esm/_lib/format/lightFormatters/index.js
-  var formatters = {
-    // Year
-    y: function y(date, token) {
-      var signedYear = date.getUTCFullYear();
-      var year = signedYear > 0 ? signedYear : 1 - signedYear;
-      return addLeadingZeros(token === "yy" ? year % 100 : year, token.length);
-    },
-    // Month
-    M: function M(date, token) {
-      var month = date.getUTCMonth();
-      return token === "M" ? String(month + 1) : addLeadingZeros(month + 1, 2);
-    },
-    // Day of the month
-    d: function d(date, token) {
-      return addLeadingZeros(date.getUTCDate(), token.length);
-    },
-    // AM or PM
-    a: function a(date, token) {
-      var dayPeriodEnumValue = date.getUTCHours() / 12 >= 1 ? "pm" : "am";
-      switch (token) {
-        case "a":
-        case "aa":
-          return dayPeriodEnumValue.toUpperCase();
-        case "aaa":
-          return dayPeriodEnumValue;
-        case "aaaaa":
-          return dayPeriodEnumValue[0];
-        case "aaaa":
-        default:
-          return dayPeriodEnumValue === "am" ? "a.m." : "p.m.";
-      }
-    },
-    // Hour [1-12]
-    h: function h(date, token) {
-      return addLeadingZeros(date.getUTCHours() % 12 || 12, token.length);
-    },
-    // Hour [0-23]
-    H: function H(date, token) {
-      return addLeadingZeros(date.getUTCHours(), token.length);
-    },
-    // Minute
-    m: function m(date, token) {
-      return addLeadingZeros(date.getUTCMinutes(), token.length);
-    },
-    // Second
-    s: function s(date, token) {
-      return addLeadingZeros(date.getUTCSeconds(), token.length);
-    },
-    // Fraction of second
-    S: function S(date, token) {
-      var numberOfDigits = token.length;
-      var milliseconds = date.getUTCMilliseconds();
-      var fractionalSeconds = Math.floor(milliseconds * Math.pow(10, numberOfDigits - 3));
-      return addLeadingZeros(fractionalSeconds, token.length);
-    }
-  };
-  var lightFormatters_default = formatters;
-
-  // node_modules/date-fns/esm/_lib/format/formatters/index.js
-  var dayPeriodEnum = {
-    am: "am",
-    pm: "pm",
-    midnight: "midnight",
-    noon: "noon",
-    morning: "morning",
-    afternoon: "afternoon",
-    evening: "evening",
-    night: "night"
-  };
-  var formatters2 = {
-    // Era
-    G: function G(date, token, localize2) {
-      var era = date.getUTCFullYear() > 0 ? 1 : 0;
-      switch (token) {
-        case "G":
-        case "GG":
-        case "GGG":
-          return localize2.era(era, {
-            width: "abbreviated"
-          });
-        case "GGGGG":
-          return localize2.era(era, {
-            width: "narrow"
-          });
-        case "GGGG":
-        default:
-          return localize2.era(era, {
-            width: "wide"
-          });
-      }
-    },
-    // Year
-    y: function y2(date, token, localize2) {
-      if (token === "yo") {
-        var signedYear = date.getUTCFullYear();
-        var year = signedYear > 0 ? signedYear : 1 - signedYear;
-        return localize2.ordinalNumber(year, {
-          unit: "year"
-        });
-      }
-      return lightFormatters_default.y(date, token);
-    },
-    // Local week-numbering year
-    Y: function Y(date, token, localize2, options) {
-      var signedWeekYear = getUTCWeekYear(date, options);
-      var weekYear = signedWeekYear > 0 ? signedWeekYear : 1 - signedWeekYear;
-      if (token === "YY") {
-        var twoDigitYear = weekYear % 100;
-        return addLeadingZeros(twoDigitYear, 2);
-      }
-      if (token === "Yo") {
-        return localize2.ordinalNumber(weekYear, {
-          unit: "year"
-        });
-      }
-      return addLeadingZeros(weekYear, token.length);
-    },
-    // ISO week-numbering year
-    R: function R(date, token) {
-      var isoWeekYear = getUTCISOWeekYear(date);
-      return addLeadingZeros(isoWeekYear, token.length);
-    },
-    // Extended year. This is a single number designating the year of this calendar system.
-    // The main difference between `y` and `u` localizers are B.C. years:
-    // | Year | `y` | `u` |
-    // |------|-----|-----|
-    // | AC 1 |   1 |   1 |
-    // | BC 1 |   1 |   0 |
-    // | BC 2 |   2 |  -1 |
-    // Also `yy` always returns the last two digits of a year,
-    // while `uu` pads single digit years to 2 characters and returns other years unchanged.
-    u: function u(date, token) {
-      var year = date.getUTCFullYear();
-      return addLeadingZeros(year, token.length);
-    },
-    // Quarter
-    Q: function Q(date, token, localize2) {
-      var quarter = Math.ceil((date.getUTCMonth() + 1) / 3);
-      switch (token) {
-        case "Q":
-          return String(quarter);
-        case "QQ":
-          return addLeadingZeros(quarter, 2);
-        case "Qo":
-          return localize2.ordinalNumber(quarter, {
-            unit: "quarter"
-          });
-        case "QQQ":
-          return localize2.quarter(quarter, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "QQQQQ":
-          return localize2.quarter(quarter, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "QQQQ":
-        default:
-          return localize2.quarter(quarter, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // Stand-alone quarter
-    q: function q(date, token, localize2) {
-      var quarter = Math.ceil((date.getUTCMonth() + 1) / 3);
-      switch (token) {
-        case "q":
-          return String(quarter);
-        case "qq":
-          return addLeadingZeros(quarter, 2);
-        case "qo":
-          return localize2.ordinalNumber(quarter, {
-            unit: "quarter"
-          });
-        case "qqq":
-          return localize2.quarter(quarter, {
-            width: "abbreviated",
-            context: "standalone"
-          });
-        case "qqqqq":
-          return localize2.quarter(quarter, {
-            width: "narrow",
-            context: "standalone"
-          });
-        case "qqqq":
-        default:
-          return localize2.quarter(quarter, {
-            width: "wide",
-            context: "standalone"
-          });
-      }
-    },
-    // Month
-    M: function M2(date, token, localize2) {
-      var month = date.getUTCMonth();
-      switch (token) {
-        case "M":
-        case "MM":
-          return lightFormatters_default.M(date, token);
-        case "Mo":
-          return localize2.ordinalNumber(month + 1, {
-            unit: "month"
-          });
-        case "MMM":
-          return localize2.month(month, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "MMMMM":
-          return localize2.month(month, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "MMMM":
-        default:
-          return localize2.month(month, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // Stand-alone month
-    L: function L(date, token, localize2) {
-      var month = date.getUTCMonth();
-      switch (token) {
-        case "L":
-          return String(month + 1);
-        case "LL":
-          return addLeadingZeros(month + 1, 2);
-        case "Lo":
-          return localize2.ordinalNumber(month + 1, {
-            unit: "month"
-          });
-        case "LLL":
-          return localize2.month(month, {
-            width: "abbreviated",
-            context: "standalone"
-          });
-        case "LLLLL":
-          return localize2.month(month, {
-            width: "narrow",
-            context: "standalone"
-          });
-        case "LLLL":
-        default:
-          return localize2.month(month, {
-            width: "wide",
-            context: "standalone"
-          });
-      }
-    },
-    // Local week of year
-    w: function w(date, token, localize2, options) {
-      var week = getUTCWeek(date, options);
-      if (token === "wo") {
-        return localize2.ordinalNumber(week, {
-          unit: "week"
-        });
-      }
-      return addLeadingZeros(week, token.length);
-    },
-    // ISO week of year
-    I: function I(date, token, localize2) {
-      var isoWeek = getUTCISOWeek(date);
-      if (token === "Io") {
-        return localize2.ordinalNumber(isoWeek, {
-          unit: "week"
-        });
-      }
-      return addLeadingZeros(isoWeek, token.length);
-    },
-    // Day of the month
-    d: function d2(date, token, localize2) {
-      if (token === "do") {
-        return localize2.ordinalNumber(date.getUTCDate(), {
-          unit: "date"
-        });
-      }
-      return lightFormatters_default.d(date, token);
-    },
-    // Day of year
-    D: function D(date, token, localize2) {
-      var dayOfYear = getUTCDayOfYear(date);
-      if (token === "Do") {
-        return localize2.ordinalNumber(dayOfYear, {
-          unit: "dayOfYear"
-        });
-      }
-      return addLeadingZeros(dayOfYear, token.length);
-    },
-    // Day of week
-    E: function E(date, token, localize2) {
-      var dayOfWeek = date.getUTCDay();
-      switch (token) {
-        case "E":
-        case "EE":
-        case "EEE":
-          return localize2.day(dayOfWeek, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "EEEEE":
-          return localize2.day(dayOfWeek, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "EEEEEE":
-          return localize2.day(dayOfWeek, {
-            width: "short",
-            context: "formatting"
-          });
-        case "EEEE":
-        default:
-          return localize2.day(dayOfWeek, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // Local day of week
-    e: function e(date, token, localize2, options) {
-      var dayOfWeek = date.getUTCDay();
-      var localDayOfWeek = (dayOfWeek - options.weekStartsOn + 8) % 7 || 7;
-      switch (token) {
-        case "e":
-          return String(localDayOfWeek);
-        case "ee":
-          return addLeadingZeros(localDayOfWeek, 2);
-        case "eo":
-          return localize2.ordinalNumber(localDayOfWeek, {
-            unit: "day"
-          });
-        case "eee":
-          return localize2.day(dayOfWeek, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "eeeee":
-          return localize2.day(dayOfWeek, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "eeeeee":
-          return localize2.day(dayOfWeek, {
-            width: "short",
-            context: "formatting"
-          });
-        case "eeee":
-        default:
-          return localize2.day(dayOfWeek, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // Stand-alone local day of week
-    c: function c(date, token, localize2, options) {
-      var dayOfWeek = date.getUTCDay();
-      var localDayOfWeek = (dayOfWeek - options.weekStartsOn + 8) % 7 || 7;
-      switch (token) {
-        case "c":
-          return String(localDayOfWeek);
-        case "cc":
-          return addLeadingZeros(localDayOfWeek, token.length);
-        case "co":
-          return localize2.ordinalNumber(localDayOfWeek, {
-            unit: "day"
-          });
-        case "ccc":
-          return localize2.day(dayOfWeek, {
-            width: "abbreviated",
-            context: "standalone"
-          });
-        case "ccccc":
-          return localize2.day(dayOfWeek, {
-            width: "narrow",
-            context: "standalone"
-          });
-        case "cccccc":
-          return localize2.day(dayOfWeek, {
-            width: "short",
-            context: "standalone"
-          });
-        case "cccc":
-        default:
-          return localize2.day(dayOfWeek, {
-            width: "wide",
-            context: "standalone"
-          });
-      }
-    },
-    // ISO day of week
-    i: function i(date, token, localize2) {
-      var dayOfWeek = date.getUTCDay();
-      var isoDayOfWeek = dayOfWeek === 0 ? 7 : dayOfWeek;
-      switch (token) {
-        case "i":
-          return String(isoDayOfWeek);
-        case "ii":
-          return addLeadingZeros(isoDayOfWeek, token.length);
-        case "io":
-          return localize2.ordinalNumber(isoDayOfWeek, {
-            unit: "day"
-          });
-        case "iii":
-          return localize2.day(dayOfWeek, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "iiiii":
-          return localize2.day(dayOfWeek, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "iiiiii":
-          return localize2.day(dayOfWeek, {
-            width: "short",
-            context: "formatting"
-          });
-        case "iiii":
-        default:
-          return localize2.day(dayOfWeek, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // AM or PM
-    a: function a2(date, token, localize2) {
-      var hours = date.getUTCHours();
-      var dayPeriodEnumValue = hours / 12 >= 1 ? "pm" : "am";
-      switch (token) {
-        case "a":
-        case "aa":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "aaa":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "abbreviated",
-            context: "formatting"
-          }).toLowerCase();
-        case "aaaaa":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "aaaa":
-        default:
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // AM, PM, midnight, noon
-    b: function b(date, token, localize2) {
-      var hours = date.getUTCHours();
-      var dayPeriodEnumValue;
-      if (hours === 12) {
-        dayPeriodEnumValue = dayPeriodEnum.noon;
-      } else if (hours === 0) {
-        dayPeriodEnumValue = dayPeriodEnum.midnight;
-      } else {
-        dayPeriodEnumValue = hours / 12 >= 1 ? "pm" : "am";
-      }
-      switch (token) {
-        case "b":
-        case "bb":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "bbb":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "abbreviated",
-            context: "formatting"
-          }).toLowerCase();
-        case "bbbbb":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "bbbb":
-        default:
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // in the morning, in the afternoon, in the evening, at night
-    B: function B(date, token, localize2) {
-      var hours = date.getUTCHours();
-      var dayPeriodEnumValue;
-      if (hours >= 17) {
-        dayPeriodEnumValue = dayPeriodEnum.evening;
-      } else if (hours >= 12) {
-        dayPeriodEnumValue = dayPeriodEnum.afternoon;
-      } else if (hours >= 4) {
-        dayPeriodEnumValue = dayPeriodEnum.morning;
-      } else {
-        dayPeriodEnumValue = dayPeriodEnum.night;
-      }
-      switch (token) {
-        case "B":
-        case "BB":
-        case "BBB":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "abbreviated",
-            context: "formatting"
-          });
-        case "BBBBB":
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "narrow",
-            context: "formatting"
-          });
-        case "BBBB":
-        default:
-          return localize2.dayPeriod(dayPeriodEnumValue, {
-            width: "wide",
-            context: "formatting"
-          });
-      }
-    },
-    // Hour [1-12]
-    h: function h2(date, token, localize2) {
-      if (token === "ho") {
-        var hours = date.getUTCHours() % 12;
-        if (hours === 0)
-          hours = 12;
-        return localize2.ordinalNumber(hours, {
-          unit: "hour"
-        });
-      }
-      return lightFormatters_default.h(date, token);
-    },
-    // Hour [0-23]
-    H: function H2(date, token, localize2) {
-      if (token === "Ho") {
-        return localize2.ordinalNumber(date.getUTCHours(), {
-          unit: "hour"
-        });
-      }
-      return lightFormatters_default.H(date, token);
-    },
-    // Hour [0-11]
-    K: function K(date, token, localize2) {
-      var hours = date.getUTCHours() % 12;
-      if (token === "Ko") {
-        return localize2.ordinalNumber(hours, {
-          unit: "hour"
-        });
-      }
-      return addLeadingZeros(hours, token.length);
-    },
-    // Hour [1-24]
-    k: function k(date, token, localize2) {
-      var hours = date.getUTCHours();
-      if (hours === 0)
-        hours = 24;
-      if (token === "ko") {
-        return localize2.ordinalNumber(hours, {
-          unit: "hour"
-        });
-      }
-      return addLeadingZeros(hours, token.length);
-    },
-    // Minute
-    m: function m2(date, token, localize2) {
-      if (token === "mo") {
-        return localize2.ordinalNumber(date.getUTCMinutes(), {
-          unit: "minute"
-        });
-      }
-      return lightFormatters_default.m(date, token);
-    },
-    // Second
-    s: function s2(date, token, localize2) {
-      if (token === "so") {
-        return localize2.ordinalNumber(date.getUTCSeconds(), {
-          unit: "second"
-        });
-      }
-      return lightFormatters_default.s(date, token);
-    },
-    // Fraction of second
-    S: function S2(date, token) {
-      return lightFormatters_default.S(date, token);
-    },
-    // Timezone (ISO-8601. If offset is 0, output is always `'Z'`)
-    X: function X(date, token, _localize, options) {
-      var originalDate = options._originalDate || date;
-      var timezoneOffset = originalDate.getTimezoneOffset();
-      if (timezoneOffset === 0) {
-        return "Z";
-      }
-      switch (token) {
-        case "X":
-          return formatTimezoneWithOptionalMinutes(timezoneOffset);
-        case "XXXX":
-        case "XX":
-          return formatTimezone(timezoneOffset);
-        case "XXXXX":
-        case "XXX":
-        default:
-          return formatTimezone(timezoneOffset, ":");
-      }
-    },
-    // Timezone (ISO-8601. If offset is 0, output is `'+00:00'` or equivalent)
-    x: function x(date, token, _localize, options) {
-      var originalDate = options._originalDate || date;
-      var timezoneOffset = originalDate.getTimezoneOffset();
-      switch (token) {
-        case "x":
-          return formatTimezoneWithOptionalMinutes(timezoneOffset);
-        case "xxxx":
-        case "xx":
-          return formatTimezone(timezoneOffset);
-        case "xxxxx":
-        case "xxx":
-        default:
-          return formatTimezone(timezoneOffset, ":");
-      }
-    },
-    // Timezone (GMT)
-    O: function O(date, token, _localize, options) {
-      var originalDate = options._originalDate || date;
-      var timezoneOffset = originalDate.getTimezoneOffset();
-      switch (token) {
-        case "O":
-        case "OO":
-        case "OOO":
-          return "GMT" + formatTimezoneShort(timezoneOffset, ":");
-        case "OOOO":
-        default:
-          return "GMT" + formatTimezone(timezoneOffset, ":");
-      }
-    },
-    // Timezone (specific non-location)
-    z: function z(date, token, _localize, options) {
-      var originalDate = options._originalDate || date;
-      var timezoneOffset = originalDate.getTimezoneOffset();
-      switch (token) {
-        case "z":
-        case "zz":
-        case "zzz":
-          return "GMT" + formatTimezoneShort(timezoneOffset, ":");
-        case "zzzz":
-        default:
-          return "GMT" + formatTimezone(timezoneOffset, ":");
-      }
-    },
-    // Seconds timestamp
-    t: function t(date, token, _localize, options) {
-      var originalDate = options._originalDate || date;
-      var timestamp = Math.floor(originalDate.getTime() / 1e3);
-      return addLeadingZeros(timestamp, token.length);
-    },
-    // Milliseconds timestamp
-    T: function T(date, token, _localize, options) {
-      var originalDate = options._originalDate || date;
-      var timestamp = originalDate.getTime();
-      return addLeadingZeros(timestamp, token.length);
-    }
-  };
-  function formatTimezoneShort(offset, dirtyDelimiter) {
-    var sign = offset > 0 ? "-" : "+";
-    var absOffset = Math.abs(offset);
-    var hours = Math.floor(absOffset / 60);
-    var minutes = absOffset % 60;
-    if (minutes === 0) {
-      return sign + String(hours);
-    }
-    var delimiter = dirtyDelimiter || "";
-    return sign + String(hours) + delimiter + addLeadingZeros(minutes, 2);
-  }
-  function formatTimezoneWithOptionalMinutes(offset, dirtyDelimiter) {
-    if (offset % 60 === 0) {
-      var sign = offset > 0 ? "-" : "+";
-      return sign + addLeadingZeros(Math.abs(offset) / 60, 2);
-    }
-    return formatTimezone(offset, dirtyDelimiter);
-  }
-  function formatTimezone(offset, dirtyDelimiter) {
-    var delimiter = dirtyDelimiter || "";
-    var sign = offset > 0 ? "-" : "+";
-    var absOffset = Math.abs(offset);
-    var hours = addLeadingZeros(Math.floor(absOffset / 60), 2);
-    var minutes = addLeadingZeros(absOffset % 60, 2);
-    return sign + hours + delimiter + minutes;
-  }
-  var formatters_default = formatters2;
-
-  // node_modules/date-fns/esm/_lib/format/longFormatters/index.js
-  var dateLongFormatter = function dateLongFormatter2(pattern, formatLong2) {
-    switch (pattern) {
-      case "P":
-        return formatLong2.date({
-          width: "short"
-        });
-      case "PP":
-        return formatLong2.date({
-          width: "medium"
-        });
-      case "PPP":
-        return formatLong2.date({
-          width: "long"
-        });
-      case "PPPP":
-      default:
-        return formatLong2.date({
-          width: "full"
-        });
-    }
-  };
-  var timeLongFormatter = function timeLongFormatter2(pattern, formatLong2) {
-    switch (pattern) {
-      case "p":
-        return formatLong2.time({
-          width: "short"
-        });
-      case "pp":
-        return formatLong2.time({
-          width: "medium"
-        });
-      case "ppp":
-        return formatLong2.time({
-          width: "long"
-        });
-      case "pppp":
-      default:
-        return formatLong2.time({
-          width: "full"
-        });
-    }
-  };
-  var dateTimeLongFormatter = function dateTimeLongFormatter2(pattern, formatLong2) {
-    var matchResult = pattern.match(/(P+)(p+)?/) || [];
-    var datePattern = matchResult[1];
-    var timePattern = matchResult[2];
-    if (!timePattern) {
-      return dateLongFormatter(pattern, formatLong2);
-    }
-    var dateTimeFormat;
-    switch (datePattern) {
-      case "P":
-        dateTimeFormat = formatLong2.dateTime({
-          width: "short"
-        });
-        break;
-      case "PP":
-        dateTimeFormat = formatLong2.dateTime({
-          width: "medium"
-        });
-        break;
-      case "PPP":
-        dateTimeFormat = formatLong2.dateTime({
-          width: "long"
-        });
-        break;
-      case "PPPP":
-      default:
-        dateTimeFormat = formatLong2.dateTime({
-          width: "full"
-        });
-        break;
-    }
-    return dateTimeFormat.replace("{{date}}", dateLongFormatter(datePattern, formatLong2)).replace("{{time}}", timeLongFormatter(timePattern, formatLong2));
-  };
-  var longFormatters = {
-    p: timeLongFormatter,
-    P: dateTimeLongFormatter
-  };
-  var longFormatters_default = longFormatters;
-
-  // node_modules/date-fns/esm/_lib/protectedTokens/index.js
-  var protectedDayOfYearTokens = ["D", "DD"];
-  var protectedWeekYearTokens = ["YY", "YYYY"];
-  function isProtectedDayOfYearToken(token) {
-    return protectedDayOfYearTokens.indexOf(token) !== -1;
-  }
-  function isProtectedWeekYearToken(token) {
-    return protectedWeekYearTokens.indexOf(token) !== -1;
-  }
-  function throwProtectedError(token, format2, input) {
-    if (token === "YYYY") {
-      throw new RangeError("Use `yyyy` instead of `YYYY` (in `".concat(format2, "`) for formatting years to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
-    } else if (token === "YY") {
-      throw new RangeError("Use `yy` instead of `YY` (in `".concat(format2, "`) for formatting years to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
-    } else if (token === "D") {
-      throw new RangeError("Use `d` instead of `D` (in `".concat(format2, "`) for formatting days of the month to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
-    } else if (token === "DD") {
-      throw new RangeError("Use `dd` instead of `DD` (in `".concat(format2, "`) for formatting days of the month to the input `").concat(input, "`; see: https://github.com/date-fns/date-fns/blob/master/docs/unicodeTokens.md"));
-    }
-  }
-
-  // node_modules/date-fns/esm/locale/en-US/_lib/formatDistance/index.js
-  var formatDistanceLocale = {
-    lessThanXSeconds: {
-      one: "less than a second",
-      other: "less than {{count}} seconds"
-    },
-    xSeconds: {
-      one: "1 second",
-      other: "{{count}} seconds"
-    },
-    halfAMinute: "half a minute",
-    lessThanXMinutes: {
-      one: "less than a minute",
-      other: "less than {{count}} minutes"
-    },
-    xMinutes: {
-      one: "1 minute",
-      other: "{{count}} minutes"
-    },
-    aboutXHours: {
-      one: "about 1 hour",
-      other: "about {{count}} hours"
-    },
-    xHours: {
-      one: "1 hour",
-      other: "{{count}} hours"
-    },
-    xDays: {
-      one: "1 day",
-      other: "{{count}} days"
-    },
-    aboutXWeeks: {
-      one: "about 1 week",
-      other: "about {{count}} weeks"
-    },
-    xWeeks: {
-      one: "1 week",
-      other: "{{count}} weeks"
-    },
-    aboutXMonths: {
-      one: "about 1 month",
-      other: "about {{count}} months"
-    },
-    xMonths: {
-      one: "1 month",
-      other: "{{count}} months"
-    },
-    aboutXYears: {
-      one: "about 1 year",
-      other: "about {{count}} years"
-    },
-    xYears: {
-      one: "1 year",
-      other: "{{count}} years"
-    },
-    overXYears: {
-      one: "over 1 year",
-      other: "over {{count}} years"
-    },
-    almostXYears: {
-      one: "almost 1 year",
-      other: "almost {{count}} years"
-    }
-  };
-  var formatDistance = function formatDistance2(token, count, options) {
-    var result;
-    var tokenValue = formatDistanceLocale[token];
-    if (typeof tokenValue === "string") {
-      result = tokenValue;
-    } else if (count === 1) {
-      result = tokenValue.one;
-    } else {
-      result = tokenValue.other.replace("{{count}}", count.toString());
-    }
-    if (options !== null && options !== void 0 && options.addSuffix) {
-      if (options.comparison && options.comparison > 0) {
-        return "in " + result;
-      } else {
-        return result + " ago";
-      }
-    }
-    return result;
-  };
-  var formatDistance_default = formatDistance;
-
-  // node_modules/date-fns/esm/locale/_lib/buildFormatLongFn/index.js
-  function buildFormatLongFn(args) {
-    return function() {
-      var options = arguments.length > 0 && arguments[0] !== void 0 ? arguments[0] : {};
-      var width = options.width ? String(options.width) : args.defaultWidth;
-      var format2 = args.formats[width] || args.formats[args.defaultWidth];
-      return format2;
-    };
-  }
-
-  // node_modules/date-fns/esm/locale/en-US/_lib/formatLong/index.js
-  var dateFormats = {
-    full: "EEEE, MMMM do, y",
-    long: "MMMM do, y",
-    medium: "MMM d, y",
-    short: "MM/dd/yyyy"
-  };
-  var timeFormats = {
-    full: "h:mm:ss a zzzz",
-    long: "h:mm:ss a z",
-    medium: "h:mm:ss a",
-    short: "h:mm a"
-  };
-  var dateTimeFormats = {
-    full: "{{date}} 'at' {{time}}",
-    long: "{{date}} 'at' {{time}}",
-    medium: "{{date}}, {{time}}",
-    short: "{{date}}, {{time}}"
-  };
-  var formatLong = {
-    date: buildFormatLongFn({
-      formats: dateFormats,
-      defaultWidth: "full"
-    }),
-    time: buildFormatLongFn({
-      formats: timeFormats,
-      defaultWidth: "full"
-    }),
-    dateTime: buildFormatLongFn({
-      formats: dateTimeFormats,
-      defaultWidth: "full"
-    })
-  };
-  var formatLong_default = formatLong;
-
-  // node_modules/date-fns/esm/locale/en-US/_lib/formatRelative/index.js
-  var formatRelativeLocale = {
-    lastWeek: "'last' eeee 'at' p",
-    yesterday: "'yesterday at' p",
-    today: "'today at' p",
-    tomorrow: "'tomorrow at' p",
-    nextWeek: "eeee 'at' p",
-    other: "P"
-  };
-  var formatRelative = function formatRelative2(token, _date, _baseDate, _options) {
-    return formatRelativeLocale[token];
-  };
-  var formatRelative_default = formatRelative;
-
-  // node_modules/date-fns/esm/locale/_lib/buildLocalizeFn/index.js
-  function buildLocalizeFn(args) {
-    return function(dirtyIndex, options) {
-      var context = options !== null && options !== void 0 && options.context ? String(options.context) : "standalone";
-      var valuesArray;
-      if (context === "formatting" && args.formattingValues) {
-        var defaultWidth = args.defaultFormattingWidth || args.defaultWidth;
-        var width = options !== null && options !== void 0 && options.width ? String(options.width) : defaultWidth;
-        valuesArray = args.formattingValues[width] || args.formattingValues[defaultWidth];
-      } else {
-        var _defaultWidth = args.defaultWidth;
-        var _width = options !== null && options !== void 0 && options.width ? String(options.width) : args.defaultWidth;
-        valuesArray = args.values[_width] || args.values[_defaultWidth];
-      }
-      var index = args.argumentCallback ? args.argumentCallback(dirtyIndex) : dirtyIndex;
-      return valuesArray[index];
-    };
-  }
-
-  // node_modules/date-fns/esm/locale/en-US/_lib/localize/index.js
-  var eraValues = {
-    narrow: ["B", "A"],
-    abbreviated: ["BC", "AD"],
-    wide: ["Before Christ", "Anno Domini"]
-  };
-  var quarterValues = {
-    narrow: ["1", "2", "3", "4"],
-    abbreviated: ["Q1", "Q2", "Q3", "Q4"],
-    wide: ["1st quarter", "2nd quarter", "3rd quarter", "4th quarter"]
-  };
-  var monthValues = {
-    narrow: ["J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"],
-    abbreviated: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-    wide: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-  };
-  var dayValues = {
-    narrow: ["S", "M", "T", "W", "T", "F", "S"],
-    short: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-    abbreviated: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    wide: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  };
-  var dayPeriodValues = {
-    narrow: {
-      am: "a",
-      pm: "p",
-      midnight: "mi",
-      noon: "n",
-      morning: "morning",
-      afternoon: "afternoon",
-      evening: "evening",
-      night: "night"
-    },
-    abbreviated: {
-      am: "AM",
-      pm: "PM",
-      midnight: "midnight",
-      noon: "noon",
-      morning: "morning",
-      afternoon: "afternoon",
-      evening: "evening",
-      night: "night"
-    },
-    wide: {
-      am: "a.m.",
-      pm: "p.m.",
-      midnight: "midnight",
-      noon: "noon",
-      morning: "morning",
-      afternoon: "afternoon",
-      evening: "evening",
-      night: "night"
-    }
-  };
-  var formattingDayPeriodValues = {
-    narrow: {
-      am: "a",
-      pm: "p",
-      midnight: "mi",
-      noon: "n",
-      morning: "in the morning",
-      afternoon: "in the afternoon",
-      evening: "in the evening",
-      night: "at night"
-    },
-    abbreviated: {
-      am: "AM",
-      pm: "PM",
-      midnight: "midnight",
-      noon: "noon",
-      morning: "in the morning",
-      afternoon: "in the afternoon",
-      evening: "in the evening",
-      night: "at night"
-    },
-    wide: {
-      am: "a.m.",
-      pm: "p.m.",
-      midnight: "midnight",
-      noon: "noon",
-      morning: "in the morning",
-      afternoon: "in the afternoon",
-      evening: "in the evening",
-      night: "at night"
-    }
-  };
-  var ordinalNumber = function ordinalNumber2(dirtyNumber, _options) {
-    var number = Number(dirtyNumber);
-    var rem100 = number % 100;
-    if (rem100 > 20 || rem100 < 10) {
-      switch (rem100 % 10) {
-        case 1:
-          return number + "st";
-        case 2:
-          return number + "nd";
-        case 3:
-          return number + "rd";
-      }
-    }
-    return number + "th";
-  };
-  var localize = {
-    ordinalNumber,
-    era: buildLocalizeFn({
-      values: eraValues,
-      defaultWidth: "wide"
-    }),
-    quarter: buildLocalizeFn({
-      values: quarterValues,
-      defaultWidth: "wide",
-      argumentCallback: function argumentCallback(quarter) {
-        return quarter - 1;
-      }
-    }),
-    month: buildLocalizeFn({
-      values: monthValues,
-      defaultWidth: "wide"
-    }),
-    day: buildLocalizeFn({
-      values: dayValues,
-      defaultWidth: "wide"
-    }),
-    dayPeriod: buildLocalizeFn({
-      values: dayPeriodValues,
-      defaultWidth: "wide",
-      formattingValues: formattingDayPeriodValues,
-      defaultFormattingWidth: "wide"
-    })
-  };
-  var localize_default = localize;
-
-  // node_modules/date-fns/esm/locale/_lib/buildMatchFn/index.js
-  function buildMatchFn(args) {
-    return function(string) {
-      var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-      var width = options.width;
-      var matchPattern = width && args.matchPatterns[width] || args.matchPatterns[args.defaultMatchWidth];
-      var matchResult = string.match(matchPattern);
-      if (!matchResult) {
-        return null;
-      }
-      var matchedString = matchResult[0];
-      var parsePatterns = width && args.parsePatterns[width] || args.parsePatterns[args.defaultParseWidth];
-      var key = Array.isArray(parsePatterns) ? findIndex(parsePatterns, function(pattern) {
-        return pattern.test(matchedString);
-      }) : findKey(parsePatterns, function(pattern) {
-        return pattern.test(matchedString);
-      });
-      var value;
-      value = args.valueCallback ? args.valueCallback(key) : key;
-      value = options.valueCallback ? options.valueCallback(value) : value;
-      var rest = string.slice(matchedString.length);
-      return {
-        value,
-        rest
-      };
-    };
-  }
-  function findKey(object, predicate) {
-    for (var key in object) {
-      if (object.hasOwnProperty(key) && predicate(object[key])) {
-        return key;
-      }
-    }
-    return void 0;
-  }
-  function findIndex(array, predicate) {
-    for (var key = 0; key < array.length; key++) {
-      if (predicate(array[key])) {
-        return key;
-      }
-    }
-    return void 0;
-  }
-
-  // node_modules/date-fns/esm/locale/_lib/buildMatchPatternFn/index.js
-  function buildMatchPatternFn(args) {
-    return function(string) {
-      var options = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-      var matchResult = string.match(args.matchPattern);
-      if (!matchResult)
-        return null;
-      var matchedString = matchResult[0];
-      var parseResult = string.match(args.parsePattern);
-      if (!parseResult)
-        return null;
-      var value = args.valueCallback ? args.valueCallback(parseResult[0]) : parseResult[0];
-      value = options.valueCallback ? options.valueCallback(value) : value;
-      var rest = string.slice(matchedString.length);
-      return {
-        value,
-        rest
-      };
-    };
-  }
-
-  // node_modules/date-fns/esm/locale/en-US/_lib/match/index.js
-  var matchOrdinalNumberPattern = /^(\d+)(th|st|nd|rd)?/i;
-  var parseOrdinalNumberPattern = /\d+/i;
-  var matchEraPatterns = {
-    narrow: /^(b|a)/i,
-    abbreviated: /^(b\.?\s?c\.?|b\.?\s?c\.?\s?e\.?|a\.?\s?d\.?|c\.?\s?e\.?)/i,
-    wide: /^(before christ|before common era|anno domini|common era)/i
-  };
-  var parseEraPatterns = {
-    any: [/^b/i, /^(a|c)/i]
-  };
-  var matchQuarterPatterns = {
-    narrow: /^[1234]/i,
-    abbreviated: /^q[1234]/i,
-    wide: /^[1234](th|st|nd|rd)? quarter/i
-  };
-  var parseQuarterPatterns = {
-    any: [/1/i, /2/i, /3/i, /4/i]
-  };
-  var matchMonthPatterns = {
-    narrow: /^[jfmasond]/i,
-    abbreviated: /^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)/i,
-    wide: /^(january|february|march|april|may|june|july|august|september|october|november|december)/i
-  };
-  var parseMonthPatterns = {
-    narrow: [/^j/i, /^f/i, /^m/i, /^a/i, /^m/i, /^j/i, /^j/i, /^a/i, /^s/i, /^o/i, /^n/i, /^d/i],
-    any: [/^ja/i, /^f/i, /^mar/i, /^ap/i, /^may/i, /^jun/i, /^jul/i, /^au/i, /^s/i, /^o/i, /^n/i, /^d/i]
-  };
-  var matchDayPatterns = {
-    narrow: /^[smtwf]/i,
-    short: /^(su|mo|tu|we|th|fr|sa)/i,
-    abbreviated: /^(sun|mon|tue|wed|thu|fri|sat)/i,
-    wide: /^(sunday|monday|tuesday|wednesday|thursday|friday|saturday)/i
-  };
-  var parseDayPatterns = {
-    narrow: [/^s/i, /^m/i, /^t/i, /^w/i, /^t/i, /^f/i, /^s/i],
-    any: [/^su/i, /^m/i, /^tu/i, /^w/i, /^th/i, /^f/i, /^sa/i]
-  };
-  var matchDayPeriodPatterns = {
-    narrow: /^(a|p|mi|n|(in the|at) (morning|afternoon|evening|night))/i,
-    any: /^([ap]\.?\s?m\.?|midnight|noon|(in the|at) (morning|afternoon|evening|night))/i
-  };
-  var parseDayPeriodPatterns = {
-    any: {
-      am: /^a/i,
-      pm: /^p/i,
-      midnight: /^mi/i,
-      noon: /^no/i,
-      morning: /morning/i,
-      afternoon: /afternoon/i,
-      evening: /evening/i,
-      night: /night/i
-    }
-  };
-  var match = {
-    ordinalNumber: buildMatchPatternFn({
-      matchPattern: matchOrdinalNumberPattern,
-      parsePattern: parseOrdinalNumberPattern,
-      valueCallback: function valueCallback(value) {
-        return parseInt(value, 10);
-      }
-    }),
-    era: buildMatchFn({
-      matchPatterns: matchEraPatterns,
-      defaultMatchWidth: "wide",
-      parsePatterns: parseEraPatterns,
-      defaultParseWidth: "any"
-    }),
-    quarter: buildMatchFn({
-      matchPatterns: matchQuarterPatterns,
-      defaultMatchWidth: "wide",
-      parsePatterns: parseQuarterPatterns,
-      defaultParseWidth: "any",
-      valueCallback: function valueCallback2(index) {
-        return index + 1;
-      }
-    }),
-    month: buildMatchFn({
-      matchPatterns: matchMonthPatterns,
-      defaultMatchWidth: "wide",
-      parsePatterns: parseMonthPatterns,
-      defaultParseWidth: "any"
-    }),
-    day: buildMatchFn({
-      matchPatterns: matchDayPatterns,
-      defaultMatchWidth: "wide",
-      parsePatterns: parseDayPatterns,
-      defaultParseWidth: "any"
-    }),
-    dayPeriod: buildMatchFn({
-      matchPatterns: matchDayPeriodPatterns,
-      defaultMatchWidth: "any",
-      parsePatterns: parseDayPeriodPatterns,
-      defaultParseWidth: "any"
-    })
-  };
-  var match_default = match;
-
-  // node_modules/date-fns/esm/locale/en-US/index.js
-  var locale = {
-    code: "en-US",
-    formatDistance: formatDistance_default,
-    formatLong: formatLong_default,
-    formatRelative: formatRelative_default,
-    localize: localize_default,
-    match: match_default,
-    options: {
-      weekStartsOn: 0,
-      firstWeekContainsDate: 1
-    }
-  };
-  var en_US_default = locale;
-
-  // node_modules/date-fns/esm/_lib/defaultLocale/index.js
-  var defaultLocale_default = en_US_default;
-
-  // node_modules/date-fns/esm/format/index.js
-  var formattingTokensRegExp = /[yYQqMLwIdDecihHKkms]o|(\w)\1*|''|'(''|[^'])+('|$)|./g;
-  var longFormattingTokensRegExp = /P+p+|P+|p+|''|'(''|[^'])+('|$)|./g;
-  var escapedStringRegExp = /^'([^]*?)'?$/;
-  var doubleQuoteRegExp = /''/g;
-  var unescapedLatinCharacterRegExp = /[a-zA-Z]/;
-  function format(dirtyDate, dirtyFormatStr, options) {
-    var _ref, _options$locale, _ref2, _ref3, _ref4, _options$firstWeekCon, _options$locale2, _options$locale2$opti, _defaultOptions$local, _defaultOptions$local2, _ref5, _ref6, _ref7, _options$weekStartsOn, _options$locale3, _options$locale3$opti, _defaultOptions$local3, _defaultOptions$local4;
-    requiredArgs(2, arguments);
-    var formatStr = String(dirtyFormatStr);
-    var defaultOptions2 = getDefaultOptions();
-    var locale2 = (_ref = (_options$locale = options === null || options === void 0 ? void 0 : options.locale) !== null && _options$locale !== void 0 ? _options$locale : defaultOptions2.locale) !== null && _ref !== void 0 ? _ref : defaultLocale_default;
-    var firstWeekContainsDate = toInteger((_ref2 = (_ref3 = (_ref4 = (_options$firstWeekCon = options === null || options === void 0 ? void 0 : options.firstWeekContainsDate) !== null && _options$firstWeekCon !== void 0 ? _options$firstWeekCon : options === null || options === void 0 ? void 0 : (_options$locale2 = options.locale) === null || _options$locale2 === void 0 ? void 0 : (_options$locale2$opti = _options$locale2.options) === null || _options$locale2$opti === void 0 ? void 0 : _options$locale2$opti.firstWeekContainsDate) !== null && _ref4 !== void 0 ? _ref4 : defaultOptions2.firstWeekContainsDate) !== null && _ref3 !== void 0 ? _ref3 : (_defaultOptions$local = defaultOptions2.locale) === null || _defaultOptions$local === void 0 ? void 0 : (_defaultOptions$local2 = _defaultOptions$local.options) === null || _defaultOptions$local2 === void 0 ? void 0 : _defaultOptions$local2.firstWeekContainsDate) !== null && _ref2 !== void 0 ? _ref2 : 1);
-    if (!(firstWeekContainsDate >= 1 && firstWeekContainsDate <= 7)) {
-      throw new RangeError("firstWeekContainsDate must be between 1 and 7 inclusively");
-    }
-    var weekStartsOn = toInteger((_ref5 = (_ref6 = (_ref7 = (_options$weekStartsOn = options === null || options === void 0 ? void 0 : options.weekStartsOn) !== null && _options$weekStartsOn !== void 0 ? _options$weekStartsOn : options === null || options === void 0 ? void 0 : (_options$locale3 = options.locale) === null || _options$locale3 === void 0 ? void 0 : (_options$locale3$opti = _options$locale3.options) === null || _options$locale3$opti === void 0 ? void 0 : _options$locale3$opti.weekStartsOn) !== null && _ref7 !== void 0 ? _ref7 : defaultOptions2.weekStartsOn) !== null && _ref6 !== void 0 ? _ref6 : (_defaultOptions$local3 = defaultOptions2.locale) === null || _defaultOptions$local3 === void 0 ? void 0 : (_defaultOptions$local4 = _defaultOptions$local3.options) === null || _defaultOptions$local4 === void 0 ? void 0 : _defaultOptions$local4.weekStartsOn) !== null && _ref5 !== void 0 ? _ref5 : 0);
-    if (!(weekStartsOn >= 0 && weekStartsOn <= 6)) {
-      throw new RangeError("weekStartsOn must be between 0 and 6 inclusively");
-    }
-    if (!locale2.localize) {
-      throw new RangeError("locale must contain localize property");
-    }
-    if (!locale2.formatLong) {
-      throw new RangeError("locale must contain formatLong property");
-    }
-    var originalDate = toDate(dirtyDate);
-    if (!isValid(originalDate)) {
-      throw new RangeError("Invalid time value");
-    }
-    var timezoneOffset = getTimezoneOffsetInMilliseconds(originalDate);
-    var utcDate = subMilliseconds(originalDate, timezoneOffset);
-    var formatterOptions = {
-      firstWeekContainsDate,
-      weekStartsOn,
-      locale: locale2,
-      _originalDate: originalDate
-    };
-    var result = formatStr.match(longFormattingTokensRegExp).map(function(substring) {
-      var firstCharacter = substring[0];
-      if (firstCharacter === "p" || firstCharacter === "P") {
-        var longFormatter = longFormatters_default[firstCharacter];
-        return longFormatter(substring, locale2.formatLong);
-      }
-      return substring;
-    }).join("").match(formattingTokensRegExp).map(function(substring) {
-      if (substring === "''") {
-        return "'";
-      }
-      var firstCharacter = substring[0];
-      if (firstCharacter === "'") {
-        return cleanEscapedString(substring);
-      }
-      var formatter = formatters_default[firstCharacter];
-      if (formatter) {
-        if (!(options !== null && options !== void 0 && options.useAdditionalWeekYearTokens) && isProtectedWeekYearToken(substring)) {
-          throwProtectedError(substring, dirtyFormatStr, String(dirtyDate));
-        }
-        if (!(options !== null && options !== void 0 && options.useAdditionalDayOfYearTokens) && isProtectedDayOfYearToken(substring)) {
-          throwProtectedError(substring, dirtyFormatStr, String(dirtyDate));
-        }
-        return formatter(utcDate, substring, locale2.localize, formatterOptions);
-      }
-      if (firstCharacter.match(unescapedLatinCharacterRegExp)) {
-        throw new RangeError("Format string contains an unescaped latin alphabet character `" + firstCharacter + "`");
-      }
-      return substring;
-    }).join("");
-    return result;
-  }
-  function cleanEscapedString(input) {
-    var matched = input.match(escapedStringRegExp);
-    if (!matched) {
-      return input;
-    }
-    return matched[1].replace(doubleQuoteRegExp, "'");
-  }
-
-  // node_modules/date-fns/esm/getDay/index.js
-  function getDay(dirtyDate) {
-    requiredArgs(1, arguments);
-    var date = toDate(dirtyDate);
-    var day = date.getDay();
-    return day;
-  }
-
-  // node_modules/date-fns/esm/isAfter/index.js
-  function isAfter(dirtyDate, dirtyDateToCompare) {
-    requiredArgs(2, arguments);
-    var date = toDate(dirtyDate);
-    var dateToCompare = toDate(dirtyDateToCompare);
-    return date.getTime() > dateToCompare.getTime();
-  }
-
-  // node_modules/date-fns/esm/isBefore/index.js
-  function isBefore(dirtyDate, dirtyDateToCompare) {
-    requiredArgs(2, arguments);
-    var date = toDate(dirtyDate);
-    var dateToCompare = toDate(dirtyDateToCompare);
-    return date.getTime() < dateToCompare.getTime();
-  }
-
-  // node_modules/date-fns/esm/isSameMonth/index.js
-  function isSameMonth(dirtyDateLeft, dirtyDateRight) {
-    requiredArgs(2, arguments);
-    var dateLeft = toDate(dirtyDateLeft);
-    var dateRight = toDate(dirtyDateRight);
-    return dateLeft.getFullYear() === dateRight.getFullYear() && dateLeft.getMonth() === dateRight.getMonth();
-  }
-
-  // node_modules/date-fns/esm/isThisMonth/index.js
-  function isThisMonth(dirtyDate) {
-    requiredArgs(1, arguments);
-    return isSameMonth(Date.now(), dirtyDate);
-  }
-
-  // node_modules/date-fns/esm/subDays/index.js
-  function subDays(dirtyDate, dirtyAmount) {
-    requiredArgs(2, arguments);
-    var amount = toInteger(dirtyAmount);
-    return addDays(dirtyDate, -amount);
-  }
-
-  // extensions/delivery-rules/src/helpers/StringFunctions.jsx
-  var capitalise = (str) => {
-    const first = str.charAt(0).toUpperCase();
-    const r = str.slice(1, str.length);
-    return `${first}${r}`;
-  };
-
-  // extensions/delivery-rules/src/AltCalendar.jsx
-  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
-  var days = Array.apply(null, Array(6)).map(() => {
-  });
-  var months = Array.apply(null, Array(13)).map(() => {
-  });
-  var AltCalendar = ({
-    methodData,
-    attributes,
-    deliveryType,
-    rate,
-    minDate,
-    blackoutDates,
-    pickupLocationInfo,
-    changeAttributes,
-    localStorage
-  }) => {
-    const [today, setToday] = (0, import_react34.useState)(/* @__PURE__ */ new Date());
-    const [backwardLocked, setBackwardLocked] = (0, import_react34.useState)(false);
-    const [forwardLocked, setForwardLocked] = (0, import_react34.useState)(false);
-    const [selected, setSelected] = (0, import_react34.useState)(null);
-    const [selectedMonth, setSelectedMonth] = (0, import_react34.useState)(null);
-    const [pickupTimes, setPickupTimes] = (0, import_react34.useState)(null);
-    const dateFormat = "yyyy-MM-dd";
-    console.log(
-      "MINDATE IN CAL: ",
-      minDate,
-      blackoutDates,
-      deliveryType,
-      "rate attr: ",
-      rate,
-      pickupLocationInfo
-    );
-    const getHeading = () => {
-      return attributes["Checkout-Method"] === "pickup" ? "Collection Date" : "Delivery Date";
-    };
-    (0, import_react34.useEffect)(() => {
-      let method = capitalise(attributes["Checkout-Method"]);
-      const updateAttributeDate = () => __async(void 0, null, function* () {
-        yield changeAttributes({
-          type: "updateAttribute",
-          key: `${method}-Date`,
-          value: selected ? selected : minDate
-        });
-        if (attributes["Checkout-Method"] === "pickup") {
-          const data = yield localStorage.read("selected_location_info");
-          console.log("local data from CALENDAR: ", data);
-          let tDate = selected ? selected : minDate;
-          yield changeAttributes({
-            type: "updateAttribute",
-            key: `Pickup-AM-Hours`,
-            value: `${data.hours[`${format(new Date(tDate), "EEEE").toLowerCase()}_am_pickup_hours`]}`
-          });
-          yield changeAttributes({
-            type: "updateAttribute",
-            key: `Pickup-PM-Hours`,
-            value: `${data.hours[`${format(new Date(tDate), "EEEE").toLowerCase()}_pm_pickup_hours`]}`
-          });
-        }
-      });
-      selected && attributes[`${method}-Date`] !== selected || !selected && attributes[`${method}-Date`] !== minDate ? updateAttributeDate() : null;
-    }, [attributes["Checkout-Method"]]);
-    (0, import_react34.useEffect)(() => {
-      format(today, dateFormat) === format(/* @__PURE__ */ new Date(), dateFormat) ? (
-        // || isPast(new Date(subDays(today, 6)))
-        setBackwardLocked(true)
-      ) : backwardLocked ? setBackwardLocked(false) : null;
-      isAfter(new Date(addDays(today, 6)), addYears(/* @__PURE__ */ new Date(), 1)) ? setForwardLocked(true) : forwardLocked ? setForwardLocked(false) : null;
-    }, [today]);
-    const getWeek = () => {
-      const weekStart = format(today, "do MMM").toString();
-      const weekEnd = format(addDays(today, 5), "do MMM").toString();
-      return `${weekStart} - ${weekEnd}`;
-    };
-    const weekBack = () => {
-      let weekAgo = new Date(format(subDays(today, 6), dateFormat).toString());
-      isSameMonth(weekAgo, new Date(today)) ? null : setSelectedMonth(format(weekAgo, "MMMM yyyy"));
-      backwardLocked ? null : isBefore(new Date(weekAgo), /* @__PURE__ */ new Date()) ? setToday(/* @__PURE__ */ new Date()) : setToday(weekAgo);
-    };
-    const weekForward = () => {
-      let weekAhead = new Date(format(addDays(today, 6), dateFormat).toString());
-      isSameMonth(weekAhead, new Date(today)) ? null : setSelectedMonth(format(weekAhead, "MMMM yyyy"));
-      forwardLocked ? null : setToday(weekAhead);
-    };
-    const setSelectedDate = (date) => __async(void 0, null, function* () {
-      setSelected(date);
-      yield changeAttributes({
-        type: "updateAttribute",
-        key: `${capitalise(attributes["Checkout-Method"])}-Date`,
-        value: date
-      });
-    });
-    const handleMonthChange = (value) => {
-      setSelectedMonth(value);
-      !isThisMonth(new Date(value)) ? setToday(new Date(value)) : setToday(/* @__PURE__ */ new Date());
-    };
-    const isDateDisabled = (date) => {
-      if (isBefore(new Date(date), new Date(minDate)) || isAfter(new Date(date), addYears(/* @__PURE__ */ new Date(), 1))) {
-        return true;
-      } else {
-        return blackoutDates.includes(date) || blackoutDates.includes(getDay(new Date(date)) + 1) ? true : false;
-      }
-    };
-    const getPickupTime = (date, meridian) => {
-      let t2 = format(new Date(date), "EEEE").toString().toLowerCase();
-      return pickupLocationInfo.store_hours[`${t2}_${meridian}_pickup_hours`];
-    };
-    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(View2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(InlineLayout2, { blockAlignment: "center", columns: ["auto", "fill"], children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Heading2, { level: 2, children: getHeading() }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View2, { inlineAlignment: "end", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          Banner2,
-          {
-            status: "critical",
-            title: `Selected date: ${selected ? format(new Date(selected), "do MMMM yyyy") : format(new Date(minDate), "do MMMM yyyy")}`
-          }
-        ) })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
-        InlineStack2,
-        {
-          inlineAlignment: "center",
-          blockAlignment: "center",
-          padding: ["base", "none", "none", "none"],
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Pressable, { onPress: () => weekBack(), children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Icon2, { source: "arrowLeft" }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View2, { blockAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { size: "medium", emphasis: "bold", children: getWeek() }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Pressable, { onPress: () => weekForward(), children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Icon2, { source: "arrowRight", onPress: () => weekForward() }) })
-          ]
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
-        Grid,
-        {
-          columns: ["fill", "fill", "fill", "fill", "fill", "fill"],
-          rows: ["auto", "auto"],
-          padding: ["base", "none", "base", "none"],
-          children: [
-            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-              View2,
-              {
-                inlineAlignment: "center",
-                blockAlignment: "center",
-                minBlockSize: 30,
-                children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                  Text2,
-                  {
-                    emphasis: !selected && format(addDays(today, i2), dateFormat) === minDate || selected === format(addDays(today, i2), dateFormat) ? "bold" : "",
-                    children: format(addDays(today, i2), "EEE").toString()
-                  }
-                )
-              },
-              i2
-            )),
-            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-              View2,
-              {
-                inlineAlignment: "center",
-                blockAlignment: "center",
-                minBlockSize: 30,
-                minInlineSize: 50,
-                children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                  Button2,
-                  {
-                    kind: !selected && format(new Date(addDays(today, i2)), dateFormat) === minDate || selected && selected === format(new Date(addDays(today, i2)), dateFormat) ? "primary" : "secondary",
-                    disabled: isDateDisabled(format(addDays(today, i2), dateFormat)),
-                    onPress: () => setSelectedDate(format(new Date(addDays(today, i2)), dateFormat)),
-                    children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { children: format(addDays(today, i2), "d").toString() })
-                  }
-                )
-              },
-              i2
-            ))
-          ]
-        }
-      ),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-        Select2,
-        {
-          label: "Month",
-          value: selectedMonth ? selectedMonth : format(/* @__PURE__ */ new Date(), "MMMM yyyy"),
-          onChange: (val) => handleMonthChange(val),
-          options: months.map((month, i2) => {
-            if (i2 === 0) {
-              return {
-                key: { i: i2 },
-                value: `${format(/* @__PURE__ */ new Date(), "MMMM yyyy")}`,
-                label: `${format(/* @__PURE__ */ new Date(), "MMMM yyyy")}`
-              };
-            } else {
-              return {
-                key: { i: i2 },
-                value: `${format(addMonths(/* @__PURE__ */ new Date(), i2), "MMMM yyyy")}`,
-                label: `${format(addMonths(/* @__PURE__ */ new Date(), i2), "MMMM yyyy")}`
-              };
-            }
-          })
-        }
-      ),
-      attributes["Checkout-Method"] === "pickup" && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View2, { padding: ["base", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TextBlock2, { children: `If you\u2019re ordering for the next day please note your order will be
-        available to collect from ${getPickupTime(
-        selected ? selected : minDate,
-        "pm"
-      )}, otherwise your order
-        will be available from  ${getPickupTime(
-        selected ? selected : minDate,
-        "am"
-      )}` }) })
-    ] });
-  };
-  var AltCalendar_default = AltCalendar;
-
-  // extensions/delivery-rules/src/DeliveryEmptyState.jsx
-  var import_react35 = __toESM(require_react());
-  var import_jsx_runtime7 = __toESM(require_jsx_runtime());
-  var DeliveryEmptyState = ({ handleMethodSelect }) => {
-    const handlePress = () => {
-      console.log("resetting extension, will restart with collection");
-      handleMethodSelect("pickup");
-    };
-    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-      Banner2,
-      {
-        status: "warning",
-        title: "Delivery isn't available for the address you've entered.",
-        children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Grid2, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Button2, { kind: "secondary", onPress: () => handlePress(), children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Text2, { emphasis: "bold", children: "Switch to Collection" }) }) })
-      }
-    ) });
-  };
-  var DeliveryEmptyState_default = DeliveryEmptyState;
-
-  // extensions/delivery-rules/src/DeliveryTypeSelect.jsx
-  var import_react36 = __toESM(require_react());
-  var import_jsx_runtime8 = __toESM(require_jsx_runtime());
-  var DeliveryTypeSelect = ({
-    setDeliveryType,
-    deliveryType,
-    setCartLineAttr,
-    deliveryZone,
-    methodData,
-    availableMethods,
-    cart,
-    setBlackoutDates,
-    changeAttributes,
-    attributes
-  }) => {
-    console.log("rendered del type select: ", methodData, availableMethods);
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(View2, { padding: ["none", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-      ToggleButtonGroup2,
-      {
-        value: deliveryType,
-        onChange: (val) => __async(void 0, null, function* () {
-          setDeliveryType(val);
-          let method = val === "driver-delivery" ? "delivery" : "shipping";
-          let lineItemProp = val === "driver-delivery" ? `D${methodData.delivery.delivery_zone !== "unavailable" ? "%" + methodData.delivery.delivery_zone.replace(/[^0-9.]/g, "") : ""}` : "S";
-          setBlackoutDates(
-            val === "driver-delivery" ? methodData.delivery.blackouts : methodData.shipping.blackouts
-          );
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: cart[0].id,
-            attributes: [
-              ...cart[0].attributes,
-              {
-                key: "_deliveryID",
-                value: lineItemProp
-              }
-            ]
-          });
-          Object.keys(attributes).forEach((key) => __async(void 0, null, function* () {
-            if (key === "Checkout-Method") {
-              yield changeAttributes({
-                type: "updateAttribute",
-                key,
-                value: method
-              });
-            } else if (key !== "Gift-Note" && key !== "Customer-Service-Note" && key !== "Lolas-CS-Member") {
-              yield changeAttributes({
-                type: "updateAttribute",
-                key,
-                value: ""
-              });
-            }
-          }));
-        }),
-        children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(InlineLayout2, { spacing: "base", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-            ToggleButton2,
-            {
-              id: "driver-delivery",
-              disabled: deliveryZone === "unavailable" ? true : false,
-              children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-                View2,
-                {
-                  inlineAlignment: "center",
-                  blockAlignment: "center",
-                  minBlockSize: "fill",
-                  children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Text2, { emphasis: deliveryType === "driver-delivery" ? "bold" : "", children: deliveryZone === "unavailable" ? "Driver delivery unavailable for this address" : "Driver Delivery" })
-                }
-              )
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-            ToggleButton2,
-            {
-              id: "postal",
-              disabled: availableMethods.shipping ? false : true,
-              children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-                View2,
-                {
-                  inlineAlignment: "center",
-                  blockAlignment: "center",
-                  minBlockSize: "fill",
-                  children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.shipping ? "Postal" : "Postal unavailable due to products in basket" })
-                }
-              )
-            }
-          )
-        ] })
-      }
-    ) });
-  };
-  var DeliveryTypeSelect_default = DeliveryTypeSelect;
-
-  // extensions/delivery-rules/src/BlockLoader.jsx
-  var import_react37 = __toESM(require_react());
-  var import_jsx_runtime9 = __toESM(require_jsx_runtime());
-  var BlockLoader = ({ message }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(View2, { position: "relative", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(SkeletonImage, { blockSize: 50, inlineSize: "fill", aspectRatio: 2 }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
-        View2,
-        {
-          position: {
-            type: "absolute",
-            inlineStart: `${50}%`,
-            blockStart: `${50}%`
-          },
-          translate: { block: `${-50}%`, inline: `${-50}%` },
-          minBlockSize: "fill",
-          minInlineSize: "fill",
-          inlineAlignment: "center",
-          blockAlignment: "center",
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(View2, { maxBlockSize: 75, maxInlineSize: 75, padding: ["none", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Spinner2, { size: "fill", accessibilityLabel: message }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Text2, { size: "medium", children: message })
-          ]
-        }
-      )
-    ] });
-  };
-  var BlockLoader_default = BlockLoader;
-
-  // extensions/delivery-rules/src/DateSelect.jsx
-  var import_jsx_runtime10 = __toESM(require_jsx_runtime());
-  var DateSelect = ({
-    attributes,
-    currentShippingAddress,
-    checkoutData,
-    cart,
-    appMeta,
-    url,
-    handleMethodSelect,
-    setCartLineAttr,
-    setAvailableMethods,
-    availableMethods,
-    localStorage,
-    changeAttributes
-  }) => {
-    console.log(
-      "current attributes: ",
-      attributes,
-      currentShippingAddress,
-      checkoutData
-    );
-    const { query } = useApi();
-    const [methodData, setMethodData] = (0, import_react38.useState)(null);
-    const [deliveryType, setDeliveryType] = (0, import_react38.useState)("driver-delivery");
-    const [deliveryZone, setDeliveryZone] = (0, import_react38.useState)(null);
-    const [minDate, setMinDate] = (0, import_react38.useState)(null);
-    const [blackoutDates, setBlackoutDates] = (0, import_react38.useState)(null);
-    const [fetching, setFetching] = (0, import_react38.useState)(true);
-    const [selectedLocation, setSelectedLocation] = (0, import_react38.useState)(null);
-    const [hideCalendar, setHideCalendar] = (0, import_react38.useState)(false);
-    const [pickupLocationInfo, setPickupLocationInfo] = (0, import_react38.useState)(null);
-    const [displayDatePicker, setDisplayDatePicker] = (0, import_react38.useState)(false);
-    console.log("date select render ", minDate, currentShippingAddress);
-    (0, import_react38.useEffect)(() => {
-      console.log("ADDRESS CHANGE: ", currentShippingAddress);
-      const getPickupDates = () => __async(void 0, null, function* () {
-        setFetching(true);
-        let store = yield localStorage.read("selected_location_info");
-        console.log("STORE!! ", store);
-        if (store) {
-          let nextDayMeta = appMeta.map((meta) => {
-            return JSON.parse(meta.metafield.value).next_day_delivery.value;
-          });
-          let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
-          let resBody = {
-            cart,
-            locationId: attributes["Pickup-Location-Id"],
-            locationType: attributes["Pickup-Location-Type"],
-            twoDayDelivery: nextDay
-          };
-          let res = yield fetch(`${url}/pza/pickup-dates-test`, {
-            headers: {
-              "Content-Type": "application/json"
-            },
-            method: "POST",
-            body: JSON.stringify(resBody)
-          });
-          let data = yield res.json();
-          console.log(
-            "================================= dates for pickup location!",
-            data,
-            "\n",
-            resBody
-          );
-          let x2 = {
-            id: store.location.id,
-            is_locker: store.location.custom_attribute_1 === "lockers" ? true : false,
-            store_hours: store.hours
-          };
-          setPickupLocationInfo(x2);
-          setMethodData(data);
-          setBlackoutDates(data.blackout_dates);
-          setMinDate(data.minDate);
-          setFetching(false);
-        }
-      });
-      const getDeliveryDates = () => __async(void 0, null, function* () {
-        var _a;
-        setFetching(true);
-        let availability = yield localStorage.read("availability");
-        console.log("UILP ", availability);
-        setAvailableMethods(availability.methods);
-        let nextDayMeta = appMeta.map((meta) => {
-          return JSON.parse(meta.metafield.value).next_day_delivery.value;
-        });
-        let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
-        let checkBody = {
-          type: "delivery",
-          postcode: currentShippingAddress.zip,
-          cart,
-          twoDayDelivery: nextDay
-        };
-        let checkRes = yield fetch(`${url}/pza/check-postcode-test`, {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          method: "POST",
-          body: JSON.stringify(checkBody)
-        });
-        let delData = yield checkRes.json();
-        console.log(
-          "Postcode availability data from date select: ",
-          delData,
-          cart[0].attributes[0].value,
-          availableMethods
-        );
-        if (((_a = delData == null ? void 0 : delData.delivery) == null ? void 0 : _a.delivery_zone) === "unavailable" && availability.methods.shipping === false) {
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: cart[0].id,
-            attributes: [
-              ...cart[0].attributes,
-              {
-                key: "_deliveryID",
-                value: `U`
-              }
-            ]
-          });
-          setMinDate(null);
-        }
-        if (delData.delivery.delivery_zone !== "unavailable") {
-          let dz = delData.delivery.delivery_zone.replace(/[^0-9.]/g, "");
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: cart[0].id,
-            attributes: [
-              ...cart[0].attributes,
-              {
-                key: "_deliveryID",
-                value: `D%${dz}`
-              }
-            ]
-          }), setDeliveryType("driver-delivery");
-          setBlackoutDates(delData.delivery.blackouts);
-          setMinDate(delData.delivery.min_date);
-        }
-        if (delData.delivery.delivery_zone === "unavailable" && availability.methods.shipping === true) {
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: cart[0].id,
-            attributes: [
-              ...cart[0].attributes,
-              {
-                key: "_deliveryID",
-                value: `S`
-              }
-            ]
-          }), yield changeAttributes({
-            type: "updateAttribute",
-            key: "Checkout-Method",
-            value: "shipping"
-          });
-          Object.keys(attributes).forEach((key) => __async(void 0, null, function* () {
-            if (key.includes("Delivery")) {
-              yield changeAttributes({
-                type: "updateAttribute",
-                key,
-                value: ""
-              });
-            }
-          }));
-          setDeliveryType("postal");
-          setBlackoutDates(delData.shipping.blackouts);
-          setMinDate(delData.shipping.min_date);
-        }
-        setDeliveryZone(delData.delivery.delivery_zone);
-        setMethodData(JSON.parse(JSON.stringify(delData)));
-        setFetching(false);
-      });
-      if ((attributes == null ? void 0 : attributes["Checkout-Method"]) === "pickup") {
-        console.log("refreshing PICKUP DATA");
-        getPickupDates();
-      } else if ((attributes == null ? void 0 : attributes["Checkout-Method"]) === "delivery" && currentShippingAddress.zip) {
-        console.log("refreshing DELIVERY DATA");
-        getDeliveryDates();
-      }
-    }, [currentShippingAddress.zip]);
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(View2, { children: !fetching ? /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
-      !!minDate && methodData && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
-        (attributes["Checkout-Method"] === "delivery" || attributes["Checkout-Method"] === "shipping") && availableMethods && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-          DeliveryTypeSelect_default,
-          {
-            setDeliveryType,
-            deliveryType,
-            setCartLineAttr,
-            methodData,
-            availableMethods,
-            cart,
-            setBlackoutDates,
-            changeAttributes,
-            attributes
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-          AltCalendar_default,
-          {
-            rate: cart[0].attributes[0].value,
-            deliveryZone,
-            attributes,
-            deliveryType,
-            minDate,
-            blackoutDates,
-            pickupLocationInfo,
-            changeAttributes,
-            localStorage
-          }
-        )
-      ] }),
-      !minDate && methodData && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(DeliveryEmptyState_default, { handleMethodSelect })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-      BlockLoader_default,
-      {
-        message: `Getting ${attributes["Checkout-Method"] === "pickup" ? "collection" : "delivery"} dates...`
-      }
-    ) });
-  };
-  var DateSelect_default = DateSelect;
-
-  // extensions/delivery-rules/src/CSPortal.jsx
-  var import_react39 = __toESM(require_react());
-  var import_jsx_runtime11 = __toESM(require_jsx_runtime());
-  var CSPortal = ({ setCS, cs, allLocations }) => {
-    (0, import_react39.useEffect)(() => {
-      console.log("allLocations", allLocations);
-    }, []);
-    const { ui } = useApi();
-    let changeAttributes = useApplyAttributeChange();
-    const handleFormSubmit = () => __async(void 0, null, function* () {
-      let x2 = (cs == null ? void 0 : cs.location) && (cs == null ? void 0 : cs.name) ? `${cs.location.company_name}: ${cs.name}` : (cs == null ? void 0 : cs.location) ? cs.location.company_name : cs.name;
-      yield changeAttributes({
-        type: "updateAttribute",
-        key: "Lolas-CS-Member",
-        value: x2
-      });
-      yield changeAttributes({
-        type: "updateAttribute",
-        key: "Customer-Service-Note",
-        value: cs.note
-      });
-      ui.overlay.close("cs-portal");
-    });
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_jsx_runtime11.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid2, { padding: ["base", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-      Button2,
-      {
-        overlay: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Modal2, { id: "cs-portal", padding: true, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Form2, { onSubmit: () => handleFormSubmit(), id: "cs-form", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Heading, { level: 1, children: "Customer Service Portal" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(View, { padding: ["tight", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-            Select,
-            {
-              label: "Customer Service Location",
-              value: cs.location ? cs.location.id : "",
-              options: allLocations.filter(
-                (location) => location.custom_attribute_1 !== "lockers"
-              ).map((filteredLocation, i2) => ({
-                key: `${filteredLocation.id}${i2}`,
-                value: filteredLocation.id,
-                label: filteredLocation.company_name
-              })),
-              onChange: (value) => setCS((cs2) => {
-                return __spreadProps(__spreadValues({}, cs2), {
-                  location: allLocations.filter(
-                    (x2) => x2.id === parseInt(value)
-                  )[0]
-                });
-              })
-            }
-          ) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(View, { padding: ["tight", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-            TextField,
-            {
-              label: "Customer Service Name",
-              value: (cs == null ? void 0 : cs.name) ? cs.name : "",
-              onChange: (val) => setCS((cs2) => {
-                return __spreadProps(__spreadValues({}, cs2), { name: val });
-              })
-            }
-          ) }),
-          (!!(cs == null ? void 0 : cs.name) || !!(cs == null ? void 0 : cs.location)) && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(View, { padding: ["tight", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-            TextField,
-            {
-              label: "Customer Service Note",
-              onChange: (val) => setCS((cs2) => {
-                return __spreadProps(__spreadValues({}, cs2), { note: val });
-              }),
-              value: !!cs.note ? cs.note : ""
-            }
-          ) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(View, { padding: ["base", "none", "none", "none"], inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(InlineStack2, { spacing: "base", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-              Button2,
-              {
-                kind: "secondary",
-                onPress: () => ui.overlay.close("cs-portal"),
-                children: "Cancel"
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-              Button2,
-              {
-                accessibilityRole: "submit",
-                disabled: !(cs == null ? void 0 : cs.name) && !(cs == null ? void 0 : cs.location) || (!!(cs == null ? void 0 : cs.name) || !!(cs == null ? void 0 : cs.location)) && !cs.note ? true : false,
-                children: "Confirm"
-              }
-            )
-          ] }) })
-        ] }) }) }),
-        children: "Add Customer Service Note"
-      }
-    ) }) });
-  };
-  var CSPortal_default = CSPortal;
-
-  // extensions/delivery-rules/src/reducer_functions/CheckoutDataMethods.jsx
-  var checkoutDataReducer = (checkoutData, action) => {
-    var _a;
-    let x2 = checkoutData;
-    switch (action.type) {
-      case "acquired_q_locations": {
-        x2.pickup = { qCollectLocations: action.all_locations };
-        return JSON.parse(JSON.stringify(x2));
-      }
-      case "acquired_general_delivery_info": {
-        x2.pickup = {
-          qCollectLocations: ((_a = x2 == null ? void 0 : x2.pickup) == null ? void 0 : _a.qCollectLocations) ? x2.pickup.qCollectLocations : null,
-          proximityCollectLocations: action.data.pickup_locations
-        };
-        return JSON.parse(JSON.stringify(x2));
-      }
-      case "selected_pickup_location_added": {
-        (x2 == null ? void 0 : x2.delivery) ? null : x2.qCollect = true;
-        x2.pickup = __spreadProps(__spreadValues({}, x2.pickup), {
-          selectedLocation: {
-            location_hours: action.hours,
-            location_description: action.description,
-            info: action.location
-          }
-        });
-        return JSON.parse(JSON.stringify(x2));
-      }
-      case "selected_pickup_location_confirmed": {
-        x2.pickup = __spreadProps(__spreadValues({}, x2.pickup), {
-          selectedLocation: __spreadProps(__spreadValues({}, x2.pickup.selectedLocation), {
-            dates: action.location_dates
-          })
-        });
-        return JSON.parse(JSON.stringify(x2));
-      }
-      case "selected_pickup_location_removed": {
-        x2.pickup.selectedLocation = null;
-        return JSON.parse(JSON.stringify(x2));
-      }
-      case "selected_dates": {
-        return __spreadProps(__spreadValues({}, x2), {
-          checkout_date: { date: action.date, day: action.weekday }
-        });
-      }
-      case "reset_MS_Checkout": {
-        x2.delivery = null;
-        x2.pickup.selectedLocation = null;
-        x2.qCollect = null;
-        return JSON.parse(JSON.stringify(x2));
-      }
-      default: {
-        console.log("ERROR handling reducer function for ", action.type);
-      }
-    }
-  };
-
-  // extensions/delivery-rules/src/MethodSelect.jsx
-  var import_react40 = __toESM(require_react());
-  var import_jsx_runtime12 = __toESM(require_jsx_runtime());
-  var MethodSelect = ({
-    attributes,
-    checkoutData,
-    setCS,
-    cs,
-    url,
-    lineItems,
-    nextDay,
-    handleSelectPickupLocation,
-    handleRemoveSelectedLocation,
-    handleSetCollectLocations,
-    handleMethodSelect,
-    localStorage
-  }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(InlineLayout2, { spacing: "tight", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          Pressable2,
-          {
-            inlineAlignment: "center",
-            blockAlignment: "center",
-            cornerRadius: "base",
-            minBlockSize: 50,
-            border: "base",
-            background: attributes["Checkout-Method"] && attributes["Checkout-Method"] === "pickup" ? "subdued" : "transparent",
-            onPress: () => handleMethodSelect("pickup"),
-            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Text2, { size: "medium", emphasis: "bold", children: "Collection" })
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          Pressable2,
-          {
-            inlineAlignment: "center",
-            blockAlignment: "center",
-            cornerRadius: "base",
-            minBlockSize: 50,
-            border: "base",
-            background: attributes["Checkout-Method"] && attributes["Checkout-Method"] !== "pickup" ? "subdued" : "transparent",
-            onPress: () => handleMethodSelect("delivery"),
-            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Text2, { size: "medium", emphasis: "bold", children: "Delivery" })
-          }
-        )
-      ] }),
-      attributes["Checkout-Method"] === "pickup" && (checkoutData == null ? void 0 : checkoutData.pickup) ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-        !!cs.status && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          CSPortal_default,
-          {
-            setCS,
-            cs,
-            allLocations: checkoutData.pickup.qCollectLocations
-          }
-        ),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-          Locations_default,
-          {
-            checkoutData,
-            selectLocation: handleSelectPickupLocation,
-            removeLocation: handleRemoveSelectedLocation,
-            url,
-            cart: lineItems,
-            nextDay,
-            setProximityLocations: handleSetCollectLocations,
-            setCS,
-            localStorage
-          }
-        )
-      ] }) : attributes["Checkout-Method"] !== "pickup" ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(View2, { padding: ["tight", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Text2, { emphasis: "bold", children: "Please enter your address to see delivery options." }) }) : null
-    ] });
-  };
-  var MethodSelect_default = MethodSelect;
-
-  // extensions/delivery-rules/src/LineItemProperties.jsx
-  var import_react41 = __toESM(require_react());
-  var import_jsx_runtime13 = __toESM(require_jsx_runtime());
-
-  // extensions/delivery-rules/src/DeliveryInstructions.jsx
-  var import_react42 = __toESM(require_react());
-  var import_jsx_runtime14 = __toESM(require_jsx_runtime());
-
-  // extensions/delivery-rules/src/RateProperties.jsx
-  var import_react43 = __toESM(require_react());
-  var import_jsx_runtime15 = __toESM(require_jsx_runtime());
-
-  // extensions/delivery-rules/src/Checkout.jsx
-  var import_jsx_runtime16 = __toESM(require_jsx_runtime());
-  var MethodSelectRender = reactExtension(
-    "purchase.checkout.contact.render-after",
-    () => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Extension, {})
+  // extensions/display-line-item-properties/src/LineItemProps.jsx
+  var import_react8 = __toESM(require_react());
+  var import_jsx_runtime3 = __toESM(require_jsx_runtime());
+  var LineItemProps_default = reactExtension(
+    "purchase.checkout.cart-line-item.render-after",
+    () => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(LineItemProperties, {})
   );
-  function Extension() {
-    const app_url = "https://3f22-212-140-232-13.ngrok-free.app";
-    const [checkoutData, dispatch] = (0, import_react44.useReducer)(checkoutDataReducer, {});
-    const handleSetQLocations = (locations) => {
-      dispatch({
-        type: "acquired_q_locations",
-        all_locations: locations
-      });
-    };
-    const handleSetCollectLocations = (data) => {
-      dispatch({
-        type: "acquired_general_delivery_info",
-        data
-      });
-    };
-    const handleRemoveSelectedLocation = () => {
-      dispatch({
-        type: "selected_pickup_location_removed"
-      });
-    };
-    const handleSelectPickupLocation = (hours, description, location) => {
-      dispatch({
-        type: "selected_pickup_location_added",
-        hours,
-        description,
-        location
-      });
-    };
-    const handleConfirmPickupLocation = (dates) => {
-      dispatch({
-        type: "selected_pickup_location_confirmed",
-        location_dates: dates
-      });
-    };
-    const handleSelectDates = (date, weekday) => {
-      dispatch({
-        type: "selected_dates",
-        date,
-        weekday
-      });
-    };
-    const handleMSReset = () => {
-      dispatch({
-        type: "reset_MS_Checkout"
-      });
-    };
-    const [qCollectLocation, setQCollectLocation] = (0, import_react44.useState)(null);
-    const [minDate, setMinDate] = (0, import_react44.useState)(null);
-    const [availableMethods, setAvailableMethods] = (0, import_react44.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react44.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react44.useState)(false);
-    const [collectLocation, setCollectLocation] = (0, import_react44.useState)(null);
-    const [displayCalendar, setDisplayCalendar] = (0, import_react44.useState)(false);
-    const [postcode, setPostcode] = (0, import_react44.useState)(null);
-    const [storedAvailibility, setStoredAvailibility] = (0, import_react44.useState)(null);
-    const [datePickerInit, setDatePickerInit] = (0, import_react44.useState)(false);
-    const [cs, setCS] = (0, import_react44.useState)({ status: false });
-    const [initLoad, setInitLoad] = (0, import_react44.useState)(true);
-    const [testnum, setTestnum] = (0, import_react44.useState)(1);
-    const lineItems = useCartLines();
-    let setCartLineAttr = useApplyCartLinesChange();
-    const appMeta = useAppMetafields();
-    const localStorage = useStorage();
-    let CollectBtn = (0, import_react44.useRef)();
-    let changeAttributes = useApplyAttributeChange();
-    const { extension: extension2 } = useApi();
-    const changeShippingAddress = useApplyShippingAddressChange();
-    const currentShippingAddress = useShippingAddress();
-    const changeNote = useApplyNoteChange();
-    const cartNote = useNote();
-    const attr = useAttributes();
-    const attributes = attr.reduce(
-      (obj, item) => __spreadProps(__spreadValues({}, obj), {
-        [item.key]: item.value
-      }),
-      {}
-    );
-    (0, import_react44.useEffect)(() => {
-      const handleInitLoad = () => __async(this, null, function* () {
-        console.log("INITIAL REACT LOAD - RESETTING VALUES");
-        yield localStorage.delete("selected_location_info");
-        yield localStorage.delete("availability");
-        let res = yield fetch(`${app_url}/pza/validate-cart-test`, {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          method: "POST",
-          body: JSON.stringify(cart)
-        });
-        yield localStorage.delete("selected_location_info");
-        let resBody = yield res.json();
-        console.log("Validating Cart (using test data) ", cart, resBody);
-        yield localStorage.write("availability", resBody);
-        handleSetQLocations(resBody.locations);
-        setAvailableMethods(resBody.methods);
-        handleMethodSelect("pickup");
-        setInitLoad(false);
-      });
-      !!initLoad && extension2.target === "purchase.checkout.contact.render-after" ? handleInitLoad() : null;
-    }, []);
-    (0, import_react44.useEffect)(() => {
-      console.log("shipping address changed!");
-      if (currentShippingAddress.zip) {
-        !datePickerInit ? setDatePickerInit(true) : null;
-      } else if (!currentShippingAddress.zip) {
-        datePickerInit ? setDatePickerInit(false) : null;
-      }
-    }, [currentShippingAddress.zip]);
-    const cart = lineItems.map((item) => {
-      return {
-        variant_id: item.merchandise.id.replace(/\D/g, ""),
-        product_id: item.merchandise.product.id.replace(/\D/g, ""),
-        quantity: item.quantity
-      };
-    });
-    let nextDayMeta = appMeta.map((meta) => {
-      return JSON.parse(meta.metafield.value).next_day_delivery.value;
-    });
-    let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
-    (0, import_react44.useEffect)(() => {
-      console.log("++++++++++++++ cs updated: ", cs);
-    }, [cs]);
-    const deletePenguinReservation = () => __async(this, null, function* () {
-      console.log(attributes);
-      if (attributes == null ? void 0 : attributes["Pickup-Penguin-Id"]) {
-        console.log("&&&&&&&  penguin reservation in place - should be deleted");
-        try {
-          yield fetch(`${app_url}/pza/delete-locker`, {
-            headers: {
-              "Content-Type": "application/json"
-            },
-            method: "POST",
-            body: JSON.stringify({ locker_id: attributes["Pickup-Penguin-Id"] })
-          });
-        } catch (error) {
-          console.error(
-            `Failed to delete locker order ${attributes["Pickup-Penguin-Id"]}`
-          );
-        }
-      } else
-        return;
-    });
-    const handleMethodSelect = (method) => __async(this, null, function* () {
-      console.log("handling selected method ", method);
-      yield changeShippingAddress({
-        type: "updateShippingAddress",
-        address: {
-          address1: void 0,
-          city: void 0,
-          zip: void 0
-        }
-      });
-      if (method === "pickup") {
-        yield setCartLineAttr({
-          type: "updateCartLine",
-          id: lineItems[0].id,
-          attributes: [
-            ...lineItems[0].attributes,
-            {
-              key: "_deliveryID",
-              value: method.charAt(0).toUpperCase()
-            }
-          ]
-        });
-        if (cartNote) {
-          yield changeNote({
-            type: "removeNote"
-          });
-        }
-      } else {
-        yield setCartLineAttr({
-          type: "updateCartLine",
-          id: lineItems[0].id,
-          attributes: [
-            ...lineItems[0].attributes,
-            {
-              key: "_deliveryID",
-              value: method.charAt(0).toUpperCase()
-            }
-          ]
-        });
-        handleRemoveSelectedLocation();
-      }
-      yield changeAttributes({
-        type: "updateAttribute",
-        key: "Checkout-Method",
-        value: method
-      });
-      Object.keys(attributes).forEach((key) => __async(this, null, function* () {
-        if (key !== "Checkout-Method" && key !== "Gift-Note" && key !== "Customer-Service-Note" && key !== "Lolas-CS-Member") {
-          yield changeAttributes({
-            type: "updateAttribute",
-            key,
-            value: ""
-          });
-        }
-      }));
-    });
-    return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
-      extension2.target === "purchase.checkout.contact.render-after" && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_jsx_runtime16.Fragment, { children: initLoad ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(BlockLoader_default, { message: "Loading..." }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-        MethodSelect_default,
-        {
-          attributes,
-          checkoutData,
-          setCS,
-          cs,
-          url: app_url,
-          lineItems,
-          nextDay,
-          handleSelectPickupLocation,
-          handleRemoveSelectedLocation,
-          handleSetCollectLocations,
-          handleMethodSelect,
-          localStorage
-        }
-      ) }),
-      extension2.target === "purchase.checkout.shipping-option-list.render-before" ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_jsx_runtime16.Fragment, { children: datePickerInit ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-        DateSelect_default,
-        {
-          attributes,
-          currentShippingAddress,
-          checkoutData,
-          cart: lineItems,
-          appMeta,
-          url: app_url,
-          changeAttributes,
-          setCartLineAttr,
-          availableMethods,
-          setAvailableMethods,
-          handleMethodSelect,
-          localStorage
-        }
-      ) : null }) : null
-    ] });
-  }
+  var LineItemProperties = () => {
+    const currentItem = useCartLineTarget();
+    return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_jsx_runtime3.Fragment, { children: currentItem.attributes.map((attribute) => {
+      return attribute.key === "_Personalisation Message" && attribute.value ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(Text, { emphasis: "bold", size: "small", children: [
+          "Personalised Message:",
+          " "
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(Text, { size: "small", children: attribute.value })
+      ] }) : null;
+    }) });
+  };
 })();
