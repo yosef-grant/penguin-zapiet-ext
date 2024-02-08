@@ -627,7 +627,7 @@
             var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
             return newElement;
           }
-          function cloneElement2(element, config, children) {
+          function cloneElement(element, config, children) {
             if (element === null || element === void 0) {
               throw new Error("React.cloneElement(...): The argument must be a React element, but you passed " + element + ".");
             }
@@ -675,7 +675,7 @@
             }
             return ReactElement(element.type, key, ref, self, source, owner, props);
           }
-          function isValidElement3(object) {
+          function isValidElement2(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
           }
           var SEPARATOR = ".";
@@ -740,7 +740,7 @@
                   return c2;
                 });
               } else if (mappedChild != null) {
-                if (isValidElement3(mappedChild)) {
+                if (isValidElement2(mappedChild)) {
                   {
                     if (mappedChild.key && (!_child || _child.key !== mappedChild.key)) {
                       checkKeyStringCoercion(mappedChild.key);
@@ -828,7 +828,7 @@
             }) || [];
           }
           function onlyChild(children) {
-            if (!isValidElement3(children)) {
+            if (!isValidElement2(children)) {
               throw new Error("React.Children.only expected to receive a single React element child.");
             }
             return children;
@@ -1133,7 +1133,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState4(initialState) {
+          function useState5(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1145,7 +1145,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect4(create, deps) {
+          function useEffect5(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1157,7 +1157,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useLayoutEffect(create, deps);
           }
-          function useCallback2(callback, deps) {
+          function useCallback(callback, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useCallback(callback, deps);
           }
@@ -1559,11 +1559,11 @@
             if (isArray(node)) {
               for (var i2 = 0; i2 < node.length; i2++) {
                 var child = node[i2];
-                if (isValidElement3(child)) {
+                if (isValidElement2(child)) {
                   validateExplicitKey(child, parentType);
                 }
               }
-            } else if (isValidElement3(node)) {
+            } else if (isValidElement2(node)) {
               if (node._store) {
                 node._store.validated = true;
               }
@@ -1574,7 +1574,7 @@
                   var iterator = iteratorFn.call(node);
                   var step;
                   while (!(step = iterator.next()).done) {
-                    if (isValidElement3(step.value)) {
+                    if (isValidElement2(step.value)) {
                       validateExplicitKey(step.value, parentType);
                     }
                   }
@@ -1697,7 +1697,7 @@
             return validatedFactory;
           }
           function cloneElementWithValidation(element, props, children) {
-            var newElement = cloneElement2.apply(this, arguments);
+            var newElement = cloneElement.apply(this, arguments);
             for (var i2 = 2; i2 < arguments.length; i2++) {
               validateChildKeys(arguments[i2], newElement.type);
             }
@@ -1918,16 +1918,16 @@
           exports.createFactory = createFactory;
           exports.createRef = createRef;
           exports.forwardRef = forwardRef;
-          exports.isValidElement = isValidElement3;
+          exports.isValidElement = isValidElement2;
           exports.lazy = lazy;
           exports.memo = memo2;
           exports.startTransition = startTransition;
           exports.unstable_act = act;
-          exports.useCallback = useCallback2;
+          exports.useCallback = useCallback;
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect4;
+          exports.useEffect = useEffect5;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -1935,7 +1935,7 @@
           exports.useMemo = useMemo3;
           exports.useReducer = useReducer;
           exports.useRef = useRef2;
-          exports.useState = useState4;
+          exports.useState = useState5;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -2429,9 +2429,9 @@
         module.exports = function $$$reconciler($$$hostConfig) {
           var exports2 = {};
           "use strict";
-          var React3 = require_react();
+          var React5 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React3.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -6229,7 +6229,7 @@
             }
           }
           var fakeInternalInstance = {};
-          var emptyRefsObject = new React3.Component().refs;
+          var emptyRefsObject = new React5.Component().refs;
           var didWarnAboutStateAssignmentForComponent;
           var didWarnAboutUninitializedState;
           var didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate;
@@ -17540,7 +17540,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React3 = require_react();
+          var React5 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -17566,7 +17566,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React3.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React5.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format2) {
             {
               {
@@ -18194,7 +18194,7 @@
           {
             propTypesMisspellWarningShown = false;
           }
-          function isValidElement3(object) {
+          function isValidElement2(object) {
             {
               return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
             }
@@ -18261,11 +18261,11 @@
               if (isArray(node)) {
                 for (var i2 = 0; i2 < node.length; i2++) {
                   var child = node[i2];
-                  if (isValidElement3(child)) {
+                  if (isValidElement2(child)) {
                     validateExplicitKey(child, parentType);
                   }
                 }
-              } else if (isValidElement3(node)) {
+              } else if (isValidElement2(node)) {
                 if (node._store) {
                   node._store.validated = true;
                 }
@@ -18276,7 +18276,7 @@
                     var iterator = iteratorFn.call(node);
                     var step;
                     while (!(step = iterator.next()).done) {
-                      if (isValidElement3(step.value)) {
+                      if (isValidElement2(step.value)) {
                         validateExplicitKey(step.value, parentType);
                       }
                     }
@@ -18401,11 +18401,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx7 = jsxWithValidationDynamic;
-          var jsxs3 = jsxWithValidationStatic;
+          var jsx9 = jsxWithValidationDynamic;
+          var jsxs6 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx7;
-          exports.jsxs = jsxs3;
+          exports.jsx = jsx9;
+          exports.jsxs = jsxs6;
         })();
       }
     }
@@ -19142,6 +19142,12 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
   var InlineStack = createRemoteComponent("InlineStack");
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/List/List.mjs
+  var List = createRemoteComponent("List");
+
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ListItem/ListItem.mjs
+  var ListItem = createRemoteComponent("ListItem");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Pressable/Pressable.mjs
   var Pressable = createRemoteComponent("Pressable");
 
@@ -19150,6 +19156,15 @@
 
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Text/Text.mjs
   var Text = createRemoteComponent("Text");
+
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/TextBlock/TextBlock.mjs
+  var TextBlock = createRemoteComponent("TextBlock");
+
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ToggleButton/ToggleButton.mjs
+  var ToggleButton = createRemoteComponent("ToggleButton");
+
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/ToggleButtonGroup/ToggleButtonGroup.mjs
+  var ToggleButtonGroup = createRemoteComponent("ToggleButtonGroup");
 
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/View/View.mjs
   var View = createRemoteComponent("View");
@@ -19502,23 +19517,44 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/InlineStack/InlineStack.mjs
   var InlineStack2 = createRemoteReactComponent(InlineStack);
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/List/List.mjs
+  var List2 = createRemoteReactComponent(List);
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ListItem/ListItem.mjs
+  var ListItem2 = createRemoteReactComponent(ListItem);
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Select/Select.mjs
   var Select2 = createRemoteReactComponent(Select);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Text/Text.mjs
   var Text2 = createRemoteReactComponent(Text);
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/TextBlock/TextBlock.mjs
+  var TextBlock2 = createRemoteReactComponent(TextBlock);
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ToggleButton/ToggleButton.mjs
+  var ToggleButton2 = createRemoteReactComponent(ToggleButton);
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/ToggleButtonGroup/ToggleButtonGroup.mjs
+  var ToggleButtonGroup2 = createRemoteReactComponent(ToggleButtonGroup);
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/View/View.mjs
   var View2 = createRemoteReactComponent(View);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react17 = __toESM(require_react(), 1);
+  var import_react22 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
     constructor(...args) {
       super(...args);
       this.name = "CheckoutUIExtensionError";
+    }
+  };
+  var ScopeNotGrantedError = class extends Error {
+    constructor(...args) {
+      super(...args);
+      this.name = "ScopeNotGrantedError";
     }
   };
   var ExtensionHasNoMethodError = class extends Error {
@@ -19530,7 +19566,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react17.useContext)(ExtensionApiContext);
+    const api = (0, import_react22.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19538,10 +19574,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react18 = __toESM(require_react(), 1);
+  var import_react23 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react18.useState)(subscription.current);
-    (0, import_react18.useEffect)(() => {
+    const [, setValue] = (0, import_react23.useState)(subscription.current);
+    (0, import_react23.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19564,12 +19600,12 @@ ${errorInfo.componentStack}`);
     return useSubscription(useApi().attributes);
   }
   function useAttributeValues(keys) {
-    const attributes2 = useAttributes();
-    if (!(attributes2 !== null && attributes2 !== void 0 && attributes2.length)) {
+    const attributes = useAttributes();
+    if (!(attributes !== null && attributes !== void 0 && attributes.length)) {
       return [];
     }
     return keys.map((key) => {
-      const attribute = attributes2.find((attribute2) => attribute2.key === key);
+      const attribute = attributes.find((attribute2) => attribute2.key === key);
       return attribute === null || attribute === void 0 ? void 0 : attribute.value;
     });
   }
@@ -19581,6 +19617,15 @@ ${errorInfo.componentStack}`);
     throw new ExtensionHasNoMethodError("applyAttributeChange", api.extension.target);
   }
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/shipping-address.mjs
+  function useShippingAddress() {
+    const shippingAddress = useApi().shippingAddress;
+    if (!shippingAddress) {
+      throw new ScopeNotGrantedError("Using shipping address requires having shipping address permissions granted to your app.");
+    }
+    return useSubscription(shippingAddress);
+  }
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/cart-lines.mjs
   function useCartLines() {
     const {
@@ -19588,12 +19633,19 @@ ${errorInfo.componentStack}`);
     } = useApi();
     return useSubscription(lines);
   }
+  function useApplyCartLinesChange() {
+    const api = useApi();
+    if ("applyCartLinesChange" in api) {
+      return api.applyCartLinesChange;
+    }
+    throw new ExtensionHasNoMethodError("applyCartLinesChange", api.extension.target);
+  }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react19 = __toESM(require_react(), 1);
+  var import_react24 = __toESM(require_react(), 1);
   function useAppMetafields(filters = {}) {
     const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react19.useMemo)(() => {
+    return (0, import_react24.useMemo)(() => {
       if (filters.key && !filters.namespace) {
         throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
       }
@@ -19612,34 +19664,11 @@ ${errorInfo.componentStack}`);
     }, [filters, appMetafields]);
   }
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/translate.mjs
-  var import_react20 = __toESM(require_react(), 1);
-  function useTranslate() {
-    const {
-      i18n
-    } = useApi();
-    const translate = (0, import_react20.useCallback)((...args) => {
-      const translation = i18n.translate(...args);
-      if (!Array.isArray(translation)) {
-        return translation;
-      }
-      return translation.map((part, index) => {
-        if (/* @__PURE__ */ (0, import_react20.isValidElement)(part)) {
-          return /* @__PURE__ */ (0, import_react20.cloneElement)(part, {
-            key: index
-          });
-        }
-        return part;
-      });
-    }, [i18n]);
-    return translate;
-  }
-
   // extensions/delivery-date-picker/src/Components/DateSelect.jsx
-  var import_react22 = __toESM(require_react());
+  var import_react28 = __toESM(require_react());
 
   // extensions/delivery-date-picker/src/Components/Calendar.jsx
-  var import_react21 = __toESM(require_react());
+  var import_react26 = __toESM(require_react());
 
   // node_modules/@babel/runtime/helpers/esm/typeof.js
   function _typeof(o) {
@@ -21328,8 +21357,57 @@ ${errorInfo.componentStack}`);
     return `${first}${r}`;
   };
 
-  // extensions/delivery-date-picker/src/Components/Calendar.jsx
+  // extensions/delivery-date-picker/src/Components/OpeningHours.jsx
+  var import_react25 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
+  var weekdays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
+  var OpeningHours = ({ locationHours, locationDescription, currentDate }) => {
+    const getOpeningTime = () => {
+      let day = format(new Date(currentDate), "EEEE").toLowerCase();
+      let openingTime = locationHours[`${day}_opening_hours`];
+      return openingTime;
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
+      InlineLayout2,
+      {
+        padding: ["base", "none", "base", "none"],
+        columns: ["auto", "fill"],
+        spacing: "base",
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Heading2, { children: "Opening Hours" }),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { padding: ["extraTight", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(List2, { marker: "none", spacing: "tight", children: weekdays.map((weekday, i2) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(ListItem2, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "base", emphasis: "bold", children: `${weekday.slice(0, 3)}: ` }),
+              /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                Text2,
+                {
+                  size: "base",
+                  emphasis: format(new Date(currentDate), "EEEE") === weekday ? "bold" : "",
+                  children: locationHours[`${weekday.toLowerCase()}_opening_hours`]
+                }
+              )
+            ] }, `${weekday}${i2}`)) }) })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Heading2, { children: "Where to find" }),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(TextBlock2, { children: locationDescription })
+          ] })
+        ]
+      }
+    );
+  };
+  var OpeningHours_default = OpeningHours;
+
+  // extensions/delivery-date-picker/src/Components/Calendar.jsx
+  var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var days = Array.apply(null, Array(6)).map(() => {
   });
   var months = Array.apply(null, Array(13)).map(() => {
@@ -21340,6 +21418,8 @@ ${errorInfo.componentStack}`);
     // deliveryType,
     minDate,
     blackoutDates,
+    locationHours,
+    locationDescription,
     selectedMethod,
     changeAttributes,
     delDate
@@ -21347,24 +21427,26 @@ ${errorInfo.componentStack}`);
     // changeAttributes,
     // localStorage,
   }) => {
-    const [today, setToday] = (0, import_react21.useState)(/* @__PURE__ */ new Date());
-    const [backwardLocked, setBackwardLocked] = (0, import_react21.useState)(false);
-    const [forwardLocked, setForwardLocked] = (0, import_react21.useState)(false);
-    const [selected, setSelected] = (0, import_react21.useState)(null);
-    const [selectedMonth, setSelectedMonth] = (0, import_react21.useState)(null);
-    const [pickupTimes, setPickupTimes] = (0, import_react21.useState)(null);
+    const [today, setToday] = (0, import_react26.useState)(/* @__PURE__ */ new Date());
+    const [backwardLocked, setBackwardLocked] = (0, import_react26.useState)(false);
+    const [forwardLocked, setForwardLocked] = (0, import_react26.useState)(false);
+    const [selected, setSelected] = (0, import_react26.useState)(null);
+    const [selectedMonth, setSelectedMonth] = (0, import_react26.useState)(null);
+    const [pickupTimes, setPickupTimes] = (0, import_react26.useState)(null);
     const dateFormat = "yyyy-MM-dd";
     console.log(
       "MINDATE IN CAL: ",
       minDate,
-      blackoutDates
+      blackoutDates,
+      "\ncurrent date for ALL delivery types: ",
+      delDate
       // deliveryType,
       // pickupLocationInfo
     );
     const getHeading = () => {
       return selectedMethod === "pickup" ? "Collection Date" : "Delivery Date";
     };
-    (0, import_react21.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       let method = capitalise(selectedMethod);
       const updateAttributeDate = () => __async(void 0, null, function* () {
         yield changeAttributes({
@@ -21372,10 +21454,22 @@ ${errorInfo.componentStack}`);
           key: `${method}-Date`,
           value: selected ? selected : minDate
         });
+        if (selectedMethod === "pickup") {
+          yield changeAttributes({
+            type: "updateAttribute",
+            key: `Pickup-AM-Hours`,
+            value: getPickupTime(selected ? selected : minDate, "am")
+          });
+          yield changeAttributes({
+            type: "updateAttribute",
+            key: `Pickup-PM-Hours`,
+            value: getPickupTime(selected ? selected : minDate, "pm")
+          });
+        }
       });
       selected && delDate !== selected || !selected && delDate !== minDate ? updateAttributeDate() : null;
     }, []);
-    (0, import_react21.useEffect)(() => {
+    (0, import_react26.useEffect)(() => {
       format(today, dateFormat) === format(/* @__PURE__ */ new Date(), dateFormat) ? (
         // || isPast(new Date(subDays(today, 6)))
         setBackwardLocked(true)
@@ -21404,6 +21498,18 @@ ${errorInfo.componentStack}`);
         key: `${capitalise(selectedMethod)}-Date`,
         value: date
       });
+      if (selectedMethod === "pickup") {
+        yield changeAttributes({
+          type: "updateAttribute",
+          key: `Pickup-AM-Hours`,
+          value: getPickupTime(date, "am")
+        });
+        yield changeAttributes({
+          type: "updateAttribute",
+          key: `Pickup-PM-Hours`,
+          value: getPickupTime(date, "pm")
+        });
+      }
     });
     const handleMonthChange = (value) => {
       setSelectedMonth(value);
@@ -21418,12 +21524,12 @@ ${errorInfo.componentStack}`);
     };
     const getPickupTime = (date, meridian) => {
       let t2 = format(new Date(date), "EEEE").toString().toLowerCase();
-      return pickupLocationInfo.store_hours[`${t2}_${meridian}_pickup_hours`];
+      return locationHours[`${t2}_${meridian}_pickup_hours`];
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(View2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(InlineLayout2, { blockAlignment: "center", columns: ["auto", "fill"], children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Heading2, { level: 2, children: getHeading() }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { inlineAlignment: "end", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(InlineLayout2, { blockAlignment: "center", columns: ["auto", "fill"], children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Heading2, { level: 2, children: getHeading() }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View2, { inlineAlignment: "end", children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
           Banner2,
           {
             status: "critical",
@@ -21431,33 +21537,33 @@ ${errorInfo.componentStack}`);
           }
         ) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
         InlineStack2,
         {
           inlineAlignment: "center",
           blockAlignment: "center",
           padding: ["base", "none", "none", "none"],
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Pressable, { onPress: () => weekBack(), children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon2, { source: "arrowLeft" }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { blockAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { size: "medium", emphasis: "bold", children: getWeek() }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Pressable, { onPress: () => weekForward(), children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Icon2, { source: "arrowRight", onPress: () => weekForward() }) })
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Pressable, { onPress: () => weekBack(), children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon2, { source: "arrowLeft" }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(View2, { blockAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text2, { size: "medium", emphasis: "bold", children: getWeek() }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Pressable, { onPress: () => weekForward(), children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Icon2, { source: "arrowRight", onPress: () => weekForward() }) })
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
         Grid,
         {
           columns: ["fill", "fill", "fill", "fill", "fill", "fill"],
           rows: ["auto", "auto"],
           padding: ["base", "none", "base", "none"],
           children: [
-            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
               View2,
               {
                 inlineAlignment: "center",
                 blockAlignment: "center",
                 minBlockSize: 30,
-                children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                   Text2,
                   {
                     emphasis: !selected && format(addDays(today, i2), dateFormat) === minDate || selected === format(addDays(today, i2), dateFormat) ? "bold" : "",
@@ -21467,20 +21573,20 @@ ${errorInfo.componentStack}`);
               },
               i2
             )),
-            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
               View2,
               {
                 inlineAlignment: "center",
                 blockAlignment: "center",
                 minBlockSize: 30,
                 minInlineSize: 50,
-                children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
                   Button2,
                   {
                     kind: !selected && format(new Date(addDays(today, i2)), dateFormat) === minDate || selected && selected === format(new Date(addDays(today, i2)), dateFormat) ? "primary" : "secondary",
                     disabled: isDateDisabled(format(addDays(today, i2), dateFormat)),
                     onPress: () => setSelectedDate(format(new Date(addDays(today, i2)), dateFormat)),
-                    children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: format(addDays(today, i2), "d").toString() })
+                    children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Text2, { children: format(addDays(today, i2), "d").toString() })
                   }
                 )
               },
@@ -21489,7 +21595,7 @@ ${errorInfo.componentStack}`);
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
         Select2,
         {
           label: "Month",
@@ -21511,37 +21617,173 @@ ${errorInfo.componentStack}`);
             }
           })
         }
-      )
+      ),
+      selectedMethod === "pickup" && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(View2, { padding: ["base", "none", "tight", "none"], children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(TextBlock2, { children: `If you\u2019re ordering for the next day please note your order will be
+          available to collect from ${getPickupTime(
+          selected ? selected : minDate,
+          "pm"
+        )}, otherwise your order
+          will be available from  ${getPickupTime(
+          selected ? selected : minDate,
+          "am"
+        )}` }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+          OpeningHours_default,
+          {
+            locationHours,
+            locationDescription,
+            currentDate: selected ? selected : minDate
+          }
+        )
+      ] })
     ] });
   };
   var Calendar_default = Calendar;
 
+  // extensions/delivery-date-picker/src/Components/DeliveryToggle.jsx
+  var import_react27 = __toESM(require_react());
+  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
+  var DeliveryTypeSelect = ({
+    setDeliveryType,
+    deliveryType,
+    setCartLineAttr,
+    deliveryData,
+    availableMethods,
+    cart,
+    setBlackoutDates,
+    changeAttributes,
+    attributes,
+    setMinDate
+  }) => {
+    console.log(
+      "rendered del type select: ",
+      deliveryType,
+      deliveryData,
+      availableMethods
+    );
+    return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View2, { padding: ["none", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+      ToggleButtonGroup2,
+      {
+        value: deliveryType,
+        onChange: (val) => __async(void 0, null, function* () {
+          setDeliveryType(val);
+          let method = val === "driver-delivery" ? "delivery" : "shipping";
+          let lineItemProp = val === "driver-delivery" ? `D${deliveryData.delivery.delivery_zone !== "unavailable" ? "%" + deliveryData.delivery.delivery_zone.replace(
+            /[^0-9.]/g,
+            ""
+          ) : ""}` : "S";
+          setBlackoutDates(
+            val === "driver-delivery" ? deliveryData.delivery.blackouts : deliveryData.shipping.blackouts
+          );
+          yield setCartLineAttr({
+            type: "updateCartLine",
+            id: cart[0].id,
+            attributes: [
+              ...cart[0].attributes,
+              {
+                key: "_deliveryID",
+                value: lineItemProp
+              }
+            ]
+          });
+          Object.keys(attributes).forEach((key) => __async(void 0, null, function* () {
+            if (key === "Checkout-Method") {
+              yield changeAttributes({
+                type: "updateAttribute",
+                key,
+                value: method
+              });
+            } else if (key !== "Gift-Note" && key !== "Customer-Service-Note" && key !== "Lolas-CS-Member") {
+              yield changeAttributes({
+                type: "updateAttribute",
+                key,
+                value: ""
+              });
+            }
+          }));
+          yield changeAttributes({
+            type: "updateAttribute",
+            key: `${capitalise(method)}-Date`,
+            value: deliveryData[method].min_date
+          });
+        }),
+        children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(InlineLayout2, { spacing: "base", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            ToggleButton2,
+            {
+              id: "driver-delivery",
+              disabled: deliveryData.delivery.delivery_zone === "unavailable" ? true : false,
+              children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                View2,
+                {
+                  inlineAlignment: "center",
+                  blockAlignment: "center",
+                  minBlockSize: "fill",
+                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { emphasis: deliveryType === "driver-delivery" ? "bold" : "", children: deliveryData.delivery.delivery_zone === "unavailable" ? "Driver delivery unavailable for this address" : "Driver Delivery" })
+                }
+              )
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            ToggleButton2,
+            {
+              id: "postal",
+              disabled: availableMethods.shipping ? false : true,
+              children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                View2,
+                {
+                  inlineAlignment: "center",
+                  blockAlignment: "center",
+                  minBlockSize: "fill",
+                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.shipping ? "Postal" : "Postal unavailable due to products in basket" })
+                }
+              )
+            }
+          )
+        ] })
+      }
+    ) });
+  };
+  var DeliveryToggle_default = DeliveryTypeSelect;
+
   // extensions/delivery-date-picker/src/Components/DateSelect.jsx
-  var import_jsx_runtime5 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime7 = __toESM(require_jsx_runtime());
   var DateSelect = ({
     selectedMethod,
     locationId,
     locationType,
+    locationHandle,
     appMeta,
     cart,
     appUrl,
     changeAttributes,
-    delDate
+    delDate,
+    currentShippingAddress,
+    setCartLineAttr,
+    attributes
   }) => {
-    const [fetching, setFetching] = (0, import_react22.useState)(true);
-    const [minDate, setMinDate] = (0, import_react22.useState)(null);
-    const [blackoutDates, setBlackoutDates] = (0, import_react22.useState)(null);
-    (0, import_react22.useEffect)(() => {
+    const [fetching, setFetching] = (0, import_react28.useState)(true);
+    const [minDate, setMinDate] = (0, import_react28.useState)(null);
+    const [blackoutDates, setBlackoutDates] = (0, import_react28.useState)(null);
+    const [locationHours, setLocationHours] = (0, import_react28.useState)(null);
+    const [locationDescription, setLocationDescription] = (0, import_react28.useState)(null);
+    const [deliveryType, setDeliveryType] = (0, import_react28.useState)(null);
+    const [deliveryData, setDeliveryData] = (0, import_react28.useState)(null);
+    const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = (0, import_react28.useState)(null);
+    (0, import_react28.useEffect)(() => {
       const getPickupDates = () => __async(void 0, null, function* () {
         console.log("getting pickup data: ", locationId, locationType);
         let nextDayMeta = appMeta.map((meta) => {
           return JSON.parse(meta.metafield.value).next_day_delivery.value;
         });
         let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
+        console.log("IS PRODUCT NEXT DAY? ", nextDay);
         let resBody = {
           cart,
           locationId,
           locationType,
+          locationHandle,
           twoDayDelivery: nextDay
         };
         let res = yield fetch(`${appUrl}/pza/pickup-dates-test`, {
@@ -21558,157 +21800,161 @@ ${errorInfo.componentStack}`);
           "\n",
           resBody
         );
+        setLocationDescription(data.description);
+        setLocationHours(data.hours);
         setBlackoutDates(data.blackout_dates);
         setMinDate(data.minDate);
         console.log("new min date: ", minDate);
         setFetching(false);
       });
       const getDeliveryDates = () => __async(void 0, null, function* () {
-        var _a;
-        setFetching(true);
-        let availability = yield localStorage.read("availability");
-        console.log("UILP ", availability);
-        setAvailableMethods(availability.methods);
-        let nextDayMeta = appMeta.map((meta) => {
-          return JSON.parse(meta.metafield.value).next_day_delivery.value;
-        });
-        let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
-        let checkBody = {
-          type: "delivery",
-          postcode: currentShippingAddress.zip,
-          cart,
-          twoDayDelivery: nextDay
-        };
-        let checkRes = yield fetch(`${appUrl}/pza/check-postcode-test`, {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          method: "POST",
-          body: JSON.stringify(checkBody)
-        });
-        let delData = yield checkRes.json();
-        console.log(
-          "Postcode availability data from date select: ",
-          delData,
-          cart[0].attributes[0].value,
-          availableMethods
-        );
-        if (((_a = delData == null ? void 0 : delData.delivery) == null ? void 0 : _a.delivery_zone) === "unavailable" && availability.methods.shipping === false) {
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: cart[0].id,
-            attributes: [
-              ...cart[0].attributes,
-              {
-                key: "_deliveryID",
-                value: `U`
-              }
-            ]
+        if (currentShippingAddress.zip !== currentDeliveryPostcode) {
+          console.log(
+            "POSTCODE MISMATCHED - GATHERING NEW DATA: ",
+            "\npostcode from shipping address: ",
+            currentShippingAddress.zip,
+            "\npostcode from state: ",
+            currentDeliveryPostcode
+          );
+          let nextDayMeta = appMeta.map((meta) => {
+            return JSON.parse(meta.metafield.value).next_day_delivery.value;
           });
-          setMinDate(null);
-        }
-        if (delData.delivery.delivery_zone !== "unavailable") {
-          let dz = delData.delivery.delivery_zone.replace(/[^0-9.]/g, "");
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: cart[0].id,
-            attributes: [
-              ...cart[0].attributes,
-              {
-                key: "_deliveryID",
-                value: `D%${dz}`
-              }
-            ]
-          }), setDeliveryType("driver-delivery");
-          setBlackoutDates(delData.delivery.blackouts);
-          setMinDate(delData.delivery.min_date);
-        }
-        if (delData.delivery.delivery_zone === "unavailable" && availability.methods.shipping === true) {
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: cart[0].id,
-            attributes: [
-              ...cart[0].attributes,
-              {
-                key: "_deliveryID",
-                value: `S`
-              }
-            ]
-          }), yield changeAttributes({
-            type: "updateAttribute",
-            key: "Checkout-Method",
-            value: "shipping"
+          let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
+          let checkBody = {
+            type: "delivery",
+            postcode: currentShippingAddress.zip,
+            cart,
+            twoDayDelivery: nextDay
+          };
+          let checkRes = yield fetch(`${appUrl}/pza/check-postcode-test`, {
+            headers: {
+              "Content-Type": "application/json"
+            },
+            method: "POST",
+            body: JSON.stringify(checkBody)
           });
-          Object.keys(attributes).forEach((key) => __async(void 0, null, function* () {
-            if (key.includes("Delivery")) {
-              yield changeAttributes({
-                type: "updateAttribute",
-                key,
-                value: ""
-              });
-            }
-          }));
-          setDeliveryType("postal");
-          setBlackoutDates(delData.shipping.blackouts);
-          setMinDate(delData.shipping.min_date);
+          let delData = yield checkRes.json();
+          console.log(
+            "Postcode availability data from date select: ",
+            delData,
+            cart[0].attributes[0].value,
+            "current postcode: ",
+            currentShippingAddress.zip
+          );
+          setDeliveryType(attributes["Checkout-Method"] === "delivery" ? "driver-delivery" : "postal");
+          setDeliveryData(delData);
+          if (attributes["Checkout-Method"] === "delivery" && delData.delivery.delivery_zone !== "unavailable") {
+            setBlackoutDates(delData.delivery.blackouts);
+            setMinDate(delData.delivery.min_date);
+          } else if (attributes["Checkout-Method"] === "shipping") {
+            setBlackoutDates(delData.shipping.blackouts);
+            setMinDate(delData.shipping.min_date);
+          }
+          setFetching(false);
         }
-        setDeliveryZone(delData.delivery.delivery_zone);
-        setMethodData(JSON.parse(JSON.stringify(delData)));
-        setFetching(false);
+        setCurrentDeliveryPostcode(currentShippingAddress.zip);
       });
-      if (selectedMethod === "pickup") {
+      if (selectedMethod === "pickup" && !locationHours) {
         console.log("refreshing PICKUP DATA");
         getPickupDates();
-      } else if (selectedMethod === "delivery") {
+      } else if (selectedMethod !== "pickup" && currentShippingAddress.zip) {
         console.log("refreshing DELIVERY DATA");
         getDeliveryDates();
       }
-    }, []);
-    return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_jsx_runtime5.Fragment, { children: fetching && !minDate ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(Heading2, { children: "Fetching" }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-      Calendar_default,
-      {
-        minDate,
-        blackoutDates,
-        selectedMethod,
-        changeAttributes,
-        delDate
-      }
-    ) });
+    }, [selectedMethod]);
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_jsx_runtime7.Fragment, { children: fetching && !minDate ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading2, { children: "Fetching" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_jsx_runtime7.Fragment, { children: [
+      selectedMethod !== "pickup" && deliveryData && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        DeliveryToggle_default,
+        {
+          deliveryType,
+          setDeliveryType,
+          setCartLineAttr,
+          deliveryData,
+          availableMethods: {
+            shipping: true,
+            delivery: true,
+            pickup: "true"
+          },
+          cart,
+          setBlackoutDates,
+          changeAttributes,
+          attributes,
+          setMinDate
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+        Calendar_default,
+        {
+          minDate,
+          blackoutDates,
+          locationHours,
+          locationDescription,
+          selectedMethod,
+          changeAttributes,
+          delDate
+        }
+      )
+    ] }) });
   };
   var DateSelect_default = DateSelect;
 
   // extensions/delivery-date-picker/src/DatePicker.jsx
-  var import_jsx_runtime6 = __toESM(require_jsx_runtime());
+  var import_react29 = __toESM(require_react());
+  var import_jsx_runtime8 = __toESM(require_jsx_runtime());
   var DatePicker_default = reactExtension(
     "purchase.checkout.shipping-option-list.render-before",
-    () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(DatePicker, {})
+    () => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(DatePicker, {})
   );
   function DatePicker() {
     const selectedMethod = useAttributeValues(["Checkout-Method"])[0];
     const changeAttributes = useApplyAttributeChange();
+    const [locationId, setLocationId] = (0, import_react29.useState)(null);
+    const [locationType, setLocationType] = (0, import_react29.useState)(null);
+    const [locationHandle, setLocationHandle] = (0, import_react29.useState)(null);
+    const attr = useAttributes();
+    const attributes = attr.reduce(
+      (obj, item) => __spreadProps(__spreadValues({}, obj), {
+        [item.key]: item.value
+      }),
+      {}
+    );
     const delDate = useAttributeValues([`${capitalise(selectedMethod)}-Date`]);
     const appMeta = useAppMetafields();
     const cart = useCartLines();
-    const appUrl = `https://3f22-212-140-232-13.ngrok-free.app`;
-    const locationId = selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Id"])[0] : null;
-    const locationType = selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Type"])[0] : null;
-    const translate = useTranslate();
-    const { extension: extension2 } = useApi();
-    return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(View2, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Heading2, { children: `DATEPICKER for ${selectedMethod}` }),
-      selectedMethod === "pickup" ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_jsx_runtime6.Fragment, { children: locationId && locationType ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+    const currentShippingAddress = useShippingAddress();
+    const appUrl = `https://8961-212-140-232-13.ngrok-free.app`;
+    const setCartLineAttr = useApplyCartLinesChange();
+    (0, import_react29.useEffect)(() => {
+      setLocationId(
+        selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Id"])[0] : null
+      );
+      setLocationType(
+        selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Type"])[0] : null
+      );
+      setLocationHandle(
+        selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Company"])[0].toLowerCase().replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "").replaceAll(/\s/gm, "-") : null
+      );
+    }, [selectedMethod]);
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(View2, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Heading2, { children: `DATEPICKER for ${selectedMethod}` }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_jsx_runtime8.Fragment, { children: selectedMethod === "pickup" && locationId && locationType || selectedMethod !== "pickup" && currentShippingAddress.zip ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         DateSelect_default,
         {
           selectedMethod,
           locationId,
           locationType,
+          locationHandle,
           appMeta,
           cart,
           appUrl,
           changeAttributes,
-          delDate
+          delDate,
+          currentShippingAddress,
+          setCartLineAttr,
+          attributes
         }
-      ) : "fetching data" }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Heading2, { children: "Delivery" })
+      ) : "fetching data" })
     ] });
   }
 })();
+//# sourceMappingURL=delivery-date-picker.js.map

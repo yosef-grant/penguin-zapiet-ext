@@ -105,7 +105,7 @@ export {
 };
 
 function Summary() {
-  return (<>Hi im in the summary but im based in the parent component!</>)
+  return <>Hi im in the summary but im based in the parent component!</>;
 }
 
 //export { QuickCollectRender };
@@ -115,7 +115,7 @@ function Extension() {
   // const delGroups = useDeliveryGroups()
   // console.log('SHIPPING OPTION: ', delGroups)
 
-  const app_url = "https://3f22-212-140-232-13.ngrok-free.app";
+  const app_url = "https://8961-212-140-232-13.ngrok-free.app";
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {
@@ -181,6 +181,7 @@ function Extension() {
   // * experimental state
   const [storedAvailibility, setStoredAvailibility] = useState(null);
   const [datePickerInit, setDatePickerInit] = useState(false);
+  const [checkingPostcode, setCheckingPostcode] = useState(false);
 
   const [cs, setCS] = useState({ status: false });
 
@@ -263,7 +264,7 @@ function Extension() {
       handleMethodSelect("pickup");
       setInitLoad(false);
     };
-    
+
     !!initLoad && extension.target === "purchase.checkout.contact.render-after"
       ? handleInitLoad()
       : null;
@@ -422,6 +423,103 @@ function Extension() {
     });
   };
 
+  // * FOR 3-page checkout ONLY
+  useEffect(() => {
+    const getDeliveryZones = async () => {
+      setCheckingPostcode(true);
+      let checkBody = {
+        type: "delivery",
+        postcode: currentShippingAddress.zip,
+        cart: cart,
+        twoDayDelivery: nextDay,
+      };
+
+      let checkRes = await fetch(`${app_url}/pza/check-postcode-test`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(checkBody),
+      });
+
+      let delData = await checkRes.json();
+
+      console.log("DATA CHECK ON POSTCODE ENTRY: ", delData);
+
+      if (
+        delData?.delivery?.delivery_zone === "unavailable" &&
+        availableMethods?.shipping === false
+      ) {
+        await setCartLineAttr({
+          type: "updateCartLine",
+          id: lineItems[0].id,
+          attributes: [
+            ...lineItems[0].attributes,
+            {
+              key: "_deliveryID",
+              value: `U`,
+            },
+          ],
+        });
+        setMinDate(null);
+      }
+
+      if (delData.delivery.delivery_zone !== "unavailable") {
+        let dz = delData.delivery.delivery_zone.replace(/[^0-9.]/g, "");
+        await setCartLineAttr({
+          type: "updateCartLine",
+          id: lineItems[0].id,
+          attributes: [
+            ...lineItems[0].attributes,
+            {
+              key: "_deliveryID",
+              value: `D%${dz}`,
+            },
+          ],
+        });
+      }
+
+      if (
+        delData.delivery.delivery_zone === "unavailable" &&
+        availableMethods.shipping === true
+      ) {
+        await setCartLineAttr({
+          type: "updateCartLine",
+          id: lineItems[0].id,
+          attributes: [
+            ...lineItems[0].attributes,
+            {
+              key: "_deliveryID",
+              value: `S`,
+            },
+          ],
+        }),
+          await changeAttributes({
+            type: "updateAttribute",
+            key: "Checkout-Method",
+            value: "shipping",
+          });
+        Object.keys(attributes).forEach(async (key) => {
+          if (key.includes("Delivery")) {
+            await changeAttributes({
+              type: "updateAttribute",
+              key: key,
+              value: "",
+            });
+          }
+        });
+      }
+
+      setCheckingPostcode(false);
+    };
+
+    currentShippingAddress.zip &&
+    availableMethods &&
+    attributes["Checkout-Method"] !== "pickup"
+      ? getDeliveryZones()
+      : null;
+  }, [currentShippingAddress.zip]);
+
   return (
     <>
       {extension.target === "purchase.checkout.contact.render-after" && (
@@ -429,20 +527,25 @@ function Extension() {
           {initLoad ? (
             <BlockLoader message={"Loading..."} />
           ) : (
-            <MethodSelect
-              attributes={attributes}
-              checkoutData={checkoutData}
-              setCS={setCS}
-              cs={cs}
-              url={app_url}
-              lineItems={lineItems}
-              nextDay={nextDay}
-              handleSelectPickupLocation={handleSelectPickupLocation}
-              handleRemoveSelectedLocation={handleRemoveSelectedLocation}
-              handleSetCollectLocations={handleSetCollectLocations}
-              handleMethodSelect={handleMethodSelect}
-              localStorage={localStorage}
-            />
+            <>
+              <MethodSelect
+                attributes={attributes}
+                checkoutData={checkoutData}
+                setCS={setCS}
+                cs={cs}
+                url={app_url}
+                lineItems={lineItems}
+                nextDay={nextDay}
+                handleSelectPickupLocation={handleSelectPickupLocation}
+                handleRemoveSelectedLocation={handleRemoveSelectedLocation}
+                handleSetCollectLocations={handleSetCollectLocations}
+                handleMethodSelect={handleMethodSelect}
+                localStorage={localStorage}
+              />
+              {checkingPostcode && (
+                <Heading>Processing postcode check...</Heading>
+              )}
+            </>
           )}
         </>
       )}

@@ -36,6 +36,7 @@ import {
 } from "date-fns";
 import { Grid, Pressable } from "@shopify/ui-extensions/checkout";
 import { capitalise } from "../helpers/StringFunctions.jsx";
+import OpeningHours from "./OpeningHours.jsx";
 
 const days = Array.apply(null, Array(6)).map(() => {});
 const months = Array.apply(null, Array(13)).map(() => {});
@@ -47,6 +48,8 @@ const Calendar = ({
 
   minDate,
   blackoutDates,
+  locationHours,
+  locationDescription,
   selectedMethod,
   changeAttributes,
   delDate,
@@ -66,7 +69,9 @@ const Calendar = ({
   console.log(
     "MINDATE IN CAL: ",
     minDate,
-    blackoutDates
+    blackoutDates,
+    '\ncurrent date for ALL delivery types: ',
+    delDate
     // deliveryType,
 
     // pickupLocationInfo
@@ -85,31 +90,20 @@ const Calendar = ({
         value: selected ? selected : minDate,
       });
 
-      // TODO get location opening / AM_PM hours
-      // if (selectedMethod === "pickup") {
+      if (selectedMethod === "pickup") {
+        await changeAttributes({
+          type: "updateAttribute",
+          key: `Pickup-AM-Hours`,
+          value: getPickupTime(selected ? selected : minDate, "am"),
+        });
+        await changeAttributes({
+          type: "updateAttribute",
+          key: `Pickup-PM-Hours`,
+          value: getPickupTime(selected ? selected : minDate, "pm"),
+        });
+      }
 
-      //   const data = await localStorage.read("selected_location_info");
-      //   console.log("local data from CALENDAR: ", data);
-      //   let tDate = selected ? selected : minDate;
-      //   await changeAttributes({
-      //     type: "updateAttribute",
-      //     key: `Pickup-AM-Hours`,
-      //     value: `${
-      //       data.hours[
-      //         `${format(new Date(tDate), "EEEE").toLowerCase()}_am_pickup_hours`
-      //       ]
-      //     }`,
-      //   });
-      //   await changeAttributes({
-      //     type: "updateAttribute",
-      //     key: `Pickup-PM-Hours`,
-      //     value: `${
-      //       data.hours[
-      //         `${format(new Date(tDate), "EEEE").toLowerCase()}_pm_pickup_hours`
-      //       ]
-      //     }`,
-      //   });
-      // }
+      // (TODO) get location opening / AM_PM hours
     };
 
     (selected && delDate !== selected) || (!selected && delDate !== minDate)
@@ -179,6 +173,18 @@ const Calendar = ({
       key: `${capitalise(selectedMethod)}-Date`,
       value: date,
     });
+    if (selectedMethod === "pickup") {
+      await changeAttributes({
+        type: "updateAttribute",
+        key: `Pickup-AM-Hours`,
+        value: getPickupTime(date, "am"),
+      });
+      await changeAttributes({
+        type: "updateAttribute",
+        key: `Pickup-PM-Hours`,
+        value: getPickupTime(date, "pm"),
+      });
+    }
   };
 
   const handleMonthChange = (value) => {
@@ -205,7 +211,7 @@ const Calendar = ({
 
   const getPickupTime = (date, meridian) => {
     let t = format(new Date(date), "EEEE").toString().toLowerCase();
-    return pickupLocationInfo.store_hours[`${t}_${meridian}_pickup_hours`];
+    return locationHours[`${t}_${meridian}_pickup_hours`];
   };
 
   return (
@@ -313,7 +319,7 @@ const Calendar = ({
           }
         })}
       />
-      {/* {selectedMethod === "pickup" && (
+      {selectedMethod === "pickup" && (
         <View padding={["base", "none", "tight", "none"]}>
           <TextBlock>
             {`If you’re ordering for the next day please note your order will be
@@ -326,8 +332,13 @@ const Calendar = ({
             "am"
           )}`}
           </TextBlock>
+          <OpeningHours
+            locationHours={locationHours}
+            locationDescription={locationDescription}
+            currentDate={selected ? selected : minDate}
+          />
         </View>
-      )} */}
+      )}
     </View>
   );
 };
