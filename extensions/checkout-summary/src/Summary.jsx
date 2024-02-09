@@ -8,6 +8,8 @@ import {
   Heading,
   useDeliveryGroups,
   useApplyAttributeChange,
+  useStorage,
+  useCartLines,
 } from "@shopify/ui-extensions-react/checkout";
 import { useEffect } from "react";
 
@@ -20,6 +22,9 @@ function Summary() {
   const delGroups = useDeliveryGroups();
   const changeAttributes = useApplyAttributeChange();
 
+  const lineItems = useCartLines();
+
+  console.log('from summary: ', JSON.stringify(lineItems))
 
 
   const attr = useAttributes();
@@ -81,7 +86,7 @@ function Summary() {
       : null;
   }, [delGroups]);
 
-  console.log("attributes: ", attributes);
+  // console.log("attributes: ", attributes);
 
   return (
     <View>

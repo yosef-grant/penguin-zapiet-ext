@@ -30,7 +30,10 @@ const DeliveryTypeSelect = ({
   );
 
 
-  
+
+    console.log('from delivery toggle: ' ,  cart[0].attributes, '\nAvailable methods: ', availableMethods)
+
+
 
 
   return (
@@ -119,7 +122,7 @@ const DeliveryTypeSelect = ({
           </ToggleButton>
           <ToggleButton
             id="postal"
-            disabled={availableMethods.shipping ? false : true}
+            disabled={availableMethods.includes("shipping") ? false : true}
           >
             <View
               inlineAlignment={"center"}
@@ -127,7 +130,7 @@ const DeliveryTypeSelect = ({
               minBlockSize="fill"
             >
               <Text emphasis={deliveryType === "postal" ? "bold" : ""}>
-                {availableMethods.shipping
+                {availableMethods.includes("shipping")
                   ? "Postal"
                   : "Postal unavailable due to products in basket"}
               </Text>

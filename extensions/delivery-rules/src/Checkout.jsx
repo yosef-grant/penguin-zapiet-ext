@@ -234,11 +234,13 @@ function Extension() {
   // TODO delete penguin order if reservation confirmed and user hits X button
   // TODO hide reservation banner
 
+
+  // ? run validation at cart level; attach line item props when user clicks to go to checkout
+
   useEffect(() => {
     const handleInitLoad = async () => {
       console.log("INITIAL REACT LOAD - RESETTING VALUES");
-      await localStorage.delete("selected_location_info");
-      await localStorage.delete("availability");
+
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
           "Content-Type": "application/json",
@@ -246,22 +248,33 @@ function Extension() {
         method: "POST",
         body: JSON.stringify(cart),
       });
-      await localStorage.delete("selected_location_info");
-      // Object.keys(attributes).forEach(async (key) => {
-      //   await changeAttributes({
-      //     type: "updateAttribute",
-      //     key: key,
-      //     value: "",
-      //   });
-      // });
 
       let resBody = await res.json();
       console.log("Validating Cart (using test data) ", cart, resBody);
-      await localStorage.write("availability", resBody);
       handleSetQLocations(resBody.locations);
+
+      let t =  Object.keys(resBody.methods).filter(key => {
+          return resBody.methods[key]
+      }).join();
+
+      
+
+
+      // Object.keys(resBody.methods).forEach((key, i) => {
+      //   resBody.methods[key] ? `${t += ${key}$}` : null;
+      // });
+      console.log("from init ", t);
+      // await setCartLineAttr({
+      //   type: "updateCartLine",
+      //   id: cart[0].id,
+      //   attributes: t,
+      // });
+
+      // console.log("heres the methods: ", t);
+
       setAvailableMethods(resBody.methods);
 
-      handleMethodSelect("pickup");
+      handleMethodSelect("pickup", t);
       setInitLoad(false);
     };
 
@@ -359,7 +372,7 @@ function Extension() {
     } else return;
   };
 
-  const handleMethodSelect = async (method) => {
+  const handleMethodSelect = async (method, availabilityData) => {
     console.log("handling selected method ", method);
     await changeShippingAddress({
       type: "updateShippingAddress",
@@ -370,17 +383,29 @@ function Extension() {
       },
     });
 
+    // await setCartLineAttr({
+    //   type: "updateCartLine",
+    //   id: lineItems[0].id,
+    //   attributes: [
+    //     {
+    //       key: "trt",
+    //       value: "lineItemProp",
+    //     },
+    //   ],
+    // });
+
     if (method === "pickup") {
+      let t = [
+        ...lineItems[0].attributes,
+        { key: "_available_methods", value: availabilityData },
+        { key: "_deliveryID", value: method.charAt(0).toUpperCase() },
+      ];
+
+      console.log("from method select: ", t, availabilityData);
       await setCartLineAttr({
         type: "updateCartLine",
         id: lineItems[0].id,
-        attributes: [
-          ...lineItems[0].attributes,
-          {
-            key: "_deliveryID",
-            value: method.charAt(0).toUpperCase(),
-          },
-        ],
+        attributes: t,
       });
       if (cartNote) {
         await changeNote({

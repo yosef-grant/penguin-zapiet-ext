@@ -30,6 +30,7 @@ function DatePicker() {
   const [locationId, setLocationId] = useState(null);
   const [locationType, setLocationType] = useState(null);
   const [locationHandle, setLocationHandle] = useState(null);
+  const [availableMethods, setAvailableMethods] = useState(null);
 
   const attr = useAttributes();
 
@@ -52,6 +53,16 @@ function DatePicker() {
   const appUrl = `https://8961-212-140-232-13.ngrok-free.app`;
 
   const setCartLineAttr = useApplyCartLinesChange();
+
+  useEffect(() => {
+    const x = cart[0].attributes
+      .filter((attribute) => attribute.key === "_available_methods")
+      .map((filteredAttr) => {
+        return filteredAttr.value;
+      })[0].split(',');
+    console.log("prepping availability: ", x);
+    setAvailableMethods(x);
+  }, []);
 
   useEffect(() => {
     setLocationId(
@@ -102,6 +113,7 @@ function DatePicker() {
             currentShippingAddress={currentShippingAddress}
             setCartLineAttr={setCartLineAttr}
             attributes={attributes}
+            availableMethods={availableMethods}
           />
         ) : (
           "fetching data"

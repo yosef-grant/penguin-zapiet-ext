@@ -16,6 +16,7 @@ const DateSelect = ({
   currentShippingAddress,
   setCartLineAttr,
   attributes,
+  availableMethods
 }) => {
   const [fetching, setFetching] = useState(true);
   const [minDate, setMinDate] = useState(null);
@@ -238,11 +239,7 @@ const DateSelect = ({
               setDeliveryType={setDeliveryType}
               setCartLineAttr={setCartLineAttr}
               deliveryData={deliveryData}
-              availableMethods={{
-                shipping: true,
-                delivery: true,
-                pickup: "true",
-              }}
+              availableMethods={availableMethods}
               cart={cart}
               setBlackoutDates={setBlackoutDates}
               changeAttributes={changeAttributes}

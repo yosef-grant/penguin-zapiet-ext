@@ -19521,6 +19521,14 @@ ${errorInfo.componentStack}`);
     throw new ExtensionHasNoMethodError("applyAttributeChange", api.extension.target);
   }
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/cart-lines.mjs
+  function useCartLines() {
+    const {
+      lines
+    } = useApi();
+    return useSubscription(lines);
+  }
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/delivery-groups.mjs
   function useDeliveryGroups() {
     const api = useApi();
@@ -19540,6 +19548,8 @@ ${errorInfo.componentStack}`);
   function Summary() {
     const delGroups = useDeliveryGroups();
     const changeAttributes = useApplyAttributeChange();
+    const lineItems = useCartLines();
+    console.log("from summary: ", JSON.stringify(lineItems));
     const attr = useAttributes();
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -19583,7 +19593,6 @@ ${errorInfo.componentStack}`);
       });
       delGroups.length && attributes["Checkout-Method"] === "delivery" ? (console.log("delivery groups updated: ", delGroups), setDeliveryAttributes()) : null;
     }, [delGroups]);
-    console.log("attributes: ", attributes);
     return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(View2, { children: Object.keys(attributes).map((key) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(Heading2, { children: [
       key,
       ": ",

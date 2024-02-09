@@ -22557,8 +22557,6 @@ ${errorInfo.componentStack}`);
     (0, import_react44.useEffect)(() => {
       const handleInitLoad = () => __async(this, null, function* () {
         console.log("INITIAL REACT LOAD - RESETTING VALUES");
-        yield localStorage.delete("selected_location_info");
-        yield localStorage.delete("availability");
         let res = yield fetch(`${app_url}/pza/validate-cart-test`, {
           headers: {
             "Content-Type": "application/json"
@@ -22566,13 +22564,15 @@ ${errorInfo.componentStack}`);
           method: "POST",
           body: JSON.stringify(cart)
         });
-        yield localStorage.delete("selected_location_info");
         let resBody = yield res.json();
         console.log("Validating Cart (using test data) ", cart, resBody);
-        yield localStorage.write("availability", resBody);
         handleSetQLocations(resBody.locations);
+        let t2 = Object.keys(resBody.methods).filter((key) => {
+          return resBody.methods[key];
+        }).join();
+        console.log("from init ", t2);
         setAvailableMethods(resBody.methods);
-        handleMethodSelect("pickup");
+        handleMethodSelect("pickup", t2);
         setInitLoad(false);
       });
       !!initLoad && extension2.target === "purchase.checkout.contact.render-after" ? handleInitLoad() : null;
@@ -22619,7 +22619,7 @@ ${errorInfo.componentStack}`);
       } else
         return;
     });
-    const handleMethodSelect = (method) => __async(this, null, function* () {
+    const handleMethodSelect = (method, availabilityData) => __async(this, null, function* () {
       console.log("handling selected method ", method);
       yield changeShippingAddress({
         type: "updateShippingAddress",
@@ -22630,16 +22630,16 @@ ${errorInfo.componentStack}`);
         }
       });
       if (method === "pickup") {
+        let t2 = [
+          ...lineItems[0].attributes,
+          { key: "_available_methods", value: availabilityData },
+          { key: "_deliveryID", value: method.charAt(0).toUpperCase() }
+        ];
+        console.log("from method select: ", t2, availabilityData);
         yield setCartLineAttr({
           type: "updateCartLine",
           id: lineItems[0].id,
-          attributes: [
-            ...lineItems[0].attributes,
-            {
-              key: "_deliveryID",
-              value: method.charAt(0).toUpperCase()
-            }
-          ]
+          attributes: t2
         });
         if (cartNote) {
           yield changeNote({

@@ -21662,6 +21662,7 @@ ${errorInfo.componentStack}`);
       deliveryData,
       availableMethods
     );
+    console.log("from delivery toggle: ", cart[0].attributes, "\nAvailable methods: ", availableMethods);
     return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View2, { padding: ["none", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
       ToggleButtonGroup2,
       {
@@ -21729,14 +21730,14 @@ ${errorInfo.componentStack}`);
             ToggleButton2,
             {
               id: "postal",
-              disabled: availableMethods.shipping ? false : true,
+              disabled: availableMethods.includes("shipping") ? false : true,
               children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
                 View2,
                 {
                   inlineAlignment: "center",
                   blockAlignment: "center",
                   minBlockSize: "fill",
-                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.shipping ? "Postal" : "Postal unavailable due to products in basket" })
+                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.includes("shipping") ? "Postal" : "Postal unavailable due to products in basket" })
                 }
               )
             }
@@ -21761,7 +21762,8 @@ ${errorInfo.componentStack}`);
     delDate,
     currentShippingAddress,
     setCartLineAttr,
-    attributes
+    attributes,
+    availableMethods
   }) => {
     const [fetching, setFetching] = (0, import_react28.useState)(true);
     const [minDate, setMinDate] = (0, import_react28.useState)(null);
@@ -21870,11 +21872,7 @@ ${errorInfo.componentStack}`);
           setDeliveryType,
           setCartLineAttr,
           deliveryData,
-          availableMethods: {
-            shipping: true,
-            delivery: true,
-            pickup: "true"
-          },
+          availableMethods,
           cart,
           setBlackoutDates,
           changeAttributes,
@@ -21911,6 +21909,7 @@ ${errorInfo.componentStack}`);
     const [locationId, setLocationId] = (0, import_react29.useState)(null);
     const [locationType, setLocationType] = (0, import_react29.useState)(null);
     const [locationHandle, setLocationHandle] = (0, import_react29.useState)(null);
+    const [availableMethods, setAvailableMethods] = (0, import_react29.useState)(null);
     const attr = useAttributes();
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -21924,6 +21923,13 @@ ${errorInfo.componentStack}`);
     const currentShippingAddress = useShippingAddress();
     const appUrl = `https://8961-212-140-232-13.ngrok-free.app`;
     const setCartLineAttr = useApplyCartLinesChange();
+    (0, import_react29.useEffect)(() => {
+      const x2 = cart[0].attributes.filter((attribute) => attribute.key === "_available_methods").map((filteredAttr) => {
+        return filteredAttr.value;
+      })[0].split(",");
+      console.log("prepping availability: ", x2);
+      setAvailableMethods(x2);
+    }, []);
     (0, import_react29.useEffect)(() => {
       setLocationId(
         selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Id"])[0] : null
@@ -21951,7 +21957,8 @@ ${errorInfo.componentStack}`);
           delDate,
           currentShippingAddress,
           setCartLineAttr,
-          attributes
+          attributes,
+          availableMethods
         }
       ) : "fetching data" })
     ] });
