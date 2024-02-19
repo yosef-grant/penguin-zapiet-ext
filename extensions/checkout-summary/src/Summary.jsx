@@ -24,7 +24,7 @@ function Summary() {
 
   const lineItems = useCartLines();
 
-  console.log('from summary: ', JSON.stringify(lineItems))
+
 
 
   const attr = useAttributes();

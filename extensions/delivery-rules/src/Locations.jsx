@@ -128,12 +128,7 @@ const Locations = ({
     //           `
     // );
 
-    await changeAttributes({
-      type: 'updateAttribute',
-      key: 'Pickup-Location-Id',
-      value: `${targetLocation[0].id}`,
-    });
-
+    
     await changeAttributes({
       type: 'updateAttribute',
       key: 'Pickup-Location-Company',
@@ -144,7 +139,12 @@ const Locations = ({
       key: 'Pickup-Location-Type',
       value: targetLocation[0].custom_attribute_1,
     });
-
+    
+    await changeAttributes({
+      type: 'updateAttribute',
+      key: 'Pickup-Location-Id',
+      value: `${targetLocation[0].id}`,
+    });
 
 
     // const {

@@ -21422,7 +21422,8 @@ ${errorInfo.componentStack}`);
     locationDescription,
     selectedMethod,
     changeAttributes,
-    delDate
+    delDate,
+    deliveryType
     // pickupLocationInfo,
     // changeAttributes,
     // localStorage,
@@ -21439,10 +21440,17 @@ ${errorInfo.componentStack}`);
       minDate,
       blackoutDates,
       "\ncurrent date for ALL delivery types: ",
-      delDate
+      delDate,
+      "\n current delivery type: ",
+      deliveryType
       // deliveryType,
       // pickupLocationInfo
     );
+    (0, import_react26.useEffect)(() => {
+      "delivery type has changed, calendar resetting";
+      setSelected(null);
+      setToday(/* @__PURE__ */ new Date());
+    }, [deliveryType]);
     const getHeading = () => {
       return selectedMethod === "pickup" ? "Collection Date" : "Delivery Date";
     };
@@ -21662,7 +21670,12 @@ ${errorInfo.componentStack}`);
       deliveryData,
       availableMethods
     );
-    console.log("from delivery toggle: ", cart[0].attributes, "\nAvailable methods: ", availableMethods);
+    console.log(
+      "from delivery toggle: ",
+      cart[0].attributes,
+      "\nAvailable methods: ",
+      availableMethods
+    );
     return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(View2, { padding: ["none", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
       ToggleButtonGroup2,
       {
@@ -21676,6 +21689,9 @@ ${errorInfo.componentStack}`);
           ) : ""}` : "S";
           setBlackoutDates(
             val === "driver-delivery" ? deliveryData.delivery.blackouts : deliveryData.shipping.blackouts
+          );
+          setMinDate(
+            val === "driver-delivery" ? deliveryData.delivery.min_date : deliveryData.shipping.min_date
           );
           yield setCartLineAttr({
             type: "updateCartLine",
@@ -21730,14 +21746,14 @@ ${errorInfo.componentStack}`);
             ToggleButton2,
             {
               id: "postal",
-              disabled: availableMethods.includes("shipping") ? false : true,
+              disabled: availableMethods.shipping ? false : true,
               children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
                 View2,
                 {
                   inlineAlignment: "center",
                   blockAlignment: "center",
                   minBlockSize: "fill",
-                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.includes("shipping") ? "Postal" : "Postal unavailable due to products in basket" })
+                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.shipping ? "Postal" : "Postal unavailable due to products in basket" })
                 }
               )
             }
@@ -21773,9 +21789,15 @@ ${errorInfo.componentStack}`);
     const [deliveryType, setDeliveryType] = (0, import_react28.useState)(null);
     const [deliveryData, setDeliveryData] = (0, import_react28.useState)(null);
     const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = (0, import_react28.useState)(null);
+    const [currentPickupPostcode, setCurrentPickupPostcode] = (0, import_react28.useState)(null);
     (0, import_react28.useEffect)(() => {
       const getPickupDates = () => __async(void 0, null, function* () {
-        console.log("getting pickup data: ", locationId, locationType);
+        console.log(
+          "getting pickup data: ",
+          locationId,
+          locationType,
+          locationHandle
+        );
         let nextDayMeta = appMeta.map((meta) => {
           return JSON.parse(meta.metafield.value).next_day_delivery.value;
         });
@@ -21796,28 +21818,17 @@ ${errorInfo.componentStack}`);
           body: JSON.stringify(resBody)
         });
         let data = yield res.json();
-        console.log(
-          "================================= dates for pickup location!",
-          data,
-          "\n",
-          resBody
-        );
+        console.log("dates for pickup location!", data, "\n", resBody);
         setLocationDescription(data.description);
         setLocationHours(data.hours);
         setBlackoutDates(data.blackout_dates);
         setMinDate(data.minDate);
+        setCurrentPickupPostcode(currentShippingAddress.zip);
         console.log("new min date: ", minDate);
         setFetching(false);
       });
       const getDeliveryDates = () => __async(void 0, null, function* () {
-        if (currentShippingAddress.zip !== currentDeliveryPostcode) {
-          console.log(
-            "POSTCODE MISMATCHED - GATHERING NEW DATA: ",
-            "\npostcode from shipping address: ",
-            currentShippingAddress.zip,
-            "\npostcode from state: ",
-            currentDeliveryPostcode
-          );
+        if (!deliveryData || currentShippingAddress.zip !== currentDeliveryPostcode) {
           let nextDayMeta = appMeta.map((meta) => {
             return JSON.parse(meta.metafield.value).next_day_delivery.value;
           });
@@ -21843,27 +21854,43 @@ ${errorInfo.componentStack}`);
             "current postcode: ",
             currentShippingAddress.zip
           );
-          setDeliveryType(attributes["Checkout-Method"] === "delivery" ? "driver-delivery" : "postal");
           setDeliveryData(delData);
           if (attributes["Checkout-Method"] === "delivery" && delData.delivery.delivery_zone !== "unavailable") {
             setBlackoutDates(delData.delivery.blackouts);
             setMinDate(delData.delivery.min_date);
+          } else if (attributes["Checkout-Method"] === "delivery" && delData.delivery.delivery_zone === "unavailable") {
+            setBlackoutDates(delData.shipping.blackouts);
+            setMinDate(delData.shipping.min_date);
           } else if (attributes["Checkout-Method"] === "shipping") {
             setBlackoutDates(delData.shipping.blackouts);
             setMinDate(delData.shipping.min_date);
           }
-          setFetching(false);
+          setDeliveryType(
+            delData.delivery.delivery_zone === "unavailable" ? "postal" : "driver-delivery"
+          );
+        } else {
+          setDeliveryType(
+            attributes["Checkout-Method"] === "delivery" ? "driver-delivery" : "postal"
+          );
         }
+        setFetching(false);
         setCurrentDeliveryPostcode(currentShippingAddress.zip);
       });
-      if (selectedMethod === "pickup" && !locationHours) {
-        console.log("refreshing PICKUP DATA");
+      if (selectedMethod === "pickup" && currentShippingAddress.zip !== currentPickupPostcode) {
+        console.log(`getting PICKUP DATA for ${locationHandle}`);
         getPickupDates();
       } else if (selectedMethod !== "pickup" && currentShippingAddress.zip) {
-        console.log("refreshing DELIVERY DATA");
+        console.log(
+          "refreshing DELIVERY DATA: ",
+          selectedMethod,
+          "\n postcode in state: ",
+          currentDeliveryPostcode,
+          "\npostcode in shopify: ",
+          currentShippingAddress.zip
+        );
         getDeliveryDates();
       }
-    }, [selectedMethod]);
+    }, [selectedMethod, currentShippingAddress.zip]);
     return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_jsx_runtime7.Fragment, { children: fetching && !minDate ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading2, { children: "Fetching" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_jsx_runtime7.Fragment, { children: [
       selectedMethod !== "pickup" && deliveryData && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
         DeliveryToggle_default,
@@ -21889,7 +21916,8 @@ ${errorInfo.componentStack}`);
           locationDescription,
           selectedMethod,
           changeAttributes,
-          delDate
+          delDate,
+          deliveryType
         }
       )
     ] }) });
@@ -21917,30 +21945,34 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
+    let attrStr = JSON.stringify(attributes);
     const delDate = useAttributeValues([`${capitalise(selectedMethod)}-Date`]);
     const appMeta = useAppMetafields();
     const cart = useCartLines();
     const currentShippingAddress = useShippingAddress();
-    const appUrl = `https://8961-212-140-232-13.ngrok-free.app`;
+    const appUrl = `https://9939-81-103-75-43.ngrok-free.app`;
     const setCartLineAttr = useApplyCartLinesChange();
     (0, import_react29.useEffect)(() => {
+      const types = ["pickup", "shipping", "delivery"];
       const x2 = cart[0].attributes.filter((attribute) => attribute.key === "_available_methods").map((filteredAttr) => {
         return filteredAttr.value;
-      })[0].split(",");
-      console.log("prepping availability: ", x2);
+      })[0].split(",").reduce((acc, type) => {
+        acc[type] = types.includes(type) ? true : false;
+        return acc;
+      }, {});
       setAvailableMethods(x2);
     }, []);
     (0, import_react29.useEffect)(() => {
-      setLocationId(
-        selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Id"])[0] : null
-      );
-      setLocationType(
-        selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Type"])[0] : null
-      );
-      setLocationHandle(
-        selectedMethod === "pickup" ? useAttributeValues(["Pickup-Location-Company"])[0].toLowerCase().replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "").replaceAll(/\s/gm, "-") : null
-      );
-    }, [selectedMethod]);
+      const handleSwitchToPickup = () => {
+        console.log("PICKUP DATA SHOULD REACT: ", attributes["Pickup-Location-Company"]);
+        setLocationId(attributes["Pickup-Location-Id"]);
+        setLocationType(attributes["Pickup-Location-Type"]);
+        setLocationHandle(
+          attributes["Pickup-Location-Company"].toLowerCase().replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "").replaceAll(/\s/gm, "-")
+        );
+      };
+      handleSwitchToPickup();
+    }, [attributes["Pickup-Location-Id"]]);
     return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(View2, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Heading2, { children: `DATEPICKER for ${selectedMethod}` }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_jsx_runtime8.Fragment, { children: selectedMethod === "pickup" && locationId && locationType || selectedMethod !== "pickup" && currentShippingAddress.zip ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(

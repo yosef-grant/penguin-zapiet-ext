@@ -1,7 +1,7 @@
-import { Heading } from "@shopify/ui-extensions-react/checkout";
-import React, { useEffect, useState } from "react";
-import Calendar from "./Calendar.jsx";
-import DeliveryToggle from "./DeliveryToggle.jsx";
+import { Heading } from '@shopify/ui-extensions-react/checkout';
+import React, { useEffect, useState } from 'react';
+import Calendar from './Calendar.jsx';
+import DeliveryToggle from './DeliveryToggle.jsx';
 
 const DateSelect = ({
   selectedMethod,
@@ -16,7 +16,7 @@ const DateSelect = ({
   currentShippingAddress,
   setCartLineAttr,
   attributes,
-  availableMethods
+  availableMethods,
 }) => {
   const [fetching, setFetching] = useState(true);
   const [minDate, setMinDate] = useState(null);
@@ -26,10 +26,16 @@ const DateSelect = ({
   const [deliveryType, setDeliveryType] = useState(null);
   const [deliveryData, setDeliveryData] = useState(null);
   const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = useState(null);
+  const [currentPickupPostcode, setCurrentPickupPostcode] = useState(null);
 
   useEffect(() => {
     const getPickupDates = async () => {
-      console.log("getting pickup data: ", locationId, locationType);
+      console.log(
+        'getting pickup data: ',
+        locationId,
+        locationType,
+        locationHandle
+      );
       let nextDayMeta = appMeta.map((meta) => {
         return JSON.parse(meta.metafield.value).next_day_delivery.value;
       });
@@ -40,7 +46,7 @@ const DateSelect = ({
       //   return location.postal_code === currentShippingAddress.zip
       // })
 
-      console.log("IS PRODUCT NEXT DAY? ", nextDay);
+      console.log('IS PRODUCT NEXT DAY? ', nextDay);
 
       let resBody = {
         cart: cart,
@@ -51,18 +57,13 @@ const DateSelect = ({
       };
       let res = await fetch(`${appUrl}/pza/pickup-dates-test`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(resBody),
       });
       let data = await res.json();
-      console.log(
-        "================================= dates for pickup location!",
-        data,
-        "\n",
-        resBody
-      );
+      console.log('dates for pickup location!', data, '\n', resBody);
 
       // let minDay = format(
       //   getDay(new Date(data.minDate)) + 1,
@@ -83,19 +84,25 @@ const DateSelect = ({
       setBlackoutDates(data.blackout_dates);
       setMinDate(data.minDate);
 
-      console.log("new min date: ", minDate);
+      setCurrentPickupPostcode(currentShippingAddress.zip);
+      console.log('new min date: ', minDate);
       setFetching(false);
     };
 
     const getDeliveryDates = async () => {
-      if (currentShippingAddress.zip !== currentDeliveryPostcode) {
-        console.log(
-          "POSTCODE MISMATCHED - GATHERING NEW DATA: ",
-          "\npostcode from shipping address: ",
-          currentShippingAddress.zip,
-          "\npostcode from state: ",
-          currentDeliveryPostcode
-        );
+      // if (currentShippingAddress.zip !== currentDeliveryPostcode) {
+      //   console.log(
+      //     'POSTCODE MISMATCHED - GATHERING NEW DATA: ',
+      //     '\npostcode from shipping address: ',
+      //     currentShippingAddress.zip,
+      //     '\npostcode from state: ',
+      //     currentDeliveryPostcode
+      //   );
+
+      if (
+        !deliveryData ||
+        currentShippingAddress.zip !== currentDeliveryPostcode
+      ) {
         let nextDayMeta = appMeta.map((meta) => {
           return JSON.parse(meta.metafield.value).next_day_delivery.value;
         });
@@ -103,7 +110,7 @@ const DateSelect = ({
           nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
         let checkBody = {
-          type: "delivery",
+          type: 'delivery',
           postcode: currentShippingAddress.zip,
           cart: cart,
           twoDayDelivery: nextDay,
@@ -111,129 +118,89 @@ const DateSelect = ({
 
         let checkRes = await fetch(`${appUrl}/pza/check-postcode-test`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(checkBody),
         });
         let delData = await checkRes.json();
 
         console.log(
-          "Postcode availability data from date select: ",
+          'Postcode availability data from date select: ',
           delData,
           cart[0].attributes[0].value,
-          "current postcode: ",
+          'current postcode: ',
           currentShippingAddress.zip
         );
-        //setDeliveryType(delData.delivery.delivery_zone !== "unavailable" ? "driver-delivery" : "postal")
-        setDeliveryType(attributes["Checkout-Method"] === "delivery" ? "driver-delivery" : "postal")
 
         setDeliveryData(delData);
-
-        // delData.delivery.delivery_zone !== "unavailable"
-        // && cart[0]
-
-        // if (
-        //   delData?.delivery?.delivery_zone === "unavailable" &&
-        //   availability.methods.shipping === false
-        // ) {
-        //   await setCartLineAttr({
-        //     type: "updateCartLine",
-        //     id: cart[0].id,
-        //     attributes: [
-        //       ...cart[0].attributes,
-        //       {
-        //         key: "_deliveryID",
-        //         value: `U`,
-        //       },
-        //     ],
-        //   });
-        //   setMinDate(null);
-        // }
-
-        if (attributes["Checkout-Method"] === "delivery" && delData.delivery.delivery_zone !== "unavailable") {
-          //   let dz = delData.delivery.delivery_zone.replace(/[^0-9.]/g, "");
-          //   await setCartLineAttr({
-          //     type: "updateCartLine",
-          //     id: cart[0].id,
-          //     attributes: [
-          //       ...cart[0].attributes,
-          //       {
-          //         key: "_deliveryID",
-          //         value: `D%${dz}`,
-          //       },
-          //     ],
-          //   }),
-          //     setDeliveryType("driver-delivery");
-
+        if (
+          attributes['Checkout-Method'] === 'delivery' &&
+          delData.delivery.delivery_zone !== 'unavailable'
+        ) {
           setBlackoutDates(delData.delivery.blackouts);
           setMinDate(delData.delivery.min_date);
-        }
-        else if (attributes["Checkout-Method"] === "shipping") {
+        } else if (
+          attributes['Checkout-Method'] === 'delivery' &&
+          delData.delivery.delivery_zone === 'unavailable'
+        ) {
+          setBlackoutDates(delData.shipping.blackouts);
+          setMinDate(delData.shipping.min_date);
+        } else if (attributes['Checkout-Method'] === 'shipping') {
           setBlackoutDates(delData.shipping.blackouts);
           setMinDate(delData.shipping.min_date);
         }
-        
 
-        // if (
-        //   delData.delivery.delivery_zone === "unavailable" &&
-        //   availability.methods.shipping === true
-        // ) {
-        //   await setCartLineAttr({
-        //     type: "updateCartLine",
-        //     id: cart[0].id,
-        //     attributes: [
-        //       ...cart[0].attributes,
-        //       {
-        //         key: "_deliveryID",
-        //         value: `S`,
-        //       },
-        //     ],
-        //   }),
-        //     await changeAttributes({
-        //       type: "updateAttribute",
-        //       key: "Checkout-Method",
-        //       value: "shipping",
-        //     });
-        //   Object.keys(attributes).forEach(async (key) => {
-        //     if (key.includes("Delivery")) {
-        //       await changeAttributes({
-        //         type: "updateAttribute",
-        //         key: key,
-        //         value: "",
-        //       });
-        //     }
-        //   });
-
-        //   setDeliveryType("postal");
-        //   setBlackoutDates(delData.shipping.blackouts);
-        //   setMinDate(delData.shipping.min_date);
-        // }
-
-        // // hideCalendar ? setHideCalendar(false) : null
-        // setDeliveryZone(delData.delivery.delivery_zone);
-        // setMethodData(JSON.parse(JSON.stringify(delData)));
-
-        setFetching(false);
+        setDeliveryType(
+          delData.delivery.delivery_zone === 'unavailable'
+            ? 'postal'
+            : 'driver-delivery'
+        );
       }
+
+      // if (deliveryData) {
+      //   console.log('delivery data present & delivery service switched!');
+      //   setMinDate(deliveryData[selectedMethod].min_date);
+      //   setBlackoutDates(deliveryData[selectedMethod].blackouts);
+      // }
+      else {
+        setDeliveryType(
+          attributes['Checkout-Method'] === 'delivery'
+            ? 'driver-delivery'
+            : 'postal'
+        );
+      }
+
+      setFetching(false);
+      // }
       setCurrentDeliveryPostcode(currentShippingAddress.zip);
     };
 
-    if (selectedMethod === "pickup" && !locationHours) {
-      console.log("refreshing PICKUP DATA");
+    if (
+      selectedMethod === 'pickup' &&
+      currentShippingAddress.zip !== currentPickupPostcode
+    ) {
+      console.log(`getting PICKUP DATA for ${locationHandle}`);
       getPickupDates();
-    } else if (selectedMethod !== "pickup" && currentShippingAddress.zip) {
-      console.log("refreshing DELIVERY DATA");
+    } else if (selectedMethod !== 'pickup' && currentShippingAddress.zip) {
+      console.log(
+        'refreshing DELIVERY DATA: ',
+        selectedMethod,
+        '\n postcode in state: ',
+        currentDeliveryPostcode,
+        '\npostcode in shopify: ',
+        currentShippingAddress.zip
+      );
       getDeliveryDates();
     }
-  }, [selectedMethod]);
+  }, [selectedMethod, currentShippingAddress.zip]);
   return (
     <>
       {fetching && !minDate ? (
         <Heading>Fetching</Heading>
       ) : (
         <>
-          {selectedMethod !== "pickup" && deliveryData && (
+          {selectedMethod !== 'pickup' && deliveryData && (
             <DeliveryToggle
               deliveryType={deliveryType}
               setDeliveryType={setDeliveryType}
@@ -255,6 +222,7 @@ const DateSelect = ({
             selectedMethod={selectedMethod}
             changeAttributes={changeAttributes}
             delDate={delDate}
+            deliveryType={deliveryType}
           />
         </>
       )}

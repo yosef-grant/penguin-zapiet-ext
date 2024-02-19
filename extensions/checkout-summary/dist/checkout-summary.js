@@ -19549,7 +19549,6 @@ ${errorInfo.componentStack}`);
     const delGroups = useDeliveryGroups();
     const changeAttributes = useApplyAttributeChange();
     const lineItems = useCartLines();
-    console.log("from summary: ", JSON.stringify(lineItems));
     const attr = useAttributes();
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {

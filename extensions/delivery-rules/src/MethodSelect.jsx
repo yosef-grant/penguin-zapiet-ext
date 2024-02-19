@@ -1,5 +1,7 @@
 import React from 'react';
 import {
+  Button,
+  Heading,
   InlineLayout,
   Pressable,
   Text,
@@ -20,9 +22,14 @@ const MethodSelect = ({
   handleRemoveSelectedLocation,
   handleSetCollectLocations,
   handleMethodSelect,
-localStorage,
-
+  availableMethods,
+  localStorage,
+  noDelivery,
+  showDeliveryError,
 }) => {
+
+
+  console.log('METHOD SELECT : DELIVERY BLOCKED? ', noDelivery)
   return (
     <>
       {/* <Button >Base</Button>
@@ -49,7 +56,7 @@ localStorage,
               ? 'subdued'
               : 'transparent'
           }
-          onPress={() => handleMethodSelect('pickup')}
+          onPress={() => handleMethodSelect('pickup', availableMethods)}
         >
           <Text size="medium" emphasis="bold">
             Collection
@@ -68,7 +75,7 @@ localStorage,
               ? 'subdued'
               : 'transparent'
           }
-          onPress={() => handleMethodSelect('delivery')}
+          onPress={() => handleMethodSelect('delivery', availableMethods)}
         >
           <Text size="medium" emphasis="bold">
             Delivery
@@ -98,9 +105,15 @@ localStorage,
         </>
       ) : attributes['Checkout-Method'] !== 'pickup' ? (
         <View padding={['tight', 'none', 'none', 'none']}>
-          <Text emphasis="bold">
-            Please enter your address to see delivery options.
-          </Text>
+          {!!showDeliveryError || !!noDelivery ? (
+            <View>
+              <Text size='base'>Delivery is not available for your address. <Button kind='link'><Text emphasis='italic'>Switch to collection?</Text></Button></Text>
+            </View>
+          ) : (
+            <Text emphasis="bold" size='base'>
+              Please enter your address to see delivery options.
+            </Text>
+          )}
         </View>
       ) : null}
     </>
