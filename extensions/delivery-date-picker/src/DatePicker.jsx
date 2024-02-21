@@ -12,19 +12,19 @@ import {
   useApplyAttributeChange,
   useShippingAddress,
   useApplyCartLinesChange,
-} from '@shopify/ui-extensions-react/checkout';
-import DateSelect from './Components/DateSelect.jsx';
+} from "@shopify/ui-extensions-react/checkout";
+import DateSelect from "./Components/DateSelect.jsx";
 
-import { capitalise } from './helpers/StringFunctions.jsx';
-import { useEffect, useState } from 'react';
+import { capitalise } from "./helpers/StringFunctions.jsx";
+import { useEffect, useState } from "react";
 
 export default reactExtension(
-  'purchase.checkout.shipping-option-list.render-before',
+  "purchase.checkout.shipping-option-list.render-before",
   () => <DatePicker />
 );
 
 function DatePicker() {
-  const selectedMethod = useAttributeValues(['Checkout-Method'])[0];
+  const selectedMethod = useAttributeValues(["Checkout-Method"])[0];
   const changeAttributes = useApplyAttributeChange();
 
   const [locationId, setLocationId] = useState(null);
@@ -42,7 +42,7 @@ function DatePicker() {
     {}
   );
 
-  let attrStr = JSON.stringify(attributes)
+  let attrStr = JSON.stringify(attributes);
 
   // const [delDate, setDelDate] = useState(null);
 
@@ -52,22 +52,21 @@ function DatePicker() {
 
   const currentShippingAddress = useShippingAddress();
 
-  const appUrl = `https://9939-81-103-75-43.ngrok-free.app`;
+  const appUrl = `https://significant-snap-polyester-left.trycloudflare.com`;
 
   const setCartLineAttr = useApplyCartLinesChange();
-
 
   // TODO locations dont update when swtiched from locations component
   // * Provide DELIVERY Availability to DatePicker
   useEffect(() => {
-    const types = ['pickup', 'shipping', 'delivery'];
+    const types = ["pickup", "shipping", "delivery"];
 
     const x = cart[0].attributes
-      .filter((attribute) => attribute.key === '_available_methods')
+      .filter((attribute) => attribute.key === "_available_methods")
       .map((filteredAttr) => {
         return filteredAttr.value;
       })[0]
-      .split(',')
+      .split(",")
       .reduce((acc, type) => {
         acc[type] = types.includes(type) ? true : false;
         return acc;
@@ -77,16 +76,18 @@ function DatePicker() {
 
   useEffect(() => {
     const handleSwitchToPickup = () => {
+      console.log(
+        "PICKUP DATA SHOULD REACT: ",
+        attributes["Pickup-Location-Company"]
+      );
 
-      console.log("PICKUP DATA SHOULD REACT: ",  attributes['Pickup-Location-Company'])
-
-      setLocationId(attributes['Pickup-Location-Id']);
-      setLocationType(attributes['Pickup-Location-Type']);
+      setLocationId(attributes["Pickup-Location-Id"]);
+      setLocationType(attributes["Pickup-Location-Type"]);
       setLocationHandle(
-        attributes['Pickup-Location-Company']
+        attributes["Pickup-Location-Company"]
           .toLowerCase()
-          .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, '')
-          .replaceAll(/\s/gm, '-')
+          .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "")
+          .replaceAll(/\s/gm, "-")
       );
     };
 
@@ -95,10 +96,10 @@ function DatePicker() {
     // attributes['Pickup-Location-Type'] &&
     // attributes['Pickup-Location-Company']
     //   ? handleSwitchToPickup()
-      // : null;
-      
-       handleSwitchToPickup()
-      // console.log('attr from useEffect in datepicker: ', attr, attr["Pickup-Location-Id"])
+    // : null;
+
+    handleSwitchToPickup();
+    // console.log('attr from useEffect in datepicker: ', attr, attr["Pickup-Location-Id"])
   }, [attributes["Pickup-Location-Id"]]);
 
   // const locationId = useAttributeValues(["Pickup-Location-Id"])[0];
@@ -112,10 +113,25 @@ function DatePicker() {
 
   return (
     <View>
-      <Heading>{`DATEPICKER for ${selectedMethod}`}</Heading>
+      {/* <Heading>{`DATEPICKER for ${selectedMethod}`}</Heading> */}
       <>
-        {(selectedMethod === 'pickup' && locationId && locationType) ||
-        (selectedMethod !== 'pickup' && currentShippingAddress.zip) ? (
+      <DateSelect
+        selectedMethod={selectedMethod}
+        locationId={locationId}
+        locationType={locationType}
+        locationHandle={locationHandle}
+        appMeta={appMeta}
+        cart={cart}
+        appUrl={appUrl}
+        changeAttributes={changeAttributes}
+        delDate={delDate}
+        currentShippingAddress={currentShippingAddress}
+        setCartLineAttr={setCartLineAttr}
+        attributes={attributes}
+        availableMethods={availableMethods}
+      />
+        {/* {((selectedMethod === "pickup" && locationId && locationType) ||
+          (selectedMethod !== "pickup" && currentShippingAddress.zip)) && (
           <DateSelect
             selectedMethod={selectedMethod}
             locationId={locationId}
@@ -131,9 +147,7 @@ function DatePicker() {
             attributes={attributes}
             availableMethods={availableMethods}
           />
-        ) : (
-          'fetching data'
-        )}
+        )} */}
       </>
     </View>
   );

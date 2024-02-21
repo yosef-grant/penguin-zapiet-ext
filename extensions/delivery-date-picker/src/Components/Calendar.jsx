@@ -11,10 +11,11 @@ import {
   Select,
   Banner,
   TextBlock,
+  Pressable,
   useDeliveryGroups,
-} from '@shopify/ui-extensions-react/checkout';
+} from "@shopify/ui-extensions-react/checkout";
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
 import {
   addDays,
@@ -33,10 +34,11 @@ import {
   addYears,
   isPast,
   isSameMonth,
-} from 'date-fns';
-import { Grid, Pressable } from '@shopify/ui-extensions/checkout';
-import { capitalise } from '../helpers/StringFunctions.jsx';
-import OpeningHours from './OpeningHours.jsx';
+} from "date-fns";
+import { Grid } from "@shopify/ui-extensions/checkout";
+import { capitalise } from "../helpers/StringFunctions.jsx";
+
+import OpeningHours from "./OpeningHours.jsx";
 
 const days = Array.apply(null, Array(6)).map(() => {});
 const months = Array.apply(null, Array(13)).map(() => {});
@@ -54,6 +56,9 @@ const Calendar = ({
   changeAttributes,
   delDate,
   deliveryType,
+  attributes,
+  currentShippingAddress,
+
   // pickupLocationInfo,
   // changeAttributes,
   // localStorage,
@@ -65,50 +70,51 @@ const Calendar = ({
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [pickupTimes, setPickupTimes] = useState(null);
 
-  const dateFormat = 'yyyy-MM-dd';
+  const [currentHover, setCurrentHover] = useState(null);
 
-  console.log(
-    'MINDATE IN CAL: ',
-    minDate,
-    blackoutDates,
-    '\ncurrent date for ALL delivery types: ',
-    delDate,
-    '\n current delivery type: ',
-    deliveryType
-    // deliveryType,
+  const dateFormat = "yyyy-MM-dd";
 
-    // pickupLocationInfo
-  );
+  // console.log(
+  //   'MINDATE IN CAL: ',
+  //   minDate,
+  //   blackoutDates,
+  //   '\ncurrent date for ALL delivery types: ',
+  //   delDate,
+  //   '\n current delivery type: ',
+  //   deliveryType
+  //   // deliveryType,
+
+  //   // pickupLocationInfo
+  // );
 
   useEffect(() => {
-    'delivery type has changed, calendar resetting'
     setSelected(null);
-    setToday(new Date())
+    setToday(new Date());
   }, [deliveryType]);
 
   const getHeading = () => {
-    return selectedMethod === 'pickup' ? 'Collection Date' : 'Delivery Date';
+    return selectedMethod === "pickup" ? "Collection Date" : "Delivery Date";
   };
 
   useEffect(() => {
     let method = capitalise(selectedMethod);
     const updateAttributeDate = async () => {
       await changeAttributes({
-        type: 'updateAttribute',
+        type: "updateAttribute",
         key: `${method}-Date`,
         value: selected ? selected : minDate,
       });
 
-      if (selectedMethod === 'pickup') {
+      if (selectedMethod === "pickup") {
         await changeAttributes({
-          type: 'updateAttribute',
+          type: "updateAttribute",
           key: `Pickup-AM-Hours`,
-          value: getPickupTime(selected ? selected : minDate, 'am'),
+          value: getPickupTime(selected ? selected : minDate, "am"),
         });
         await changeAttributes({
-          type: 'updateAttribute',
+          type: "updateAttribute",
           key: `Pickup-PM-Hours`,
-          value: getPickupTime(selected ? selected : minDate, 'pm'),
+          value: getPickupTime(selected ? selected : minDate, "pm"),
         });
       }
 
@@ -143,8 +149,8 @@ const Calendar = ({
   }, [today]);
 
   const getWeek = () => {
-    const weekStart = format(today, 'do MMM').toString();
-    const weekEnd = format(addDays(today, 5), 'do MMM').toString();
+    const weekStart = format(today, "do MMM").toString();
+    const weekEnd = format(addDays(today, 5), "do MMM").toString();
 
     // console.log(`${weekStart} - ${weekEnd}`);
     return `${weekStart} - ${weekEnd}`;
@@ -155,7 +161,7 @@ const Calendar = ({
 
     isSameMonth(weekAgo, new Date(today))
       ? null
-      : setSelectedMonth(format(weekAgo, 'MMMM yyyy'));
+      : setSelectedMonth(format(weekAgo, "MMMM yyyy"));
 
     backwardLocked
       ? null
@@ -169,7 +175,7 @@ const Calendar = ({
 
     isSameMonth(weekAhead, new Date(today))
       ? null
-      : setSelectedMonth(format(weekAhead, 'MMMM yyyy'));
+      : setSelectedMonth(format(weekAhead, "MMMM yyyy"));
     // console.log("going a week forward: ", weekAhead);
     forwardLocked ? null : setToday(weekAhead);
   };
@@ -178,22 +184,32 @@ const Calendar = ({
     // console.log("new date: ", date);
     setSelected(date);
     await changeAttributes({
-      type: 'updateAttribute',
+      type: "updateAttribute",
       key: `${capitalise(selectedMethod)}-Date`,
       value: date,
     });
-    if (selectedMethod === 'pickup') {
+    if (selectedMethod === "pickup") {
       await changeAttributes({
-        type: 'updateAttribute',
+        type: "updateAttribute",
         key: `Pickup-AM-Hours`,
-        value: getPickupTime(date, 'am'),
+        value: getPickupTime(date, "am"),
       });
       await changeAttributes({
-        type: 'updateAttribute',
+        type: "updateAttribute",
         key: `Pickup-PM-Hours`,
-        value: getPickupTime(date, 'pm'),
+        value: getPickupTime(date, "pm"),
       });
     }
+  };
+
+  const formatDeliveryType = () => {
+    let x = deliveryType.split("-");
+    let t = x
+      .map((y) => {
+        return capitalise(y);
+      })
+      .join(" ");
+    return t;
   };
 
   const handleMonthChange = (value) => {
@@ -219,35 +235,46 @@ const Calendar = ({
   };
 
   const getPickupTime = (date, meridian) => {
-    let t = format(new Date(date), 'EEEE').toString().toLowerCase();
+    let t = format(new Date(date), "EEEE").toString().toLowerCase();
     return locationHours[`${t}_${meridian}_pickup_hours`];
   };
 
   return (
     <View>
-      <InlineLayout blockAlignment={'center'} columns={['auto', 'fill']}>
-        <Heading level={2}>{getHeading()}</Heading>
-        <View inlineAlignment={'end'}>
+      <InlineLayout blockAlignment={"center"} columns={["auto", "fill"]}>
+        <BlockStack spacing={"extraTight"}>
+          <Heading level={1}>{getHeading()}</Heading>
+          {selectedMethod === "pickup" ? (
+            <Text size={"base"}>
+              {attributes["Pickup-Location-Company"].replaceAll(/\s-\s/gm, " ")}
+            </Text>
+          ) : (
+            <Text>
+              {formatDeliveryType()} to {currentShippingAddress.zip}
+            </Text>
+          )}
+        </BlockStack>
+        <View inlineAlignment={"end"}>
           <Banner
             status="critical"
             title={`Selected date: ${
               selected
-                ? format(new Date(selected), 'do MMMM yyyy')
-                : format(new Date(minDate), 'do MMMM yyyy')
+                ? format(new Date(selected), "do MMMM yyyy")
+                : format(new Date(minDate), "do MMMM yyyy")
             }`}
           />
         </View>
       </InlineLayout>
       <InlineStack
-        inlineAlignment={'center'}
-        blockAlignment={'center'}
-        padding={['base', 'none', 'none', 'none']}
+        inlineAlignment={"center"}
+        blockAlignment={"center"}
+        padding={["extraLoose", "none", "none", "none"]}
       >
         <Pressable onPress={() => weekBack()}>
           <Icon source="arrowLeft" />
         </Pressable>
-        <View blockAlignment={'center'}>
-          <Text size={'medium'} emphasis="bold">
+        <View blockAlignment={"center"}>
+          <Text size={"medium"} emphasis="bold">
             {getWeek()}
           </Text>
         </View>
@@ -256,14 +283,14 @@ const Calendar = ({
         </Pressable>
       </InlineStack>
       <Grid
-        columns={['fill', 'fill', 'fill', 'fill', 'fill', 'fill']}
-        rows={['auto', 'auto']}
-        padding={['base', 'none', 'base', 'none']}
+        columns={["fill", "fill", "fill", "fill", "fill", "fill"]}
+        rows={["auto", "auto"]}
+        padding={["base", "none", "base", "none"]}
       >
         {days.map((day, i) => (
           <View
-            inlineAlignment={'center'}
-            blockAlignment={'center'}
+            inlineAlignment={"center"}
+            blockAlignment={"center"}
             minBlockSize={30}
             key={i}
           >
@@ -272,74 +299,125 @@ const Calendar = ({
                 (!selected &&
                   format(addDays(today, i), dateFormat) === minDate) ||
                 selected === format(addDays(today, i), dateFormat)
-                  ? 'bold'
-                  : ''
+                  ? "bold"
+                  : ""
               }
             >
-              {format(addDays(today, i), 'EEE').toString()}
+              {format(addDays(today, i), "EEE").toString()}
             </Text>
           </View>
         ))}
         {days.map((day, i) => (
           <View
             key={i}
-            inlineAlignment={'center'}
-            blockAlignment={'center'}
+            inlineAlignment={"center"}
+            blockAlignment={"center"}
             minBlockSize={30}
             minInlineSize={50}
+            padding={["tight", "none", "none", "none"]}
+            inlineSize={"fill"}
           >
-            <Button
+            {/* <Button
+        
               kind={
                 (!selected &&
                   format(new Date(addDays(today, i)), dateFormat) ===
                     minDate) ||
                 (selected &&
                   selected === format(new Date(addDays(today, i)), dateFormat))
-                  ? 'primary'
-                  : 'secondary'
+                  ? "primary"
+                  : "secondary"
               }
               disabled={isDateDisabled(format(addDays(today, i), dateFormat))}
               onPress={() =>
                 setSelectedDate(format(new Date(addDays(today, i)), dateFormat))
               }
             >
-              <Text>{format(addDays(today, i), 'd').toString()}</Text>
-            </Button>
+              <Text>{format(addDays(today, i), "d").toString()}</Text>
+            </Button> */}
+
+            {(!selected &&
+              format(new Date(addDays(today, i)), dateFormat) === minDate) ||
+            (selected &&
+              selected === format(new Date(addDays(today, i)), dateFormat)) ? (
+              <InlineLayout
+                minInlineSize={70}
+                minBlockSize={50}
+                maxBlockSize={50}
+              >
+                <Button
+                  disabled={isDateDisabled(
+                    format(addDays(today, i), dateFormat)
+                  )}
+                  onPress={() =>
+                    setSelectedDate(
+                      format(new Date(addDays(today, i)), dateFormat)
+                    )
+                  }
+                >
+                  <Text>{format(addDays(today, i), "d").toString()}</Text>
+                </Button>
+              </InlineLayout>
+            ) : (
+              <InlineLayout minInlineSize={`${50}%`}>
+                <Pressable
+                  minInlineSize={70}
+                  minBlockSize={50}
+                  maxBlockSize={50}
+                  blockAlignment={"center"}
+                  inlineAlignment={"center"}
+                  disabled={isDateDisabled(
+                    format(addDays(today, i), dateFormat)
+                  )}
+                  onPointerEnter={() => setCurrentHover(i)}
+                  onPointerLeave={() => setCurrentHover(null)}
+                  border={currentHover === i ? "base" : "none"}
+                  borderRadius={"base"}
+                  onPress={() =>
+                    setSelectedDate(
+                      format(new Date(addDays(today, i)), dateFormat)
+                    )
+                  }
+                >
+                  <Text>{format(addDays(today, i), "d").toString()}</Text>
+                </Pressable>
+              </InlineLayout>
+            )}
           </View>
         ))}
       </Grid>
       <Select
         label="Month"
-        value={selectedMonth ? selectedMonth : format(new Date(), 'MMMM yyyy')}
+        value={selectedMonth ? selectedMonth : format(new Date(), "MMMM yyyy")}
         onChange={(val) => handleMonthChange(val)}
         options={months.map((month, i) => {
           if (i === 0) {
             return {
               key: { i },
-              value: `${format(new Date(), 'MMMM yyyy')}`,
-              label: `${format(new Date(), 'MMMM yyyy')}`,
+              value: `${format(new Date(), "MMMM yyyy")}`,
+              label: `${format(new Date(), "MMMM yyyy")}`,
             };
           } else {
             return {
               key: { i },
-              value: `${format(addMonths(new Date(), i), 'MMMM yyyy')}`,
-              label: `${format(addMonths(new Date(), i), 'MMMM yyyy')}`,
+              value: `${format(addMonths(new Date(), i), "MMMM yyyy")}`,
+              label: `${format(addMonths(new Date(), i), "MMMM yyyy")}`,
             };
           }
         })}
       />
-      {selectedMethod === 'pickup' && (
-        <View padding={['base', 'none', 'tight', 'none']}>
+      {selectedMethod === "pickup" && attributes["Pickup-Location-Id"] && (
+        <View padding={["base", "none", "tight", "none"]}>
           <TextBlock>
-            {`If you’re ordering for the next day please note your order will be
-          available to collect from ${getPickupTime(
-            selected ? selected : minDate,
-            'pm'
-          )}, otherwise your order
-          will be available from  ${getPickupTime(
-            selected ? selected : minDate,
-            'am'
-          )}`}
+            If you’re ordering for the next day please note your order will be
+            available to collect from{" "}
+            <Text emphasis="bold">
+              {getPickupTime(selected ? selected : minDate, "pm")}
+            </Text>
+            , otherwise your order will be available from{" "}
+            <Text emphasis="bold">
+              {getPickupTime(selected ? selected : minDate, "am")}
+            </Text>
           </TextBlock>
           <OpeningHours
             locationHours={locationHours}

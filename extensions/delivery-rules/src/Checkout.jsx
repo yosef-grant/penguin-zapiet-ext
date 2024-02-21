@@ -4,7 +4,7 @@ import React, {
   useLayoutEffect,
   useReducer,
   useRef,
-} from 'react';
+} from "react";
 
 import {
   Text,
@@ -28,22 +28,22 @@ import {
   useDeliveryGroups,
   useApplyNoteChange,
   useNote,
-} from '@shopify/ui-extensions-react/checkout';
+} from "@shopify/ui-extensions-react/checkout";
 
-import Locations from './Locations.jsx';
-import DateSelect from './DateSelect.jsx';
-import CSPortal from './CSPortal.jsx';
+import Locations from "./Locations.jsx";
+import DateSelect from "./DateSelect.jsx";
+import CSPortal from "./CSPortal.jsx";
 
-import { checkoutDataReducer } from './reducer_functions/CheckoutDataMethods.jsx';
-import { Button, DatePicker } from '@shopify/ui-extensions/checkout';
+import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
+import { Button, DatePicker } from "@shopify/ui-extensions/checkout";
 
-import BlockLoader from './BlockLoader.jsx';
-import MethodSelect from './MethodSelect.jsx';
+import BlockLoader from "./BlockLoader.jsx";
+import MethodSelect from "./MethodSelect.jsx";
 
 // import Summary from "./Summary.jsx";
-import LineItemProperties from './LineItemProperties.jsx';
-import DeliveryInstructions from './DeliveryInstructions.jsx';
-import RateProperties from './RateProperties.jsx';
+import LineItemProperties from "./LineItemProperties.jsx";
+import DeliveryInstructions from "./DeliveryInstructions.jsx";
+import RateProperties from "./RateProperties.jsx";
 
 // ! Rendering in two places simultaneously causing react to render unecessarily - could be disrupting app functionality
 // TODO adjust initialisation useEffects to only run when the target is purchase.checkout.block.render
@@ -52,7 +52,7 @@ import RateProperties from './RateProperties.jsx';
 // ? than passing via storage
 
 const MethodSelectRender = reactExtension(
-  'purchase.checkout.contact.render-after',
+  "purchase.checkout.contact.render-after",
   () => <Extension />
 );
 
@@ -115,32 +115,32 @@ function Extension() {
   // const delGroups = useDeliveryGroups()
   // console.log('SHIPPING OPTION: ', delGroups)
 
-  const app_url = 'https://9939-81-103-75-43.ngrok-free.app';
+  const app_url = "https://significant-snap-polyester-left.trycloudflare.com";
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {
     dispatch({
-      type: 'acquired_q_locations',
+      type: "acquired_q_locations",
       all_locations: locations,
     });
   };
 
   const handleSetCollectLocations = (data) => {
     dispatch({
-      type: 'acquired_general_delivery_info',
+      type: "acquired_general_delivery_info",
       data: data,
     });
   };
 
   const handleRemoveSelectedLocation = () => {
     dispatch({
-      type: 'selected_pickup_location_removed',
+      type: "selected_pickup_location_removed",
     });
   };
 
   const handleSelectPickupLocation = (hours, description, location) => {
     dispatch({
-      type: 'selected_pickup_location_added',
+      type: "selected_pickup_location_added",
       hours: hours,
       description: description,
       location: location,
@@ -149,14 +149,14 @@ function Extension() {
 
   const handleConfirmPickupLocation = (dates) => {
     dispatch({
-      type: 'selected_pickup_location_confirmed',
+      type: "selected_pickup_location_confirmed",
       location_dates: dates,
     });
   };
 
   const handleSelectDates = (date, weekday) => {
     dispatch({
-      type: 'selected_dates',
+      type: "selected_dates",
       date: date,
       weekday: weekday,
     });
@@ -164,7 +164,7 @@ function Extension() {
 
   const handleMSReset = () => {
     dispatch({
-      type: 'reset_MS_Checkout',
+      type: "reset_MS_Checkout",
     });
   };
 
@@ -241,18 +241,18 @@ function Extension() {
 
   useEffect(() => {
     const handleInitLoad = async () => {
-      console.log('INITIAL REACT LOAD - RESETTING VALUES');
+      console.log("INITIAL REACT LOAD - RESETTING VALUES");
 
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(cart),
       });
 
       let resBody = await res.json();
-      console.log('Validating Cart (using test data) ', cart, resBody);
+      console.log("Validating Cart (using test data) ", cart, resBody);
       handleSetQLocations(resBody.locations);
 
       // Object.keys(resBody.methods).forEach((key, i) => {
@@ -269,11 +269,11 @@ function Extension() {
 
       setAvailableMethods(resBody.methods);
 
-      handleMethodSelect('pickup', resBody.methods);
+      handleMethodSelect("pickup", resBody.methods);
       setInitLoad(false);
     };
 
-    !!initLoad && extension.target === 'purchase.checkout.contact.render-after'
+    !!initLoad && extension.target === "purchase.checkout.contact.render-after"
       ? handleInitLoad()
       : null;
   }, []);
@@ -299,7 +299,7 @@ function Extension() {
   // }, [localStorage]);
 
   useEffect(() => {
-    console.log('shipping address changed!');
+    console.log("shipping address changed!");
     if (currentShippingAddress.zip) {
       !datePickerInit ? setDatePickerInit(true) : null;
     } else if (!currentShippingAddress.zip) {
@@ -313,8 +313,8 @@ function Extension() {
 
   const cart = lineItems.map((item) => {
     return {
-      variant_id: item.merchandise.id.replace(/\D/g, ''),
-      product_id: item.merchandise.product.id.replace(/\D/g, ''),
+      variant_id: item.merchandise.id.replace(/\D/g, ""),
+      product_id: item.merchandise.product.id.replace(/\D/g, ""),
       quantity: item.quantity,
     };
   });
@@ -326,63 +326,74 @@ function Extension() {
     nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
   useEffect(() => {
-    console.log('++++++++++++++ cs updated: ', cs);
+    console.log("++++++++++++++ cs updated: ", cs);
   }, [cs]);
 
   //use to intercept rogue behaviour that will screw up rates
   useBuyerJourneyIntercept(({ canBlockProgress }) => {
     return canBlockProgress &&
-      attributes['Checkout-Method'] === 'delivery' &&
+      attributes["Checkout-Method"] === "delivery" &&
       !!noDelivery
       ? {
-          behavior: 'block',
-          reason: 'Cannot deliver to this address',
+          behavior: "block",
+          reason: "Cannot deliver to this address",
           perform: (result) => {
-            result.behavior === 'block' ? setShowDeliveryError(true) : null;
+            result.behavior === "block" ? setShowDeliveryError(true) : null;
           },
         }
       : {
-          behavior: 'allow',
+          behavior: "allow",
           perform: () => {
             showDeliveryError ? setShowDeliveryError(false) : null;
           },
         };
   });
+  // ! stop buyer progress if postcode check is ongoing
+
+  useBuyerJourneyIntercept(({ canBlockProgress }) => {
+    return canBlockProgress && !!checkingPostcode
+      ? {
+          behavior: "block",
+          reason: "Checking postcode",
+        }
+      : {
+          behavior: "allow",
+        };
+  });
+
+  useEffect(() => {
+    noDelivery ? setNoDelivery(false) : null;
+    showDeliveryError ? setShowDeliveryError(false) : null
+
+  }, [currentShippingAddress.zip])
 
   const deletePenguinReservation = async () => {
     console.log(attributes);
-    if (attributes?.['Pickup-Penguin-Id']) {
-      console.log('&&&&&&&  penguin reservation in place - should be deleted');
+    if (attributes?.["Pickup-Penguin-Id"]) {
+      console.log("&&&&&&&  penguin reservation in place - should be deleted");
       try {
         await fetch(`${app_url}/pza/delete-locker`, {
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          method: 'POST',
-          body: JSON.stringify({ locker_id: attributes['Pickup-Penguin-Id'] }),
+          method: "POST",
+          body: JSON.stringify({ locker_id: attributes["Pickup-Penguin-Id"] }),
         });
       } catch (error) {
         console.error(
-          `Failed to delete locker order ${attributes['Pickup-Penguin-Id']}`
+          `Failed to delete locker order ${attributes["Pickup-Penguin-Id"]}`
         );
       }
     } else return;
   };
 
+
+
   const handleMethodSelect = async (method, availabilityData) => {
-
     !!noDelivery ? setNoDelivery(false) : null;
-    console.log('handling selected method ', method);
-    await changeShippingAddress({
-      type: 'updateShippingAddress',
-      address: {
-        address1: undefined,
-        city: undefined,
-        zip: undefined,
-      },
-    });
+    console.log("handling selected method ", method);
 
-    if (method === 'pickup') {
+    if (method === "pickup") {
       let x = Object.keys(availabilityData)
         .filter((key) => {
           return availabilityData[key];
@@ -390,35 +401,35 @@ function Extension() {
         .join();
 
       let t = [
-        { key: '_available_methods', value: x },
-        { key: '_deliveryID', value: method.charAt(0).toUpperCase() },
+        { key: "_available_methods", value: x },
+        { key: "_deliveryID", value: method.charAt(0).toUpperCase() },
       ];
 
       console.log(
-        'from method select: ',
+        "from method select: ",
         t,
         availabilityData,
-        '\n',
+        "\n",
         JSON.stringify(lineItems[0].attributes)
       );
       await setCartLineAttr({
-        type: 'updateCartLine',
+        type: "updateCartLine",
         id: lineItems[0].id,
         attributes: t,
       });
       if (cartNote) {
         await changeNote({
-          type: 'removeNote',
+          type: "removeNote",
         });
       }
     } else {
       await setCartLineAttr({
-        type: 'updateCartLine',
+        type: "updateCartLine",
         id: lineItems[0].id,
         attributes: [
           ...lineItems[0].attributes,
           {
-            key: '_deliveryID',
+            key: "_deliveryID",
             value: method.charAt(0).toUpperCase(),
           },
         ],
@@ -427,23 +438,32 @@ function Extension() {
     }
 
     await changeAttributes({
-      type: 'updateAttribute',
-      key: 'Checkout-Method',
+      type: "updateAttribute",
+      key: "Checkout-Method",
       value: method,
     });
     Object.keys(attributes).forEach(async (key) => {
       if (
-        key !== 'Checkout-Method' &&
-        key !== 'Gift-Note' &&
-        key !== 'Customer-Service-Note' &&
-        key !== 'Lolas-CS-Member'
+        key !== "Checkout-Method" &&
+        key !== "Gift-Note" &&
+        key !== "Customer-Service-Note" &&
+        key !== "Lolas-CS-Member"
       ) {
         await changeAttributes({
-          type: 'updateAttribute',
+          type: "updateAttribute",
           key: key,
-          value: '',
+          value: "",
         });
       }
+    });
+    await changeShippingAddress({
+      type: "updateShippingAddress",
+      address: {
+        address1: undefined,
+        address2: undefined,
+        city: undefined,
+        zip: undefined,
+      },
     });
   };
 
@@ -452,7 +472,7 @@ function Extension() {
     const getDeliveryZones = async () => {
       setCheckingPostcode(true);
       let checkBody = {
-        type: 'delivery',
+        type: "delivery",
         postcode: currentShippingAddress.zip,
         cart: cart,
         twoDayDelivery: nextDay,
@@ -460,76 +480,76 @@ function Extension() {
 
       let checkRes = await fetch(`${app_url}/pza/check-postcode-test`, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(checkBody),
       });
 
       let delData = await checkRes.json();
 
-      console.log('DATA CHECK ON POSTCODE ENTRY: ', delData);
+      console.log("DATA CHECK ON POSTCODE ENTRY: ", delData);
 
       const newDelMethod =
-        delData?.delivery?.delivery_zone === 'unavailable' &&
+        delData?.delivery?.delivery_zone === "unavailable" &&
         availableMethods?.shipping === false
           ? null
-          : delData?.delivery?.delivery_zone === 'unavailable' &&
+          : delData?.delivery?.delivery_zone === "unavailable" &&
             availableMethods?.shipping === true
-          ? 'shipping'
-          : 'delivery';
+          ? "shipping"
+          : "delivery";
 
       if (newDelMethod) {
         console.log(`RATE SHOULD BE SET TO ${newDelMethod.toUpperCase()}`);
 
         await changeAttributes({
-          type: 'updateAttribute',
-          key: 'Checkout-Method',
+          type: "updateAttribute",
+          key: "Checkout-Method",
           value: newDelMethod,
         });
         Object.keys(attributes).forEach(async (key) => {
           if (
-            key !== 'Checkout-Method' &&
-            key !== 'Gift-Note' &&
-            key !== 'Customer-Service-Note' &&
-            key !== 'Lolas-CS-Member'
+            key !== "Checkout-Method" &&
+            key !== "Gift-Note" &&
+            key !== "Customer-Service-Note" &&
+            key !== "Lolas-CS-Member"
           ) {
             await changeAttributes({
-              type: 'updateAttribute',
+              type: "updateAttribute",
               key: key,
-              value: '',
+              value: "",
             });
           }
         });
 
         let dz =
-          newDelMethod === 'delivery'
-            ? delData.delivery.delivery_zone.replace(/[^0-9.]/g, '')
+          newDelMethod === "delivery"
+            ? delData.delivery.delivery_zone.replace(/[^0-9.]/g, "")
             : null;
         await setCartLineAttr({
-          type: 'updateCartLine',
+          type: "updateCartLine",
           id: lineItems[0].id,
           attributes: [
             ...lineItems[0].attributes,
             {
-              key: '_deliveryID',
-              value: `${newDelMethod === 'delivery' ? `D%${dz}` : `S`}`,
+              key: "_deliveryID",
+              value: `${newDelMethod === "delivery" ? `D%${dz}` : `S`}`,
             },
           ],
         });
         setCheckingPostcode(false);
       } else {
         // TODO in this condition, the user should be prompted to convert to pickup or choose another address
-        console.log('RATE SHOULD BE SET TO NONE');
+        console.log("RATE SHOULD BE SET TO NONE");
         setCheckingPostcode(false);
         setNoDelivery(true);
         await setCartLineAttr({
-          type: 'updateCartLine',
+          type: "updateCartLine",
           id: lineItems[0].id,
           attributes: [
             ...lineItems[0].attributes,
             {
-              key: '_deliveryID',
+              key: "_deliveryID",
               value: `U`,
             },
           ],
@@ -540,17 +560,17 @@ function Extension() {
 
     currentShippingAddress.zip &&
     availableMethods &&
-    attributes['Checkout-Method'] !== 'pickup'
+    attributes["Checkout-Method"] !== "pickup"
       ? getDeliveryZones()
       : null;
   }, [currentShippingAddress.zip]);
 
   return (
     <>
-      {extension.target === 'purchase.checkout.contact.render-after' && (
+      {extension.target === "purchase.checkout.contact.render-after" && (
         <>
           {initLoad ? (
-            <BlockLoader message={'Loading...'} />
+            <BlockLoader message={"Loading..."} />
           ) : (
             <>
               <MethodSelect
@@ -569,16 +589,18 @@ function Extension() {
                 noDelivery={noDelivery}
                 showDeliveryError={showDeliveryError}
                 availableMethods={availableMethods}
+                currentShippingAddress={currentShippingAddress}
+                checkingPostcode={checkingPostcode}
               />
-              {checkingPostcode && (
+              {/* {checkingPostcode && (
                 <Heading>Processing postcode check...</Heading>
-              )}
+              )} */}
             </>
           )}
         </>
       )}
       {extension.target ===
-      'purchase.checkout.shipping-option-list.render-before' ? (
+      "purchase.checkout.shipping-option-list.render-before" ? (
         <>
           {datePickerInit ? (
             <DateSelect
