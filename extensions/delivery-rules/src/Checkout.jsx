@@ -115,7 +115,7 @@ function Extension() {
   // const delGroups = useDeliveryGroups()
   // console.log('SHIPPING OPTION: ', delGroups)
 
-  const app_url = "https://significant-snap-polyester-left.trycloudflare.com";
+  const app_url = "https://psp-tunisia-am-private.trycloudflare.com";
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {
@@ -212,7 +212,7 @@ function Extension() {
   const changeNote = useApplyNoteChange();
   const cartNote = useNote();
 
-  // console.log("@@@@@@@@@@@@ capabilities ", extension, extension.target);
+   console.log("@@@@@@@@@@@@ lineitems ", JSON.stringify(lineItems));
 
   const attr = useAttributes();
 
@@ -234,6 +234,8 @@ function Extension() {
   //   initLoad
   // );
 
+  console.log('FIRST ITEM PROPS: ',lineItems[0].attributes)
+
   // TODO delete penguin order if reservation confirmed and user hits X button
   // TODO hide reservation banner
 
@@ -241,7 +243,7 @@ function Extension() {
 
   useEffect(() => {
     const handleInitLoad = async () => {
-      console.log("INITIAL REACT LOAD - RESETTING VALUES");
+      //console.log("INITIAL REACT LOAD - RESETTING VALUES");
 
       let res = await fetch(`${app_url}/pza/validate-cart-test`, {
         headers: {
@@ -252,7 +254,7 @@ function Extension() {
       });
 
       let resBody = await res.json();
-      console.log("Validating Cart (using test data) ", cart, resBody);
+      //console.log("Validating Cart (using test data) ", cart, resBody);
       handleSetQLocations(resBody.locations);
 
       // Object.keys(resBody.methods).forEach((key, i) => {
@@ -299,7 +301,7 @@ function Extension() {
   // }, [localStorage]);
 
   useEffect(() => {
-    console.log("shipping address changed!");
+    //console.log("shipping address changed!");
     if (currentShippingAddress.zip) {
       !datePickerInit ? setDatePickerInit(true) : null;
     } else if (!currentShippingAddress.zip) {
@@ -326,7 +328,7 @@ function Extension() {
     nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
   useEffect(() => {
-    console.log("++++++++++++++ cs updated: ", cs);
+    //console.log("++++++++++++++ cs updated: ", cs);
   }, [cs]);
 
   //use to intercept rogue behaviour that will screw up rates
@@ -370,7 +372,7 @@ function Extension() {
   const deletePenguinReservation = async () => {
     console.log(attributes);
     if (attributes?.["Pickup-Penguin-Id"]) {
-      console.log("&&&&&&&  penguin reservation in place - should be deleted");
+     // console.log("&&&&&&&  penguin reservation in place - should be deleted");
       try {
         await fetch(`${app_url}/pza/delete-locker`, {
           headers: {
@@ -390,28 +392,35 @@ function Extension() {
 
 
   const handleMethodSelect = async (method, availabilityData) => {
+
+    // (!) available methods are not being joined to line item when DELIVERY is chosen
+
+    let x = Object.keys(availabilityData)
+    .filter((key) => {
+      return availabilityData[key];
+    })
+    .join();
+
+
+
     !!noDelivery ? setNoDelivery(false) : null;
-    console.log("handling selected method ", method);
+    //console.log("handling selected method ", method);
 
     if (method === "pickup") {
-      let x = Object.keys(availabilityData)
-        .filter((key) => {
-          return availabilityData[key];
-        })
-        .join();
+      
 
       let t = [
         { key: "_available_methods", value: x },
         { key: "_deliveryID", value: method.charAt(0).toUpperCase() },
       ];
 
-      console.log(
-        "from method select: ",
-        t,
-        availabilityData,
-        "\n",
-        JSON.stringify(lineItems[0].attributes)
-      );
+      // console.log(
+      //   "from method select: ",
+      //   t,
+      //   availabilityData,
+      //   "\n",
+      //   JSON.stringify(lineItems[0].attributes)
+      // );
       await setCartLineAttr({
         type: "updateCartLine",
         id: lineItems[0].id,
@@ -488,7 +497,7 @@ function Extension() {
 
       let delData = await checkRes.json();
 
-      console.log("DATA CHECK ON POSTCODE ENTRY: ", delData);
+      //console.log("DATA CHECK ON POSTCODE ENTRY: ", delData);
 
       const newDelMethod =
         delData?.delivery?.delivery_zone === "unavailable" &&
@@ -500,7 +509,7 @@ function Extension() {
           : "delivery";
 
       if (newDelMethod) {
-        console.log(`RATE SHOULD BE SET TO ${newDelMethod.toUpperCase()}`);
+        //console.log(`RATE SHOULD BE SET TO ${newDelMethod.toUpperCase()}`);
 
         await changeAttributes({
           type: "updateAttribute",

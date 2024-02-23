@@ -22013,7 +22013,12 @@ ${errorInfo.componentStack}`);
       currentShippingAddress.zip,
       attributes["Pickup-Location-Id"]
     ]);
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_jsx_runtime8.Fragment, { children: fetching ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(BlockLoader_default, { message: "Getting location dates..." }) : (
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_jsx_runtime8.Fragment, { children: fetching ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+      BlockLoader_default,
+      {
+        message: selectedMethod === "pickup" ? "Getting location dates..." : "Getting delivery dates..."
+      }
+    ) : (
       // {fetching && !minDate ? (
       //   <BlockLoader message={"Getting location dates..."}/>
       // ) : (
@@ -22033,7 +22038,7 @@ ${errorInfo.componentStack}`);
             setMinDate
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+        (selectedMethod !== "pickup" && deliveryType || selectedMethod === "pickup" && attributes["Pickup-Location-Company"] && locationHours) && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           Calendar_default,
           {
             minDate,
@@ -22079,7 +22084,7 @@ ${errorInfo.componentStack}`);
     const appMeta = useAppMetafields();
     const cart = useCartLines();
     const currentShippingAddress = useShippingAddress();
-    const appUrl = `https://significant-snap-polyester-left.trycloudflare.com`;
+    const appUrl = `https://psp-tunisia-am-private.trycloudflare.com`;
     const setCartLineAttr = useApplyCartLinesChange();
     (0, import_react32.useEffect)(() => {
       const types = ["pickup", "shipping", "delivery"];
@@ -22103,7 +22108,7 @@ ${errorInfo.componentStack}`);
           attributes["Pickup-Location-Company"].toLowerCase().replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "").replaceAll(/\s/gm, "-")
         );
       };
-      handleSwitchToPickup();
+      attributes["Pickup-Location-Id"] ? handleSwitchToPickup() : null;
     }, [attributes["Pickup-Location-Id"]]);
     return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_jsx_runtime9.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
       DateSelect_default,

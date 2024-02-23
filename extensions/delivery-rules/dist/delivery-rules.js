@@ -22604,7 +22604,7 @@ ${errorInfo.componentStack}`);
     () => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Extension, {})
   );
   function Extension() {
-    const app_url = "https://significant-snap-polyester-left.trycloudflare.com";
+    const app_url = "https://psp-tunisia-am-private.trycloudflare.com";
     const [checkoutData, dispatch] = (0, import_react46.useReducer)(checkoutDataReducer, {});
     const handleSetQLocations = (locations) => {
       dispatch({
@@ -22676,6 +22676,7 @@ ${errorInfo.componentStack}`);
     const currentShippingAddress = useShippingAddress();
     const changeNote = useApplyNoteChange();
     const cartNote = useNote();
+    console.log("@@@@@@@@@@@@ lineitems ", JSON.stringify(lineItems));
     const attr = useAttributes();
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -22683,9 +22684,9 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
+    console.log("FIRST ITEM PROPS: ", lineItems[0].attributes);
     (0, import_react46.useEffect)(() => {
       const handleInitLoad = () => __async(this, null, function* () {
-        console.log("INITIAL REACT LOAD - RESETTING VALUES");
         let res = yield fetch(`${app_url}/pza/validate-cart-test`, {
           headers: {
             "Content-Type": "application/json"
@@ -22694,7 +22695,6 @@ ${errorInfo.componentStack}`);
           body: JSON.stringify(cart)
         });
         let resBody = yield res.json();
-        console.log("Validating Cart (using test data) ", cart, resBody);
         handleSetQLocations(resBody.locations);
         setAvailableMethods(resBody.methods);
         handleMethodSelect("pickup", resBody.methods);
@@ -22703,7 +22703,6 @@ ${errorInfo.componentStack}`);
       !!initLoad && extension2.target === "purchase.checkout.contact.render-after" ? handleInitLoad() : null;
     }, []);
     (0, import_react46.useEffect)(() => {
-      console.log("shipping address changed!");
       if (currentShippingAddress.zip) {
         !datePickerInit ? setDatePickerInit(true) : null;
       } else if (!currentShippingAddress.zip) {
@@ -22722,7 +22721,6 @@ ${errorInfo.componentStack}`);
     });
     let nextDay = nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
     (0, import_react46.useEffect)(() => {
-      console.log("++++++++++++++ cs updated: ", cs);
     }, [cs]);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
       return canBlockProgress && attributes["Checkout-Method"] === "delivery" && !!noDelivery ? {
@@ -22753,7 +22751,6 @@ ${errorInfo.componentStack}`);
     const deletePenguinReservation = () => __async(this, null, function* () {
       console.log(attributes);
       if (attributes == null ? void 0 : attributes["Pickup-Penguin-Id"]) {
-        console.log("&&&&&&&  penguin reservation in place - should be deleted");
         try {
           yield fetch(`${app_url}/pza/delete-locker`, {
             headers: {
@@ -22771,23 +22768,15 @@ ${errorInfo.componentStack}`);
         return;
     });
     const handleMethodSelect = (method, availabilityData) => __async(this, null, function* () {
+      let x2 = Object.keys(availabilityData).filter((key) => {
+        return availabilityData[key];
+      }).join();
       !!noDelivery ? setNoDelivery(false) : null;
-      console.log("handling selected method ", method);
       if (method === "pickup") {
-        let x2 = Object.keys(availabilityData).filter((key) => {
-          return availabilityData[key];
-        }).join();
         let t2 = [
           { key: "_available_methods", value: x2 },
           { key: "_deliveryID", value: method.charAt(0).toUpperCase() }
         ];
-        console.log(
-          "from method select: ",
-          t2,
-          availabilityData,
-          "\n",
-          JSON.stringify(lineItems[0].attributes)
-        );
         yield setCartLineAttr({
           type: "updateCartLine",
           id: lineItems[0].id,
@@ -22854,10 +22843,8 @@ ${errorInfo.componentStack}`);
           body: JSON.stringify(checkBody)
         });
         let delData = yield checkRes.json();
-        console.log("DATA CHECK ON POSTCODE ENTRY: ", delData);
         const newDelMethod = ((_a = delData == null ? void 0 : delData.delivery) == null ? void 0 : _a.delivery_zone) === "unavailable" && (availableMethods == null ? void 0 : availableMethods.shipping) === false ? null : ((_b = delData == null ? void 0 : delData.delivery) == null ? void 0 : _b.delivery_zone) === "unavailable" && (availableMethods == null ? void 0 : availableMethods.shipping) === true ? "shipping" : "delivery";
         if (newDelMethod) {
-          console.log(`RATE SHOULD BE SET TO ${newDelMethod.toUpperCase()}`);
           yield changeAttributes({
             type: "updateAttribute",
             key: "Checkout-Method",
@@ -22948,3 +22935,4 @@ ${errorInfo.componentStack}`);
     ] });
   }
 })();
+//# sourceMappingURL=delivery-rules.js.map

@@ -52,7 +52,7 @@ function DatePicker() {
 
   const currentShippingAddress = useShippingAddress();
 
-  const appUrl = `https://significant-snap-polyester-left.trycloudflare.com`;
+  const appUrl = `https://psp-tunisia-am-private.trycloudflare.com`;
 
   const setCartLineAttr = useApplyCartLinesChange();
 
@@ -98,7 +98,7 @@ function DatePicker() {
     //   ? handleSwitchToPickup()
     // : null;
 
-    handleSwitchToPickup();
+    attributes["Pickup-Location-Id"] ? handleSwitchToPickup() : null;
     // console.log('attr from useEffect in datepicker: ', attr, attr["Pickup-Location-Id"])
   }, [attributes["Pickup-Location-Id"]]);
 

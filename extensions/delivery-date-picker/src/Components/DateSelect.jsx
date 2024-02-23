@@ -37,7 +37,7 @@ const DateSelect = ({
       //   locationType,
       //   locationHandle
       // );
-     
+
       let nextDayMeta = appMeta.map((meta) => {
         return JSON.parse(meta.metafield.value).next_day_delivery.value;
       });
@@ -193,9 +193,8 @@ const DateSelect = ({
       currentPickupLocationId,
       "\ncurrent location Id in attributes: ",
       attributes["Pickup-Location-Id"]
-
-      );
-      setFetching(true);
+    );
+    setFetching(true);
     if (
       selectedMethod === "pickup" &&
       attributes["Pickup-Location-Id"] &&
@@ -224,11 +223,17 @@ const DateSelect = ({
   return (
     <>
       {fetching ? (
-        <BlockLoader message={"Getting location dates..."}/>
+        <BlockLoader
+          message={
+            selectedMethod === "pickup"
+              ? "Getting location dates..."
+              : "Getting delivery dates..."
+          }
+        />
       ) : (
-      // {fetching && !minDate ? (
-      //   <BlockLoader message={"Getting location dates..."}/>
-      // ) : (
+        // {fetching && !minDate ? (
+        //   <BlockLoader message={"Getting location dates..."}/>
+        // ) : (
         <>
           {selectedMethod !== "pickup" && deliveryData && (
             <DeliveryToggle
@@ -244,19 +249,23 @@ const DateSelect = ({
               setMinDate={setMinDate}
             />
           )}
-          <Calendar
-            minDate={minDate}
-            blackoutDates={blackoutDates}
-            locationHours={locationHours}
-            locationDescription={locationDescription}
-            selectedMethod={selectedMethod}
-            changeAttributes={changeAttributes}
-            delDate={delDate}
-            deliveryType={deliveryType}
-            attributes={attributes}
-            currentShippingAddress={currentShippingAddress}
-      
-          />
+          {((selectedMethod !== "pickup" && deliveryType) ||
+            (selectedMethod === "pickup" &&
+              attributes["Pickup-Location-Company"] &&
+              locationHours)) && (
+            <Calendar
+              minDate={minDate}
+              blackoutDates={blackoutDates}
+              locationHours={locationHours}
+              locationDescription={locationDescription}
+              selectedMethod={selectedMethod}
+              changeAttributes={changeAttributes}
+              delDate={delDate}
+              deliveryType={deliveryType}
+              attributes={attributes}
+              currentShippingAddress={currentShippingAddress}
+            />
+          )}
         </>
       )}
     </>

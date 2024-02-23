@@ -1,7 +1,0 @@
-query RunInput {
-  deliveryCustomization {
-    metafield(namespace: "$app:rename-rates", key: "function-configuration") {
-      value
-    }
-  }
-}
