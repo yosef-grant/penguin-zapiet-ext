@@ -46,13 +46,13 @@ function DatePicker() {
 
   // const [delDate, setDelDate] = useState(null);
 
-  const delDate = useAttributeValues([`${capitalise(selectedMethod)}-Date`]);
+  const delDate = attributes[`${capitalise(selectedMethod)}-Date`];
   const appMeta = useAppMetafields();
   const cart = useCartLines();
 
   const currentShippingAddress = useShippingAddress();
 
-  const appUrl = `https://psp-tunisia-am-private.trycloudflare.com`;
+  const appUrl = `https://founded-ra-nation-beta.trycloudflare.com`;
 
   const setCartLineAttr = useApplyCartLinesChange();
 
@@ -74,12 +74,11 @@ function DatePicker() {
     setAvailableMethods(x);
   }, []);
 
+
+
   useEffect(() => {
     const handleSwitchToPickup = () => {
-      console.log(
-        "PICKUP DATA SHOULD REACT: ",
-        attributes["Pickup-Location-Company"]
-      );
+
 
       setLocationId(attributes["Pickup-Location-Id"]);
       setLocationType(attributes["Pickup-Location-Type"]);

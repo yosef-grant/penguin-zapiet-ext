@@ -115,7 +115,7 @@ function Extension() {
   // const delGroups = useDeliveryGroups()
   // console.log('SHIPPING OPTION: ', delGroups)
 
-  const app_url = "https://psp-tunisia-am-private.trycloudflare.com";
+  const app_url = "https://founded-ra-nation-beta.trycloudflare.com";
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {
@@ -212,7 +212,7 @@ function Extension() {
   const changeNote = useApplyNoteChange();
   const cartNote = useNote();
 
-   console.log("@@@@@@@@@@@@ lineitems ", JSON.stringify(lineItems));
+  //  console.log("@@@@@@@@@@@@ lineitems ", JSON.stringify(lineItems));
 
   const attr = useAttributes();
 
@@ -234,7 +234,7 @@ function Extension() {
   //   initLoad
   // );
 
-  console.log('FIRST ITEM PROPS: ',lineItems[0].attributes)
+ 
 
   // TODO delete penguin order if reservation confirmed and user hits X button
   // TODO hide reservation banner
@@ -409,22 +409,16 @@ function Extension() {
     if (method === "pickup") {
       
 
-      let t = [
+      let t = [ ...lineItems[0].attributes,
         { key: "_available_methods", value: x },
         { key: "_deliveryID", value: method.charAt(0).toUpperCase() },
       ];
 
-      // console.log(
-      //   "from method select: ",
-      //   t,
-      //   availabilityData,
-      //   "\n",
-      //   JSON.stringify(lineItems[0].attributes)
-      // );
+
       await setCartLineAttr({
         type: "updateCartLine",
         id: lineItems[0].id,
-        attributes: t,
+        attributes: [...t],
       });
       if (cartNote) {
         await changeNote({
@@ -510,7 +504,7 @@ function Extension() {
 
       if (newDelMethod) {
         //console.log(`RATE SHOULD BE SET TO ${newDelMethod.toUpperCase()}`);
-
+        // * if current and previous checkout method === "delivery", don't wipe delivery attr
         await changeAttributes({
           type: "updateAttribute",
           key: "Checkout-Method",

@@ -24,19 +24,19 @@ const DeliveryTypeSelect = ({
   attributes,
   setMinDate,
 }) => {
-  console.log(
-    "rendered del type select: ",
-    deliveryType,
-    deliveryData,
-    availableMethods
-  );
+  // console.log(
+  //   "rendered del type select: ",
+  //   deliveryType,
+  //   deliveryData,
+  //   availableMethods
+  // );
 
-  console.log(
-    "from delivery toggle: ",
-    cart[0].attributes,
-    "\nAvailable methods: ",
-    availableMethods
-  );
+  // console.log(
+  //   "from delivery toggle: ",
+  //   cart[0].attributes,
+  //   "\nAvailable methods: ",
+  //   availableMethods
+  // );
 
   return (
     <View padding={["none", "none", "base", "none"]}>

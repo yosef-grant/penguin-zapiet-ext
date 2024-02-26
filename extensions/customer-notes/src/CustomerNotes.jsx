@@ -27,15 +27,15 @@ const DeliveryInstructions = () => {
   const [gNoteVisible, setGNoteVisible] = useState(
     giftNote && giftNote !== "" ? true : false
   );
-  console.log(
-    "method from note: ",
-    currentMethod,
-    currentNote,
-    "\nGift note: ",
-    giftNote,
-    "\nis note visible? ",
-    gNoteVisible
-  );
+  // console.log(
+  //   "method from note: ",
+  //   currentMethod,
+  //   currentNote,
+  //   "\nGift note: ",
+  //   giftNote,
+  //   "\nis note visible? ",
+  //   gNoteVisible
+  // );
 
 
   const handleNoteChange = async (val) => {
