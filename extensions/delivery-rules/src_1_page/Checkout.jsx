@@ -252,7 +252,7 @@ function Extension() {
       });
 
       let resBody = await res.json();
-      console.log("Validating Cart (using test data) ", cart, resBody);
+      //console.log("Validating Cart (using test data) ", cart, resBody);
       handleSetQLocations(resBody.locations);
 
       // Object.keys(resBody.methods).forEach((key, i) => {
@@ -267,18 +267,49 @@ function Extension() {
 
       // console.log("heres the methods: ", t);
 
-      handleMethodSelect("pickup", resBody.methods);
       setAvailableMethods(resBody.methods);
 
+      handleMethodSelect("pickup", resBody.methods);
       setInitLoad(false);
     };
 
-    !!initLoad && !availableMethods
+    !!initLoad && extension.target === "purchase.checkout.contact.render-after"
       ? handleInitLoad()
       : null;
   }, []);
 
+  // useEffect(() => {
+  //   console.log("local storage has been updated!");
 
+  //   const checkStorage = async() => {
+  //     let t = await localStorage.read('selected_location_info');
+
+  //     console.log('checking storage... date picker initialised? ', datePickerInit, 'storage contents: ', t)
+  //     if (t) {
+  //       console.log('location data is still present: ', t);
+  //       setDatePickerInit(true)
+  //     }
+  //     else {
+  //       console.log('location data removed!')
+  //       datePickerInit ? setDatePickerInit(false) : null;
+  //     }
+  //   }
+
+  //   checkStorage();
+  // }, [localStorage]);
+
+  // useEffect(() => {
+  //   //console.log("shipping address changed!");
+  //   if (currentShippingAddress.zip) {
+  //     !datePickerInit ? setDatePickerInit(true) : null;
+  //   } else if (!currentShippingAddress.zip) {
+  //     datePickerInit ? setDatePickerInit(false) : null;
+  //   }
+  // }, [currentShippingAddress.zip]);
+
+  // initial validation
+
+  //console.table(attributes);
 
   const cart = lineItems.map((item) => {
     return {

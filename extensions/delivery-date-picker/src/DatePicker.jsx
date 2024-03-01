@@ -12,6 +12,8 @@ import {
   useApplyAttributeChange,
   useShippingAddress,
   useApplyCartLinesChange,
+  useBuyerJourney,
+  useBuyerJourneyIntercept,
 } from "@shopify/ui-extensions-react/checkout";
 import DateSelect from "./Components/DateSelect.jsx";
 
@@ -44,19 +46,21 @@ function DatePicker() {
 
   let attrStr = JSON.stringify(attributes);
 
-  // const [delDate, setDelDate] = useState(null);
-
   const delDate = attributes[`${capitalise(selectedMethod)}-Date`];
   const appMeta = useAppMetafields();
   const cart = useCartLines();
 
   const currentShippingAddress = useShippingAddress();
 
-  const appUrl = `https://founded-ra-nation-beta.trycloudflare.com`;
+  const appUrl = `https://forestry-seeds-apple-picked.trycloudflare.com`;
 
   const setCartLineAttr = useApplyCartLinesChange();
 
-  // TODO locations dont update when swtiched from locations component
+  
+
+
+
+  // (TODO) locations dont update when swtiched from locations component
   // * Provide DELIVERY Availability to DatePicker
   useEffect(() => {
     const types = ["pickup", "shipping", "delivery"];
@@ -74,12 +78,8 @@ function DatePicker() {
     setAvailableMethods(x);
   }, []);
 
-
-
   useEffect(() => {
     const handleSwitchToPickup = () => {
-
-
       setLocationId(attributes["Pickup-Location-Id"]);
       setLocationType(attributes["Pickup-Location-Type"]);
       setLocationHandle(
@@ -90,63 +90,27 @@ function DatePicker() {
       );
     };
 
-    // selectedMethod === 'pickup' &&
-    // attributes['Pickup-Location-Id'] &&
-    // attributes['Pickup-Location-Type'] &&
-    // attributes['Pickup-Location-Company']
-    //   ? handleSwitchToPickup()
-    // : null;
-
     attributes["Pickup-Location-Id"] ? handleSwitchToPickup() : null;
-    // console.log('attr from useEffect in datepicker: ', attr, attr["Pickup-Location-Id"])
   }, [attributes["Pickup-Location-Id"]]);
-
-  // const locationId = useAttributeValues(["Pickup-Location-Id"])[0];
-
-  // const locationType = useAttributeValues(["Pickup-Location-Type"])[0];
-
-  // const locationHandle = useAttributeValues(["Pickup-Location-Company"])[0]
-  //   .toLowerCase()
-  //   .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "")
-  //   .replaceAll(/\s/gm, "-");
 
   return (
     <View>
-      {/* <Heading>{`DATEPICKER for ${selectedMethod}`}</Heading> */}
       <>
-      <DateSelect
-        selectedMethod={selectedMethod}
-        locationId={locationId}
-        locationType={locationType}
-        locationHandle={locationHandle}
-        appMeta={appMeta}
-        cart={cart}
-        appUrl={appUrl}
-        changeAttributes={changeAttributes}
-        delDate={delDate}
-        currentShippingAddress={currentShippingAddress}
-        setCartLineAttr={setCartLineAttr}
-        attributes={attributes}
-        availableMethods={availableMethods}
-      />
-        {/* {((selectedMethod === "pickup" && locationId && locationType) ||
-          (selectedMethod !== "pickup" && currentShippingAddress.zip)) && (
-          <DateSelect
-            selectedMethod={selectedMethod}
-            locationId={locationId}
-            locationType={locationType}
-            locationHandle={locationHandle}
-            appMeta={appMeta}
-            cart={cart}
-            appUrl={appUrl}
-            changeAttributes={changeAttributes}
-            delDate={delDate}
-            currentShippingAddress={currentShippingAddress}
-            setCartLineAttr={setCartLineAttr}
-            attributes={attributes}
-            availableMethods={availableMethods}
-          />
-        )} */}
+        <DateSelect
+          selectedMethod={selectedMethod}
+          locationId={locationId}
+          locationType={locationType}
+          locationHandle={locationHandle}
+          appMeta={appMeta}
+          cart={cart}
+          appUrl={appUrl}
+          changeAttributes={changeAttributes}
+          delDate={delDate}
+          currentShippingAddress={currentShippingAddress}
+          setCartLineAttr={setCartLineAttr}
+          attributes={attributes}
+          availableMethods={availableMethods}
+        />
       </>
     </View>
   );

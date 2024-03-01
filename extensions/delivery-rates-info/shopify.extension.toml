@@ -7,35 +7,37 @@ api_version = "2024-01"
 
 [[extensions]]
 type = "ui_extension"
-name = "Delivery Date Picker"
-handle = "delivery-date-picker"
+name = "Delivery Rates Info"
+handle = "delivery-rates-info"
 
 # Controls where in Shopify your extension will be injected,
 # and the file that contains your extension’s source code. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/extension-targets-overview
 
 [[extensions.targeting]]
-module = "./src/DatePicker.jsx"
-target = "purchase.checkout.shipping-option-list.render-before"
+module = "./src/RateInfo.jsx"
+target = "purchase.checkout.shipping-option-item.details.render"
 
 [extensions.capabilities]
 # Gives your extension access to directly query Shopify’s storefront API.
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#api-access
 api_access = true
-block_progress = true
 
 # Gives your extension access to make external network calls, using the
 # JavaScript `fetch()` API. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#network-access
- network_access = true
+# network_access = true
 
 # Loads metafields on checkout resources, including the cart,
 # products, customers, and more. Learn more:
 # https://shopify.dev/docs/api/checkout-ui-extensions/unstable/configuration#metafields
 
-[[extensions.metafields]]
-namespace="apicbase"
-key="product_attributes"
+# [[extensions.metafields]]
+# namespace = "my_namespace"
+# key = "my_key"
+# [[extensions.metafields]]
+# namespace = "my_namespace"
+# key = "my_other_key"
 
 # Defines settings that will be collected from merchants installing
 # your extension. Learn more:

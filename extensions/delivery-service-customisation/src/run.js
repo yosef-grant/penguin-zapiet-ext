@@ -64,7 +64,7 @@ export function run(input) {
       x = title.replace(/[^\)]*$/gm, "");
     } else if (type === "pickup") {
       x = title.replace(/\s\[.*/gm, "");
-    } else x = title;
+    } else x = title.replace(/\sshipping(.*)/gm, '');
     return x;
   };
 
@@ -115,7 +115,7 @@ export function run(input) {
         break;
       // ! change for live
       case "S":
-        searchTerm = "standard";
+        searchTerm = "shipping";
         break;
       case "U":
         searchTerm = "unavailable";
@@ -131,6 +131,8 @@ export function run(input) {
       searchTerm,
       deliveryStr.length > 1 ? deliveryStr[1] : null
     );
+
+    console.log('HERES THE FINAL OBJ: ', JSON.stringify(p))
 
     let showDelivery = Object.keys(p).map((key) => {
       if (p[key].remove === true) {

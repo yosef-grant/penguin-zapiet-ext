@@ -28,6 +28,7 @@ const DateSelect = ({
   const [deliveryData, setDeliveryData] = useState(null);
   const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = useState(null);
   const [currentPickupLocationId, setCurrentPickupLocationId] = useState(null);
+  const [penguinCart, setPenguinCart] = useState(null);
 
   useEffect(() => {
     const getPickupDates = async () => {
@@ -75,8 +76,14 @@ const DateSelect = ({
         body: JSON.stringify(resBody),
       });
       let data = await res.json();
+
       console.log("dates for pickup location!", data, "\n", resBody);
 
+      attributes["Pickup-Location-Type"] === "lockers"
+        ? setPenguinCart(data.cartInfo)
+        : attributes["Pickup-Location-Type"] !== "lockers" && penguinCart
+        ? setPenguinCart(null)
+        : null;
       // let minDay = format(
       //   getDay(new Date(data.minDate)) + 1,
       //   'EEEE'
@@ -144,6 +151,17 @@ const DateSelect = ({
           "current postcode: ",
           currentShippingAddress.zip
         );
+        let t = [
+          ...cart[0].attributes,
+          { key: "_ZapietId", value: `M=S&D=${new Date(delData.shipping.min_date).toISOString()}` },
+        ];
+        await setCartLineAttr({
+          type: "updateCartLine",
+          id: cart[0].id,
+          attributes: [...t]
+        });
+
+        console.log('HERES THE CART FROM DATEPICKER: ', JSON.stringify(cart))
 
         setDeliveryData(delData);
         if (
@@ -264,6 +282,10 @@ const DateSelect = ({
               deliveryType={deliveryType}
               attributes={attributes}
               currentShippingAddress={currentShippingAddress}
+              setCartLineAttr={setCartLineAttr}
+              cart={cart}
+              penguinCart={penguinCart}
+              appUrl={appUrl}
             />
           )}
         </>

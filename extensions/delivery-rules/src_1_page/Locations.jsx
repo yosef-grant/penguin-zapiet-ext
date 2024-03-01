@@ -20,7 +20,6 @@ import {
   TextBlock,
   SkeletonTextBlock,
   Divider,
-  BlockLayout,
 } from "@shopify/ui-extensions-react/checkout";
 import { InlineLayout, InlineSpacer } from "@shopify/ui-extensions/checkout";
 import React, { useEffect, useState } from "react";
@@ -61,8 +60,6 @@ const Locations = ({
   const [searchLocationQuery, setSearchLocationQuery] = useState(null);
   const [searchPostcodeQuery, setSearchPostcodeQuery] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [selectedPickupLocation, setSelectedPickupLocation] = useState(null);
-
   const [filteredLocations, setFilteredLocations] = useState(
     checkoutData.pickup.qCollectLocations
   );
@@ -77,13 +74,8 @@ const Locations = ({
   const handleLocationSelect = async (val) => {
     setSelectedChoice(val);
     let targetLocation = checkoutData.pickup.qCollectLocations.filter(
-      (location) =>
-        parseInt(location.id) === parseInt(val.replace(/[^0-9]/g, ""))
+      (location) => location.id === parseInt(val.replace(/[^0-9]/g, ""))
     );
-
-    setSelectedPickupLocation(targetLocation[0]);
-
-    console.log("HERE IS THE TARGET LOCATION: ", targetLocation);
 
     let targetLocationAddr = {
       address1: targetLocation[0].address_line_1,
@@ -289,53 +281,53 @@ const Locations = ({
     return `${firstLetter}${singular} Collection`;
   };
 
-  const getShippingRates = async () => {
+
+
+  const getShippingRates = async() => {
+
     const myHeaders = new Headers();
-    myHeaders.append(
-      "Intuitive-Partner-Api-Key",
-      "e6c32bf8-2303-488d-b851-c6e277a6d1c3"
-    );
-    myHeaders.append(
-      "Intuitive-Account-Api-Key",
-      "ae6b7232-22eb-4779-ab23-980205cde95c"
-    );
+    myHeaders.append("Intuitive-Partner-Api-Key", "e6c32bf8-2303-488d-b851-c6e277a6d1c3");
+    myHeaders.append("Intuitive-Account-Api-Key", "ae6b7232-22eb-4779-ab23-980205cde95c");
     myHeaders.append("Content-Type", "application/json");
-
+    
     const raw = JSON.stringify({
-      origin: {
-        country: "GB",
-        province: "ENG",
-        postal_code: "NW10 7NH",
+      "origin": {
+        "country": "GB",
+        "province": "ENG",
+        "postal_code": "NW10 7NH"
       },
-      destination: {
-        address_1: "54 london",
-        address_2: "",
-        city: "London",
-        province_code: "ENG",
-        country: "GB",
-        postal_code: "NW11 9QS",
+      "destination": {
+        "address_1": "54 london",
+        "address_2": "",
+        "city": "London",
+        "province_code": "ENG",
+        "country": "GB",
+        "postal_code": "NW11 9QS"
       },
-      products: [
+      "products": [
         {
-          quantity: 1,
-          product_id: 7600812818626,
-          variant_id: 42840933400770,
-        },
+          "quantity": 1,
+          "product_id": 7600812818626,
+          "variant_id": 42840933400770
+        }
       ],
-      currency: "GBP",
+      "currency": "GBP"
     });
-
+    
     const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: raw,
-      redirect: "follow",
+      redirect: "follow"
     };
 
-    let y = await fetch("https://intuitiveshipping.io/rating", requestOptions);
+
+    let y = await fetch('https://intuitiveshipping.io/rating', requestOptions);
 
     console.log(y);
-  };
+
+
+  }
 
   return (
     <View padding={["base", "none", "base", "none"]}>
@@ -353,7 +345,7 @@ const Locations = ({
             onInput={(val) => handleInput(val, "location")}
             value={searchLocationQuery}
           />
-          <Divider direction={"block"} />
+          <Divider direction={"block"}/>
           <View>
             <InlineLayout spacing="extraTight" columns={["fill", 45]}>
               <TextField
@@ -374,7 +366,7 @@ const Locations = ({
         </InlineLayout>
       </Form>
       <ScrollView
-        maxBlockSize={310}
+        maxBlockSize={280}
         hint={{ type: "pill", content: "Scroll for more options" }}
         direction="block"
       >
@@ -411,82 +403,37 @@ const Locations = ({
                 </InlineLayout>
               }
               tertiaryContent={getLocationType(location.custom_attribute_1)}
-              details={
-                selectedPickupLocation &&
-                location.id === selectedPickupLocation.id ? (
-                  <InlineLayout
-                    padding={["extraTight", "none", "base", "none"]}
-                    columns={[135, "fill"]}
-                    spacing={"loose"}
-                  >
-                    <View padding={["none", "none", "none", "tight"]}>
-                      <Heading>Opening Hours</Heading>
-                      <View padding={["extraTight", "none", "none", "none"]}>
-                        <BlockLayout>
-                          {weekdays.map((weekday, i) => (
-                            <View key={`${weekday}${i}`} position={"relative"}>
-                              <InlineLayout
-                                spacing="extraTight"
-                                blockAlignment="center"
-                                columns={["auto", "fill"]}
-                                inlineAlignment={"end"}
-                              >
-                                <Text size={"base"} emphasis="bold">
-                                  {`${weekday.slice(0, 3)}: `}
-                                </Text>
-                                <Text size={"base"}>
-                                  {`${
-                                    selectedPickupLocation.meta_hours[
-                                      `${weekday.toLowerCase()}_opening_hours`
-                                    ]
-                                  } 
-                            `}
-                                </Text>
-                              </InlineLayout>
-                            </View>
-                          ))}
-                        </BlockLayout>
-                      </View>
-                    </View>
-                    <View>
-                      <Heading>Where to find</Heading>
-                      <TextBlock>
-                        {selectedPickupLocation.meta_description}
-                      </TextBlock>
-                    </View>
-                  </InlineLayout>
-                ) : // <Grid rows={["fill"]} columns={[`${25}%`, `${75}%`]}>
-                //   <GridItem columnSpan={1} rowSpan={1}>
-                //     <List marker={"none"} spacing="tight">
-                //       {weekdays.map((weekday, i) => (
-                //         <ListItem key={`${weekday}${i}`}>
-                //           <Text size={"small"} emphasis="bold">
-                //             {`${weekday.slice(0, 3)}: `}
-                //           </Text>
-                //           <Text size="small">
-                //             {`${
-                //               selectedPickupLocation.meta_hours[
-                //                 `${weekday.toLowerCase()}_opening_hours`
-                //               ].open
-                //             } - ${
-                //               selectedPickupLocation.meta_hours[
-                //                 `${weekday.toLowerCase()}_opening_hours`
-                //               ].close
-                //             }
-                //             `}
-                //           </Text>
-                //         </ListItem>
-                //       ))}
-                //     </List>
-                //   </GridItem>
-                //   <GridItem>
-                //     <TextBlock size="small">
-                //       {selectedPickupLocation.meta_description}
-                //     </TextBlock>
-                //   </GridItem>
-                // </Grid>
-                null
-              }
+              // details={
+              //   selectedLocation ? (
+              //     <Grid rows={["fill"]} columns={[`${25}%`, `${75}%`]}>
+              //       <GridItem columnSpan={1} rowSpan={1}>
+              //         <List marker={"none"} spacing="tight">
+              //           {weekdays.map((weekday, i) => (
+              //             <ListItem key={`${weekday}${i}`}>
+              //               <Text size={"small"} emphasis="bold">
+              //                 {`${weekday.slice(0, 3)}: `}
+              //               </Text>
+              //               <Text size="small">
+              //                 {
+              //                   selectedLocation.hours[
+              //                     `${weekday.toLowerCase()}_opening_hours`
+              //                   ]
+              //                 }
+              //               </Text>
+              //             </ListItem>
+              //           ))}
+              //         </List>
+              //       </GridItem>
+              //       <GridItem>
+              //         <TextBlock size="small">
+              //           {selectedLocation.description}
+              //         </TextBlock>
+              //       </GridItem>
+              //     </Grid>
+              //   ) : (
+              //     <SkeletonTextBlock size="small" lines={7} />
+              //   )
+              // }
             >
               <Text appearance="decorative">
                 {getLocationName(location.company_name)}
