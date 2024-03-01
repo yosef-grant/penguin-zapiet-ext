@@ -52,7 +52,7 @@ function DatePicker() {
 
   const currentShippingAddress = useShippingAddress();
 
-  const appUrl = `https://forestry-seeds-apple-picked.trycloudflare.com`;
+  const appUrl = `https://listening-girls-linked-completed.trycloudflare.com`;
 
   const setCartLineAttr = useApplyCartLinesChange();
 

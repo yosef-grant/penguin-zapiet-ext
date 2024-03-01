@@ -1,8 +1,8 @@
-import { Heading } from "@shopify/ui-extensions-react/checkout";
-import React, { useEffect, useState } from "react";
-import Calendar from "./Calendar.jsx";
-import DeliveryToggle from "./DeliveryToggle.jsx";
-import BlockLoader from "../../../delivery-rules/src/BlockLoader.jsx";
+import { Heading } from '@shopify/ui-extensions-react/checkout';
+import React, { useEffect, useState } from 'react';
+import Calendar from './Calendar.jsx';
+import DeliveryToggle from './DeliveryToggle.jsx';
+import BlockLoader from '../../../delivery-rules/src/BlockLoader.jsx';
 
 const DateSelect = ({
   selectedMethod,
@@ -39,72 +39,53 @@ const DateSelect = ({
       //   locationHandle
       // );
 
+      !fetching ? setFetching(true) : null;
+
       let nextDayMeta = appMeta.map((meta) => {
         return JSON.parse(meta.metafield.value).next_day_delivery.value;
       });
       let nextDay =
         nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
-      // let selectedLocation = checkoutData.pickup.qCollectLocations.filter(location => {
-      //   return location.postal_code === currentShippingAddress.zip
-      // })
 
-      console.log("IS PRODUCT NEXT DAY? ", nextDay);
+      console.log('IS PRODUCT NEXT DAY? ', nextDay);
 
       let resBody = {
         cart: cart,
-        locationId: attributes["Pickup-Location-Id"],
-        locationType: attributes["Pickup-Location-Type"],
-        locationHandle: attributes["Pickup-Location-Company"]
+        locationId: attributes['Pickup-Location-Id'],
+        locationType: attributes['Pickup-Location-Type'],
+        locationHandle: attributes['Pickup-Location-Company']
           .toLowerCase()
-          .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "")
-          .replaceAll(/\s/gm, "-"),
+          .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, '')
+          .replaceAll(/\s/gm, '-'),
         twoDayDelivery: nextDay,
       };
-      // let resBody = {
-      //   cart: cart,
-      //   locationId: locationId,
-      //   locationType: locationType,
-      //   locationHandle: locationHandle,
-      //   twoDayDelivery: nextDay,
-      // };
+ 
       let res = await fetch(`${appUrl}/pza/pickup-dates-test`, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify(resBody),
       });
       let data = await res.json();
 
-      console.log("dates for pickup location!", data, "\n", resBody);
+      console.log('dates for pickup location!', data, '\n', resBody);
 
-      attributes["Pickup-Location-Type"] === "lockers"
+      attributes['Pickup-Location-Type'] === 'lockers'
         ? setPenguinCart(data.cartInfo)
-        : attributes["Pickup-Location-Type"] !== "lockers" && penguinCart
+        : attributes['Pickup-Location-Type'] !== 'lockers' && penguinCart
         ? setPenguinCart(null)
         : null;
-      // let minDay = format(
-      //   getDay(new Date(data.minDate)) + 1,
-      //   'EEEE'
-      // ).toLowerCase();
 
-      // let x = {
-      //   id: store.location.id,
-      //   is_locker:
-      //     store.location.custom_attribute_1 === "lockers" ? true : false,
-      //   store_hours: store.hours,
-      // };
-      // setPickupLocationInfo(x);
-      // setMethodData(data);
 
       setLocationDescription(data.description);
       setLocationHours(data.hours);
       setBlackoutDates(data.blackout_dates);
       setMinDate(data.minDate);
 
-      setCurrentPickupLocationId(attributes["Pickup-Location-Id"]);
-      console.log("new min date: ", minDate);
+      setCurrentPickupLocationId(attributes['Pickup-Location-Id']);
+      console.log('new min date: ', minDate);
       setFetching(false);
     };
 
@@ -129,7 +110,7 @@ const DateSelect = ({
           nextDayMeta.includes(1) || nextDayMeta.includes(null) ? true : false;
 
         let checkBody = {
-          type: "delivery",
+          type: 'delivery',
           postcode: currentShippingAddress.zip,
           cart: cart,
           twoDayDelivery: nextDay,
@@ -137,54 +118,57 @@ const DateSelect = ({
 
         let checkRes = await fetch(`${appUrl}/pza/check-postcode-test`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(checkBody),
         });
         let delData = await checkRes.json();
 
         console.log(
-          "Postcode availability data from date select: ",
+          'Postcode availability data from date select: ',
           delData,
           cart[0].attributes[0].value,
-          "current postcode: ",
+          'current postcode: ',
           currentShippingAddress.zip
         );
         let t = [
           ...cart[0].attributes,
-          { key: "_ZapietId", value: `M=S&D=${new Date(delData.shipping.min_date).toISOString()}` },
+          {
+            key: '_ZapietId',
+            value: `M=S&D=${new Date(delData.shipping.min_date).toISOString()}`,
+          },
         ];
         await setCartLineAttr({
-          type: "updateCartLine",
+          type: 'updateCartLine',
           id: cart[0].id,
-          attributes: [...t]
+          attributes: [...t],
         });
 
-        console.log('HERES THE CART FROM DATEPICKER: ', JSON.stringify(cart))
+        console.log('HERES THE CART FROM DATEPICKER: ', JSON.stringify(cart));
 
         setDeliveryData(delData);
         if (
-          attributes["Checkout-Method"] === "delivery" &&
-          delData.delivery.delivery_zone !== "unavailable"
+          attributes['Checkout-Method'] === 'delivery' &&
+          delData.delivery.delivery_zone !== 'unavailable'
         ) {
           setBlackoutDates(delData.delivery.blackouts);
           setMinDate(delData.delivery.min_date);
         } else if (
-          attributes["Checkout-Method"] === "delivery" &&
-          delData.delivery.delivery_zone === "unavailable"
+          attributes['Checkout-Method'] === 'delivery' &&
+          delData.delivery.delivery_zone === 'unavailable'
         ) {
           setBlackoutDates(delData.shipping.blackouts);
           setMinDate(delData.shipping.min_date);
-        } else if (attributes["Checkout-Method"] === "shipping") {
+        } else if (attributes['Checkout-Method'] === 'shipping') {
           setBlackoutDates(delData.shipping.blackouts);
           setMinDate(delData.shipping.min_date);
         }
 
         setDeliveryType(
-          delData.delivery.delivery_zone === "unavailable"
-            ? "postal"
-            : "driver-delivery"
+          delData.delivery.delivery_zone === 'unavailable'
+            ? 'postal'
+            : 'driver-delivery'
         );
       }
 
@@ -195,9 +179,9 @@ const DateSelect = ({
       // }
       else {
         setDeliveryType(
-          attributes["Checkout-Method"] === "delivery"
-            ? "driver-delivery"
-            : "postal"
+          attributes['Checkout-Method'] === 'delivery'
+            ? 'driver-delivery'
+            : 'postal'
         );
       }
 
@@ -207,28 +191,28 @@ const DateSelect = ({
     };
 
     console.log(
-      "from DATESELECT - current pickup id in state: ",
+      'from DATESELECT - current pickup id in state: ',
       currentPickupLocationId,
-      "\ncurrent location Id in attributes: ",
-      attributes["Pickup-Location-Id"]
+      '\ncurrent location Id in attributes: ',
+      attributes['Pickup-Location-Id']
     );
-    setFetching(true);
+    // setFetching(true);
     if (
-      selectedMethod === "pickup" &&
-      attributes["Pickup-Location-Id"] &&
-      currentPickupLocationId !== attributes["Pickup-Location-Id"]
+      selectedMethod === 'pickup' &&
+      attributes['Pickup-Location-Id'] &&
+      currentPickupLocationId !== attributes['Pickup-Location-Id']
     ) {
       console.log(
-        `getting PICKUP DATA for ${attributes["Pickup-Location-Company"]}`
+        `getting PICKUP DATA for ${attributes['Pickup-Location-Company']}`
       );
       getPickupDates();
-    } else if (selectedMethod !== "pickup" && currentShippingAddress.zip) {
+    } else if (selectedMethod !== 'pickup' && currentShippingAddress.zip) {
       console.log(
-        "refreshing DELIVERY DATA: ",
+        'refreshing DELIVERY DATA: ',
         selectedMethod,
-        "\n postcode in state: ",
+        '\n postcode in state: ',
         currentDeliveryPostcode,
-        "\npostcode in shopify: ",
+        '\npostcode in shopify: ',
         currentShippingAddress.zip
       );
       getDeliveryDates();
@@ -236,16 +220,16 @@ const DateSelect = ({
   }, [
     selectedMethod,
     currentShippingAddress.zip,
-    attributes["Pickup-Location-Id"],
+    attributes['Pickup-Location-Id'],
   ]);
   return (
     <>
       {fetching ? (
         <BlockLoader
           message={
-            selectedMethod === "pickup"
-              ? "Getting location dates..."
-              : "Getting delivery dates..."
+            selectedMethod === 'pickup'
+              ? 'Getting location dates...'
+              : 'Getting delivery dates...'
           }
         />
       ) : (
@@ -253,7 +237,7 @@ const DateSelect = ({
         //   <BlockLoader message={"Getting location dates..."}/>
         // ) : (
         <>
-          {selectedMethod !== "pickup" && deliveryData && (
+          {selectedMethod !== 'pickup' && deliveryData && (
             <DeliveryToggle
               deliveryType={deliveryType}
               setDeliveryType={setDeliveryType}
@@ -267,9 +251,9 @@ const DateSelect = ({
               setMinDate={setMinDate}
             />
           )}
-          {((selectedMethod !== "pickup" && deliveryType) ||
-            (selectedMethod === "pickup" &&
-              attributes["Pickup-Location-Company"] &&
+          {((selectedMethod !== 'pickup' && deliveryType) ||
+            (selectedMethod === 'pickup' &&
+              attributes['Pickup-Location-Company'] &&
               locationHours)) && (
             <Calendar
               minDate={minDate}

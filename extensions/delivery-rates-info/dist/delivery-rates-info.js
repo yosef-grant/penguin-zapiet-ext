@@ -19554,8 +19554,9 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
-    console.log("FROM RATES DESC: ", JSON.stringify(cart[0].attributes));
+    console.log(JSON.stringify(cart[0].attributes));
     (0, import_react12.useEffect)(() => {
+      console.log("FETCHING RATES");
       const getRateInfo = () => __async(this, null, function* () {
         const {
           data: {
@@ -19607,20 +19608,24 @@ ${errorInfo.componentStack}`);
       });
       getRateInfo();
     }, []);
-    (0, import_react12.useEffect)(() => {
-      if (cart[0].attributes.filter(
-        (attribute) => attribute.key === "_deliveryID"
-      ) && attributes["Checkout-Method"] === "delivery" && rateInfo) {
-        let delZone = cart[0].attributes.filter((attribute) => attribute.key === "_deliveryID").map((filteredVal) => {
-          return filteredVal.value;
-        }).join("").charAt(2);
+    const getRateDescription = () => {
+      let delZone = cart[0].attributes.filter((attribute) => attribute.key === "_deliveryID").map((filteredVal) => {
+        return filteredVal.value;
+      }).join("").charAt(2);
+      if (delZone) {
         let shippingTargetTitle = shippingTarget.shippingOptionTarget.title;
         let targetRateGroup = rateInfo[`zone-${delZone}`];
-        let t = targetRateGroup.filter((rate) => shippingTargetTitle.includes(rate.time.value));
-        t ? setRateDescription(t[0].description.value) : null;
+        console.log("heres the currently selected rate: ", shippingTargetTitle, "\nheres the related group: ", targetRateGroup);
+        let t = targetRateGroup.filter(
+          (rate) => shippingTargetTitle && shippingTargetTitle.includes(rate.time.value)
+        );
+        console.log("heres t from function: ", t[0]);
+        return t[0] ? t[0].description.value : null;
+      } else {
+        return;
       }
-    }, [rateInfo, cart]);
-    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: rateDescription && shippingTarget.isTargetSelected && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: rateDescription }) });
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_jsx_runtime4.Fragment, { children: rateInfo && attributes["Checkout-Method"] === "delivery" && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(Text2, { children: getRateDescription() }) });
   }
 })();
 //# sourceMappingURL=delivery-rates-info.js.map

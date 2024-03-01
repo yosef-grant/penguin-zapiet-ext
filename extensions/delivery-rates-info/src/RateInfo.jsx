@@ -8,16 +8,15 @@ import {
   useAttributes,
   useShippingOptionTarget,
   Text,
-} from "@shopify/ui-extensions-react/checkout";
-import { useEffect, useState } from "react";
+} from '@shopify/ui-extensions-react/checkout';
+import { useEffect, useState } from 'react';
 
 export default reactExtension(
-  "purchase.checkout.shipping-option-item.details.render",
+  'purchase.checkout.shipping-option-item.details.render',
   () => <Extension />
 );
 
 function Extension() {
-
   const { query } = useApi();
 
   const cart = useCartLines();
@@ -37,8 +36,9 @@ function Extension() {
   );
 
 
-  console.log('FROM RATES DESC: ', JSON.stringify(cart[0].attributes));
+  console.log(JSON.stringify(cart[0].attributes))
   useEffect(() => {
+    console.log('FETCHING RATES');
     const getRateInfo = async () => {
       const {
         data: {
@@ -82,62 +82,59 @@ function Extension() {
       let t = data
         .filter(
           (rate) =>
-            rate.node.handle.includes("zone") &&
-            !rate.node.handle.includes("postal")
+            rate.node.handle.includes('zone') &&
+            !rate.node.handle.includes('postal')
         )
         .reduce((acc, filteredRate) => {
           acc[filteredRate.node.handle] =
             filteredRate.node.field.references.nodes;
           return acc;
         }, {});
-      console.log("INFO ON RATES: ", t);
+      console.log('INFO ON RATES: ', t);
       setRateInfo(t);
     };
 
     getRateInfo();
+    // attributes['Checkout-Method'] === 'delivery'
+    //   ? getRateInfo()
+    //   : rateInfo
+    //   ? setRateInfo(null)
+    //   : null;
   }, []);
 
-  useEffect(() => {
-    if (
-      cart[0].attributes.filter(
-        (attribute) => attribute.key === "_deliveryID"
-      ) &&
-      attributes["Checkout-Method"] === "delivery" &&
-      rateInfo
-    ) {
-      let delZone = cart[0].attributes
-        .filter((attribute) => attribute.key === "_deliveryID")
-        .map((filteredVal) => {
-          return filteredVal.value;
-        })
-        .join("")
-        .charAt(2);
-        let shippingTargetTitle = shippingTarget.shippingOptionTarget.title;
+  const getRateDescription = () => {
+
+    let delZone = cart[0].attributes
+      .filter((attribute) => attribute.key === '_deliveryID')
+      .map((filteredVal) => {
+        return filteredVal.value;
+      })
+      .join('')
+      .charAt(2);
+
+    if (delZone) {
+      let shippingTargetTitle = shippingTarget.shippingOptionTarget.title;
 
       let targetRateGroup = rateInfo[`zone-${delZone}`];
-      let t = targetRateGroup.filter(rate => shippingTargetTitle.includes(rate.time.value));
+      
+      console.log('heres the currently selected rate: ', shippingTargetTitle, '\nheres the related group: ', targetRateGroup)
+      let t = targetRateGroup.filter((rate) =>
+        shippingTargetTitle && shippingTargetTitle.includes(rate.time.value)
+      );
 
-      // console.log(
-      //   "cart has a delivery zone! ",
-      //   delZone,
-      //   rateInfo,
-      //   targetRateGroup,
-      //   t,
-      //   shippingTargetTitle,
-      //   t[0].description
-      // );
-      t ? setRateDescription(t[0].description.value) : null;
+      console.log('heres t from function: ', t[0]);
+
+      return t[0] ? t[0].description.value : null;
+    } else {
+      return;
     }
-  }, [rateInfo, cart]);
-
-
+  };
 
   return (
     <>
-      {rateDescription && shippingTarget.isTargetSelected &&
-         <Text>{rateDescription}</Text>
-        }
+      {rateInfo && attributes['Checkout-Method'] === 'delivery' && (
+        <Text>{getRateDescription()}</Text>
+      )}
     </>
   );
 }
-

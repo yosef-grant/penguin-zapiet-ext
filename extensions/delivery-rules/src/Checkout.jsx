@@ -115,7 +115,7 @@ function Extension() {
   // const delGroups = useDeliveryGroups()
   // console.log('SHIPPING OPTION: ', delGroups)
 
-  const app_url = "https://forestry-seeds-apple-picked.trycloudflare.com";
+  const app_url = "https://listening-girls-linked-completed.trycloudflare.com";
   const [checkoutData, dispatch] = useReducer(checkoutDataReducer, {});
 
   const handleSetQLocations = (locations) => {

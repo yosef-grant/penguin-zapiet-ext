@@ -19160,12 +19160,6 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Select/Select.mjs
   var Select = createRemoteComponent("Select");
 
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/SkeletonImage/SkeletonImage.mjs
-  var SkeletonImage = createRemoteComponent("SkeletonImage");
-
-  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
-  var Spinner = createRemoteComponent("Spinner");
-
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Text/Text.mjs
   var Text = createRemoteComponent("Text");
 
@@ -19545,9 +19539,6 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Select/Select.mjs
   var Select2 = createRemoteReactComponent(Select);
 
-  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
-  var Spinner2 = createRemoteReactComponent(Spinner);
-
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Text/Text.mjs
   var Text2 = createRemoteReactComponent(Text);
 
@@ -19558,7 +19549,7 @@ ${errorInfo.componentStack}`);
   var View2 = createRemoteReactComponent(View);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react24 = __toESM(require_react(), 1);
+  var import_react23 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
@@ -19582,7 +19573,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react24.useContext)(ExtensionApiContext);
+    const api = (0, import_react23.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19590,10 +19581,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react25 = __toESM(require_react(), 1);
+  var import_react24 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react25.useState)(subscription.current);
-    (0, import_react25.useEffect)(() => {
+    const [, setValue] = (0, import_react24.useState)(subscription.current);
+    (0, import_react24.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19612,15 +19603,15 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
-  var import_react26 = __toESM(require_react(), 1);
+  var import_react25 = __toESM(require_react(), 1);
   function useBuyerJourneyIntercept(interceptor) {
     const api = useApi();
     if (!("buyerJourney" in api)) {
       throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
     }
-    const interceptorRef = (0, import_react26.useRef)(interceptor);
+    const interceptorRef = (0, import_react25.useRef)(interceptor);
     interceptorRef.current = interceptor;
-    return (0, import_react26.useEffect)(() => {
+    return (0, import_react25.useEffect)(() => {
       const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
       return () => {
         teardownPromise.then((teardown) => teardown()).catch(() => {
@@ -19676,10 +19667,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react27 = __toESM(require_react(), 1);
+  var import_react26 = __toESM(require_react(), 1);
   function useAppMetafields(filters = {}) {
     const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react27.useMemo)(() => {
+    return (0, import_react26.useMemo)(() => {
       if (filters.key && !filters.namespace) {
         throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
       }
@@ -19699,10 +19690,10 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/delivery-date-picker/src/Components/DateSelect.jsx
-  var import_react33 = __toESM(require_react());
+  var import_react35 = __toESM(require_react());
 
   // extensions/delivery-date-picker/src/Components/Calendar.jsx
-  var import_react30 = __toESM(require_react());
+  var import_react29 = __toESM(require_react());
 
   // node_modules/@babel/runtime/helpers/esm/typeof.js
   function _typeof(o) {
@@ -21392,11 +21383,11 @@ ${errorInfo.componentStack}`);
   };
 
   // extensions/delivery-date-picker/src/Components/OpeningHours.jsx
-  var import_react28 = __toESM(require_react());
+  var import_react27 = __toESM(require_react());
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
 
   // extensions/delivery-date-picker/src/Components/LockerReserve.jsx
-  var import_react29 = __toESM(require_react());
+  var import_react28 = __toESM(require_react());
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var dateFormat = `EEEE, do MMMM yyyy`;
   var LockerReserve = ({
@@ -21413,8 +21404,8 @@ ${errorInfo.componentStack}`);
     getPickupTime
   }) => {
     const { ui } = useApi();
-    const [showReservationError, setShowReservationError] = (0, import_react29.useState)(false);
-    const [lockerLoading, setLockerLoading] = (0, import_react29.useState)(false);
+    const [showReservationError, setShowReservationError] = (0, import_react28.useState)(false);
+    const [lockerLoading, setLockerLoading] = (0, import_react28.useState)(false);
     console.log("IS LOCKER RESERVED? ", lockerReserved, reserveTime);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
       return canBlockProgress && !lockerReserved ? {
@@ -21585,28 +21576,28 @@ ${errorInfo.componentStack}`);
     // changeAttributes,
     // localStorage,
   }) => {
-    const [today, setToday] = (0, import_react30.useState)(/* @__PURE__ */ new Date());
-    const [backwardLocked, setBackwardLocked] = (0, import_react30.useState)(false);
-    const [forwardLocked, setForwardLocked] = (0, import_react30.useState)(false);
-    const [selected, setSelected] = (0, import_react30.useState)(null);
-    const [selectedMonth, setSelectedMonth] = (0, import_react30.useState)(null);
-    const [pickupTimes, setPickupTimes] = (0, import_react30.useState)(null);
-    const [currentHover, setCurrentHover] = (0, import_react30.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react30.useState)(false);
-    const [reserveTime, setReserveTime] = (0, import_react30.useState)({});
+    const [today, setToday] = (0, import_react29.useState)(/* @__PURE__ */ new Date());
+    const [backwardLocked, setBackwardLocked] = (0, import_react29.useState)(false);
+    const [forwardLocked, setForwardLocked] = (0, import_react29.useState)(false);
+    const [selected, setSelected] = (0, import_react29.useState)(null);
+    const [selectedMonth, setSelectedMonth] = (0, import_react29.useState)(null);
+    const [pickupTimes, setPickupTimes] = (0, import_react29.useState)(null);
+    const [currentHover, setCurrentHover] = (0, import_react29.useState)(null);
+    const [lockerReserved, setLockerReserved] = (0, import_react29.useState)(false);
+    const [reserveTime, setReserveTime] = (0, import_react29.useState)({});
     const dateFormat2 = "yyyy-MM-dd";
-    (0, import_react30.useEffect)(() => {
+    (0, import_react29.useEffect)(() => {
       lockerReserved ? setLockerReserved(false) : null;
     }, [selectedMethod, attributes["Pickup-Location-Company"]]);
     console.log("attributes from calendar: ", attributes);
-    (0, import_react30.useEffect)(() => {
+    (0, import_react29.useEffect)(() => {
       setSelected(null);
       setToday(/* @__PURE__ */ new Date());
     }, [deliveryType]);
     const getHeading = () => {
       return selectedMethod === "pickup" ? "Collection Date" : "Delivery Date";
     };
-    (0, import_react30.useEffect)(() => {
+    (0, import_react29.useEffect)(() => {
       let method = capitalise(selectedMethod);
       const updateAttributeDate = () => __async(void 0, null, function* () {
         console.log(
@@ -21637,7 +21628,7 @@ ${errorInfo.componentStack}`);
       });
       selected && delDate !== selected || !selected && delDate !== minDate || !delDate ? updateAttributeDate() : null;
     }, [currentShippingAddress.zip]);
-    (0, import_react30.useEffect)(() => {
+    (0, import_react29.useEffect)(() => {
       format(today, dateFormat2) === format(/* @__PURE__ */ new Date(), dateFormat2) ? (
         // || isPast(new Date(subDays(today, 6)))
         setBackwardLocked(true)
@@ -21903,7 +21894,7 @@ ${errorInfo.componentStack}`);
   var Calendar_default = Calendar;
 
   // extensions/delivery-date-picker/src/Components/DeliveryToggle.jsx
-  var import_react31 = __toESM(require_react());
+  var import_react30 = __toESM(require_react());
   var import_jsx_runtime7 = __toESM(require_jsx_runtime());
   var DeliveryTypeSelect = ({
     setDeliveryType,
@@ -22002,14 +21993,35 @@ ${errorInfo.componentStack}`);
   };
   var DeliveryToggle_default = DeliveryTypeSelect;
 
+  // extensions/delivery-rules/node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/SkeletonImage/SkeletonImage.mjs
+  var SkeletonImage = createRemoteComponent("SkeletonImage");
+
+  // extensions/delivery-rules/node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
+  var Spinner = createRemoteComponent("Spinner");
+
+  // extensions/delivery-rules/node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/Text/Text.mjs
+  var Text3 = createRemoteComponent("Text");
+
+  // extensions/delivery-rules/node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/View/View.mjs
+  var View3 = createRemoteComponent("View");
+
+  // extensions/delivery-rules/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Spinner/Spinner.mjs
+  var Spinner2 = createRemoteReactComponent(Spinner);
+
+  // extensions/delivery-rules/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Text/Text.mjs
+  var Text4 = createRemoteReactComponent(Text3);
+
+  // extensions/delivery-rules/node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/View/View.mjs
+  var View4 = createRemoteReactComponent(View3);
+
   // extensions/delivery-rules/src/BlockLoader.jsx
-  var import_react32 = __toESM(require_react());
+  var import_react34 = __toESM(require_react());
   var import_jsx_runtime8 = __toESM(require_jsx_runtime());
   var BlockLoader = ({ message }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(View2, { position: "relative", children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(View4, { position: "relative", children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(SkeletonImage, { blockSize: 50, inlineSize: "fill", aspectRatio: 2 }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
-        View2,
+        View4,
         {
           position: {
             type: "absolute",
@@ -22022,8 +22034,8 @@ ${errorInfo.componentStack}`);
           inlineAlignment: "center",
           blockAlignment: "center",
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(View2, { maxBlockSize: 75, maxInlineSize: 75, padding: ["none", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Spinner2, { size: "fill", accessibilityLabel: message }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Text2, { size: "medium", children: message })
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(View4, { maxBlockSize: 75, maxInlineSize: 75, padding: ["none", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Spinner2, { size: "fill", accessibilityLabel: message }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Text4, { size: "medium", children: message })
           ]
         }
       )
@@ -22048,18 +22060,19 @@ ${errorInfo.componentStack}`);
     attributes,
     availableMethods
   }) => {
-    const [fetching, setFetching] = (0, import_react33.useState)(true);
-    const [minDate, setMinDate] = (0, import_react33.useState)(null);
-    const [blackoutDates, setBlackoutDates] = (0, import_react33.useState)(null);
-    const [locationHours, setLocationHours] = (0, import_react33.useState)(null);
-    const [locationDescription, setLocationDescription] = (0, import_react33.useState)(null);
-    const [deliveryType, setDeliveryType] = (0, import_react33.useState)(null);
-    const [deliveryData, setDeliveryData] = (0, import_react33.useState)(null);
-    const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = (0, import_react33.useState)(null);
-    const [currentPickupLocationId, setCurrentPickupLocationId] = (0, import_react33.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react33.useState)(null);
-    (0, import_react33.useEffect)(() => {
+    const [fetching, setFetching] = (0, import_react35.useState)(true);
+    const [minDate, setMinDate] = (0, import_react35.useState)(null);
+    const [blackoutDates, setBlackoutDates] = (0, import_react35.useState)(null);
+    const [locationHours, setLocationHours] = (0, import_react35.useState)(null);
+    const [locationDescription, setLocationDescription] = (0, import_react35.useState)(null);
+    const [deliveryType, setDeliveryType] = (0, import_react35.useState)(null);
+    const [deliveryData, setDeliveryData] = (0, import_react35.useState)(null);
+    const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = (0, import_react35.useState)(null);
+    const [currentPickupLocationId, setCurrentPickupLocationId] = (0, import_react35.useState)(null);
+    const [penguinCart, setPenguinCart] = (0, import_react35.useState)(null);
+    (0, import_react35.useEffect)(() => {
       const getPickupDates = () => __async(void 0, null, function* () {
+        !fetching ? setFetching(true) : null;
         let nextDayMeta = appMeta.map((meta) => {
           return JSON.parse(meta.metafield.value).next_day_delivery.value;
         });
@@ -22119,7 +22132,10 @@ ${errorInfo.componentStack}`);
           );
           let t2 = [
             ...cart[0].attributes,
-            { key: "_ZapietId", value: `M=S&D=${new Date(delData.shipping.min_date).toISOString()}` }
+            {
+              key: "_ZapietId",
+              value: `M=S&D=${new Date(delData.shipping.min_date).toISOString()}`
+            }
           ];
           yield setCartLineAttr({
             type: "updateCartLine",
@@ -22155,7 +22171,6 @@ ${errorInfo.componentStack}`);
         "\ncurrent location Id in attributes: ",
         attributes["Pickup-Location-Id"]
       );
-      setFetching(true);
       if (selectedMethod === "pickup" && attributes["Pickup-Location-Id"] && currentPickupLocationId !== attributes["Pickup-Location-Id"]) {
         console.log(
           `getting PICKUP DATA for ${attributes["Pickup-Location-Company"]}`
@@ -22227,7 +22242,7 @@ ${errorInfo.componentStack}`);
   var DateSelect_default = DateSelect;
 
   // extensions/delivery-date-picker/src/DatePicker.jsx
-  var import_react34 = __toESM(require_react());
+  var import_react36 = __toESM(require_react());
   var import_jsx_runtime10 = __toESM(require_jsx_runtime());
   var DatePicker_default = reactExtension(
     "purchase.checkout.shipping-option-list.render-before",
@@ -22236,10 +22251,10 @@ ${errorInfo.componentStack}`);
   function DatePicker() {
     const selectedMethod = useAttributeValues(["Checkout-Method"])[0];
     const changeAttributes = useApplyAttributeChange();
-    const [locationId, setLocationId] = (0, import_react34.useState)(null);
-    const [locationType, setLocationType] = (0, import_react34.useState)(null);
-    const [locationHandle, setLocationHandle] = (0, import_react34.useState)(null);
-    const [availableMethods, setAvailableMethods] = (0, import_react34.useState)(null);
+    const [locationId, setLocationId] = (0, import_react36.useState)(null);
+    const [locationType, setLocationType] = (0, import_react36.useState)(null);
+    const [locationHandle, setLocationHandle] = (0, import_react36.useState)(null);
+    const [availableMethods, setAvailableMethods] = (0, import_react36.useState)(null);
     const attr = useAttributes();
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -22252,9 +22267,9 @@ ${errorInfo.componentStack}`);
     const appMeta = useAppMetafields();
     const cart = useCartLines();
     const currentShippingAddress = useShippingAddress();
-    const appUrl = `https://forestry-seeds-apple-picked.trycloudflare.com`;
+    const appUrl = `https://listening-girls-linked-completed.trycloudflare.com`;
     const setCartLineAttr = useApplyCartLinesChange();
-    (0, import_react34.useEffect)(() => {
+    (0, import_react36.useEffect)(() => {
       const types = ["pickup", "shipping", "delivery"];
       const x2 = cart[0].attributes.filter((attribute) => attribute.key === "_available_methods").map((filteredAttr) => {
         return filteredAttr.value;
@@ -22264,7 +22279,7 @@ ${errorInfo.componentStack}`);
       }, {});
       setAvailableMethods(x2);
     }, []);
-    (0, import_react34.useEffect)(() => {
+    (0, import_react36.useEffect)(() => {
       const handleSwitchToPickup = () => {
         setLocationId(attributes["Pickup-Location-Id"]);
         setLocationType(attributes["Pickup-Location-Type"]);
