@@ -218,7 +218,7 @@ const DateSelect = ({
       getDeliveryDates();
     }
   }, [
-    selectedMethod,
+    // selectedMethod,
     currentShippingAddress.zip,
     attributes['Pickup-Location-Id'],
   ]);

@@ -21626,6 +21626,14 @@ ${errorInfo.componentStack}`);
           });
         }
       });
+      console.log(
+        "CALENDAR USEEFFECT PREFIRING, selected: ",
+        selected,
+        "\nminDate: ",
+        minDate,
+        "\ndelDate: ",
+        delDate
+      );
       selected && delDate !== selected || !selected && delDate !== minDate || !delDate ? updateAttributeDate() : null;
     }, [currentShippingAddress.zip]);
     (0, import_react29.useEffect)(() => {
@@ -22188,7 +22196,7 @@ ${errorInfo.componentStack}`);
         getDeliveryDates();
       }
     }, [
-      selectedMethod,
+      // selectedMethod,
       currentShippingAddress.zip,
       attributes["Pickup-Location-Id"]
     ]);

@@ -22774,7 +22774,6 @@ ${errorInfo.componentStack}`);
       });
     };
     const [qCollectLocation, setQCollectLocation] = (0, import_react47.useState)(null);
-    const [minDate, setMinDate] = (0, import_react47.useState)(null);
     const [availableMethods, setAvailableMethods] = (0, import_react47.useState)(null);
     const [penguinCart, setPenguinCart] = (0, import_react47.useState)(null);
     const [lockerReserved, setLockerReserved] = (0, import_react47.useState)(false);
@@ -22958,20 +22957,12 @@ ${errorInfo.componentStack}`);
         let delData = yield checkRes.json();
         const newDelMethod = ((_a = delData == null ? void 0 : delData.delivery) == null ? void 0 : _a.delivery_zone) === "unavailable" && (availableMethods == null ? void 0 : availableMethods.shipping) === false ? null : ((_b = delData == null ? void 0 : delData.delivery) == null ? void 0 : _b.delivery_zone) === "unavailable" && (availableMethods == null ? void 0 : availableMethods.shipping) === true ? "shipping" : "delivery";
         if (newDelMethod) {
-          yield changeAttributes({
-            type: "updateAttribute",
-            key: "Checkout-Method",
-            value: newDelMethod
-          });
-          Object.keys(attributes).forEach((key) => __async(this, null, function* () {
-            if (key !== "Checkout-Method" && key !== "Gift-Note" && key !== "Customer-Service-Note" && key !== "Lolas-CS-Member") {
-              yield changeAttributes({
-                type: "updateAttribute",
-                key,
-                value: ""
-              });
-            }
-          }));
+          console.log(
+            "newDelMethod: ",
+            newDelMethod,
+            "current checkout method: ",
+            attributes["Checkout-Method"]
+          );
           let dz = newDelMethod === "delivery" ? delData.delivery.delivery_zone.replace(/[^0-9.]/g, "") : null;
           yield setCartLineAttr({
             type: "updateCartLine",
@@ -22984,21 +22975,27 @@ ${errorInfo.componentStack}`);
               }
             ]
           });
-        } else {
-          console.log("RATE SHOULD BE SET TO NONE");
-          setNoDelivery(true);
-          yield setCartLineAttr({
-            type: "updateCartLine",
-            id: lineItems[0].id,
-            attributes: [
-              ...lineItems[0].attributes,
-              {
-                key: "_deliveryID",
-                value: `U`
+          if (newDelMethod === "delivery" && attributes["Checkout-Method"] === "delivery") {
+            setCheckingPostcode(false);
+            return;
+          } else {
+            yield changeAttributes({
+              type: "updateAttribute",
+              key: "Checkout-Method",
+              value: newDelMethod
+            });
+            Object.keys(attributes).forEach((key) => __async(this, null, function* () {
+              if (key !== "Checkout-Method" && key !== "Gift-Note" && key !== "Customer-Service-Note" && key !== "Lolas-CS-Member") {
+                yield changeAttributes({
+                  type: "updateAttribute",
+                  key,
+                  value: ""
+                });
               }
-            ]
-          });
-          setMinDate(null);
+            }));
+          }
+        } else {
+          setNoDelivery(true);
         }
         setCheckingPostcode(false);
       });
@@ -23049,3 +23046,4 @@ ${errorInfo.componentStack}`);
     ] });
   }
 })();
+//# sourceMappingURL=delivery-rules.js.map

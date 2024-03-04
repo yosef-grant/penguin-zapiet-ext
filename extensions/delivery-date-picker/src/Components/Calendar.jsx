@@ -146,6 +146,16 @@ const Calendar = ({
       // (TODO) get location opening / AM_PM hours
     };
 
+    console.log(
+      "CALENDAR USEEFFECT PREFIRING, selected: ",
+      selected,
+      "\nminDate: ",
+      minDate,
+      "\ndelDate: ",
+      delDate
+    );
+
+
     (selected && delDate !== selected) ||
     (!selected && delDate !== minDate) ||
     !delDate
