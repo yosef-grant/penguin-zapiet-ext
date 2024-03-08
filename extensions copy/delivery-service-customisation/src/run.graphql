@@ -1,0 +1,30 @@
+query RunInput {
+  cart {
+    lines {
+      attribute(key: "_deliveryID") {
+        value
+      }
+    }
+    attribute(key: "Checkout-Method") {
+      value
+    }
+
+    cost {
+      totalAmount {
+        amount
+      }
+    }
+    deliveryGroups {
+      deliveryAddress {
+        zip
+      }
+      deliveryOptions {
+        code
+        description
+        deliveryMethodType
+        handle
+        title
+      }
+    }
+  }
+}
