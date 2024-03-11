@@ -23622,7 +23622,7 @@ Is basket next day? `, nextDay);
 
   // extensions/lolas-multifunction-checkout-extension/src/App.jsx
   var import_jsx_runtime23 = __toESM(require_jsx_runtime());
-  var url = "https://generate-metallic-lbs-cad.trycloudflare.com/";
+  var url = "https://kingston-game-assigned-bahrain.trycloudflare.com/";
   var MethodSelectExt = reactExtension(
     "purchase.checkout.contact.render-after",
     () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(MethodSelect_default, { url })

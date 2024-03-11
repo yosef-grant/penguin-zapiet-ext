@@ -19843,7 +19843,6 @@ ${errorInfo.componentStack}`);
     const [loading, setLoading] = (0, import_react28.useState)(false);
     const [submitted, setSubmitted] = (0, import_react28.useState)(false);
     const handleSubmit = () => __async(void 0, null, function* () {
-      setLoading(true);
       let res = yield fetch(`${url2}/pza/submit-feedback`, {
         headers: {
           "Content-Type": "application/json"
@@ -19861,7 +19860,6 @@ ${errorInfo.componentStack}`);
       });
       let data = yield res.json();
       console.log(data);
-      data.received ? setSubmitted(true) : null;
       console.log("form submitted!", rating, feedback);
       setLoading(false);
     });
@@ -19922,7 +19920,7 @@ ${errorInfo.componentStack}`);
 
   // extensions/lolas-thank-you-extension/src/App.jsx
   var import_jsx_runtime9 = __toESM(require_jsx_runtime());
-  var url = "https://generate-metallic-lbs-cad.trycloudflare.com/";
+  var url = "https://kingston-game-assigned-bahrain.trycloudflare.com/";
   var MainBodyExt = reactExtension("purchase.thank-you.block.render", () => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(MainBody_default, { url }));
   var ThankYouLineItemPropsExt = reactExtension(
     "purchase.thank-you.cart-line-item.render-after",

@@ -22,7 +22,7 @@ const Survey = ({ url, email, shippingAddress }) => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async () => {
-    setLoading(true);
+    // setLoading(true);
     let res = await fetch(`${url}/pza/submit-feedback`, {
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +40,8 @@ const Survey = ({ url, email, shippingAddress }) => {
     });
     let data = await res.json();
     console.log(data);
-    data.received ? setSubmitted(true) : null;
+    // * Comment out for testing
+    // data.received ? setSubmitted(true) : null;
     console.log("form submitted!", rating, feedback);
     setLoading(false);
   };

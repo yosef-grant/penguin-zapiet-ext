@@ -9,7 +9,7 @@ import CustomerNotes from "./Components/DatePicker/CustomerNotes.jsx";
 import DeliveryRatesInfo from "./Components/DeliveryRatesInfo/DeliveryRatesInfo.jsx";
 import CollectionBillingWarning from "./Components/CollectionBillingWarning/CollectionBillingWarning.jsx";
 
-const url = "https://generate-metallic-lbs-cad.trycloudflare.com/";
+const url = "https://kingston-game-assigned-bahrain.trycloudflare.com/";
 
 // ? can attributes be traced here, 'outside' the extensions themselves?
 
