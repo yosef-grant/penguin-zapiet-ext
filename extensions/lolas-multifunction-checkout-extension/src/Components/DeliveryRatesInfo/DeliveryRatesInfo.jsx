@@ -11,13 +11,12 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import { useEffect, useState } from "react";
 
-
 function DeliveryRatesInfo() {
   const { query } = useApi();
 
   const cart = useCartLines();
 
-  console.log(cart)
+  console.log(cart);
 
   const shippingTarget = useShippingOptionTarget();
 
@@ -132,14 +131,9 @@ function DeliveryRatesInfo() {
     }
   };
 
-  return (
-    <>
-      {rateInfo && attributes["Checkout-Method"] === "delivery" && (
-        <Text>{getRateDescription()}</Text>
-      )}
-    </>
-  );
+  return rateInfo && attributes["Checkout-Method"] === "delivery" ? (
+    <Text>{getRateDescription()}</Text>
+  ) : null;
 }
-
 
 export default DeliveryRatesInfo;

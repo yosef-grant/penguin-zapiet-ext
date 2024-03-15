@@ -123,6 +123,8 @@ function MethodSelect({ url }) {
 
   const [loadMsg, setLoadMsg] = useState("Initialising...");
 
+  const [nextDay, setNextDay] = useState(null);
+
   // * experimental state
   const [storedAvailibility, setStoredAvailibility] = useState(null);
   const [datePickerInit, setDatePickerInit] = useState(false);
@@ -227,17 +229,8 @@ function MethodSelect({ url }) {
     };
   });
 
-  let nextDayMeta = appMeta
-  .filter((meta) => meta.target.type === "product")
-  .map((filteredMeta) => {
-    return JSON.parse(filteredMeta.metafield.value).next_day_delivery.value;
-  })[0];
-  
-  
-  
-  
-  let nextDay = nextDayMeta === 1 || nextDayMeta === null ? true : false;
-  console.log("heres the meta: ", appMeta, `\nheres next day: `, nextDayMeta, `\nIs basket next day? `, nextDay);
+
+
 
   useEffect(() => {
     //console.log("++++++++++++++ cs updated: ", cs);
@@ -359,6 +352,7 @@ function MethodSelect({ url }) {
     await changeShippingAddress({
       type: "updateShippingAddress",
       address: {
+        company: undefined,
         address1: undefined,
         address2: undefined,
         city: undefined,
@@ -379,6 +373,30 @@ function MethodSelect({ url }) {
   // * FOR 3-page checkout ONLY
   useEffect(() => {
     const getDeliveryZones = async () => {
+
+      let nextDayMeta = appMeta
+      .filter((meta) => meta.target.type === "product")
+      .map((filteredMeta) => {
+        return JSON.parse(filteredMeta.metafield.value).next_day_delivery.value;
+      });
+  
+    let isNextDay;
+  
+    nextDayMeta.forEach((val) => {
+      if (val === 0 || val === null) {
+        return (isNextDay = false);
+      }
+      else {
+        isNextDay = true;
+      }
+    });
+
+    setNextDay(isNextDay);
+  
+    console.log('HERE IS isND: ', isNextDay)
+
+
+
       try {
         setCheckingPostcode(true);
         let checkBody = {

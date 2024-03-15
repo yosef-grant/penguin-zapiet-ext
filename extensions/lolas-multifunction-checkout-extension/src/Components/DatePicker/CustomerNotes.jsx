@@ -78,6 +78,7 @@ const CustomerNotes = ({ changeAttributes, selectedMethod, giftNote }) => {
     <>
       {selectedMethod !== "pickup" && (
         <TextField
+          value={currentNote}
           label="Safe place instructions"
           onChange={(val) => handleNoteChange(val)}
           onInput={(val) => handleNoteInput(val)}

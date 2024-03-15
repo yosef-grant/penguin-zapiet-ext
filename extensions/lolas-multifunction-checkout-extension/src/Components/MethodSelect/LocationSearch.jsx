@@ -20,8 +20,7 @@ const LocationSearch = ({
   cart,
   nextDay,
   url,
-  selectedChoice,
-  setSelectedChoice,
+  setCS,
 }) => {
   const [searchLocationQuery, setSearchLocationQuery] = useState(null);
   const [searchPostcodeQuery, setSearchPostcodeQuery] = useState(null);

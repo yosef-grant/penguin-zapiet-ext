@@ -4,22 +4,11 @@ import {
   Heading,
   ScrollView,
   Text,
-  TextField,
   View,
-  useApi,
   useApplyAttributeChange,
   useApplyShippingAddressChange,
-  Button,
-  Form,
   Image,
-  Icon,
-  GridItem,
-  Grid,
-  List,
-  ListItem,
   TextBlock,
-  SkeletonTextBlock,
-  Divider,
   BlockLayout,
 } from "@shopify/ui-extensions-react/checkout";
 import { InlineLayout, InlineSpacer } from "@shopify/ui-extensions/checkout";
@@ -87,6 +76,7 @@ const Locations = ({
     console.log("HERE IS THE TARGET LOCATION: ", targetLocation);
 
     let targetLocationAddr = {
+      company: targetLocation[0]?.company_name, 
       address1: targetLocation[0].address_line_1,
       city: targetLocation[0].city,
       zip: targetLocation[0].postal_code,
@@ -238,6 +228,7 @@ const Locations = ({
         url={url}
         selectedChoice={selectedChoice}
         setSelectedChoice={setSelectedChoice}
+        setCS={setCS}
       />
       <ScrollView
         maxBlockSize={320}

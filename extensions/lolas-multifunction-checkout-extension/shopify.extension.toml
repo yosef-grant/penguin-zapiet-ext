@@ -33,7 +33,7 @@ module = "./src/App.jsx"
 target = "purchase.checkout.cart-line-list.render-after"
 [[extensions.targeting]] # Collection Billing Warning
 module = "./src/App.jsx"
-target = "purchase.checkout.block.render"
+target = "purchase.checkout.payment-method-list.render-after"
 
 
 [extensions.capabilities]

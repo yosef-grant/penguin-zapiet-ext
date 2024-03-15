@@ -9,8 +9,10 @@ import {
   Text,
   TextField,
   View,
+  useCartLines,
 } from "@shopify/ui-extensions-react/checkout";
 import { BlockLayout } from "@shopify/ui-extensions/checkout";
+import { format } from "date-fns";
 import React, { useState } from "react";
 
 const ratingVals = ["1", "2", "3", "4", "5"];
@@ -21,7 +23,24 @@ const Survey = ({ url, email, shippingAddress }) => {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  const cart = useCartLines();
+
+  const cartItems = cart.map((item) => {
+    let x = {
+      product_id: item.merchandise.product.id,
+      title: item.merchandise.title,
+      variant: item.merchandise.subtitle,
+      img: item.merchandise.image.url,
+      quantity: item.quantity
+    };
+    console.log('jere is x, ',x)
+    return x;
+  });
+
+
+
   const handleSubmit = async () => {
+    let currentDate = new Date();
     // setLoading(true);
     let res = await fetch(`${url}/pza/submit-feedback`, {
       headers: {
@@ -36,6 +55,9 @@ const Survey = ({ url, email, shippingAddress }) => {
           first_name: shippingAddress.firstName,
           surname: shippingAddress.lastName,
         },
+        date: format(currentDate, "dd-MM-yyyy"),
+        time: format(currentDate, "HH:mm"),
+        items: cartItems
       }),
     });
     let data = await res.json();

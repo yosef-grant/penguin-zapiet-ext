@@ -1133,7 +1133,7 @@
             }
             return dispatcher.useContext(Context);
           }
-          function useState13(initialState) {
+          function useState16(initialState) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useState(initialState);
           }
@@ -1145,7 +1145,7 @@
             var dispatcher = resolveDispatcher();
             return dispatcher.useRef(initialValue);
           }
-          function useEffect12(create, deps) {
+          function useEffect15(create, deps) {
             var dispatcher = resolveDispatcher();
             return dispatcher.useEffect(create, deps);
           }
@@ -1927,7 +1927,7 @@
           exports.useContext = useContext3;
           exports.useDebugValue = useDebugValue;
           exports.useDeferredValue = useDeferredValue;
-          exports.useEffect = useEffect12;
+          exports.useEffect = useEffect15;
           exports.useId = useId;
           exports.useImperativeHandle = useImperativeHandle;
           exports.useInsertionEffect = useInsertionEffect;
@@ -1935,7 +1935,7 @@
           exports.useMemo = useMemo4;
           exports.useReducer = useReducer2;
           exports.useRef = useRef4;
-          exports.useState = useState13;
+          exports.useState = useState16;
           exports.useSyncExternalStore = useSyncExternalStore;
           exports.useTransition = useTransition;
           exports.version = ReactVersion;
@@ -2429,9 +2429,9 @@
         module.exports = function $$$reconciler($$$hostConfig) {
           var exports2 = {};
           "use strict";
-          var React16 = require_react();
+          var React19 = require_react();
           var Scheduler = require_scheduler();
-          var ReactSharedInternals = React16.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React19.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           var suppressWarning = false;
           function setSuppressWarning(newSuppressWarning) {
             {
@@ -2495,7 +2495,7 @@
           var HostPortal = 4;
           var HostComponent = 5;
           var HostText = 6;
-          var Fragment10 = 7;
+          var Fragment11 = 7;
           var Mode = 8;
           var ContextConsumer = 9;
           var ContextProvider = 10;
@@ -2635,7 +2635,7 @@
                 return "DehydratedFragment";
               case ForwardRef:
                 return getWrappedName$1(type, type.render, "ForwardRef");
-              case Fragment10:
+              case Fragment11:
                 return "Fragment";
               case HostComponent:
                 return type;
@@ -6229,7 +6229,7 @@
             }
           }
           var fakeInternalInstance = {};
-          var emptyRefsObject = new React16.Component().refs;
+          var emptyRefsObject = new React19.Component().refs;
           var didWarnAboutStateAssignmentForComponent;
           var didWarnAboutUninitializedState;
           var didWarnAboutGetSnapshotBeforeUpdateWithoutDidUpdate;
@@ -7053,7 +7053,7 @@
               }
             }
             function updateFragment2(returnFiber, current2, fragment, lanes, key) {
-              if (current2 === null || current2.tag !== Fragment10) {
+              if (current2 === null || current2.tag !== Fragment11) {
                 var created = createFiberFromFragment(fragment, returnFiber.mode, lanes, key);
                 created.return = returnFiber;
                 return created;
@@ -7456,7 +7456,7 @@
                 if (child.key === key) {
                   var elementType = element.type;
                   if (elementType === REACT_FRAGMENT_TYPE) {
-                    if (child.tag === Fragment10) {
+                    if (child.tag === Fragment11) {
                       deleteRemainingChildren(returnFiber, child.sibling);
                       var existing = useFiber(child, element.props.children);
                       existing.return = returnFiber;
@@ -11633,7 +11633,7 @@
                 var _resolvedProps2 = workInProgress2.elementType === type ? _unresolvedProps2 : resolveDefaultProps(type, _unresolvedProps2);
                 return updateForwardRef(current2, workInProgress2, type, _resolvedProps2, renderLanes2);
               }
-              case Fragment10:
+              case Fragment11:
                 return updateFragment(current2, workInProgress2, renderLanes2);
               case Mode:
                 return updateMode(current2, workInProgress2, renderLanes2);
@@ -12074,7 +12074,7 @@
               case SimpleMemoComponent:
               case FunctionComponent:
               case ForwardRef:
-              case Fragment10:
+              case Fragment11:
               case Mode:
               case Profiler:
               case ContextConsumer:
@@ -16840,7 +16840,7 @@
             return fiber;
           }
           function createFiberFromFragment(elements, mode, lanes, key) {
-            var fiber = createFiber(Fragment10, elements, key, mode);
+            var fiber = createFiber(Fragment11, elements, key, mode);
             fiber.lanes = lanes;
             return fiber;
           }
@@ -17540,7 +17540,7 @@
       if (true) {
         (function() {
           "use strict";
-          var React16 = require_react();
+          var React19 = require_react();
           var REACT_ELEMENT_TYPE = Symbol.for("react.element");
           var REACT_PORTAL_TYPE = Symbol.for("react.portal");
           var REACT_FRAGMENT_TYPE = Symbol.for("react.fragment");
@@ -17566,7 +17566,7 @@
             }
             return null;
           }
-          var ReactSharedInternals = React16.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
+          var ReactSharedInternals = React19.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
           function error(format2) {
             {
               {
@@ -18401,11 +18401,11 @@
               return jsxWithValidation(type, props, key, false);
             }
           }
-          var jsx24 = jsxWithValidationDynamic;
-          var jsxs17 = jsxWithValidationStatic;
+          var jsx28 = jsxWithValidationDynamic;
+          var jsxs21 = jsxWithValidationStatic;
           exports.Fragment = REACT_FRAGMENT_TYPE;
-          exports.jsx = jsx24;
-          exports.jsxs = jsxs17;
+          exports.jsx = jsx28;
+          exports.jsxs = jsxs21;
         })();
       }
     }
@@ -18420,12 +18420,6 @@
       } else {
         module.exports = require_react_jsx_runtime_development();
       }
-    }
-  });
-
-  // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/CSPortal.jsx
-  var require_CSPortal = __commonJS({
-    "extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/CSPortal.jsx"() {
     }
   });
 
@@ -19133,6 +19127,9 @@
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/BlockLayout/BlockLayout.mjs
   var BlockLayout = createRemoteComponent("BlockLayout");
 
+  // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/BlockSpacer/BlockSpacer.mjs
+  var BlockSpacer = createRemoteComponent("BlockSpacer");
+
   // node_modules/@shopify/ui-extensions/build/esm/surfaces/checkout/components/BlockStack/BlockStack.mjs
   var BlockStack = createRemoteComponent("BlockStack");
 
@@ -19539,6 +19536,9 @@ ${errorInfo.componentStack}`);
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/BlockLayout/BlockLayout.mjs
   var BlockLayout2 = createRemoteReactComponent(BlockLayout);
 
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/BlockSpacer/BlockSpacer.mjs
+  var BlockSpacer2 = createRemoteReactComponent(BlockSpacer);
+
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/BlockStack/BlockStack.mjs
   var BlockStack2 = createRemoteReactComponent(BlockStack);
 
@@ -19563,6 +19563,9 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Form/Form.mjs
   var Form2 = createRemoteReactComponent(Form);
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Grid/Grid.mjs
+  var Grid2 = createRemoteReactComponent(Grid);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/components/Heading/Heading.mjs
   var Heading2 = createRemoteReactComponent(Heading);
@@ -19611,7 +19614,7 @@ ${errorInfo.componentStack}`);
   var View2 = createRemoteReactComponent(View);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
-  var import_react31 = __toESM(require_react(), 1);
+  var import_react33 = __toESM(require_react(), 1);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/errors.mjs
   var CheckoutUIExtensionError = class extends Error {
@@ -19641,7 +19644,7 @@ ${errorInfo.componentStack}`);
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/api.mjs
   function useApi(_target) {
-    const api = (0, import_react31.useContext)(ExtensionApiContext);
+    const api = (0, import_react33.useContext)(ExtensionApiContext);
     if (api == null) {
       throw new CheckoutUIExtensionError("You can only call this hook when running as a UI extension.");
     }
@@ -19649,10 +19652,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/subscription.mjs
-  var import_react32 = __toESM(require_react(), 1);
+  var import_react34 = __toESM(require_react(), 1);
   function useSubscription(subscription) {
-    const [, setValue] = (0, import_react32.useState)(subscription.current);
-    (0, import_react32.useEffect)(() => {
+    const [, setValue] = (0, import_react34.useState)(subscription.current);
+    (0, import_react34.useEffect)(() => {
       let didUnsubscribe = false;
       const checkForUpdates = (newValue) => {
         if (didUnsubscribe) {
@@ -19671,15 +19674,15 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/buyer-journey.mjs
-  var import_react33 = __toESM(require_react(), 1);
+  var import_react35 = __toESM(require_react(), 1);
   function useBuyerJourneyIntercept(interceptor) {
     const api = useApi();
     if (!("buyerJourney" in api)) {
       throw new ExtensionHasNoMethodError("buyerJourney", api.extension.target);
     }
-    const interceptorRef = (0, import_react33.useRef)(interceptor);
+    const interceptorRef = (0, import_react35.useRef)(interceptor);
     interceptorRef.current = interceptor;
-    return (0, import_react33.useEffect)(() => {
+    return (0, import_react35.useEffect)(() => {
       const teardownPromise = api.buyerJourney.intercept((interceptorProps) => interceptorRef.current(interceptorProps));
       return () => {
         teardownPromise.then((teardown) => teardown()).catch(() => {
@@ -19720,6 +19723,15 @@ ${errorInfo.componentStack}`);
       return api.applyAttributeChange;
     }
     throw new ExtensionHasNoMethodError("applyAttributeChange", api.extension.target);
+  }
+
+  // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/billing-address.mjs
+  function useBillingAddress() {
+    const billingAddress = useApi().billingAddress;
+    if (!billingAddress) {
+      throw new ScopeNotGrantedError("Using billing address requires having billing address permissions granted to your app.");
+    }
+    return useSubscription(billingAddress);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/shipping-address.mjs
@@ -19763,7 +19775,7 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/shipping-option-target.mjs
-  var import_react34 = __toESM(require_react(), 1);
+  var import_react36 = __toESM(require_react(), 1);
   function useShippingOptionTarget() {
     const api = useApi();
     if (!api.target || api.isTargetSelected === void 0) {
@@ -19771,7 +19783,7 @@ ${errorInfo.componentStack}`);
     }
     const shippingOptionTarget = useSubscription(api.target);
     const isTargetSelected = useSubscription(api.isTargetSelected);
-    const shippingOption = (0, import_react34.useMemo)(() => {
+    const shippingOption = (0, import_react36.useMemo)(() => {
       return {
         shippingOptionTarget,
         isTargetSelected
@@ -19781,10 +19793,10 @@ ${errorInfo.componentStack}`);
   }
 
   // node_modules/@shopify/ui-extensions-react/build/esm/surfaces/checkout/hooks/app-metafields.mjs
-  var import_react35 = __toESM(require_react(), 1);
+  var import_react37 = __toESM(require_react(), 1);
   function useAppMetafields(filters = {}) {
     const appMetafields = useSubscription(useApi().appMetafields);
-    return (0, import_react35.useMemo)(() => {
+    return (0, import_react37.useMemo)(() => {
       if (filters.key && !filters.namespace) {
         throw new CheckoutUIExtensionError("You must pass in a namespace with a key");
       }
@@ -19827,19 +19839,19 @@ ${errorInfo.componentStack}`);
   }
 
   // extensions/lolas-multifunction-checkout-extension/src/App.jsx
-  var import_react53 = __toESM(require_react());
+  var import_react61 = __toESM(require_react());
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/MethodSelect.jsx
-  var import_react42 = __toESM(require_react());
+  var import_react45 = __toESM(require_react());
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/Locations.jsx
-  var import_react37 = __toESM(require_react());
+  var import_react39 = __toESM(require_react());
 
   // extensions/lolas-multifunction-checkout-extension/src/assets/LocationIcons.js
   var import_jsx_runtime4 = __toESM(require_jsx_runtime());
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/LocationSearch.jsx
-  var import_react36 = __toESM(require_react());
+  var import_react38 = __toESM(require_react());
   var import_jsx_runtime5 = __toESM(require_jsx_runtime());
   var LocationSearch = ({
     checkoutData,
@@ -19850,13 +19862,12 @@ ${errorInfo.componentStack}`);
     cart,
     nextDay,
     url: url2,
-    selectedChoice,
-    setSelectedChoice
+    setCS
   }) => {
-    const [searchLocationQuery, setSearchLocationQuery] = (0, import_react36.useState)(null);
-    const [searchPostcodeQuery, setSearchPostcodeQuery] = (0, import_react36.useState)(null);
+    const [searchLocationQuery, setSearchLocationQuery] = (0, import_react38.useState)(null);
+    const [searchPostcodeQuery, setSearchPostcodeQuery] = (0, import_react38.useState)(null);
     console.log("current checkout data: ", checkoutData);
-    (0, import_react36.useEffect)(() => {
+    (0, import_react38.useEffect)(() => {
       let unfiltered = checkoutData.pickup.qCollectLocations;
       if (searchLocationQuery) {
         let x2 = [];
@@ -19868,7 +19879,7 @@ ${errorInfo.componentStack}`);
         !searchLocationQuery ? setFilteredLocations(unfiltered) : null;
       }
     }, [searchLocationQuery]);
-    (0, import_react36.useEffect)(() => {
+    (0, import_react38.useEffect)(() => {
       const getProximityLocations = () => __async(void 0, null, function* () {
         console.log("getting locations with proximity to postcode");
         let checkBody = {
@@ -20001,22 +20012,23 @@ ${errorInfo.componentStack}`);
     cart,
     nextDay,
     setProximityLocations,
-    setCS: setCS2,
+    setCS,
     localStorage,
     currentShippingAddress,
     attributes
   }) => {
-    const [selectedLocation, setSelectedLocation] = (0, import_react37.useState)(null);
-    const [selectedPickupLocation, setSelectedPickupLocation] = (0, import_react37.useState)(null);
-    const [filteredLocations, setFilteredLocations] = (0, import_react37.useState)(
+    const [selectedLocation, setSelectedLocation] = (0, import_react39.useState)(null);
+    const [selectedPickupLocation, setSelectedPickupLocation] = (0, import_react39.useState)(null);
+    const [filteredLocations, setFilteredLocations] = (0, import_react39.useState)(
       checkoutData.pickup.qCollectLocations
     );
-    const [postcodeError, setPostcodeError] = (0, import_react37.useState)(false);
-    const [selectedChoice, setSelectedChoice] = (0, import_react37.useState)(null);
-    const [postcodeFetching, setPostcodeFetching] = (0, import_react37.useState)(false);
+    const [postcodeError, setPostcodeError] = (0, import_react39.useState)(false);
+    const [selectedChoice, setSelectedChoice] = (0, import_react39.useState)(null);
+    const [postcodeFetching, setPostcodeFetching] = (0, import_react39.useState)(false);
     const changeShippingAddress = useApplyShippingAddressChange();
     const changeAttributes = useApplyAttributeChange();
     const handleLocationSelect = (val) => __async(void 0, null, function* () {
+      var _a;
       setSelectedChoice(val);
       console.log("new choice ID: ", val, typeof val);
       let targetLocation = checkoutData.pickup.qCollectLocations.filter(
@@ -20025,6 +20037,7 @@ ${errorInfo.componentStack}`);
       setSelectedPickupLocation(targetLocation[0]);
       console.log("HERE IS THE TARGET LOCATION: ", targetLocation);
       let targetLocationAddr = {
+        company: (_a = targetLocation[0]) == null ? void 0 : _a.company_name,
         address1: targetLocation[0].address_line_1,
         city: targetLocation[0].city,
         zip: targetLocation[0].postal_code
@@ -20054,7 +20067,7 @@ ${errorInfo.componentStack}`);
       let index = name.indexOf(" - ");
       return name.slice(name[0], index);
     };
-    (0, import_react37.useEffect)(() => {
+    (0, import_react39.useEffect)(() => {
       const resetShippingAddress = () => __async(void 0, null, function* () {
         yield changeShippingAddress({
           type: "updateShippingAddress",
@@ -20153,7 +20166,8 @@ ${errorInfo.componentStack}`);
           nextDay,
           url: url2,
           selectedChoice,
-          setSelectedChoice
+          setSelectedChoice,
+          setCS
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
@@ -20239,8 +20253,99 @@ ${errorInfo.componentStack}`);
   };
   var Locations_default = Locations;
 
-  // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/MethodSelect.jsx
-  var import_CSPortal = __toESM(require_CSPortal());
+  // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/CSPortal.jsx
+  var import_react40 = __toESM(require_react());
+  var import_jsx_runtime7 = __toESM(require_jsx_runtime());
+  var CSPortal = ({ setCS, cs, allLocations }) => {
+    (0, import_react40.useEffect)(() => {
+      console.log("allLocations", allLocations);
+    }, []);
+    const { ui } = useApi();
+    let changeAttributes = useApplyAttributeChange();
+    const handleFormSubmit = () => __async(void 0, null, function* () {
+      let x2 = (cs == null ? void 0 : cs.location) && (cs == null ? void 0 : cs.name) ? `${cs.location.company_name}: ${cs.name}` : (cs == null ? void 0 : cs.location) ? cs.location.company_name : cs.name;
+      yield changeAttributes({
+        type: "updateAttribute",
+        key: "Lolas-CS-Member",
+        value: x2
+      });
+      yield changeAttributes({
+        type: "updateAttribute",
+        key: "Customer-Service-Note",
+        value: cs.note
+      });
+      ui.overlay.close("cs-portal");
+    });
+    return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_jsx_runtime7.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Grid2, { padding: ["base", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      Button2,
+      {
+        overlay: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Modal2, { id: "cs-portal", padding: true, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Form2, { onSubmit: () => handleFormSubmit(), id: "cs-form", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(View, { padding: ["loose", "none", "loose", "none"], children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Heading, { level: 1, children: "Customer Service Portal" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View, { padding: ["tight", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            Select,
+            {
+              label: "Customer Service Location",
+              value: cs.location ? cs.location.id : "",
+              options: allLocations.filter(
+                (location) => location.custom_attribute_1 !== "lockers"
+              ).map((filteredLocation, i2) => ({
+                key: `${filteredLocation.id}${i2}`,
+                value: filteredLocation.id,
+                label: filteredLocation.company_name
+              })),
+              onChange: (value) => setCS((cs2) => {
+                return __spreadProps(__spreadValues({}, cs2), {
+                  location: allLocations.filter(
+                    (x2) => x2.id === parseInt(value)
+                  )[0]
+                });
+              })
+            }
+          ) }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View, { padding: ["tight", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            TextField,
+            {
+              label: "Customer Service Name",
+              value: (cs == null ? void 0 : cs.name) ? cs.name : "",
+              onChange: (val) => setCS((cs2) => {
+                return __spreadProps(__spreadValues({}, cs2), { name: val });
+              })
+            }
+          ) }),
+          (!!(cs == null ? void 0 : cs.name) || !!(cs == null ? void 0 : cs.location)) && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View, { padding: ["tight", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            TextField,
+            {
+              label: "Customer Service Note",
+              onChange: (val) => setCS((cs2) => {
+                return __spreadProps(__spreadValues({}, cs2), { note: val });
+              }),
+              value: !!cs.note ? cs.note : ""
+            }
+          ) }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View, { padding: ["base", "none", "none", "none"], inlineAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(InlineStack2, { spacing: "base", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+              Button2,
+              {
+                kind: "secondary",
+                onPress: () => ui.overlay.close("cs-portal"),
+                children: "Cancel"
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+              Button2,
+              {
+                accessibilityRole: "submit",
+                disabled: !(cs == null ? void 0 : cs.name) && !(cs == null ? void 0 : cs.location) || (!!(cs == null ? void 0 : cs.name) || !!(cs == null ? void 0 : cs.location)) && !cs.note ? true : false,
+                children: "Confirm"
+              }
+            )
+          ] }) })
+        ] }) }) }),
+        children: "Add Customer Service Note"
+      }
+    ) }) });
+  };
+  var CSPortal_default = CSPortal;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/reducer_functions/CheckoutDataMethods.jsx
   var checkoutDataReducer = (checkoutData, action) => {
@@ -20312,12 +20417,12 @@ ${errorInfo.componentStack}`);
   };
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/Global/BlockLoader.jsx
-  var import_react38 = __toESM(require_react());
-  var import_jsx_runtime7 = __toESM(require_jsx_runtime());
+  var import_react41 = __toESM(require_react());
+  var import_jsx_runtime8 = __toESM(require_jsx_runtime());
   var BlockLoader = ({ message }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(View2, { position: "relative", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(SkeletonImage, { blockSize: 50, inlineSize: "fill", aspectRatio: 2 }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(View2, { position: "relative", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(SkeletonImage, { blockSize: 50, inlineSize: "fill", aspectRatio: 2 }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
         View2,
         {
           position: {
@@ -20331,8 +20436,8 @@ ${errorInfo.componentStack}`);
           inlineAlignment: "center",
           blockAlignment: "center",
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(View2, { maxBlockSize: 75, maxInlineSize: 75, padding: ["none", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Spinner2, { size: "fill", accessibilityLabel: message }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(Text2, { size: "medium", children: message })
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(View2, { maxBlockSize: 75, maxInlineSize: 75, padding: ["none", "none", "tight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Spinner2, { size: "fill", accessibilityLabel: message }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Text2, { size: "medium", children: message })
           ]
         }
       )
@@ -20341,18 +20446,18 @@ ${errorInfo.componentStack}`);
   var BlockLoader_default = BlockLoader;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/MethodBtns.jsx
-  var import_react39 = __toESM(require_react());
-  var import_jsx_runtime8 = __toESM(require_jsx_runtime());
+  var import_react42 = __toESM(require_react());
+  var import_jsx_runtime9 = __toESM(require_jsx_runtime());
   var MethodBtns = ({
     checkoutMethod,
     handleMethodSelect: handleMethodSelect2,
     availableMethods
   }) => {
-    const [methodHover, setMethodHover] = (0, import_react39.useState)(false);
+    const [methodHover, setMethodHover] = (0, import_react42.useState)(false);
     const ButtonTagOne = checkoutMethod === "pickup" ? "Button" : "Pressable";
     const ButtonTagTwo = checkoutMethod === "pickup" ? "Pressable" : "Button";
-    return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(InlineLayout2, { spacing: "tight", padding: ["base", "none", "none", "none"], children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(InlineLayout2, { spacing: "tight", padding: ["base", "none", "none", "none"], children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
         ButtonTagOne,
         __spreadProps(__spreadValues({}, ButtonTagOne === "Pressable" && {
           inlineAlignment: "center",
@@ -20368,7 +20473,7 @@ ${errorInfo.componentStack}`);
           children: "Collection"
         })
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
         ButtonTagTwo,
         __spreadProps(__spreadValues({}, ButtonTagTwo === "Pressable" && {
           inlineAlignment: "center",
@@ -20381,7 +20486,7 @@ ${errorInfo.componentStack}`);
           background: methodHover ? "subdued" : "transparent"
         }), {
           onPress: () => checkoutMethod === "pickup" ? handleMethodSelect2("delivery", availableMethods) : null,
-          children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Text2, { size: "medium", emphasis: "bold", children: "Delivery" })
+          children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Text2, { size: "medium", emphasis: "bold", children: "Delivery" })
         })
       )
     ] });
@@ -20389,21 +20494,21 @@ ${errorInfo.componentStack}`);
   var MethodBtns_default = MethodBtns;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/DeliveryCheckStatus.jsx
-  var import_react41 = __toESM(require_react());
+  var import_react44 = __toESM(require_react());
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/NoDeliveryBanner.jsx
-  var import_react40 = __toESM(require_react());
-  var import_jsx_runtime9 = __toESM(require_jsx_runtime());
+  var import_react43 = __toESM(require_react());
+  var import_jsx_runtime10 = __toESM(require_jsx_runtime());
   var NoDeliveryBanner = ({ availableMethods }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(View2, { minInlineSize: "fill", padding: ["tight", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Banner2, { status: "warning", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(Text2, { size: "base", emphasis: "bold", children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(View2, { minInlineSize: "fill", padding: ["tight", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Banner2, { status: "warning", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Text2, { size: "base", emphasis: "bold", children: [
       "Delivery is not available for this address. Try an alternative address or",
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
         Button2,
         {
           kind: "plain",
           onPress: () => handleMethodSelect("pickup", availableMethods),
-          children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(Text2, { children: "switch to collection" })
+          children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Text2, { children: "switch to collection" })
         }
       )
     ] }) }) });
@@ -20411,21 +20516,21 @@ ${errorInfo.componentStack}`);
   var NoDeliveryBanner_default = NoDeliveryBanner;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/DeliveryCheckStatus.jsx
-  var import_jsx_runtime10 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime11 = __toESM(require_jsx_runtime());
   var DeliveryCheckStatus = ({
     showDeliveryError,
     noDelivery,
     availableMethods,
     checkingPostcode
   }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
       View2,
       {
         padding: ["tight", "none", "none", "none"],
         inlineAlignment: "center",
-        children: !!showDeliveryError || !!noDelivery ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(NoDeliveryBanner_default, { availableMethods }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_jsx_runtime10.Fragment, { children: !checkingPostcode ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_jsx_runtime10.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Text2, { emphasis: "bold", size: "base", children: "Enter delivery address below" }) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Text2, { emphasis: "bold", size: "base", children: "Checking address..." }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(View2, { padding: ["tight", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Spinner2, {}) })
+        children: !!showDeliveryError || !!noDelivery ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(NoDeliveryBanner_default, { availableMethods }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_jsx_runtime11.Fragment, { children: !checkingPostcode ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_jsx_runtime11.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Text2, { emphasis: "bold", size: "base", children: "Enter delivery address below" }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Text2, { emphasis: "bold", size: "base", children: "Checking address..." }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(View2, { padding: ["tight", "none", "none", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Spinner2, {}) })
         ] }) })
       }
     );
@@ -20433,9 +20538,9 @@ ${errorInfo.componentStack}`);
   var DeliveryCheckStatus_default = DeliveryCheckStatus;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/MethodSelect/MethodSelect.jsx
-  var import_jsx_runtime11 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime12 = __toESM(require_jsx_runtime());
   function MethodSelect({ url: url2 }) {
-    const [checkoutData, dispatch] = (0, import_react42.useReducer)(checkoutDataReducer, {});
+    const [checkoutData, dispatch] = (0, import_react45.useReducer)(checkoutDataReducer, {});
     const handleSetQLocations = (locations) => {
       dispatch({
         type: "acquired_q_locations",
@@ -20479,27 +20584,28 @@ ${errorInfo.componentStack}`);
         type: "reset_MS_Checkout"
       });
     };
-    const [qCollectLocation, setQCollectLocation] = (0, import_react42.useState)(null);
-    const [availableMethods, setAvailableMethods] = (0, import_react42.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react42.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react42.useState)(false);
-    const [collectLocation, setCollectLocation] = (0, import_react42.useState)(null);
-    const [displayCalendar, setDisplayCalendar] = (0, import_react42.useState)(false);
-    const [postcode, setPostcode] = (0, import_react42.useState)(null);
-    const [loadMsg, setLoadMsg] = (0, import_react42.useState)("Initialising...");
-    const [storedAvailibility, setStoredAvailibility] = (0, import_react42.useState)(null);
-    const [datePickerInit, setDatePickerInit] = (0, import_react42.useState)(false);
-    const [checkingPostcode, setCheckingPostcode] = (0, import_react42.useState)(false);
-    const [noDelivery, setNoDelivery] = (0, import_react42.useState)(false);
-    const [showDeliveryError, setShowDeliveryError] = (0, import_react42.useState)(false);
-    const [cs, setCS2] = (0, import_react42.useState)({ status: false });
-    const [initLoad, setInitLoad] = (0, import_react42.useState)(true);
-    const [testState, setTestState] = (0, import_react42.useState)(0);
+    const [qCollectLocation, setQCollectLocation] = (0, import_react45.useState)(null);
+    const [availableMethods, setAvailableMethods] = (0, import_react45.useState)(null);
+    const [penguinCart, setPenguinCart] = (0, import_react45.useState)(null);
+    const [lockerReserved, setLockerReserved] = (0, import_react45.useState)(false);
+    const [collectLocation, setCollectLocation] = (0, import_react45.useState)(null);
+    const [displayCalendar, setDisplayCalendar] = (0, import_react45.useState)(false);
+    const [postcode, setPostcode] = (0, import_react45.useState)(null);
+    const [loadMsg, setLoadMsg] = (0, import_react45.useState)("Initialising...");
+    const [nextDay, setNextDay] = (0, import_react45.useState)(null);
+    const [storedAvailibility, setStoredAvailibility] = (0, import_react45.useState)(null);
+    const [datePickerInit, setDatePickerInit] = (0, import_react45.useState)(false);
+    const [checkingPostcode, setCheckingPostcode] = (0, import_react45.useState)(false);
+    const [noDelivery, setNoDelivery] = (0, import_react45.useState)(false);
+    const [showDeliveryError, setShowDeliveryError] = (0, import_react45.useState)(false);
+    const [cs, setCS] = (0, import_react45.useState)({ status: false });
+    const [initLoad, setInitLoad] = (0, import_react45.useState)(true);
+    const [testState, setTestState] = (0, import_react45.useState)(0);
     const lineItems = useCartLines();
     let setCartLineAttr = useApplyCartLinesChange();
     const appMeta = useAppMetafields();
     const localStorage = useStorage();
-    let CollectBtn = (0, import_react42.useRef)();
+    let CollectBtn = (0, import_react45.useRef)();
     let changeAttributes = useApplyAttributeChange();
     const { extension: extension2 } = useApi();
     const changeShippingAddress = useApplyShippingAddressChange();
@@ -20513,7 +20619,7 @@ ${errorInfo.componentStack}`);
       }),
       {}
     );
-    (0, import_react42.useEffect)(() => {
+    (0, import_react45.useEffect)(() => {
       const handleInitLoad = () => __async(this, null, function* () {
         setLoadMsg("Checking available methods...");
         let res = yield fetch(`${url2}/pza/validate-cart-test`, {
@@ -20538,14 +20644,7 @@ ${errorInfo.componentStack}`);
         quantity: item.quantity
       };
     });
-    let nextDayMeta = appMeta.filter((meta) => meta.target.type === "product").map((filteredMeta) => {
-      return JSON.parse(filteredMeta.metafield.value).next_day_delivery.value;
-    })[0];
-    let nextDay = nextDayMeta === 1 || nextDayMeta === null ? true : false;
-    console.log("heres the meta: ", appMeta, `
-heres next day: `, nextDayMeta, `
-Is basket next day? `, nextDay);
-    (0, import_react42.useEffect)(() => {
+    (0, import_react45.useEffect)(() => {
     }, [cs]);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
       return canBlockProgress && attributes["Checkout-Method"] === "delivery" && !!noDelivery ? {
@@ -20642,6 +20741,7 @@ Is basket next day? `, nextDay);
       yield changeShippingAddress({
         type: "updateShippingAddress",
         address: {
+          company: void 0,
           address1: void 0,
           address2: void 0,
           city: void 0,
@@ -20652,12 +20752,25 @@ Is basket next day? `, nextDay);
     });
     const customer = useCustomer();
     console.log("here is the customer: ", customer);
-    (0, import_react42.useEffect)(() => {
+    (0, import_react45.useEffect)(() => {
       console.log("test state has been changed. currently: ", testState);
     }, [testState]);
-    (0, import_react42.useEffect)(() => {
+    (0, import_react45.useEffect)(() => {
       const getDeliveryZones = () => __async(this, null, function* () {
         var _a, _b;
+        let nextDayMeta = appMeta.filter((meta) => meta.target.type === "product").map((filteredMeta) => {
+          return JSON.parse(filteredMeta.metafield.value).next_day_delivery.value;
+        });
+        let isNextDay;
+        nextDayMeta.forEach((val) => {
+          if (val === 0 || val === null) {
+            return isNextDay = false;
+          } else {
+            isNextDay = true;
+          }
+        });
+        setNextDay(isNextDay);
+        console.log("HERE IS isND: ", isNextDay);
         try {
           setCheckingPostcode(true);
           let checkBody = {
@@ -20725,8 +20838,8 @@ Is basket next day? `, nextDay);
       showDeliveryError ? setShowDeliveryError(false) : null;
       currentShippingAddress.zip && availableMethods && attributes["Checkout-Method"] !== "pickup" ? getDeliveryZones() : null;
     }, [currentShippingAddress.zip]);
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_jsx_runtime11.Fragment, { children: initLoad ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(BlockLoader_default, { message: loadMsg }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_jsx_runtime12.Fragment, { children: initLoad ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(BlockLoader_default, { message: loadMsg }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
         MethodBtns_default,
         {
           checkoutMethod: attributes["Checkout-Method"],
@@ -20734,16 +20847,16 @@ Is basket next day? `, nextDay);
           availableMethods
         }
       ),
-      attributes["Checkout-Method"] === "pickup" && (checkoutData == null ? void 0 : checkoutData.pickup) ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-        !!cs.status && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-          import_CSPortal.default,
+      attributes["Checkout-Method"] === "pickup" && (checkoutData == null ? void 0 : checkoutData.pickup) ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
+        !!cs.status && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          CSPortal_default,
           {
-            setCS: setCS2,
+            setCS,
             cs,
             allLocations: checkoutData.pickup.qCollectLocations
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
           Locations_default,
           {
             checkoutData,
@@ -20753,13 +20866,13 @@ Is basket next day? `, nextDay);
             cart: lineItems,
             nextDay,
             setProximityLocations: handleSetCollectLocations,
-            setCS: setCS2,
+            setCS,
             localStorage,
             currentShippingAddress,
             attributes
           }
         )
-      ] }) : attributes["Checkout-Method"] !== "pickup" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+      ] }) : attributes["Checkout-Method"] !== "pickup" ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
         DeliveryCheckStatus_default,
         {
           showDeliveryError,
@@ -20773,13 +20886,13 @@ Is basket next day? `, nextDay);
   var MethodSelect_default = MethodSelect;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/DatePicker.jsx
-  var import_react49 = __toESM(require_react());
+  var import_react55 = __toESM(require_react());
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/DatePickerBody.jsx
-  var import_react47 = __toESM(require_react());
+  var import_react53 = __toESM(require_react());
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/Calendar.jsx
-  var import_react45 = __toESM(require_react());
+  var import_react51 = __toESM(require_react());
 
   // node_modules/@babel/runtime/helpers/esm/typeof.js
   function _typeof(o) {
@@ -22469,12 +22582,12 @@ Is basket next day? `, nextDay);
   };
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/OpeningHours.jsx
-  var import_react43 = __toESM(require_react());
-  var import_jsx_runtime12 = __toESM(require_jsx_runtime());
+  var import_react46 = __toESM(require_react());
+  var import_jsx_runtime13 = __toESM(require_jsx_runtime());
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/LockerReserve.jsx
-  var import_react44 = __toESM(require_react());
-  var import_jsx_runtime13 = __toESM(require_jsx_runtime());
+  var import_react47 = __toESM(require_react());
+  var import_jsx_runtime14 = __toESM(require_jsx_runtime());
   var dateFormat = `EEEE, do MMMM yyyy`;
   var LockerReserve = ({
     penguinCart,
@@ -22490,8 +22603,8 @@ Is basket next day? `, nextDay);
     getPickupTime
   }) => {
     const { ui } = useApi();
-    const [showReservationError, setShowReservationError] = (0, import_react44.useState)(false);
-    const [lockerLoading, setLockerLoading] = (0, import_react44.useState)(false);
+    const [showReservationError, setShowReservationError] = (0, import_react47.useState)(false);
+    const [lockerLoading, setLockerLoading] = (0, import_react47.useState)(false);
     console.log("IS LOCKER RESERVED? ", lockerReserved, reserveTime);
     useBuyerJourneyIntercept(({ canBlockProgress }) => {
       return canBlockProgress && !lockerReserved ? {
@@ -22566,28 +22679,28 @@ Is basket next day? `, nextDay);
       });
       ui.overlay.close("reservation-confirm");
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(View, { padding: ["base", "none", "none", "none"], children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Grid, { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(View, { padding: ["base", "none", "none", "none"], children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Grid, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         Button2,
         {
           disabled: dateMatch ? true : false,
-          overlay: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Modal2, { id: "reservation-confirm", padding: true, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(View, { inlineAlignment: "center", blockAlignment: "center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Heading2, { level: 1, children: !lockerReserved ? "Confirm Reservation" : "Change Reservation Date" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+          overlay: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Modal2, { id: "reservation-confirm", padding: true, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(View, { inlineAlignment: "center", blockAlignment: "center", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Heading2, { level: 1, children: !lockerReserved ? "Confirm Reservation" : "Change Reservation Date" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               View,
               {
                 padding: ["base", "none", "none", "none"],
                 inlineAlignment: "center",
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(TextBlock, { size: "medium", children: lockerReserved && (reserveTime == null ? void 0 : reserveTime.date) ? `Would you like to switch from ${format(
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(TextBlock, { size: "medium", children: lockerReserved && (reserveTime == null ? void 0 : reserveTime.date) ? `Would you like to switch from ${format(
                     new Date(reserveTime.date),
                     dateFormat
                   )} to ${format(new Date(selected), dateFormat)}?` : `Do you wish to confirm your reservation for ${format(
                     new Date(selected),
                     dateFormat
                   )}?` }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Text2, { size: "base", children: "(Locker will be held in reserve for 10 minutes)" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { size: "base", children: "(Locker will be held in reserve for 10 minutes)" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                     View,
                     {
                       padding: ["base", "none", "base", "none"],
@@ -22598,8 +22711,8 @@ Is basket next day? `, nextDay);
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(InlineStack2, { spacing: "base", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(InlineStack2, { spacing: "base", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                 Button2,
                 {
                   kind: "secondary",
@@ -22607,7 +22720,7 @@ Is basket next day? `, nextDay);
                   children: "Cancel"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                 Button2,
                 {
                   onPress: () => handleLockerReserve(),
@@ -22620,7 +22733,7 @@ Is basket next day? `, nextDay);
           children: !dateMatch && !(reserveTime == null ? void 0 : reserveTime.expiry) ? "Reserve Locker" : !dateMatch && (reserveTime == null ? void 0 : reserveTime.expiry) ? "Change Reserved Date" : "Reserved"
         }
       ) }),
-      !!showReservationError && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      !!showReservationError && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         View,
         {
           position: {
@@ -22628,15 +22741,137 @@ Is basket next day? `, nextDay);
             inlineStart: 0,
             blockStart: `${110}%`
           },
-          children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(Text2, { emphasis: "bold", appearance: "warning", children: "Please reserve a locker to continue." })
+          children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { emphasis: "bold", appearance: "warning", children: "Please reserve a locker to continue." })
         }
       )
     ] });
   };
   var LockerReserve_default = LockerReserve;
 
+  // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/CalendarLocationInfo.jsx
+  var import_react48 = __toESM(require_react());
+  var import_jsx_runtime15 = __toESM(require_jsx_runtime());
+  var CalendarLocationInfo = ({
+    selected,
+    minDate,
+    locationHours,
+    attributes,
+    getPickupTime
+  }) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(TextBlock2, { children: [
+      "On",
+      " ",
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Text2, { emphasis: "bold", children: [
+        format(new Date(selected ? selected : minDate), "EEEE"),
+        " "
+      ] }),
+      "the",
+      " ",
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Text2, { children: [
+        attributes["Pickup-Location-Type"] === "lockers" ? "locker" : "store",
+        " "
+      ] }),
+      "opening hours are",
+      " ",
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Text2, { emphasis: "bold", children: locationHours[`${format(
+        new Date(selected ? selected : minDate),
+        "EEEE"
+      ).toLowerCase()}_opening_hours`] }),
+      ". If you\u2019re ordering for the next day please note your order will be available to collect from",
+      " ",
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Text2, { emphasis: "bold", children: getPickupTime(selected ? selected : minDate, "pm") }),
+      ", otherwise your order will be available to collect from",
+      " ",
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Text2, { emphasis: "bold", children: [
+        getPickupTime(selected ? selected : minDate, "am"),
+        "."
+      ] })
+    ] });
+  };
+  var CalendarLocationInfo_default = CalendarLocationInfo;
+
+  // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/CalendarHeader.jsx
+  var import_react49 = __toESM(require_react());
+  var import_jsx_runtime16 = __toESM(require_jsx_runtime());
+  var CalendarHeader = ({
+    selectedMethod,
+    attributes,
+    currentShippingAddress,
+    selected,
+    minDate,
+    deliveryType
+  }) => {
+    const formatDeliveryType = () => {
+      return deliveryType.split("-").map((y3) => {
+        return capitalise(y3);
+      }).join(" ");
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(InlineLayout2, { blockAlignment: "center", columns: ["auto", "fill"], children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(BlockStack2, { spacing: "extraTight", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Heading2, { level: 1, children: selectedMethod === "pickup" ? "Collection Date" : "Delivery Date" }),
+        selectedMethod === "pickup" ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Text2, { size: "base", children: attributes["Pickup-Location-Company"].replaceAll(/\s-\s/gm, " ") }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Text2, { children: [
+          formatDeliveryType(),
+          " to ",
+          currentShippingAddress.zip
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(View2, { inlineAlignment: "end", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+        Banner2,
+        {
+          status: "critical",
+          title: `Selected date: ${selected ? format(new Date(selected), "do MMMM yyyy") : format(new Date(minDate), "do MMMM yyyy")}`
+        }
+      ) })
+    ] });
+  };
+  var CalendarHeader_default = CalendarHeader;
+
+  // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/CalendarWeekSelect.jsx
+  var import_react50 = __toESM(require_react());
+  var import_jsx_runtime17 = __toESM(require_jsx_runtime());
+  var CalendarWeekSelect = ({ today, setToday, dateFormat: dateFormat2, setSelectedMonth }) => {
+    const [backwardLocked, setBackwardLocked] = (0, import_react50.useState)(false);
+    const [forwardLocked, setForwardLocked] = (0, import_react50.useState)(false);
+    (0, import_react50.useEffect)(() => {
+      format(today, dateFormat2) === format(/* @__PURE__ */ new Date(), dateFormat2) ? (
+        // || isPast(new Date(subDays(today, 6)))
+        setBackwardLocked(true)
+      ) : backwardLocked ? setBackwardLocked(false) : null;
+      isAfter(new Date(addDays(today, 6)), addYears(/* @__PURE__ */ new Date(), 1)) ? setForwardLocked(true) : forwardLocked ? setForwardLocked(false) : null;
+    }, [today]);
+    const getWeek = () => {
+      const weekStart = format(today, "do MMM").toString();
+      const weekEnd = format(addDays(today, 5), "do MMM").toString();
+      return `${weekStart} - ${weekEnd}`;
+    };
+    const weekBack = () => {
+      let weekAgo = new Date(format(subDays(today, 6), dateFormat2).toString());
+      isSameMonth(weekAgo, new Date(today)) ? null : setSelectedMonth(format(weekAgo, "MMMM yyyy"));
+      backwardLocked ? null : isBefore(new Date(weekAgo), /* @__PURE__ */ new Date()) ? setToday(/* @__PURE__ */ new Date()) : setToday(weekAgo);
+    };
+    const weekForward = () => {
+      let weekAhead = new Date(format(addDays(today, 6), dateFormat2).toString());
+      isSameMonth(weekAhead, new Date(today)) ? null : setSelectedMonth(format(weekAhead, "MMMM yyyy"));
+      forwardLocked ? null : setToday(weekAhead);
+    };
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+      InlineStack2,
+      {
+        inlineAlignment: "center",
+        blockAlignment: "center",
+        padding: ["extraLoose", "none", "none", "none"],
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Pressable2, { onPress: () => weekBack(), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon2, { source: "arrowLeft" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(View2, { blockAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Text2, { size: "medium", emphasis: "bold", children: getWeek() }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Pressable2, { onPress: () => weekForward(), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon2, { source: "arrowRight", onPress: () => weekForward() }) })
+        ]
+      }
+    );
+  };
+  var CalendarWeekSelect_default = CalendarWeekSelect;
+
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/Calendar.jsx
-  var import_jsx_runtime14 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime18 = __toESM(require_jsx_runtime());
   var days = Array.apply(null, Array(6)).map(() => {
   });
   var months = Array.apply(null, Array(13)).map(() => {
@@ -22662,28 +22897,23 @@ Is basket next day? `, nextDay);
     // changeAttributes,
     // localStorage,
   }) => {
-    const [today, setToday] = (0, import_react45.useState)(/* @__PURE__ */ new Date());
-    const [backwardLocked, setBackwardLocked] = (0, import_react45.useState)(false);
-    const [forwardLocked, setForwardLocked] = (0, import_react45.useState)(false);
-    const [selected, setSelected] = (0, import_react45.useState)(null);
-    const [selectedMonth, setSelectedMonth] = (0, import_react45.useState)(null);
-    const [pickupTimes, setPickupTimes] = (0, import_react45.useState)(null);
-    const [currentHover, setCurrentHover] = (0, import_react45.useState)(null);
-    const [lockerReserved, setLockerReserved] = (0, import_react45.useState)(false);
-    const [reserveTime, setReserveTime] = (0, import_react45.useState)({});
+    const [today, setToday] = (0, import_react51.useState)(/* @__PURE__ */ new Date());
+    const [selected, setSelected] = (0, import_react51.useState)(null);
+    const [selectedMonth, setSelectedMonth] = (0, import_react51.useState)(null);
+    const [pickupTimes, setPickupTimes] = (0, import_react51.useState)(null);
+    const [currentHover, setCurrentHover] = (0, import_react51.useState)(null);
+    const [lockerReserved, setLockerReserved] = (0, import_react51.useState)(false);
+    const [reserveTime, setReserveTime] = (0, import_react51.useState)(null);
     const dateFormat2 = "yyyy-MM-dd";
-    (0, import_react45.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       lockerReserved ? setLockerReserved(false) : null;
     }, [selectedMethod, attributes["Pickup-Location-Company"]]);
     console.log("attributes from calendar: ", attributes);
-    (0, import_react45.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       setSelected(null);
       setToday(/* @__PURE__ */ new Date());
     }, [deliveryType]);
-    const getHeading = () => {
-      return selectedMethod === "pickup" ? "Collection Date" : "Delivery Date";
-    };
-    (0, import_react45.useEffect)(() => {
+    (0, import_react51.useEffect)(() => {
       let method = capitalise(selectedMethod);
       const updateAttributeDate = () => __async(void 0, null, function* () {
         console.log(
@@ -22718,28 +22948,6 @@ Is basket next day? `, nextDay);
       selected !== minDate ? updateAttributeDate() : null;
       setToday(/* @__PURE__ */ new Date());
     }, [currentShippingAddress.zip]);
-    (0, import_react45.useEffect)(() => {
-      format(today, dateFormat2) === format(/* @__PURE__ */ new Date(), dateFormat2) ? (
-        // || isPast(new Date(subDays(today, 6)))
-        setBackwardLocked(true)
-      ) : backwardLocked ? setBackwardLocked(false) : null;
-      isAfter(new Date(addDays(today, 6)), addYears(/* @__PURE__ */ new Date(), 1)) ? setForwardLocked(true) : forwardLocked ? setForwardLocked(false) : null;
-    }, [today]);
-    const getWeek = () => {
-      const weekStart = format(today, "do MMM").toString();
-      const weekEnd = format(addDays(today, 5), "do MMM").toString();
-      return `${weekStart} - ${weekEnd}`;
-    };
-    const weekBack = () => {
-      let weekAgo = new Date(format(subDays(today, 6), dateFormat2).toString());
-      isSameMonth(weekAgo, new Date(today)) ? null : setSelectedMonth(format(weekAgo, "MMMM yyyy"));
-      backwardLocked ? null : isBefore(new Date(weekAgo), /* @__PURE__ */ new Date()) ? setToday(/* @__PURE__ */ new Date()) : setToday(weekAgo);
-    };
-    const weekForward = () => {
-      let weekAhead = new Date(format(addDays(today, 6), dateFormat2).toString());
-      isSameMonth(weekAhead, new Date(today)) ? null : setSelectedMonth(format(weekAhead, "MMMM yyyy"));
-      forwardLocked ? null : setToday(weekAhead);
-    };
     const setSelectedDate = (date) => __async(void 0, null, function* () {
       setSelected(date);
       if (!lockerReserved) {
@@ -22778,13 +22986,6 @@ Is basket next day? `, nextDay);
         });
       }
     });
-    const formatDeliveryType = () => {
-      let x2 = deliveryType.split("-");
-      let t2 = x2.map((y3) => {
-        return capitalise(y3);
-      }).join(" ");
-      return t2;
-    };
     const handleMonthChange = (value) => {
       setSelectedMonth(value);
       !isThisMonth(new Date(value)) ? setToday(new Date(value)) : setToday(/* @__PURE__ */ new Date());
@@ -22800,51 +23001,41 @@ Is basket next day? `, nextDay);
       let t2 = format(new Date(date), "EEEE").toString().toLowerCase();
       return locationHours[`${t2}_${meridian}_pickup_hours`];
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(View2, { padding: ["none", "none", "base", "none"], children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(InlineLayout2, { blockAlignment: "center", columns: ["auto", "fill"], children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(BlockStack2, { spacing: "extraTight", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Heading2, { level: 1, children: getHeading() }),
-          selectedMethod === "pickup" ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { size: "base", children: attributes["Pickup-Location-Company"].replaceAll(/\s-\s/gm, " ") }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Text2, { children: [
-            formatDeliveryType(),
-            " to ",
-            currentShippingAddress.zip
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(View2, { inlineAlignment: "end", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-          Banner2,
-          {
-            status: "critical",
-            title: `Selected date: ${selected ? format(new Date(selected), "do MMMM yyyy") : format(new Date(minDate), "do MMMM yyyy")}`
-          }
-        ) })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
-        InlineStack2,
+    return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(View2, { padding: ["none", "none", "base", "none"], children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+        CalendarHeader_default,
         {
-          inlineAlignment: "center",
-          blockAlignment: "center",
-          padding: ["extraLoose", "none", "none", "none"],
-          children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Pressable2, { onPress: () => weekBack(), children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Icon2, { source: "arrowLeft" }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(View2, { blockAlignment: "center", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { size: "medium", emphasis: "bold", children: getWeek() }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Pressable2, { onPress: () => weekForward(), children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Icon2, { source: "arrowRight", onPress: () => weekForward() }) })
-          ]
+          selectedMethod,
+          attributes,
+          currentShippingAddress,
+          selected,
+          minDate,
+          deliveryType
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+        CalendarWeekSelect_default,
+        {
+          today,
+          setToday,
+          dateFormat: dateFormat2,
+          setSelectedMonth
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
         Grid,
         {
           columns: ["fill", "fill", "fill", "fill", "fill", "fill"],
           rows: ["auto", "auto"],
           padding: ["base", "none", "base", "none"],
           children: [
-            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
               View2,
               {
                 inlineAlignment: "center",
                 blockAlignment: "center",
                 minBlockSize: 30,
-                children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                   Text2,
                   {
                     emphasis: !selected && format(addDays(today, i2), dateFormat2) === minDate || selected === format(addDays(today, i2), dateFormat2) ? "bold" : "",
@@ -22854,7 +23045,7 @@ Is basket next day? `, nextDay);
               },
               i2
             )),
-            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+            days.map((day, i2) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
               View2,
               {
                 inlineAlignment: "center",
@@ -22863,13 +23054,13 @@ Is basket next day? `, nextDay);
                 minInlineSize: 50,
                 padding: ["tight", "none", "none", "none"],
                 inlineSize: "fill",
-                children: !selected && format(new Date(addDays(today, i2)), dateFormat2) === minDate || selected && selected === format(new Date(addDays(today, i2)), dateFormat2) ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                children: !selected && format(new Date(addDays(today, i2)), dateFormat2) === minDate || selected && selected === format(new Date(addDays(today, i2)), dateFormat2) ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                   InlineLayout2,
                   {
                     minInlineSize: 70,
                     minBlockSize: 50,
                     maxBlockSize: 50,
-                    children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                    children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                       Button2,
                       {
                         disabled: isDateDisabled(
@@ -22878,11 +23069,11 @@ Is basket next day? `, nextDay);
                         onPress: () => setSelectedDate(
                           format(new Date(addDays(today, i2)), dateFormat2)
                         ),
-                        children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { children: format(addDays(today, i2), "d").toString() })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Text2, { children: format(addDays(today, i2), "d").toString() })
                       }
                     )
                   }
-                ) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(InlineLayout2, { minInlineSize: `${50}%`, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                ) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(InlineLayout2, { minInlineSize: `${50}%`, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
                   Pressable2,
                   {
                     minInlineSize: 70,
@@ -22900,7 +23091,7 @@ Is basket next day? `, nextDay);
                     onPress: () => setSelectedDate(
                       format(new Date(addDays(today, i2)), dateFormat2)
                     ),
-                    children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { children: format(addDays(today, i2), "d").toString() })
+                    children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Text2, { children: format(addDays(today, i2), "d").toString() })
                   }
                 ) })
               },
@@ -22909,7 +23100,7 @@ Is basket next day? `, nextDay);
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
         Select2,
         {
           label: "Month",
@@ -22932,37 +23123,18 @@ Is basket next day? `, nextDay);
           })
         }
       ),
-      selectedMethod === "pickup" && attributes["Pickup-Location-Id"] && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(View2, { padding: ["base", "none", "tight", "none"], children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(TextBlock2, { children: [
-          "On",
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Text2, { emphasis: "bold", children: [
-            format(new Date(selected ? selected : minDate), "EEEE"),
-            " "
-          ] }),
-          "the",
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Text2, { children: [
-            attributes["Pickup-Location-Type"] === "lockers" ? "locker" : "store",
-            " "
-          ] }),
-          "opening hours are",
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { emphasis: "bold", children: locationHours[`${format(
-            new Date(selected ? selected : minDate),
-            "EEEE"
-          ).toLowerCase()}_opening_hours`] }),
-          ". If you\u2019re ordering for the next day please note your order will be available to collect from",
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Text2, { emphasis: "bold", children: getPickupTime(selected ? selected : minDate, "pm") }),
-          ", otherwise your order will be available to collect from",
-          " ",
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Text2, { emphasis: "bold", children: [
-            getPickupTime(selected ? selected : minDate, "am"),
-            "."
-          ] })
-        ] }),
-        attributes["Pickup-Location-Type"] === "lockers" && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      selectedMethod === "pickup" && attributes["Pickup-Location-Id"] && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(View2, { padding: ["base", "none", "tight", "none"], children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+          CalendarLocationInfo_default,
+          {
+            selected,
+            minDate,
+            locationHours,
+            attributes,
+            getPickupTime
+          }
+        ),
+        attributes["Pickup-Location-Type"] === "lockers" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
           LockerReserve_default,
           {
             penguinCart,
@@ -22984,8 +23156,8 @@ Is basket next day? `, nextDay);
   var Calendar_default = Calendar;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/DeliveryTypeToggle.jsx
-  var import_react46 = __toESM(require_react());
-  var import_jsx_runtime15 = __toESM(require_jsx_runtime());
+  var import_react52 = __toESM(require_react());
+  var import_jsx_runtime19 = __toESM(require_jsx_runtime());
   var DeliveryTypeToggle = ({
     setDeliveryType,
     deliveryType,
@@ -22996,24 +23168,26 @@ Is basket next day? `, nextDay);
     setBlackoutDates,
     changeAttributes,
     attributes,
-    setMinDate
+    setMinDate,
+    setRateLoading
   }) => {
-    return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(View2, { padding: ["none", "none", "base", "none"], children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(View2, { padding: ["none", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Heading2, { children: "Select delivery type:" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(View2, { padding: ["none", "none", "base", "none"], children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(View2, { padding: ["none", "none", "base", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Heading2, { children: "Select delivery type:" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
         InlineLayout2,
         {
           blockAlignment: "center",
           columns: ["auto", "auto"],
           spacing: "loose",
           padding: ["none", "none", "base", "none"],
-          children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
+          children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(
             ChoiceList2,
             {
               name: "choice",
               value: deliveryType,
               onChange: (val) => __async(void 0, null, function* () {
                 setDeliveryType(val);
+                setRateLoading(true);
                 let method = val === "driver-delivery" ? "delivery" : "shipping";
                 let lineItemProp = val === "driver-delivery" ? `D${deliveryData.delivery.delivery_zone !== "unavailable" ? "%" + deliveryData.delivery.delivery_zone.replace(
                   /[^0-9.]/g,
@@ -23058,33 +23232,34 @@ Is basket next day? `, nextDay);
                 });
               }),
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
                   Choice2,
                   {
                     id: "driver-delivery",
                     disabled: deliveryData.delivery.delivery_zone === "unavailable" ? true : false,
-                    children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Text2, { emphasis: deliveryType === "driver-delivery" ? "bold" : "", children: deliveryData.delivery.delivery_zone === "unavailable" ? "Driver delivery unavailable for this address" : "Driver Delivery" })
+                    children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Text2, { emphasis: deliveryType === "driver-delivery" ? "bold" : "", children: deliveryData.delivery.delivery_zone === "unavailable" ? "Driver delivery unavailable for this address" : "Driver Delivery" })
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
                   Choice2,
                   {
                     id: "postal",
                     disabled: availableMethods.shipping ? false : true,
-                    children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.shipping ? "Postal" : "Postal unavailable due to products in basket" })
+                    children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Text2, { emphasis: deliveryType === "postal" ? "bold" : "", children: availableMethods.shipping ? "Postal" : "Postal unavailable due to products in basket" })
                   }
                 )
               ]
             }
           )
         }
-      )
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(TextBlock2, { children: deliveryType === "driver-delivery" ? `Drivers in our vans will deliver straight to your door.` : `Postal delivery using delivery services.` })
     ] });
   };
   var DeliveryTypeToggle_default = DeliveryTypeToggle;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/DatePickerBody.jsx
-  var import_jsx_runtime16 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime20 = __toESM(require_jsx_runtime());
   var DatePickerBody = ({
     selectedMethod,
     appMeta,
@@ -23097,17 +23272,22 @@ Is basket next day? `, nextDay);
     attributes,
     availableMethods
   }) => {
-    const [fetching, setFetching] = (0, import_react47.useState)(true);
-    const [minDate, setMinDate] = (0, import_react47.useState)(null);
-    const [blackoutDates, setBlackoutDates] = (0, import_react47.useState)(null);
-    const [locationHours, setLocationHours] = (0, import_react47.useState)(null);
-    const [locationDescription, setLocationDescription] = (0, import_react47.useState)(null);
-    const [deliveryType, setDeliveryType] = (0, import_react47.useState)(null);
-    const [deliveryData, setDeliveryData] = (0, import_react47.useState)(null);
-    const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = (0, import_react47.useState)(null);
-    const [currentPickupLocationId, setCurrentPickupLocationId] = (0, import_react47.useState)(null);
-    const [penguinCart, setPenguinCart] = (0, import_react47.useState)(null);
-    (0, import_react47.useEffect)(() => {
+    const [fetching, setFetching] = (0, import_react53.useState)(true);
+    const [minDate, setMinDate] = (0, import_react53.useState)(null);
+    const [blackoutDates, setBlackoutDates] = (0, import_react53.useState)(null);
+    const [locationHours, setLocationHours] = (0, import_react53.useState)(null);
+    const [locationDescription, setLocationDescription] = (0, import_react53.useState)(null);
+    const [deliveryType, setDeliveryType] = (0, import_react53.useState)(null);
+    const [deliveryData, setDeliveryData] = (0, import_react53.useState)(null);
+    const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = (0, import_react53.useState)(null);
+    const [currentPickupLocationId, setCurrentPickupLocationId] = (0, import_react53.useState)(null);
+    const [penguinCart, setPenguinCart] = (0, import_react53.useState)(null);
+    const [rateLoading, setRateLoading] = (0, import_react53.useState)(false);
+    const deliveryGroups = useDeliveryGroups();
+    (0, import_react53.useEffect)(() => {
+      rateLoading ? setRateLoading(false) : null;
+    }, [deliveryGroups]);
+    (0, import_react53.useEffect)(() => {
       const getPickupDates = () => __async(void 0, null, function* () {
         !fetching ? setFetching(true) : null;
         let nextDayMeta = appMeta.filter((meta) => meta.target.type === "product").map((filteredMeta) => {
@@ -23229,13 +23409,13 @@ Is basket next day? `, nextDay);
       currentShippingAddress.zip,
       attributes["Pickup-Location-Id"]
     ]);
-    return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_jsx_runtime16.Fragment, { children: fetching ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(import_jsx_runtime20.Fragment, { children: fetching || rateLoading ? /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
       BlockLoader_default,
       {
-        message: selectedMethod === "pickup" ? `Getting collection dates...` : "Getting delivery dates..."
+        message: fetching && selectedMethod === "pickup" ? `Getting collection dates...` : fetching && selectedMethod !== "pickup" ? "Getting delivery dates..." : "Refreshing delivery options..."
       }
-    ) : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
-      selectedMethod !== "pickup" && deliveryData && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    ) : /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
+      selectedMethod !== "pickup" && deliveryData && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
         DeliveryTypeToggle_default,
         {
           deliveryType,
@@ -23247,10 +23427,11 @@ Is basket next day? `, nextDay);
           setBlackoutDates,
           changeAttributes,
           attributes,
-          setMinDate
+          setMinDate,
+          setRateLoading
         }
       ),
-      (selectedMethod !== "pickup" && deliveryType || selectedMethod === "pickup" && attributes["Pickup-Location-Company"] && locationHours) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+      (selectedMethod !== "pickup" && deliveryType || selectedMethod === "pickup" && attributes["Pickup-Location-Company"] && locationHours) && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
         Calendar_default,
         {
           minDate,
@@ -23274,12 +23455,12 @@ Is basket next day? `, nextDay);
   var DatePickerBody_default = DatePickerBody;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/CustomerNotes.jsx
-  var import_react48 = __toESM(require_react());
-  var import_jsx_runtime17 = __toESM(require_jsx_runtime());
+  var import_react54 = __toESM(require_react());
+  var import_jsx_runtime21 = __toESM(require_jsx_runtime());
   var CustomerNotes = ({ changeAttributes, selectedMethod, giftNote }) => {
     const changeNote = useApplyNoteChange();
     const currentNote = useNote();
-    const [gNoteVisible, setGNoteVisible] = (0, import_react48.useState)(
+    const [gNoteVisible, setGNoteVisible] = (0, import_react54.useState)(
       giftNote && giftNote !== "" ? true : false
     );
     const handleNoteChange = (val) => __async(void 0, null, function* () {
@@ -23322,16 +23503,17 @@ Is basket next day? `, nextDay);
         });
       }
     });
-    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
-      selectedMethod !== "pickup" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
+      selectedMethod !== "pickup" && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         TextField2,
         {
+          value: currentNote,
           label: "Safe place instructions",
           onChange: (val) => handleNoteChange(val),
           onInput: (val) => handleNoteInput(val)
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
         View2,
         {
           padding: [
@@ -23341,10 +23523,10 @@ Is basket next day? `, nextDay);
             "none"
           ],
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Heading2, { level: 1, children: "Gift Note" }),
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(View2, { padding: ["tight", "none", "extraTight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(BlockLayout2, { spacing: "base", rows: ["auto", "auto"], children: [
-              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Checkbox2, { onChange: () => handleChkbxChange(), value: gNoteVisible, children: "Add a free gift note" }),
-              gNoteVisible && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Heading2, { level: 1, children: "Gift Note" }),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(View2, { padding: ["tight", "none", "extraTight", "none"], children: /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(BlockLayout2, { spacing: "base", rows: ["auto", "auto"], children: [
+              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Checkbox2, { onChange: () => handleChkbxChange(), value: gNoteVisible, children: "Add a free gift note" }),
+              gNoteVisible && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
                 TextField2,
                 {
                   label: "Gift Note Message",
@@ -23363,14 +23545,14 @@ Is basket next day? `, nextDay);
   var CustomerNotes_default = CustomerNotes;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DatePicker/DatePicker.jsx
-  var import_jsx_runtime18 = __toESM(require_jsx_runtime());
+  var import_jsx_runtime22 = __toESM(require_jsx_runtime());
   var DatePicker = ({ url: url2 }) => {
     const selectedMethod = useAttributeValues(["Checkout-Method"])[0];
     const changeAttributes = useApplyAttributeChange();
-    const [locationId, setLocationId] = (0, import_react49.useState)(null);
-    const [locationType, setLocationType] = (0, import_react49.useState)(null);
-    const [locationHandle, setLocationHandle] = (0, import_react49.useState)(null);
-    const [availableMethods, setAvailableMethods] = (0, import_react49.useState)(null);
+    const [locationId, setLocationId] = (0, import_react55.useState)(null);
+    const [locationType, setLocationType] = (0, import_react55.useState)(null);
+    const [locationHandle, setLocationHandle] = (0, import_react55.useState)(null);
+    const [availableMethods, setAvailableMethods] = (0, import_react55.useState)(null);
     const attr = useAttributes();
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -23383,7 +23565,7 @@ Is basket next day? `, nextDay);
     const cart = useCartLines();
     const currentShippingAddress = useShippingAddress();
     const setCartLineAttr = useApplyCartLinesChange();
-    (0, import_react49.useEffect)(() => {
+    (0, import_react55.useEffect)(() => {
       const types = ["pickup", "shipping", "delivery"];
       const x2 = cart[0].attributes.filter((attribute) => attribute.key === "_available_methods").map((filteredAttr) => {
         return filteredAttr.value;
@@ -23393,7 +23575,7 @@ Is basket next day? `, nextDay);
       }, {});
       setAvailableMethods(x2);
     }, []);
-    (0, import_react49.useEffect)(() => {
+    (0, import_react55.useEffect)(() => {
       const handleSwitchToPickup = () => {
         setLocationId(attributes["Pickup-Location-Id"]);
         setLocationType(attributes["Pickup-Location-Type"]);
@@ -23403,8 +23585,8 @@ Is basket next day? `, nextDay);
       };
       attributes["Pickup-Location-Id"] ? handleSwitchToPickup() : null;
     }, [attributes["Pickup-Location-Id"]]);
-    return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(View2, { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(import_jsx_runtime22.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
         CustomerNotes_default,
         {
           changeAttributes,
@@ -23412,7 +23594,7 @@ Is basket next day? `, nextDay);
           giftNote: attributes["Gift-Note"]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
         DatePickerBody_default,
         {
           selectedMethod,
@@ -23435,28 +23617,32 @@ Is basket next day? `, nextDay);
   var DatePicker_default = DatePicker;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/LineItemProps/LineItemProps.jsx
-  var import_react50 = __toESM(require_react());
-  var import_jsx_runtime19 = __toESM(require_jsx_runtime());
+  var import_react56 = __toESM(require_react());
+  var import_jsx_runtime23 = __toESM(require_jsx_runtime());
   var LineItemProps = () => {
     const currentItem = useCartLineTarget();
-    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_jsx_runtime19.Fragment, { children: currentItem.attributes.map((attribute) => {
-      return attribute.key === "_Personalisation Message" && attribute.value ? /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(Text, { emphasis: "bold", size: "small", children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_jsx_runtime23.Fragment, { children: currentItem.attributes.map((attribute) => {
+      return attribute.key === "_Personalisation Message" && attribute.value ? /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_jsx_runtime23.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(Text, { emphasis: "bold", size: "small", children: [
           "Personalised Message:",
           " "
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(Text, { size: "small", children: attribute.value })
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(Text, { size: "small", children: attribute.value })
       ] }) : null;
     }) });
   };
   var LineItemProps_default = LineItemProps;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/ExtendedCheckoutSummary/ExtendedCheckoutSummary.jsx
-  var import_react51 = __toESM(require_react());
-  var import_jsx_runtime20 = __toESM(require_jsx_runtime());
+  var import_react57 = __toESM(require_react());
+  var import_react58 = __toESM(require_react());
+  var import_jsx_runtime24 = __toESM(require_jsx_runtime());
   function ExtendedCheckoutSummary() {
+    const dateFormat2 = "do MMM yyyy";
     const delGroups = useDeliveryGroups();
     const changeAttributes = useApplyAttributeChange();
+    const cartAddress = useShippingAddress();
+    const currentNote = useNote();
     const lineItems = useCartLines();
     const attr = useAttributes();
     const attributes = attr.reduce(
@@ -23465,60 +23651,191 @@ Is basket next day? `, nextDay);
       }),
       {}
     );
-    (0, import_react51.useEffect)(() => {
+    const [checkoutDetails, setCheckoutDetails] = (0, import_react57.useState)(null);
+    const [noneDelPrice, setNoneDelPrice] = (0, import_react57.useState)(null);
+    (0, import_react58.useEffect)(() => {
+      console.log(
+        "delivery groups have changed - use effect should update attributes"
+      );
       const setDeliveryAttributes = () => __async(this, null, function* () {
         let rates = delGroups[0].deliveryOptions;
         let currentRateHandle = delGroups[0].selectedDeliveryOption.handle;
         let selectedDeliveryOption = rates.filter(
           (rate) => rate.handle === currentRateHandle
         );
-        let title = selectedDeliveryOption[0].title;
-        let titleRegex = /^\b['\w\s]+\b/;
-        let truncTitle = selectedDeliveryOption[0].title.match(titleRegex)[0];
         let price = selectedDeliveryOption[0].costAfterDiscounts.amount * 100;
         console.log("delivery price: ", price);
-        let timeRegex = new RegExp(/-\s(.*)\s\(/g);
-        const time = timeRegex.exec(title)[1];
-        if (attributes["Delivery-Time"] && attributes["Delivery-Time"] === time) {
-          return;
+        if (attributes["Checkout-Method"] === "delivery") {
+          let title = selectedDeliveryOption[0].title;
+          let titleRegex = /^\b['\w\s]+\b/;
+          let truncTitle = selectedDeliveryOption[0].title.match(titleRegex)[0];
+          let timeRegex = new RegExp(/-\s(.*)\s\(/g);
+          const time = timeRegex.exec(title)[1];
+          if (attributes["Delivery-Time"] && attributes["Delivery-Time"] === time) {
+            return;
+          } else {
+            yield changeAttributes({
+              type: "updateAttribute",
+              key: "Delivery-Time",
+              value: time
+            });
+            yield changeAttributes({
+              type: "updateAttribute",
+              key: "Delivery-Price",
+              value: `${price}`
+            });
+            yield changeAttributes({
+              type: "updateAttribute",
+              key: "Delivery-Title",
+              value: truncTitle
+            });
+          }
         } else {
-          yield changeAttributes({
-            type: "updateAttribute",
-            key: "Delivery-Time",
-            value: time
-          });
-          yield changeAttributes({
-            type: "updateAttribute",
-            key: "Delivery-Price",
-            value: `${price}`
-          });
-          yield changeAttributes({
-            type: "updateAttribute",
-            key: "Delivery-Title",
-            value: truncTitle
-          });
+          console.log("none-delivery selected. rate price is: ", price);
+          setNoneDelPrice(price);
         }
       });
-      delGroups.length && attributes["Checkout-Method"] === "delivery" ? (console.log("delivery groups updated: ", delGroups), setDeliveryAttributes()) : null;
+      delGroups.length ? (
+        //&& attributes["Checkout-Method"] === "delivery"
+        (console.log("delivery groups updated: ", delGroups), setDeliveryAttributes())
+      ) : null;
     }, [delGroups]);
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(View2, { children: Object.keys(attributes).map((key) => /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Heading2, { children: [
-      key,
-      ": ",
-      attributes[key]
-    ] })) });
+    (0, import_react58.useEffect)(() => {
+      console.log("none delivery option selected. price is: ", noneDelPrice);
+    }, [noneDelPrice]);
+    (0, import_react58.useEffect)(() => {
+      const initialiseSummary = () => __async(this, null, function* () {
+        if (cartAddress.zip && cartAddress.address1 && cartAddress.city) {
+          let method = attributes["Checkout-Method"] === "pickup" ? "Collection" : attributes["Checkout-Method"] === "shipping" ? "Postal" : "Delivery";
+          let selected_day_opening_time = null;
+          setCheckoutDetails({
+            method,
+            address: `${cartAddress.company ? `${cartAddress.company},` : ""}
+          ${cartAddress.address1}, ${cartAddress.city}, ${cartAddress.zip}`
+          });
+        } else {
+          checkoutDetails ? setCheckoutDetails(null) : null;
+        }
+      });
+      initialiseSummary();
+    }, [cartAddress, attributes["Checkout-Method"]]);
+    return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(View2, { children: [
+      Object.keys(attributes).map((key) => /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Heading2, { children: [
+        key,
+        ": ",
+        attributes[key]
+      ] })),
+      ((checkoutDetails == null ? void 0 : checkoutDetails.method) || attributes["Gift-Note"]) && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Divider2, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(View2, { padding: ["base", "none", "base", "none"], children: [
+          (attributes["Gift-Note"] || currentNote) && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+              InlineLayout,
+              {
+                blockAlignment: "center",
+                columns: ["fill", "fill"],
+                children: [
+                  attributes["Gift-Note"] && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+                    BlockLayout2,
+                    {
+                      spacing: "extraTight",
+                      blockAlignment: "start",
+                      inlineAlignment: "start",
+                      rows: ["auto", "fill"],
+                      children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Text2, { emphasis: "bold", children: "Gift Note:" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Text2, { children: attributes["Gift-Note"] })
+                      ]
+                    }
+                  ),
+                  currentNote && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+                    BlockLayout2,
+                    {
+                      spacing: "extraTight",
+                      inlineAlignment: "end",
+                      blockAlignment: "start",
+                      rows: ["auto", "fill"],
+                      children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Text2, { emphasis: "bold", children: "Safe Place:" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Text2, { children: currentNote })
+                      ]
+                    }
+                  )
+                ]
+              }
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(BlockSpacer2, {})
+          ] }),
+          (checkoutDetails == null ? void 0 : checkoutDetails.method) && attributes["Checkout-Method"] && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+            InlineLayout,
+            {
+              blockAlignment: "center",
+              columns: [`${45}%`, "fill"],
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+                  BlockLayout2,
+                  {
+                    spacing: "extraTight",
+                    blockAlignment: "start",
+                    inlineAlignment: "start",
+                    rows: ["auto", "fill"],
+                    children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Text2, { emphasis: "bold", children: [
+                        checkoutDetails.method,
+                        " Address"
+                      ] }),
+                      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Text2, { children: checkoutDetails.address })
+                    ]
+                  }
+                ),
+                attributes[`${capitalise(attributes["Checkout-Method"])}-Date`] && // {`${
+                //   attributes[capitalise(attributes["Checkout-Method"])]
+                // }-Date` !== '' && (
+                /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_jsx_runtime24.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+                  BlockLayout2,
+                  {
+                    spacing: "extraTight",
+                    inlineAlignment: "end",
+                    rows: ["auto", "fill"],
+                    children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(Text2, { emphasis: "bold", children: [
+                        checkoutDetails.method,
+                        " Details"
+                      ] }),
+                      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(BlockStack, { spacing: "none", inlineAlignment: "end", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Text2, { children: format(
+                          new Date(
+                            attributes[`${capitalise(
+                              attributes["Checkout-Method"]
+                            )}-Date`]
+                          ),
+                          dateFormat2
+                        ) }),
+                        attributes["Checkout-Method"] === "pickup" && attributes["Pickup-AM-Hours"] && attributes["Pickup-PM-Hours"] ? `${attributes["Pickup-AM-Hours"]} - ${attributes["Pickup-PM-Hours"]}` : attributes["Checkout-Method"] === "delivery" ? attributes["Delivery-Time"] : null
+                      ] })
+                    ]
+                  }
+                ) })
+              ]
+            }
+          )
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(Divider2, {})
+      ] })
+    ] });
   }
   var ExtendedCheckoutSummary_default = ExtendedCheckoutSummary;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/DeliveryRatesInfo/DeliveryRatesInfo.jsx
-  var import_react52 = __toESM(require_react());
-  var import_jsx_runtime21 = __toESM(require_jsx_runtime());
+  var import_react59 = __toESM(require_react());
+  var import_jsx_runtime25 = __toESM(require_jsx_runtime());
   function DeliveryRatesInfo() {
     const { query } = useApi();
     const cart = useCartLines();
     console.log(cart);
     const shippingTarget = useShippingOptionTarget();
-    const [rateInfo, setRateInfo] = (0, import_react52.useState)(null);
-    const [rateDescription, setRateDescription] = (0, import_react52.useState)(null);
+    const [rateInfo, setRateInfo] = (0, import_react59.useState)(null);
+    const [rateDescription, setRateDescription] = (0, import_react59.useState)(null);
     const attr = useAttributes();
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
@@ -23527,7 +23844,7 @@ Is basket next day? `, nextDay);
       {}
     );
     console.log(JSON.stringify(cart[0].attributes));
-    (0, import_react52.useEffect)(() => {
+    (0, import_react59.useEffect)(() => {
       console.log("FETCHING RATES");
       const getRateInfo = () => __async(this, null, function* () {
         const {
@@ -23602,50 +23919,84 @@ Is basket next day? `, nextDay);
         return;
       }
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(import_jsx_runtime21.Fragment, { children: rateInfo && attributes["Checkout-Method"] === "delivery" && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(Text2, { children: getRateDescription() }) });
+    return rateInfo && attributes["Checkout-Method"] === "delivery" ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Text2, { children: getRateDescription() }) : null;
   }
   var DeliveryRatesInfo_default = DeliveryRatesInfo;
 
   // extensions/lolas-multifunction-checkout-extension/src/Components/CollectionBillingWarning/CollectionBillingWarning.jsx
-  var import_jsx_runtime22 = __toESM(require_jsx_runtime());
+  var import_react60 = __toESM(require_react());
+  var import_jsx_runtime26 = (
+    // * Should only show if two addresses match
+    __toESM(require_jsx_runtime())
+  );
   function CollectionBillingWarning() {
     const attr = useAttributes();
+    const shippingAddress = JSON.stringify(useShippingAddress());
+    const billingAddress = JSON.stringify(useBillingAddress());
+    const [match2, setMatch] = (0, import_react60.useState)(true);
+    const [blockUser, setBlockUser] = (0, import_react60.useState)(false);
+    useBuyerJourneyIntercept(({ canBlockProgress }) => {
+      return canBlockProgress && match2 ? {
+        behavior: "block",
+        reason: "Billing Address and Shipping address cannot match for Collection",
+        perform: (result) => {
+          result.behavior === "block" ? setBlockUser(true) : null;
+        }
+      } : {
+        behavior: "allow",
+        perform: () => {
+          blockUser ? setBlockUser(false) : null;
+        }
+      };
+    });
+    console.log(
+      "heres the shipping address: ",
+      shippingAddress,
+      "\nHeres the billing address: ",
+      billingAddress,
+      "\n Do they Match? ",
+      shippingAddress === billingAddress
+    );
+    (0, import_react60.useEffect)(() => {
+      blockUser ? setBlockUser(false) : null;
+      shippingAddress === billingAddress ? setMatch(true) : setMatch(false);
+    }, [billingAddress]);
     const attributes = attr.reduce(
       (obj, item) => __spreadProps(__spreadValues({}, obj), {
         [item.key]: item.value
       }),
       {}
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(import_jsx_runtime22.Fragment, { children: attributes["Checkout-Method"] === "pickup" && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Banner2, { title: "Enter Billing Address", children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(Text2, { children: "Don't forget to provide your billing address below" }) }) });
+    return blockUser ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_jsx_runtime26.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Banner2, { title: "Address Warning", children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(Text2, { children: "Billing Address cannot match Collection Address" }) }) }) : null;
   }
   var CollectionBillingWarning_default = CollectionBillingWarning;
 
   // extensions/lolas-multifunction-checkout-extension/src/App.jsx
-  var import_jsx_runtime23 = __toESM(require_jsx_runtime());
-  var url = "https://kingston-game-assigned-bahrain.trycloudflare.com/";
+  var import_jsx_runtime27 = __toESM(require_jsx_runtime());
+  var url = "https://levitra-mortgages-skin-bags.trycloudflare.com/";
   var MethodSelectExt = reactExtension(
     "purchase.checkout.contact.render-after",
-    () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(MethodSelect_default, { url })
+    () => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(MethodSelect_default, { url })
   );
   var DatePickerExt = reactExtension(
     "purchase.checkout.shipping-option-list.render-before",
-    () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(DatePicker_default, { url })
+    () => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(DatePicker_default, { url })
   );
   var DeliveryRatesInfoExt = reactExtension(
     "purchase.checkout.shipping-option-item.details.render",
-    () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(DeliveryRatesInfo_default, { url })
+    () => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(DeliveryRatesInfo_default, { url })
   );
   var LineItemPropsExt = reactExtension(
     "purchase.checkout.cart-line-item.render-after",
-    () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(LineItemProps_default, {})
+    () => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(LineItemProps_default, {})
   );
   var ExtendedCheckoutSummaryExt = reactExtension(
     "purchase.checkout.cart-line-list.render-after",
-    () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(ExtendedCheckoutSummary_default, {})
+    () => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(ExtendedCheckoutSummary_default, {})
   );
   var CollectionBillingWarningExt = reactExtension(
-    "purchase.checkout.block.render",
-    () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(CollectionBillingWarning_default, {})
+    "purchase.checkout.payment-method-list.render-after",
+    () => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(CollectionBillingWarning_default, {})
   );
 })();
 //# sourceMappingURL=lolas-checkout-extension.js.map

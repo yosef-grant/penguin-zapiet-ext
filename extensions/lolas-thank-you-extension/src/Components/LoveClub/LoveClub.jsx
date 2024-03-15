@@ -33,6 +33,7 @@ const LoveClub = () => {
 
   console.log(
     "this is app meta from loveclub: ",
+    customer,
     appMeta,
     parseInt(
       appMeta

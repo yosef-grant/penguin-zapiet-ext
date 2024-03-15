@@ -1,4 +1,4 @@
-import { Heading } from "@shopify/ui-extensions-react/checkout";
+import { Heading, useDeliveryGroups } from "@shopify/ui-extensions-react/checkout";
 import React, { useEffect, useState } from "react";
 import Calendar from "./Calendar.jsx";
 import DeliveryTypeToggle from "./DeliveryTypeToggle.jsx";
@@ -26,6 +26,17 @@ const DatePickerBody = ({
   const [currentDeliveryPostcode, setCurrentDeliveryPostcode] = useState(null);
   const [currentPickupLocationId, setCurrentPickupLocationId] = useState(null);
   const [penguinCart, setPenguinCart] = useState(null);
+
+  const [rateLoading, setRateLoading] = useState(false);
+
+
+
+
+  const deliveryGroups = useDeliveryGroups();
+  
+  useEffect(() => {
+    rateLoading ? setRateLoading(false) : null;
+  }, [deliveryGroups]);
 
   useEffect(() => {
     const getPickupDates = async () => {
@@ -224,12 +235,14 @@ const DatePickerBody = ({
   ]);
   return (
     <>
-      {fetching ? (
+      {fetching || rateLoading ? (
         <BlockLoader
           message={
-            selectedMethod === "pickup"
+            fetching && selectedMethod === "pickup"
               ? `Getting collection dates...`
-              : "Getting delivery dates..."
+              : fetching && selectedMethod !== "pickup"
+              ? "Getting delivery dates..."
+              : "Refreshing delivery options..."
           }
         />
       ) : (
@@ -246,6 +259,7 @@ const DatePickerBody = ({
               changeAttributes={changeAttributes}
               attributes={attributes}
               setMinDate={setMinDate}
+              setRateLoading={setRateLoading}
             />
           )}
           {((selectedMethod !== "pickup" && deliveryType) ||
