@@ -8,7 +8,7 @@ import {
 } from "@shopify/ui-extensions-react/checkout";
 import { format } from "date-fns";
 import React from "react";
-import { capitalise } from "../../helpers/StringFunctions.jsx";
+import { capitalise } from "../../../helpers/StringFunctions.jsx";
 
 const CalendarHeader = ({
   selectedMethod,

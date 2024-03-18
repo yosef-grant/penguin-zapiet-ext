@@ -165,53 +165,6 @@ const Locations = ({
     return `${firstLetter}${singular} Collection`;
   };
 
-  const getShippingRates = async () => {
-    const myHeaders = new Headers();
-    myHeaders.append(
-      "Intuitive-Partner-Api-Key",
-      "e6c32bf8-2303-488d-b851-c6e277a6d1c3"
-    );
-    myHeaders.append(
-      "Intuitive-Account-Api-Key",
-      "ae6b7232-22eb-4779-ab23-980205cde95c"
-    );
-    myHeaders.append("Content-Type", "application/json");
-
-    const raw = JSON.stringify({
-      origin: {
-        country: "GB",
-        province: "ENG",
-        postal_code: "NW10 7NH",
-      },
-      destination: {
-        address_1: "54 london",
-        address_2: "",
-        city: "London",
-        province_code: "ENG",
-        country: "GB",
-        postal_code: "NW11 9QS",
-      },
-      products: [
-        {
-          quantity: 1,
-          product_id: 7600812818626,
-          variant_id: 42840933400770,
-        },
-      ],
-      currency: "GBP",
-    });
-
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
-
-    let y = await fetch("https://intuitiveshipping.io/rating", requestOptions);
-
-    console.log(y);
-  };
 
   return (
     <View padding={["base", "none", "base", "none"]}>

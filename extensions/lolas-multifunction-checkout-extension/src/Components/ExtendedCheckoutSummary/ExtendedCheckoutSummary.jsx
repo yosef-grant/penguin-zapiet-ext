@@ -16,17 +16,18 @@ import {
   useNote,
   BlockLayout,
   BlockSpacer,
-} from "@shopify/ui-extensions-react/checkout";
-import { useState } from "react";
-import { useEffect } from "react";
+  Spinner,
+} from '@shopify/ui-extensions-react/checkout';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-import currency from "../../helpers/Currency.jsx";
-import { capitalise } from "../../helpers/StringFunctions.jsx";
-import { format } from "date-fns";
-import { BlockStack, InlineLayout } from "@shopify/ui-extensions/checkout";
+import currency from '../../helpers/Currency.jsx';
+import { capitalise } from '../../helpers/StringFunctions.jsx';
+import { addDays, format, isSameDay, nextDay } from 'date-fns';
+import { BlockStack, InlineLayout } from '@shopify/ui-extensions/checkout';
 
 function ExtendedCheckoutSummary() {
-  const dateFormat = "do MMM yyyy";
+  const dateFormat = 'do MMM yyyy';
   const delGroups = useDeliveryGroups();
   const changeAttributes = useApplyAttributeChange();
 
@@ -49,9 +50,11 @@ function ExtendedCheckoutSummary() {
   const [checkoutDetails, setCheckoutDetails] = useState(null);
   const [noneDelPrice, setNoneDelPrice] = useState(null);
 
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     console.log(
-      "delivery groups have changed - use effect should update attributes"
+      'delivery groups have changed - use effect should update attributes'
     );
     const setDeliveryAttributes = async () => {
       let rates = delGroups[0].deliveryOptions;
@@ -63,9 +66,9 @@ function ExtendedCheckoutSummary() {
 
       let price = selectedDeliveryOption[0].costAfterDiscounts.amount * 100;
 
-      console.log("delivery price: ", price);
+      console.log('delivery price: ', price);
 
-      if (attributes["Checkout-Method"] === "delivery") {
+      if (attributes['Checkout-Method'] === 'delivery') {
         let title = selectedDeliveryOption[0].title;
 
         let titleRegex = /^\b['\w\s]+\b/;
@@ -76,24 +79,24 @@ function ExtendedCheckoutSummary() {
         const time = timeRegex.exec(title)[1];
 
         if (
-          attributes["Delivery-Time"] &&
-          attributes["Delivery-Time"] === time
+          attributes['Delivery-Time'] &&
+          attributes['Delivery-Time'] === time
         ) {
           return;
         } else {
           await changeAttributes({
-            type: "updateAttribute",
-            key: "Delivery-Time",
+            type: 'updateAttribute',
+            key: 'Delivery-Time',
             value: time,
           });
           await changeAttributes({
-            type: "updateAttribute",
-            key: "Delivery-Price",
+            type: 'updateAttribute',
+            key: 'Delivery-Price',
             value: `${price}`,
           });
           await changeAttributes({
-            type: "updateAttribute",
-            key: "Delivery-Title",
+            type: 'updateAttribute',
+            key: 'Delivery-Title',
             value: truncTitle,
           });
         }
@@ -105,36 +108,36 @@ function ExtendedCheckoutSummary() {
         //   value: price,
         // });
         // console.log('after pickup addition: ', attributes)
-        console.log("none-delivery selected. rate price is: ", price);
+        console.log('none-delivery selected. rate price is: ', price);
         setNoneDelPrice(price);
       }
     };
     delGroups.length
       ? //&& attributes["Checkout-Method"] === "delivery"
-        (console.log("delivery groups updated: ", delGroups),
+        (console.log('delivery groups updated: ', delGroups),
         setDeliveryAttributes())
       : null;
   }, [delGroups]);
 
   useEffect(() => {
-    console.log("none delivery option selected. price is: ", noneDelPrice);
+    console.log('none delivery option selected. price is: ', noneDelPrice);
   }, [noneDelPrice]);
 
   useEffect(() => {
     const initialiseSummary = async () => {
       if (cartAddress.zip && cartAddress.address1 && cartAddress.city) {
         let method =
-          attributes["Checkout-Method"] === "pickup"
-            ? "Collection"
-            : attributes["Checkout-Method"] === "shipping"
-            ? "Postal"
-            : "Delivery";
+          attributes['Checkout-Method'] === 'pickup'
+            ? 'Collection'
+            : attributes['Checkout-Method'] === 'shipping'
+            ? 'Postal'
+            : 'Delivery';
 
         let selected_day_opening_time = null;
 
         setCheckoutDetails({
           method: method,
-          address: `${cartAddress.company ? `${cartAddress.company},` : ""}
+          address: `${cartAddress.company ? `${cartAddress.company},` : ''}
           ${cartAddress.address1}, ${cartAddress.city}, ${cartAddress.zip}`,
         });
         // setCheckoutDetails({
@@ -153,8 +156,32 @@ function ExtendedCheckoutSummary() {
     };
 
     initialiseSummary();
-  }, [cartAddress, attributes["Checkout-Method"]]);
-  // console.log("attributes: ", attributes);
+  }, [cartAddress, attributes['Checkout-Method']]);
+
+  // attributes['Checkout-Method'] === 'pickup' &&
+  //   (useEffect(() => {
+  //     //let timer = setTimeout(() => setRefreshing(true), 1500);
+  //     setRefreshing(true);
+  //     // let timer = setTimeout(() => setRefreshing(false), 1200);
+  //     // return () => {
+  //     //   clearTimeout(timer);
+  //     // };
+  //   }, [attributes['Pickup-Date']]),
+  //   useEffect(() => {
+  //     console.log('PM HOURS CHANGED, current state of refresh: ', refreshing);
+  //     setRefreshing(false);
+  //   }, [attributes['Pickup-PM-Hours']]));
+  // // console.log("attributes: ", attributes);
+
+  const isNextDay = () => {
+    let check = isSameDay(
+      new Date(attributes['Pickup-Date']),
+      addDays(new Date(), 1)
+    );
+
+    console.log('is this a next day pickup? ', check);
+    return check;
+  };
 
   return (
     <View>
@@ -164,33 +191,33 @@ function ExtendedCheckoutSummary() {
         </Heading>
       ))}
 
-      {(checkoutDetails?.method || attributes["Gift-Note"]) && (
+      {(checkoutDetails?.method || attributes['Gift-Note']) && (
         <>
           <Divider />
-          <View padding={["base", "none", "base", "none"]}>
-            {(attributes["Gift-Note"] || currentNote) && (
+          <View padding={['base', 'none', 'base', 'none']}>
+            {(attributes['Gift-Note'] || currentNote) && (
               <>
                 <InlineLayout
-                  blockAlignment={"center"}
-                  columns={["fill", "fill"]}
+                  blockAlignment={'center'}
+                  columns={['fill', 'fill']}
                 >
-                  {attributes["Gift-Note"] && (
+                  {attributes['Gift-Note'] && (
                     <BlockLayout
-                      spacing={"extraTight"}
-                      blockAlignment={"start"}
-                      inlineAlignment={"start"}
-                      rows={["auto", "fill"]}
+                      spacing={'extraTight'}
+                      blockAlignment={'start'}
+                      inlineAlignment={'start'}
+                      rows={['auto', 'fill']}
                     >
                       <Text emphasis="bold">Gift Note:</Text>
-                      <Text>{attributes["Gift-Note"]}</Text>
+                      <Text>{attributes['Gift-Note']}</Text>
                     </BlockLayout>
                   )}
                   {currentNote && (
                     <BlockLayout
-                      spacing={"extraTight"}
-                      inlineAlignment={"end"}
-                      blockAlignment={"start"}
-                      rows={["auto", "fill"]}
+                      spacing={'extraTight'}
+                      inlineAlignment={'end'}
+                      blockAlignment={'start'}
+                      rows={['auto', 'fill']}
                     >
                       <Text emphasis="bold">Safe Place:</Text>
                       <Text>{currentNote}</Text>
@@ -200,56 +227,75 @@ function ExtendedCheckoutSummary() {
                 <BlockSpacer />
               </>
             )}
-            {checkoutDetails?.method && attributes["Checkout-Method"] && (
+            {checkoutDetails?.method && attributes['Checkout-Method'] && (
               <InlineLayout
-                blockAlignment={"center"}
-                columns={[`${45}%`, "fill"]}
+                blockAlignment={'start'}
+                columns={[`${45}%`, 'fill']}
               >
                 <BlockLayout
-                  spacing={"extraTight"}
-                  blockAlignment={"start"}
-                  inlineAlignment={"start"}
-                  rows={["auto", "fill"]}
+                  spacing={'extraTight'}
+                  blockAlignment={'start'}
+                  inlineAlignment={'start'}
+                  rows={['auto', 'fill']}
                 >
                   <Text emphasis="bold">{checkoutDetails.method} Address</Text>
                   <Text>{checkoutDetails.address}</Text>
                 </BlockLayout>
                 {attributes[
-                  `${capitalise(attributes["Checkout-Method"])}-Date`
+                  `${capitalise(attributes['Checkout-Method'])}-Date`
                 ] && (
                   // {`${
                   //   attributes[capitalise(attributes["Checkout-Method"])]
                   // }-Date` !== '' && (
                   <>
                     <BlockLayout
-                      spacing={"extraTight"}
-                      inlineAlignment={"end"}
-                      rows={["auto", "fill"]}
+                      spacing={'extraTight'}
+                      inlineAlignment={'end'}
+                      maxInlineSize={'fill'}
+                      rows={['auto', 'auto']}
+                      minBlockSize={'fill'}
                     >
                       <Text emphasis="bold">
                         {checkoutDetails.method} Details
                       </Text>
-                      <BlockStack spacing="none" inlineAlignment={"end"}>
-                        <Text>
-                          {format(
-                            new Date(
-                              attributes[
-                                `${capitalise(
-                                  attributes["Checkout-Method"]
-                                )}-Date`
-                              ]
-                            ),
-                            dateFormat
-                          )}
-                        </Text>
-                        {attributes["Checkout-Method"] === "pickup" &&
-                        attributes["Pickup-AM-Hours"] &&
-                        attributes["Pickup-PM-Hours"]
-                          ? `${attributes["Pickup-AM-Hours"]} - ${attributes["Pickup-PM-Hours"]}`
-                          : attributes["Checkout-Method"] === "delivery"
-                          ? attributes["Delivery-Time"]
-                          : null}
-                      </BlockStack>
+                      {!!refreshing ? (
+                        <View
+                          minInlineSize={`${50}%`}
+                          inlineAlignment={'center'}
+                          blockAlignment={'start'}
+                        >
+                          <Spinner appearance="monochrome" />
+                        </View>
+                      ) : (
+                        <>
+                          <BlockStack spacing="none" inlineAlignment={'end'}>
+                            <Text>
+                              {format(
+                                new Date(
+                                  attributes[
+                                    `${capitalise(
+                                      attributes['Checkout-Method']
+                                    )}-Date`
+                                  ]
+                                ),
+                                dateFormat
+                              )}
+                            </Text>
+                            {attributes['Checkout-Method'] === 'pickup' &&
+                            attributes['Pickup-AM-Hours'] &&
+                            attributes['Pickup-PM-Hours']
+                              ? // if date === nextDay, from PM pickup else from AM pickup
+                                `From ${
+                                  isNextDay()
+                                    ? attributes['Pickup-PM-Hours']
+                                    : attributes['Pickup-AM-Hours']
+                                }`
+                              : attributes['Checkout-Method'] === 'delivery'
+                              ? attributes['Delivery-Time']
+                              : null}
+                          </BlockStack>
+                        </>
+                      )}
                     </BlockLayout>
                   </>
                 )}

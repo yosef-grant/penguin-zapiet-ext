@@ -4,7 +4,7 @@ import React, {
   useLayoutEffect,
   useReducer,
   useRef,
-} from "react";
+} from 'react';
 
 import {
   Text,
@@ -29,17 +29,17 @@ import {
   useApplyNoteChange,
   useNote,
   useCustomer,
-} from "@shopify/ui-extensions-react/checkout";
+} from '@shopify/ui-extensions-react/checkout';
 
-import Locations from "./Locations.jsx";
-import CSPortal from "./CSPortal.jsx";
+import Locations from './Locations.jsx';
+import CSPortal from './CSPortal.jsx';
 
-import { checkoutDataReducer } from "./reducer_functions/CheckoutDataMethods.jsx";
-import { Button, DatePicker } from "@shopify/ui-extensions/checkout";
+import { checkoutDataReducer } from './reducer_functions/CheckoutDataMethods.jsx';
+import { Button, DatePicker } from '@shopify/ui-extensions/checkout';
 
-import BlockLoader from "../Global/BlockLoader.jsx";
-import MethodBtns from "./MethodBtns.jsx";
-import DeliveryCheckStatus from "./DeliveryCheckStatus.jsx";
+import BlockLoader from '../Global/BlockLoader.jsx';
+import MethodBtns from './MethodBtns.jsx';
+import DeliveryCheckStatus from './DeliveryCheckStatus.jsx';
 
 // import Summary from "./Summary.jsx";
 // import LineItemProperties from "./LineItemProperties.jsx";
@@ -63,27 +63,27 @@ function MethodSelect({ url }) {
 
   const handleSetQLocations = (locations) => {
     dispatch({
-      type: "acquired_q_locations",
+      type: 'acquired_q_locations',
       all_locations: locations,
     });
   };
 
   const handleSetCollectLocations = (data) => {
     dispatch({
-      type: "acquired_general_delivery_info",
+      type: 'acquired_general_delivery_info',
       data: data,
     });
   };
 
   const handleRemoveSelectedLocation = () => {
     dispatch({
-      type: "selected_pickup_location_removed",
+      type: 'selected_pickup_location_removed',
     });
   };
 
   const handleSelectPickupLocation = (hours, description, location) => {
     dispatch({
-      type: "selected_pickup_location_added",
+      type: 'selected_pickup_location_added',
       hours: hours,
       description: description,
       location: location,
@@ -92,14 +92,14 @@ function MethodSelect({ url }) {
 
   const handleConfirmPickupLocation = (dates) => {
     dispatch({
-      type: "selected_pickup_location_confirmed",
+      type: 'selected_pickup_location_confirmed',
       location_dates: dates,
     });
   };
 
   const handleSelectDates = (date, weekday) => {
     dispatch({
-      type: "selected_dates",
+      type: 'selected_dates',
       date: date,
       weekday: weekday,
     });
@@ -107,7 +107,7 @@ function MethodSelect({ url }) {
 
   const handleMSReset = () => {
     dispatch({
-      type: "reset_MS_Checkout",
+      type: 'reset_MS_Checkout',
     });
   };
 
@@ -121,7 +121,7 @@ function MethodSelect({ url }) {
   const [displayCalendar, setDisplayCalendar] = useState(false);
   const [postcode, setPostcode] = useState(null);
 
-  const [loadMsg, setLoadMsg] = useState("Initialising...");
+  const [loadMsg, setLoadMsg] = useState('Initialising...');
 
   const [nextDay, setNextDay] = useState(null);
 
@@ -132,6 +132,8 @@ function MethodSelect({ url }) {
 
   const [noDelivery, setNoDelivery] = useState(false);
   const [showDeliveryError, setShowDeliveryError] = useState(false);
+
+  const [fetchFailed, setFetchFailed] = useState(false);
 
   const [cs, setCS] = useState({ status: false });
 
@@ -189,33 +191,49 @@ function MethodSelect({ url }) {
   useEffect(() => {
     const handleInitLoad = async () => {
       //console.log("INITIAL REACT LOAD - RESETTING VALUES");
-      setLoadMsg("Checking available methods...");
-      let res = await fetch(`${url}/pza/validate-cart-test`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(cart),
-      });
+      setLoadMsg('Checking available methods...');
 
-      let resBody = await res.json();
-      console.log("Validating Cart (using test data) ", cart, resBody);
-      handleSetQLocations(resBody.locations);
+      const controller = new AbortController();
 
-      // Object.keys(resBody.methods).forEach((key, i) => {
-      //   resBody.methods[key] ? `${t += ${key}$}` : null;
-      // });
+      try {
+        // * if no response inside 8 secs, abort and show error
+        let timer = setTimeout(() => {
+          controller.abort();
+        }, 8000);
+        let res = await fetch(`${url}/pza/validate-cart-test`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          signal: controller.signal,
+          method: 'POST',
+          body: JSON.stringify(cart),
+        });
 
-      // await setCartLineAttr({
-      //   type: "updateCartLine",
-      //   id: cart[0].id,
-      //   attributes: t,
-      // });
+        clearTimeout(timer);
+        let resBody = await res.json();
+        console.log('Validating Cart (using test data) ', cart, resBody);
+        handleSetQLocations(resBody.locations);
 
-      // console.log("heres the methods: ", t);
+        // Object.keys(resBody.methods).forEach((key, i) => {
+        //   resBody.methods[key] ? `${t += ${key}$}` : null;
+        // });
 
-      setAvailableMethods(resBody.methods);
-      handleMethodSelect("pickup", resBody.methods);
+        // await setCartLineAttr({
+        //   type: "updateCartLine",
+        //   id: cart[0].id,
+        //   attributes: t,
+        // });
+
+        // console.log("heres the methods: ", t);
+
+        setAvailableMethods(resBody.methods);
+        handleMethodSelect('pickup', resBody.methods);
+      } catch (error) {
+        setLoadMsg(
+          `Something went wrong, please refresh to try again. If problem persists please contact Customer Services.`
+        );
+        setFetchFailed(true);
+      }
     };
 
     !!initLoad && !availableMethods ? handleInitLoad() : null;
@@ -223,14 +241,11 @@ function MethodSelect({ url }) {
 
   const cart = lineItems.map((item) => {
     return {
-      variant_id: item.merchandise.id.replace(/\D/g, ""),
-      product_id: item.merchandise.product.id.replace(/\D/g, ""),
+      variant_id: item.merchandise.id.replace(/\D/g, ''),
+      product_id: item.merchandise.product.id.replace(/\D/g, ''),
       quantity: item.quantity,
     };
   });
-
-
-
 
   useEffect(() => {
     //console.log("++++++++++++++ cs updated: ", cs);
@@ -239,17 +254,17 @@ function MethodSelect({ url }) {
   //use to intercept rogue behaviour that will screw up rates
   useBuyerJourneyIntercept(({ canBlockProgress }) => {
     return canBlockProgress &&
-      attributes["Checkout-Method"] === "delivery" &&
+      attributes['Checkout-Method'] === 'delivery' &&
       !!noDelivery
       ? {
-          behavior: "block",
-          reason: "Cannot deliver to this address",
+          behavior: 'block',
+          reason: 'Cannot deliver to this address',
           perform: (result) => {
-            result.behavior === "block" ? setShowDeliveryError(true) : null;
+            result.behavior === 'block' ? setShowDeliveryError(true) : null;
           },
         }
       : {
-          behavior: "allow",
+          behavior: 'allow',
           perform: () => {
             showDeliveryError ? setShowDeliveryError(false) : null;
           },
@@ -260,29 +275,29 @@ function MethodSelect({ url }) {
   useBuyerJourneyIntercept(({ canBlockProgress }) => {
     return canBlockProgress && !!checkingPostcode
       ? {
-          behavior: "block",
-          reason: "Checking postcode",
+          behavior: 'block',
+          reason: 'Checking postcode',
         }
       : {
-          behavior: "allow",
+          behavior: 'allow',
         };
   });
 
   const deletePenguinReservation = async () => {
     console.log(attributes);
-    if (attributes?.["Pickup-Penguin-Id"]) {
+    if (attributes?.['Pickup-Penguin-Id']) {
       // console.log("&&&&&&&  penguin reservation in place - should be deleted");
       try {
         await fetch(`${url}/pza/delete-locker`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "POST",
-          body: JSON.stringify({ locker_id: attributes["Pickup-Penguin-Id"] }),
+          method: 'POST',
+          body: JSON.stringify({ locker_id: attributes['Pickup-Penguin-Id'] }),
         });
       } catch (error) {
         console.error(
-          `Failed to delete locker order ${attributes["Pickup-Penguin-Id"]}`
+          `Failed to delete locker order ${attributes['Pickup-Penguin-Id']}`
         );
       }
     } else return;
@@ -297,60 +312,60 @@ function MethodSelect({ url }) {
 
     !!noDelivery ? setNoDelivery(false) : null;
     //console.log("handling selected method ", method);
-    setLoadMsg("Setting default method...");
-    if (method === "pickup") {
+    setLoadMsg('Setting default method...');
+    if (method === 'pickup') {
       let t = [
         ...lineItems[0].attributes,
-        { key: "_available_methods", value: x },
-        { key: "_deliveryID", value: method.charAt(0).toUpperCase() },
+        { key: '_available_methods', value: x },
+        { key: '_deliveryID', value: method.charAt(0).toUpperCase() },
       ];
 
       await setCartLineAttr({
-        type: "updateCartLine",
+        type: 'updateCartLine',
         id: lineItems[0].id,
         attributes: [...t],
       });
       if (cartNote) {
         await changeNote({
-          type: "removeNote",
+          type: 'removeNote',
         });
       }
     } else {
       await setCartLineAttr({
-        type: "updateCartLine",
+        type: 'updateCartLine',
         id: lineItems[0].id,
         attributes: [
           ...lineItems[0].attributes,
           {
-            key: "_deliveryID",
+            key: '_deliveryID',
             value: method.charAt(0).toUpperCase(),
           },
         ],
       });
       handleRemoveSelectedLocation();
     }
-    setLoadMsg("Resetting attributes...");
+    setLoadMsg('Resetting attributes...');
     await changeAttributes({
-      type: "updateAttribute",
-      key: "Checkout-Method",
+      type: 'updateAttribute',
+      key: 'Checkout-Method',
       value: method,
     });
     Object.keys(attributes).forEach(async (key) => {
       if (
-        key !== "Checkout-Method" &&
-        key !== "Gift-Note" &&
-        key !== "Customer-Service-Note" &&
-        key !== "Lolas-CS-Member"
+        key !== 'Checkout-Method' &&
+        key !== 'Gift-Note' &&
+        key !== 'Customer-Service-Note' &&
+        key !== 'Lolas-CS-Member'
       ) {
         await changeAttributes({
-          type: "updateAttribute",
+          type: 'updateAttribute',
           key: key,
-          value: "",
+          value: '',
         });
       }
     });
     await changeShippingAddress({
-      type: "updateShippingAddress",
+      type: 'updateShippingAddress',
       address: {
         company: undefined,
         address1: undefined,
@@ -364,53 +379,51 @@ function MethodSelect({ url }) {
 
   const customer = useCustomer();
 
-  console.log("here is the customer: ", customer);
+  console.log('here is the customer: ', customer);
 
   useEffect(() => {
-    console.log("test state has been changed. currently: ", testState);
+    console.log('test state has been changed. currently: ', testState);
   }, [testState]);
 
   // * FOR 3-page checkout ONLY
   useEffect(() => {
     const getDeliveryZones = async () => {
-
+      console.log('heres the app meta: ', appMeta)
       let nextDayMeta = appMeta
-      .filter((meta) => meta.target.type === "product")
-      .map((filteredMeta) => {
-        return JSON.parse(filteredMeta.metafield.value).next_day_delivery.value;
+        .filter((meta) => meta.target.type === 'product')
+        .map((filteredMeta) => {
+          return JSON.parse(filteredMeta.metafield.value).next_day_delivery
+            .value;
+        });
+
+      let isNextDay;
+
+      nextDayMeta.forEach((val) => {
+        if (val === 0 || val === null) {
+          return (isNextDay = false);
+        } else {
+          isNextDay = true;
+        }
       });
-  
-    let isNextDay;
-  
-    nextDayMeta.forEach((val) => {
-      if (val === 0 || val === null) {
-        return (isNextDay = false);
-      }
-      else {
-        isNextDay = true;
-      }
-    });
 
-    setNextDay(isNextDay);
-  
-    console.log('HERE IS isND: ', isNextDay)
+      setNextDay(isNextDay);
 
-
+      console.log('HERE IS isND: ', isNextDay);
 
       try {
         setCheckingPostcode(true);
         let checkBody = {
-          type: "delivery",
+          type: 'delivery',
           postcode: currentShippingAddress.zip,
           cart: cart,
-          twoDayDelivery: nextDay,
+          nextDay: isNextDay,
         };
 
         let checkRes = await fetch(`${url}/pza/check-postcode-test`, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(checkBody),
         });
 
@@ -419,60 +432,60 @@ function MethodSelect({ url }) {
         //console.log("DATA CHECK ON POSTCODE ENTRY: ", delData);
 
         const newDelMethod =
-          delData?.delivery?.delivery_zone === "unavailable" &&
+          delData?.delivery?.delivery_zone === 'unavailable' &&
           availableMethods?.shipping === false
             ? null
-            : delData?.delivery?.delivery_zone === "unavailable" &&
+            : delData?.delivery?.delivery_zone === 'unavailable' &&
               availableMethods?.shipping === true
-            ? "shipping"
-            : "delivery";
+            ? 'shipping'
+            : 'delivery';
 
         if (newDelMethod) {
           console.log(
-            "newDelMethod: ",
+            'newDelMethod: ',
             newDelMethod,
-            "current checkout method: ",
-            attributes["Checkout-Method"]
+            'current checkout method: ',
+            attributes['Checkout-Method']
           );
 
           let dz =
-            newDelMethod === "delivery"
-              ? delData.delivery.delivery_zone.replace(/[^0-9.]/g, "")
+            newDelMethod === 'delivery'
+              ? delData.delivery.delivery_zone.replace(/[^0-9.]/g, '')
               : null;
           await setCartLineAttr({
-            type: "updateCartLine",
+            type: 'updateCartLine',
             id: lineItems[0].id,
             attributes: [
               ...lineItems[0].attributes,
               {
-                key: "_deliveryID",
-                value: `${newDelMethod === "delivery" ? `D%${dz}` : `S`}`,
+                key: '_deliveryID',
+                value: `${newDelMethod === 'delivery' ? `D%${dz}` : `S`}`,
               },
             ],
           });
           if (
-            newDelMethod === "delivery" &&
-            attributes["Checkout-Method"] === "delivery"
+            newDelMethod === 'delivery' &&
+            attributes['Checkout-Method'] === 'delivery'
           ) {
             setCheckingPostcode(false);
             return;
           } else {
             await changeAttributes({
-              type: "updateAttribute",
-              key: "Checkout-Method",
+              type: 'updateAttribute',
+              key: 'Checkout-Method',
               value: newDelMethod,
             });
             Object.keys(attributes).forEach(async (key) => {
               if (
-                key !== "Checkout-Method" &&
-                key !== "Gift-Note" &&
-                key !== "Customer-Service-Note" &&
-                key !== "Lolas-CS-Member"
+                key !== 'Checkout-Method' &&
+                key !== 'Gift-Note' &&
+                key !== 'Customer-Service-Note' &&
+                key !== 'Lolas-CS-Member'
               ) {
                 await changeAttributes({
-                  type: "updateAttribute",
+                  type: 'updateAttribute',
                   key: key,
-                  value: "",
+                  value: '',
                 });
               }
             });
@@ -497,7 +510,7 @@ function MethodSelect({ url }) {
 
     currentShippingAddress.zip &&
     availableMethods &&
-    attributes["Checkout-Method"] !== "pickup"
+    attributes['Checkout-Method'] !== 'pickup'
       ? getDeliveryZones()
       : null;
   }, [currentShippingAddress.zip]);
@@ -505,15 +518,15 @@ function MethodSelect({ url }) {
   return (
     <>
       {initLoad ? (
-        <BlockLoader message={loadMsg} />
+        <BlockLoader message={loadMsg} failureStatus={fetchFailed} />
       ) : (
         <>
           <MethodBtns
-            checkoutMethod={attributes["Checkout-Method"]}
+            checkoutMethod={attributes['Checkout-Method']}
             handleMethodSelect={handleMethodSelect}
             availableMethods={availableMethods}
           />
-          {attributes["Checkout-Method"] === "pickup" &&
+          {attributes['Checkout-Method'] === 'pickup' &&
           checkoutData?.pickup ? (
             <>
               {!!cs.status && (
@@ -537,7 +550,7 @@ function MethodSelect({ url }) {
                 attributes={attributes}
               />
             </>
-          ) : attributes["Checkout-Method"] !== "pickup" ? (
+          ) : attributes['Checkout-Method'] !== 'pickup' ? (
             <DeliveryCheckStatus
               showDeliveryError={showDeliveryError}
               noDelivery={noDelivery}

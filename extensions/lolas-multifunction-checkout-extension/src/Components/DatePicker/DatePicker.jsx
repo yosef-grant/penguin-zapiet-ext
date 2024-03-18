@@ -2,21 +2,21 @@ import {
   useAttributes,
   useAttributeValues,
   View,
-  useAppMetafields,
   useCartLines,
   useApplyAttributeChange,
   useShippingAddress,
   useApplyCartLinesChange,
-} from "@shopify/ui-extensions-react/checkout";
-import React, { useEffect, useState } from "react";
+  useAppMetafields,
+} from '@shopify/ui-extensions-react/checkout';
+import React, { useEffect, useState } from 'react';
 
-import DatePickerBody from "./DatePickerBody.jsx";
+import DatePickerBody from './DatePickerBody.jsx';
 
-import { capitalise } from "../../helpers/StringFunctions.jsx";
-import CustomerNotes from "./CustomerNotes.jsx";
+import { capitalise } from '../../helpers/StringFunctions.jsx';
+import CustomerNotes from './CustomerNotes.jsx';
 
 const DatePicker = ({ url }) => {
-  const selectedMethod = useAttributeValues(["Checkout-Method"])[0];
+  const selectedMethod = useAttributeValues(['Checkout-Method'])[0];
   const changeAttributes = useApplyAttributeChange();
 
   const [locationId, setLocationId] = useState(null);
@@ -35,7 +35,10 @@ const DatePicker = ({ url }) => {
   );
 
   const delDate = attributes[`${capitalise(selectedMethod)}-Date`];
-  const appMeta = useAppMetafields();
+
+  let appMeta = useAppMetafields();
+
+  console.log('App meta from DATEPICKER parent: ', appMeta);
   const cart = useCartLines();
 
   const currentShippingAddress = useShippingAddress();
@@ -44,14 +47,14 @@ const DatePicker = ({ url }) => {
 
   // * Provide DELIVERY Availability to DatePicker
   useEffect(() => {
-    const types = ["pickup", "shipping", "delivery"];
+    const types = ['pickup', 'shipping', 'delivery'];
 
     const x = cart[0].attributes
-      .filter((attribute) => attribute.key === "_available_methods")
+      .filter((attribute) => attribute.key === '_available_methods')
       .map((filteredAttr) => {
         return filteredAttr.value;
       })[0]
-      .split(",")
+      .split(',')
       .reduce((acc, type) => {
         acc[type] = types.includes(type) ? true : false;
         return acc;
@@ -61,18 +64,18 @@ const DatePicker = ({ url }) => {
 
   useEffect(() => {
     const handleSwitchToPickup = () => {
-      setLocationId(attributes["Pickup-Location-Id"]);
-      setLocationType(attributes["Pickup-Location-Type"]);
+      setLocationId(attributes['Pickup-Location-Id']);
+      setLocationType(attributes['Pickup-Location-Type']);
       setLocationHandle(
-        attributes["Pickup-Location-Company"]
+        attributes['Pickup-Location-Company']
           .toLowerCase()
-          .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, "")
-          .replaceAll(/\s/gm, "-")
+          .replaceAll(/\s?[$&+,:;=?@#|'<>.^*()%!-]/gm, '')
+          .replaceAll(/\s/gm, '-')
       );
     };
 
-    attributes["Pickup-Location-Id"] ? handleSwitchToPickup() : null;
-  }, [attributes["Pickup-Location-Id"]]);
+    attributes['Pickup-Location-Id'] ? handleSwitchToPickup() : null;
+  }, [attributes['Pickup-Location-Id']]);
 
   return (
     <View>
@@ -80,23 +83,25 @@ const DatePicker = ({ url }) => {
         <CustomerNotes
           changeAttributes={changeAttributes}
           selectedMethod={selectedMethod}
-          giftNote={attributes["Gift-Note"]}
+          giftNote={attributes['Gift-Note']}
         />
-        <DatePickerBody
-          selectedMethod={selectedMethod}
-          locationId={locationId}
-          locationType={locationType}
-          locationHandle={locationHandle}
-          appMeta={appMeta}
-          cart={cart}
-          url={url}
-          changeAttributes={changeAttributes}
-          delDate={delDate}
-          currentShippingAddress={currentShippingAddress}
-          setCartLineAttr={setCartLineAttr}
-          attributes={attributes}
-          availableMethods={availableMethods}
-        />
+        {appMeta.length && (
+          <DatePickerBody
+            selectedMethod={selectedMethod}
+            locationId={locationId}
+            locationType={locationType}
+            locationHandle={locationHandle}
+            cart={cart}
+            url={url}
+            changeAttributes={changeAttributes}
+            delDate={delDate}
+            currentShippingAddress={currentShippingAddress}
+            setCartLineAttr={setCartLineAttr}
+            attributes={attributes}
+            availableMethods={availableMethods}
+            appMeta={appMeta}
+          />
+        )}
       </>
     </View>
   );
