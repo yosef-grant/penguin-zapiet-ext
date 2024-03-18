@@ -21535,7 +21535,7 @@ ${errorInfo.componentStack}`);
 
   // extensions/lolas-thank-you-extension/src/App.jsx
   var import_jsx_runtime9 = __toESM(require_jsx_runtime());
-  var url = "https://tracker-doubt-textile-concert.trycloudflare.com/";
+  var url = "https://southeast-featured-clearing-hwy.trycloudflare.com/";
   var MainBodyExt = reactExtension("purchase.thank-you.block.render", () => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(MainBody_default, { url }));
   var ThankYouLineItemPropsExt = reactExtension(
     "purchase.thank-you.cart-line-item.render-after",

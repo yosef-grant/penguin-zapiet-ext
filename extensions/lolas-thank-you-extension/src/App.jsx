@@ -3,7 +3,7 @@ import LoveClub from "./Components/LoveClub/LoveClub.jsx";
 import ThankYouLineItemProps from "./Components/ThankYouLineItemProps/ThankYouLineItemProps.jsx";
 import MainBody from "./Components/MainBody/MainBody.jsx";
 
-const url = "https://tracker-doubt-textile-concert.trycloudflare.com/";
+const url = "https://southeast-featured-clearing-hwy.trycloudflare.com/";
 
 
 

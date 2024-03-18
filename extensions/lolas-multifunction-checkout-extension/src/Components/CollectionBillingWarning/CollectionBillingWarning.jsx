@@ -10,6 +10,8 @@ import {
   useBuyerJourneyIntercept,
 } from "@shopify/ui-extensions-react/checkout";
 import { useEffect, useState } from "react";
+import LockerCountdownAux from "./LockerCountdownAux.jsx";
+
 
 function CollectionBillingWarning() {
   const attr = useAttributes();
@@ -60,14 +62,20 @@ function CollectionBillingWarning() {
     {}
   );
 
-  return blockUser ? (
-    // * Should only show if two addresses match
+  return (
     <>
-      <Banner title="Address Warning">
-        <Text>Billing Address cannot match Collection Address</Text>
-      </Banner>
+      <LockerCountdownAux />
+      {blockUser ? (
+        <>
+          // * Should only show if two addresses match
+          <Banner title="Address Warning">
+            <Text>Billing Address cannot match Collection Address</Text>
+          </Banner>
+        </>
+      ) : null}
+      ;
     </>
-  ) : null;
+  );
 }
 
 export default CollectionBillingWarning;
